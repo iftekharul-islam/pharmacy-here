@@ -5,16 +5,28 @@ namespace Modules\User\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\User\Repositories\UserRepository;
 
 class UserController extends Controller
 {
-    /**
+	/**
+	 * @var UserRepository
+	 */
+	private $repository;
+	
+	public function __construct(UserRepository $repository) {
+		$this->repository = $repository;
+	}
+	
+	/**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
     {
-        return view('user::index');
+    	$users = $this->repository->all();
+    	
+        return view('user::index', compact('users'));
     }
 
     /**
