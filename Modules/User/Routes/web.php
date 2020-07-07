@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-//    print_r('Site is running');
-    return view('welcome');
+Route::prefix('user')->group(function() {
+    Route::get('/', 'UserController@index');
 });
