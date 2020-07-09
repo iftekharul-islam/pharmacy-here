@@ -4,12 +4,10 @@ namespace Modules\Auth\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
 use Modules\Auth\Http\Requests\PasswordResetValidationRequest;
-use Modules\Auth\Repositories\ResetPasswordRepository;
+use Modules\Auth\Repositories\AuthRepository;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class ResetPasswordController extends Controller
@@ -29,7 +27,7 @@ class ResetPasswordController extends Controller
 
     private $repository;
 
-    public function __construct(ResetPasswordRepository $resetPasswordRespository)
+    public function __construct(AuthRepository $resetPasswordRespository)
     {
         $this->repository = $resetPasswordRespository;
     }

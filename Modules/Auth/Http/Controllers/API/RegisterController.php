@@ -8,7 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
 use Modules\Auth\Http\Requests\RegistrationValidationRequest;
-use Modules\Auth\Repositories\RegisterRepository;
+use Modules\Auth\Repositories\AuthRepository;
 
 class RegisterController extends Controller
 {
@@ -37,9 +37,9 @@ class RegisterController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param RegisterRepository $registerRepository
+     * @param AuthRepository $registerRepository
      */
-    public function __construct(RegisterRepository $registerRepository)
+    public function __construct(AuthRepository $registerRepository)
     {
         $this->middleware('guest');
         $this->repository = $registerRepository;

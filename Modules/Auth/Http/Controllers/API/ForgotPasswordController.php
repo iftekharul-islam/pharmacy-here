@@ -7,7 +7,7 @@ use JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
-use Modules\Auth\Repositories\ForgotPasswordRepository;
+use Modules\Auth\Repositories\AuthRepository;
 
 class ForgotPasswordController extends Controller
 {
@@ -27,9 +27,9 @@ class ForgotPasswordController extends Controller
 
     private $repository;
 
-    public function __construct(ForgotPasswordRepository $forgotPasswordRepository)
+    public function __construct(AuthRepository $auth_repository)
     {
-        $this->repository = $forgotPasswordRepository;
+        $this->repository = $auth_repository;
     }
 
     /**
