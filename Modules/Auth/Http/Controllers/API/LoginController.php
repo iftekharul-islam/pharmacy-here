@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Http\Requests\LoginValidationRequest;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use function GuzzleHttp\Promise\all;
 
 class LoginController extends Controller
 {
