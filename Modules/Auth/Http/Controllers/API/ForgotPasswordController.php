@@ -27,9 +27,9 @@ class ForgotPasswordController extends Controller
 
     private $repository;
 
-    public function __construct(AuthRepository $auth_repository)
+    public function __construct(AuthRepository $authRepository)
     {
-        $this->repository = $auth_repository;
+        $this->repository = $authRepository;
     }
 
     /**

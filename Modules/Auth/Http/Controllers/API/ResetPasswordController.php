@@ -27,9 +27,9 @@ class ResetPasswordController extends Controller
 
     private $repository;
 
-    public function __construct(AuthRepository $resetPasswordRespository)
+    public function __construct(AuthRepository $authRepository)
     {
-        $this->repository = $resetPasswordRespository;
+        $this->repository = $authRepository;
     }
 
     /**
@@ -57,7 +57,7 @@ class ResetPasswordController extends Controller
             throw new UnauthorizedHttpException('','Invalid token');
         }
 
-        $this->repository->resetNewPassword($userInfo->email, $request->password);
+        return $this->repository->resetNewPassword($userInfo->email, $request->password);
 
     }
 
