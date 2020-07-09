@@ -21,5 +21,8 @@
         "psr-4": {
             "Modules\\Auth\\": ""
         }
+    },
+    "require": {
+        "spatie/laravel-permission": "3.13"
     }
 }
