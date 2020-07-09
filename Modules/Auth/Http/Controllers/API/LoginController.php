@@ -40,7 +40,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-
+	
+	/**
+	 * @param LoginValidationRequest $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
     public function login(LoginValidationRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -51,7 +56,12 @@ class LoginController extends Controller
 
         throw new UnauthorizedHttpException('','Unauthorized User');
     }
-
+	
+	/**
+	 * @param $token
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
     protected function respondWithToken($token)
     {
         return response()->json([

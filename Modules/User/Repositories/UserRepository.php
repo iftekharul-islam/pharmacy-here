@@ -3,7 +3,7 @@
 namespace Modules\User\Repositories;
 
 
-use Modules\User\Models\User;
+use Modules\User\Entities\Models\User;
 
 class UserRepository {
 
@@ -16,8 +16,10 @@ class UserRepository {
 	
 	}
 	
-	public function create() {
+	public function create($request) {
+		$user = $request->only('name', 'email', 'password');
 		
+		return User::create($user);
 	}
 	
 	public function delete() {
