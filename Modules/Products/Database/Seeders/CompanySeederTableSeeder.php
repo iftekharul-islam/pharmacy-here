@@ -4,6 +4,7 @@ namespace Modules\Products\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Modules\Products\Entities\Model\Company;
 
 class CompanySeederTableSeeder extends Seeder
@@ -20,19 +21,19 @@ class CompanySeederTableSeeder extends Seeder
         // $this->call("OthersTableSeeder");
         Company::create([
             'name' => 'Apollo Pharmaceutical Ltd',
-            'slug' => 'apollo-pharmaceutical-ltd',
+            'slug' => Str::slug('Apollo Pharmaceutical Ltd'),
             'status' => true
         ]);
 
         Company::create([
             'name' => 'ACI Limited',
-            'slug' => 'aci-limited',
+            'slug' => Str::slug('ACI Limited'),
             'status' => true
         ]);
 
         Company::create([
             'name' => 'Beximco Pharmaceuticals Ltd',
-            'slug' => 'beximco-pharmaceuticals-ltd',
+            'slug' => Str::slug('Beximco Pharmaceuticals Ltd'),
             'status' => true
         ]);
     }

@@ -5,15 +5,26 @@ namespace Modules\Products\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Products\Http\Requests\CreateCompanyRequest;
+use Modules\Products\Http\Requests\UpdateCompanyRequest;
+use Modules\Products\Repositories\CompanyRepository;
 
 class CompanyController extends Controller
 {
+    private $repository;
+
+    public function __construct(CompanyRepository $repository)
+    {
+        $this->repository =$repository;
+    }
+
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
     {
+        $company = $this->repository->allCompany();
         return view('products::index');
     }
 
@@ -31,9 +42,10 @@ class CompanyController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCompanyRequest $request)
     {
         //
+        return $this->repository->createCompany($request);
     }
 
     /**
@@ -62,9 +74,10 @@ class CompanyController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCompanyRequest $request, $id)
     {
         //
+        return $this->repository->updateCompany($request, $id);
     }
 
     /**
@@ -75,5 +88,6 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         //
+        return $this->repository->deleteCompany($id);
     }
 }
