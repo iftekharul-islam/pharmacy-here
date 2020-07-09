@@ -1,0 +1,93 @@
+<?php
+
+namespace Modules\Products\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+use Modules\Products\Http\Requests\CreateCompanyRequest;
+use Modules\Products\Http\Requests\UpdateCompanyRequest;
+use Modules\Products\Repositories\CompanyRepository;
+
+class CompanyController extends Controller
+{
+    private $repository;
+
+    public function __construct(CompanyRepository $repository)
+    {
+        $this->repository =$repository;
+    }
+
+    /**
+     * Display a listing of the resource.
+     * @return Response
+     */
+    public function index()
+    {
+        $company = $this->repository->allCompany();
+        return view('products::index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     * @return Response
+     */
+    public function create()
+    {
+        return view('products::create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * @param Request $request
+     * @return Response
+     */
+    public function store(CreateCompanyRequest $request)
+    {
+        //
+        return $this->repository->createCompany($request);
+    }
+
+    /**
+     * Show the specified resource.
+     * @param int $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        return view('products::show');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     * @param int $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        return view('products::edit');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function update(UpdateCompanyRequest $request, $id)
+    {
+        //
+        return $this->repository->updateCompany($request, $id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param int $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        //
+        return $this->repository->deleteCompany($id);
+    }
+}
