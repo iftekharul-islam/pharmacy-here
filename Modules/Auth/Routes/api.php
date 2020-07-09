@@ -14,11 +14,6 @@ use Modules\Auth\Http\Controllers;
 |
 */
 
-//Route::middleware('auth:api')->get('/auth', function (Request $request) {
-//    return $request->user();
-//});
-
-
 $authNamespace = 'Modules\Auth\Http\Controllers\Api';
 
 

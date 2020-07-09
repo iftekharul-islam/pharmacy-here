@@ -13,12 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-//    print_r('Site is running');
-    return view('welcome');
-});
-
-
-//Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');

@@ -1,15 +1,16 @@
 <?php
 
-namespace Modules\User\Models;
+namespace Modules\User\Entities\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Modules\Auth\Notifications\PasswordResetNotification;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
 
     public function getJWTIdentifier()
     {
@@ -52,4 +53,9 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+	
+	public function setPasswordAttribute($password)
+	{
+		$this->attributes['password'] = bcrypt($password);
+	}
 }

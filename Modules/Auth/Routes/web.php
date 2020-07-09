@@ -12,6 +12,5 @@
 */
 
 Route::prefix('auth')->group(function() {
-    Route::get('/', 'AuthController@index');
     Route::get('login','LoginController@showLoginForm')->name('login');
 });
