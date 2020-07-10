@@ -4,6 +4,7 @@
 namespace Modules\Products\Repositories;
 
 
+use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Modules\Products\Entities\Model\Company;
@@ -48,10 +49,10 @@ class CompanyRepository
         $companyResponse = $company->save();
 
         if (! $companyResponse) {
-            throw new UpdateResourceFailedException('Company Update Failed');
+            throw new UpdateResourceFailedException('Company not found');
         }
 
-        return $companyResponse;
+        return responseData('Company has been updated.');;
     }
 
     public function delete($id)
@@ -59,10 +60,10 @@ class CompanyRepository
         $company = Company::find($id);
 
         if (! $company->delete() ) {
-            throw new NotFoundHttpException('Company Delete Failed');
+            throw new DeleteResourceFailedException('Company not found');
         }
 
-        return true;
+        return responseData('Company has been deleted.');
     }
 
     public function get($id)

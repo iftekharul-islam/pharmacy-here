@@ -3,10 +3,10 @@
 
 namespace Modules\Products\Repositories;
 
+use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Modules\Products\Entities\Model\Generic;
-use Modules\Products\Entities\Model\Company;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GenericRepository
@@ -48,10 +48,10 @@ class GenericRepository
         $genericResponse = $generic->save();
 
         if (!$genericResponse) {
-            throw new UpdateResourceFailedException('Company Update Failed');
+            throw new UpdateResourceFailedException('Generic Update Failed');
         }
 
-        return $genericResponse;
+        return responseData('Generic has been updated.');
     }
 
     public function delete($id)
@@ -59,10 +59,10 @@ class GenericRepository
         $generic = Generic::find($id);
 
         if (! $generic->delete() ) {
-            throw new NotFoundHttpException('Company Delete Failed');
+            throw new DeleteResourceFailedException('Generic Delete Failed');
         }
 
-        return true;
+        return responseData('Generic has been deleted.');
     }
 
     public function get($id)
