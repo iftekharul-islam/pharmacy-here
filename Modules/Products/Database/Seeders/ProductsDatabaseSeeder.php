@@ -18,5 +18,7 @@ class ProductsDatabaseSeeder extends Seeder
 
         // $this->call("OthersTableSeeder");
          $this->call(CompanySeederTableSeeder::class);
+         $this->call(GenericTableSeeder::class);
+         $this->call(FormTableSeeder::class);
     }
 }

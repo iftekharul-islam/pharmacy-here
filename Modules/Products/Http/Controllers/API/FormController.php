@@ -5,22 +5,22 @@ namespace Modules\Products\Http\Controllers\API;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Products\Http\Requests\CreateCompanyRequest;
-use Modules\Products\Http\Requests\UpdateCompanyRequest;
-use Modules\Products\Repositories\CompanyRepository;
+use Modules\Products\Http\Requests\CreateFormRequest;
+use Modules\Products\Http\Requests\UpdateFormRequest;
+use Modules\Products\Repositories\FormRepository;
 
-class CompanyController extends Controller
+class FormController extends Controller
 {
     private $repository;
 
-    public function __construct(CompanyRepository $repository)
+    public function __construct(FormRepository $repository)
     {
         $this->repository = $repository;
     }
 
     /**
      * Display a listing of the resource.
-     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Products\Entities\Model\Company[]
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Products\Entities\Model\Form[]
      */
     public function index()
     {
@@ -28,20 +28,11 @@ class CompanyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
      * Store a newly created resource in storage.
-     * @param CreateCompanyRequest $request
+     * @param CreateFormRequest $request
      * @return Response
      */
-    public function store(CreateCompanyRequest $request)
+    public function store(CreateFormRequest $request)
     {
         return $this->repository->create($request);
     }
@@ -57,22 +48,12 @@ class CompanyController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-
-    }
-
-    /**
      * Update the specified resource in storage.
-     * @param UpdateCompanyRequest $request
+     * @param UpdateFormRequest $request
      * @param int $id
      * @return JsonResponse
      */
-    public function update(UpdateCompanyRequest $request, $id)
+    public function update(UpdateFormRequest $request, $id)
     {
         return $this->repository->update($request, $id);
     }
