@@ -25,6 +25,9 @@ $api->version('v1', function ($api) use ($namespace) {
 
         $api->get('generic', $namespace . '\GenericController@index');
         $api->get('generic/{id}', $namespace . '\GenericController@show');
+
+        $api->get('form', $namespace . '\FormController@index');
+        $api->get('form/{id}', $namespace . '\FormController@show');
     });
 
     $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
@@ -35,5 +38,9 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->post('generic', $namespace . '\GenericController@store');
         $api->put('generic/{id}', $namespace . '\GenericController@update');
         $api->delete('generic/{id}', $namespace . '\GenericController@destroy');
+
+        $api->post('form', $namespace . '\FormController@store');
+        $api->put('form/{id}', $namespace . '\FormController@update');
+        $api->delete('form/{id}', $namespace . '\FormController@destroy');
     });
 });
