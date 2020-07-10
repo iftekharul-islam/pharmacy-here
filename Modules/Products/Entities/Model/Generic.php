@@ -23,4 +23,9 @@ class Generic extends Model
             $generic->slug = Str::slug($generic->name);
         });
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

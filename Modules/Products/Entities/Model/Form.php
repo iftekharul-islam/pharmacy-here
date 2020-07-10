@@ -23,4 +23,9 @@ class Form extends Model
             $form->slug = Str::slug($form->name);
         });
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

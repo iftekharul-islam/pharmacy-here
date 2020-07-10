@@ -27,4 +27,9 @@ class Company extends Model
             $company->slug = Str::slug($company->name);
         });
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
