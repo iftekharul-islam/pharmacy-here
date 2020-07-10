@@ -15,7 +15,10 @@ class CreateGenericsTable extends Migration
     {
         Schema::create('generics', function (Blueprint $table) {
             $table->bigIncrements('id');
-
+            $table->boolean('status');
+            $table->string('name');
+            $table->string('slug');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

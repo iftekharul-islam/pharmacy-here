@@ -4,43 +4,41 @@
 namespace Modules\Products\Repositories;
 
 
-use Illuminate\Support\Str;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Modules\Products\Entities\Model\Company;
-use PHPUnit\Util\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CompanyRepository
 {
-    public function allCompany()
+    public function all()
     {
         return Company::all();
     }
 
-    public function createCompany($request)
+    public function create($request)
     {
-        $user = Company::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'status' => $request->status
-        ]);
+        $data = $request->only('name', 'status');
 
-        if (! $user) {
-            throw new Exception('New user registration failed');
+        $company = Company::create($data);
+
+        if (! $company) {
+            throw new StoreResourceFailedException('Company Create failed');
         }
 
-        return $user;
+        return $company;
     }
 
-    public function updateCompany($request, $id)
+    public function update($request, $id)
     {
         $company = Company::find($id);
 
         if (!$company) {
-            throw new Exception('Company not found');
+            throw new NotFoundHttpException('Company not found');
         }
 
         if (isset($request->name)) {
             $company->name = $request->name;
-            $company->slug = Str::slug($request->name);
         }
 
         if (isset($request->status)) {
@@ -49,22 +47,33 @@ class CompanyRepository
 
         $companyResponse = $company->save();
 
-        if (!$companyResponse) {
-            throw new Exception('Company Update Failed');
+        if (! $companyResponse) {
+            throw new UpdateResourceFailedException('Company Update Failed');
         }
 
         return $companyResponse;
     }
 
-    public function deleteCompany($id)
+    public function delete($id)
     {
         $company = Company::find($id);
 
         if (! $company->delete() ) {
-            throw new Exception('Company Delete Failed');
+            throw new NotFoundHttpException('Company Delete Failed');
         }
 
         return true;
+    }
+
+    public function get($id)
+    {
+        $company = Company::find($id);
+
+        if (! $company ) {
+            throw new NotFoundHttpException('Company Not Found');
+        }
+
+        return $company;
     }
 
 }

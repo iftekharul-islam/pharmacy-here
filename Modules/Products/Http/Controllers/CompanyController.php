@@ -24,7 +24,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $company = $this->repository->allCompany();
+        $company = $this->repository->all();
         return view('products::index');
     }
 
@@ -45,7 +45,7 @@ class CompanyController extends Controller
     public function store(CreateCompanyRequest $request)
     {
         //
-        return $this->repository->createCompany($request);
+        return $this->repository->create($request);
     }
 
     /**
@@ -77,7 +77,7 @@ class CompanyController extends Controller
     public function update(UpdateCompanyRequest $request, $id)
     {
         //
-        return $this->repository->updateCompany($request, $id);
+        return $this->repository->update($request, $id);
     }
 
     /**
@@ -88,6 +88,6 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         //
-        return $this->repository->deleteCompany($id);
+        return $this->repository->delete($id);
     }
 }

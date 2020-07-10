@@ -2,19 +2,28 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Products\Http\Requests\CreateCompanyRequest;
+use Modules\Products\Http\Requests\UpdateCompanyRequest;
+use Modules\Products\Repositories\CompanyRepository;
 
 class CompanyController extends Controller
 {
+    private $repository;
+
+    public function __construct(CompanyRepository $repository)
+    {
+        $this->repository =$repository;
+    }
+
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Products\Entities\Model\Company[]
      */
     public function index()
     {
-        return view('products::index');
+        return $this->repository->all();
     }
 
     /**
@@ -23,17 +32,17 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('products::create');
+
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param CreateCompanyRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCompanyRequest $request)
     {
-        //
+        return $this->repository->create($request);
     }
 
     /**
@@ -43,7 +52,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        return view('products::show');
+        return $this->repository->get($id);
     }
 
     /**
@@ -53,27 +62,27 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        return view('products::edit');
+
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param UpdateCompanyRequest $request
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCompanyRequest $request, $id)
     {
-        //
+        return $this->repository->update($request, $id);
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Response
+     * @return bool
      */
     public function destroy($id)
     {
-        //
+        return $this->repository->delete($id);
     }
 }
