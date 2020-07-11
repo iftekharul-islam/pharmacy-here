@@ -13,12 +13,12 @@ class ProductRepository
 {
     public function all()
     {
-        return Product::with('productAdditionalInfo', 'form', 'company', 'generic')->get();
+        return Product::with('productAdditionalInfo', 'form', 'company', 'generic', 'category','unit')->get();
     }
 
     public function get($id)
     {
-        $product = Product::with('productAdditionalInfo', 'form', 'company', 'generic')->find($id);
+        $product = Product::with('productAdditionalInfo', 'form', 'company', 'generic', 'category','unit')->find($id);
 
         if (!$product) {
             throw new NotFoundHttpException('Product Not Found');
@@ -118,9 +118,9 @@ class ProductRepository
             $product->form_id = $request->form_id;
         }
 
-//        if (isset($request->category_id)) {
-//            $product->category_id = $request->category_id;
-//        }
+        if (isset($request->category_id)) {
+            $product->category_id = $request->category_id;
+        }
 
         if (isset($request->generic_id)) {
             $product->generic_id = $request->generic_id;
@@ -130,9 +130,9 @@ class ProductRepository
             $product->manufacturing_company_id = $request->manufacturing_company_id;
         }
 
-//        if (isset($request->name)) {
-//            $product->primary_unit_id = $request->primary_unit_id;
-//        }
+        if (isset($request->name)) {
+            $product->primary_unit_id = $request->primary_unit_id;
+        }
 
         $product->save();
 

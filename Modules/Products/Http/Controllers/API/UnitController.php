@@ -2,29 +2,25 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Products\Http\Requests\CreateProductRequest;
-use Modules\Products\Http\Requests\UpdateProductRequest;
-use Modules\Products\Repositories\ProductRepository;
+use Modules\Products\Http\Requests\UnitCreateRequest;
+use Modules\Products\Repositories\UnitRepository;
 
-class ProductsController extends Controller
+class UnitController extends Controller
 {
     private $repository;
 
-    public function __construct(ProductRepository $repository)
+    public function __construct(UnitRepository $repository)
     {
-        $this->repository =$repository;
+        $this->repository = $repository;
     }
 
     /**
      * Display a listing of the resource.
-     * @return Builder[]|Collection
+     * @return JsonResponse
      */
     public function index()
     {
@@ -42,10 +38,10 @@ class ProductsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param CreateProductRequest $request
+     * @param UnitCreateRequest $request
      * @return JsonResponse
      */
-    public function store(CreateProductRequest $request)
+    public function store(UnitCreateRequest $request)
     {
         return $this->repository->create($request);
     }
@@ -53,11 +49,20 @@ class ProductsController extends Controller
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Builder|Builder[]|Collection|Model|null
+     * @return JsonResponse
      */
     public function show($id)
     {
-        return $this->repository->get($id);
+        return $this->repository->findById($id);
+    }
+
+    /**
+     * @param $slug
+     * @return JsonResponse
+     */
+    public function showBySlug($slug)
+    {
+        return $this->repository->findBySlug($slug);
     }
 
     /**
@@ -72,19 +77,19 @@ class ProductsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param UpdateProductRequest $request
+     * @param Request $request
      * @param int $id
-     * @return JsonResponse
+     * @return Response
      */
-    public function update(UpdateProductRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        return $this->repository->update($request, $id);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return JsonResponse
+     * @return Response
      */
     public function destroy($id)
     {

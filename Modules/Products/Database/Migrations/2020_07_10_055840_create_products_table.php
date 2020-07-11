@@ -15,7 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('status');
+            $table->boolean('status')->default(true);
             $table->string('name');
             $table->string('slug');
             $table->double('trading_price');
@@ -31,14 +31,14 @@ class CreateProductsTable extends Migration
             $table->string('type');
             $table->unsignedBigInteger('form_id');
             $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
-//            $table->unsignedBigInteger('category_id');
-//            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->unsignedBigInteger('generic_id');
             $table->foreign('generic_id')->references('id')->on('generics')->onDelete('cascade');
             $table->unsignedBigInteger('manufacturing_company_id');
             $table->foreign('manufacturing_company_id')->references('id')->on('companies')->onDelete('cascade');
-//            $table->unsignedBigInteger('primary_unit_id');
-//            $table->foreign('primary_unit_id')->references('id')->on('units')->onDelete('cascade');
+            $table->unsignedBigInteger('primary_unit_id');
+            $table->foreign('primary_unit_id')->references('id')->on('units')->onDelete('cascade');
             $table->integer('secondary_unit_id')->nullable();
             $table->softDeletes();
             $table->timestamps();

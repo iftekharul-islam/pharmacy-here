@@ -31,6 +31,14 @@ $api->version('v1', function ($api) use ($namespace) {
 
         $api->get('products', $namespace . '\ProductsController@index');
         $api->get('products/{id}', $namespace . '\ProductsController@show');
+
+        $api->get('categories', $namespace . '\CategoryController@index');
+        $api->get('categories/{id}', $namespace . '\CategoryController@show');
+        $api->get('categories/slug/{slug}', $namespace . '\CategoryController@showBySlug');
+
+        $api->get('units', $namespace . '\UnitController@index');
+        $api->get('units/{id}', $namespace . '\UnitController@show');
+        $api->get('units/slug/{slug}', $namespace . '\UnitController@showBySlug');
     });
 
     $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
@@ -49,5 +57,14 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->post('products', $namespace . '\ProductsController@store');
         $api->put('products/{id}', $namespace . '\ProductsController@update');
         $api->delete('products/{id}', $namespace . '\ProductsController@destroy');
+
+        $api->post('categories', $namespace . '\CategoryController@store');
+        $api->put('categories/{id}', $namespace . '\CategoryController@update');
+        $api->delete('categories/{id}', $namespace . '\CategoryController@destroy');
+
+        $api->post('units', $namespace . '\UnitController@store');
+        $api->put('units/{id}', $namespace . '\UnitController@update');
+        $api->delete('units/{id}', $namespace . '\UnitController@destroy');
+
     });
 });

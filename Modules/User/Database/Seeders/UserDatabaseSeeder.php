@@ -17,51 +17,55 @@ class UserDatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-	
-	
+
+
 	    $this->call(RoleSeederTableSeeder::class);
 	    $this->call(PermissionSeederTableSeeder::class);
-	    
-        
+
+
 	    $users = [
 	    	[
 	    		"name" => "Feroj Bepari",
 			    "email" => "feroj@augnitive.com",
 			    "password" => "12345678",
-			    "role" => "admin"
+			    "role" => "admin",
+                "phone" => "01680722104"
 		    ],
 		    [
 			    "name" => "Pharmacy",
 			    "email" => "pharmacy@augnitive.com",
 			    "password" => "12345678",
-			    "role" => "pharmacy"
+			    "role" => "pharmacy",
+                "phone_number" => "01680722105"
 		    ],
 		    [
 			    "name" => "Accountant",
 			    "email" => "accounts@augnitive.com",
 			    "password" => "12345678",
-			    "role" => "accountant"
+			    "role" => "accountant",
+                "phone" => "01680722106"
 		    ],
 		    [
 			    "name" => "Customer",
 			    "email" => "customer@augnitive.com",
 			    "password" => "12345678",
-			    "role" => "customer"
+			    "role" => "customer",
+                "phone" => "01680722107"
 		    ]
-		    
+
 	    ];
-	    
+
 	    foreach ($users as $user) {
 	    	$role = Role::where('name', $user['role'])->first();
 			unset($user['role']);
-		
+
 		    $u = User::create($user);
-		    
+
 	    	if ($role) {
 			    $u->assignRole($role);
 		    }
 	    }
-	
+
 	    $this->command->info(count($users) . " User Created.");
     }
  }

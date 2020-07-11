@@ -33,10 +33,10 @@ class ProductTableSeeder extends Seeder
             'conversion_factor' => 0.5,
             'type' => 'tablet',
             'form_id' => 1,
-//            'category_id' => 1,
+            'category_id' => 1,
             'generic_id' => 1,
             'manufacturing_company_id' => 1,
-//            'primary_unit_id' => 1,
+            'primary_unit_id' => 1,
         ]);
         ProductAdditionalInfo::create([
             'product_id' => $product->id,
