@@ -3,18 +3,16 @@
 
 namespace Modules\Products\Repositories;
 
-use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Support\Str;
 use Modules\Products\Entities\Model\Unit;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UnitRepository
 {
     public function all()
     {
-        $units = Unit::all();
-
-        return $units;
+        return Unit::paginate(10);
     }
 
     public function findById($id)
@@ -54,11 +52,11 @@ class UnitRepository
     {
         $unit = Unit::find($id);
 
-        if (!$unit->delete() ) {
-            throw new DeleteResourceFailedException('Unit Delete Failed');
+        if (! $unit) {
+            throw new NotFoundHttpException('Unit not found');
         }
 
-        return $unit;
+        return $unit->delete();
     }
 
 }

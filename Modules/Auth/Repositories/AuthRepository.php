@@ -101,7 +101,6 @@ class AuthRepository
         $lifetime = config('auth.sms.lifetime');
         $phone_number = $request->phone_number;
         $otp = OneTimePassword::where('phone_number', $phone_number)->latest()->first();
-//        return $otp;
         $created_at = new Carbon($otp->created_at);
         $timeDiff = $created_at->diffInSeconds(Carbon::now());
         if (trim($otp->otp) !== trim($request->input('otp'))) {
@@ -110,22 +109,13 @@ class AuthRepository
                 'message' => 'wrongOtp'
             ];
         }
-        elseif ($timeDiff >= $lifetime) {
+
+        if ($timeDiff >= $lifetime) {
             return [
                 'error' => true,
                 'message' => 'timeout'
             ];
         }
-//        $user = User::where('phone_number', $phone_number)->first();
-//        if ($user) {
-//            $token = $user->createToken($user->phone_number .'-'. now());
-//            return [
-//                'error' => false,
-//                'newUser' => false,
-//                'token' => $token->accessToken,
-//                'user' => $user
-//            ];
-//        }
 
         return $this->createUser($request);
 
@@ -137,7 +127,6 @@ class AuthRepository
      */
 	public function createUser($request)
 	{
-//	    return $request;
         $user = User::create([
             'phone_number' => $request->phone_number
         ]);
@@ -148,7 +137,6 @@ class AuthRepository
             $user->assignRole($role);
         }
 
-//        $token = $user->createToken($user->phone_number .'-'. now());
         $token = JWTAuth::fromUser($user);
         return [
             'error' => false,

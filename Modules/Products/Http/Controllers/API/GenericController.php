@@ -2,15 +2,19 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Products\Http\Requests\CreateCompanyRequest;
 use Modules\Products\Http\Requests\UpdateCompanyRequest;
-use Modules\Products\Repositories\CompanyRepository;
 use Modules\Products\Repositories\GenericRepository;
+use Modules\Products\Transformers\GenericTransformer;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class GenericController extends Controller
+class GenericController extends BaseController
 {
     private $repository;
 
@@ -21,11 +25,17 @@ class GenericController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Products\Entities\Model\Company[]
+     * @return \Dingo\Api\Http\Response
      */
     public function index()
     {
-        return $this->repository->all();
+        $genericList = $this->repository->all();
+
+        if (! $genericList) {
+            throw new NotFoundHttpException('Generic list Not Found');
+        }
+
+        return $this->response->paginator($genericList, new GenericTransformer());
     }
 
     /**
@@ -44,7 +54,13 @@ class GenericController extends Controller
      */
     public function store(CreateCompanyRequest $request)
     {
-        return $this->repository->create($request);
+        $generic = $this->repository->create($request);
+
+        if (! $generic) {
+            throw new StoreResourceFailedException('Generic Create failed');
+        }
+
+        return $this->response->created('/products/generic', $generic);
     }
 
     /**
@@ -54,7 +70,13 @@ class GenericController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->get($id);
+        $generic = $this->repository->get($id);
+
+        if (! $generic ) {
+            throw new NotFoundHttpException('Generic Not Found');
+        }
+
+        return $this->response->item($generic, new GenericTransformer());
 
     }
 
@@ -76,16 +98,28 @@ class GenericController extends Controller
      */
     public function update(UpdateCompanyRequest $request, $id)
     {
-        return $this->repository->update($request, $id);
+        $generic = $this->repository->update($request, $id);
+
+        if (!$generic) {
+            throw new UpdateResourceFailedException('Generic Update Failed');
+        }
+
+        return $this->response->item($generic, new GenericTransformer());
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return bool
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        $generic = $this->repository->delete($id);
+
+        if (! $generic) {
+            throw new DeleteResourceFailedException('Generic Delete Failed');
+        }
+
+        return responseData('Generic delete successful');
     }
 }

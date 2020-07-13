@@ -2,14 +2,18 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
+use App\Http\Controllers\BaseController;
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Products\Http\Requests\UnitCreateRequest;
 use Modules\Products\Repositories\UnitRepository;
+use Modules\Products\Transformers\UnitTransformer;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UnitController extends Controller
+class UnitController extends BaseController
 {
     private $repository;
 
@@ -20,11 +24,17 @@ class UnitController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return JsonResponse
+     * @return \Dingo\Api\Http\Response
      */
     public function index()
     {
-        return $this->repository->all();
+        $unitList = $this->repository->all();
+
+        if (! $unitList) {
+            throw new NotFoundHttpException('Unit list Not Found');
+        }
+
+        return $this->response->paginator($unitList, new UnitTransformer());
     }
 
     /**
@@ -39,21 +49,33 @@ class UnitController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param UnitCreateRequest $request
-     * @return JsonResponse
+     * @return \Dingo\Api\Http\Response
      */
     public function store(UnitCreateRequest $request)
     {
-        return $this->repository->create($request);
+        $unit = $this->repository->create($request);
+
+        if (! $unit) {
+            throw new StoreResourceFailedException('Unit Create failed');
+        }
+
+        return $this->response->created('/products/units', $unit);
     }
 
     /**
      * Show the specified resource.
      * @param int $id
-     * @return JsonResponse
+     * @return \Dingo\Api\Http\Response
      */
     public function show($id)
     {
-        return $this->repository->findById($id);
+        $unit = $this->repository->findById($id);
+
+        if (! $unit ) {
+            throw new NotFoundHttpException('Unit Not Found');
+        }
+
+        return $this->response->item($unit, new UnitTransformer());
     }
 
     /**
@@ -63,6 +85,7 @@ class UnitController extends Controller
     public function showBySlug($slug)
     {
         return $this->repository->findBySlug($slug);
+
     }
 
     /**
@@ -89,10 +112,16 @@ class UnitController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        $unit = $this->repository->delete($id);
+
+        if (! $unit) {
+            throw new DeleteResourceFailedException('Unit Delete Failed');
+        }
+
+        return responseData('Unit delete successful');
     }
 }

@@ -3,14 +3,14 @@
 namespace Modules\Products\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
-use Modules\Products\Entities\Category;
 use Modules\Products\Repositories\CategoryRepository;
 use Modules\Products\Http\Requests\CategoryCreateRequest;
+use Modules\Products\Transformers\CategoryTransformer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends BaseController
@@ -28,7 +28,13 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        return $this->repository->all();
+        $categoryList = $this->repository->all();
+
+        if (! $categoryList) {
+            throw new NotFoundHttpException('Category list Not Found');
+        }
+
+        return $this->response->paginator($categoryList, new CategoryTransformer());
     }
 
     /**
@@ -43,11 +49,17 @@ class CategoryController extends BaseController
     /**
      * Store a newly created resource in storage.
      * @param CategoryCreateRequest $request
-     * @return JsonResponse
+     * @return \Dingo\Api\Http\Response
      */
     public function store(CategoryCreateRequest $request)
     {
-        return $this->repository->create($request);
+        $category = $this->repository->create($request);
+
+        if (! $category) {
+            throw new StoreResourceFailedException('Category create failed');
+        }
+
+        return $this->response->created('/products/categories', $category);
     }
 
     /**
@@ -59,15 +71,22 @@ class CategoryController extends BaseController
     {
         $category = $this->repository->findById($id);
 
-        if (!$category) {
+        if (! $category) {
             throw new NotFoundHttpException('Category Not Found');
         }
 
-        return $category;
+        return $this->response->item($category, new CategoryTransformer());
     }
+
     public function showBySlug($slug)
     {
-        return $this->repository->findBySlug($slug);
+        $category = $this->repository->findBySlug($slug);
+
+        if (! $category) {
+            throw new NotFoundHttpException('Category Not Found');
+        }
+
+        return $this->response->item($category, new CategoryTransformer());
     }
 
     /**
@@ -94,10 +113,16 @@ class CategoryController extends BaseController
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        $category = $this->repository->delete($id);
+
+        if (! $category) {
+            throw new DeleteResourceFailedException('Category Delete Failed');
+        }
+
+        return responseData('Category delete successful');
     }
 }

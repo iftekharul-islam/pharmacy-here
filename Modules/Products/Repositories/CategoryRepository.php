@@ -3,9 +3,7 @@
 
 namespace Modules\Products\Repositories;
 
-use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\ValidationHttpException;
-use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Str;
 use Modules\Products\Entities\Model\Category;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,19 +12,12 @@ class CategoryRepository
 {
     public function all()
     {
-        $categories = Category::all();
-
-        return response()->json([
-            'error' => false,
-            'data' => $categories
-        ]);
+        return Category::paginate(10);
     }
 
     public function findById($id)
     {
-        $category = Category::find($id);
-
-        return $category;
+        return Category::find($id);
     }
 
     public function create($data)
@@ -39,35 +30,28 @@ class CategoryRepository
             throw new ValidationHttpException('Caregory already exists.');
         }
 
-        $category = Category::create([
+        return Category::create([
             'name' => $data->get('name'),
             'slug' => $slug,
             'status' => $data->get('status')
         ]);
 
-        return $category;
     }
 
     public function findBySlug($slug)
     {
-        $category = Category::where('slug', $slug)->first();
-
-        if (!$category) {
-            throw new NotFoundHttpException('Product Not Found');
-        }
-
-        return $category;
+        return Category::where('slug', $slug)->first();
     }
 
     public function delete($id)
     {
         $category = Category::find($id);
 
-        if (!$category->delete() ) {
-            throw new DeleteResourceFailedException('Generic Delete Failed');
+        if (! $category) {
+            throw new NotFoundHttpException('Category not found');
         }
 
-        return $category;
+        return $category->delete();
     }
 
 }

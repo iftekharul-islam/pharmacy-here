@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\JsonResponse;
 use Modules\Auth\Http\Requests\RegistrationValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
 
@@ -47,7 +48,7 @@ class RegisterController extends Controller
 
     /**
      * @param RegistrationValidationRequest $request
-     * @return int
+     * @return JsonResponse
      */
     public function createOtp(RegistrationValidationRequest $request)
     {
@@ -57,12 +58,11 @@ class RegisterController extends Controller
             throw new StoreResourceFailedException('Failed to create OTP');
         }
 
-        return $otp;
+        return responseData('Otp create successful');
     }
 
     public function verifyOtp(RegistrationValidationRequest $request)
     {
-//        return $request->all();
         $user = $this->repository->verifyOtp($request);
 
         if (! $user) {
@@ -70,6 +70,5 @@ class RegisterController extends Controller
         }
 
         return $user;
-//        return responseData('Otp verify successful');
     }
 }
