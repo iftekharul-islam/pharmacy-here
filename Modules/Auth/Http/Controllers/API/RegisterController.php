@@ -5,6 +5,7 @@ namespace Modules\Auth\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
 use Modules\Auth\Http\Requests\RegistrationValidationRequest;
@@ -49,14 +50,25 @@ class RegisterController extends Controller
      * @param RegistrationValidationRequest $request
      * @return JsonResponse
      */
-    public function register(RegistrationValidationRequest $request)
+    public function createOtp(RegistrationValidationRequest $request)
     {
-        $user = $this->repository->createUser($request);
+        $otp = $this->repository->createOtp($request);
 
-        if (! $user) {
-            throw new StoreResourceFailedException('New user registration failed');
+        if (! $otp) {
+            throw new StoreResourceFailedException('Failed to create OTP');
         }
 
-        return responseData('New user registration successful');
+        return responseData('Otp create successful');
+    }
+
+    public function verifyOtp(RegistrationValidationRequest $request)
+    {
+        $user = $this->repository->verifyOtp($request);
+
+        if (! $user) {
+            throw new StoreResourceFailedException('Failed to verify OTP');
+        }
+
+        return $user;
     }
 }

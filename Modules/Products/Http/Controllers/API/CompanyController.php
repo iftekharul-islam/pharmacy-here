@@ -2,14 +2,19 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
+use App\Http\Controllers\BaseController;
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Products\Http\Requests\CreateCompanyRequest;
 use Modules\Products\Http\Requests\UpdateCompanyRequest;
 use Modules\Products\Repositories\CompanyRepository;
+use Modules\Products\Transformers\CompanyTransformer;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CompanyController extends Controller
+class CompanyController extends BaseController
 {
     private $repository;
 
@@ -20,11 +25,17 @@ class CompanyController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Products\Entities\Model\Company[]
+     * @return \Dingo\Api\Http\Response
      */
     public function index()
     {
-        return $this->repository->all();
+        $companyList = $this->repository->all();
+
+        if (! $companyList) {
+            throw new NotFoundHttpException('Company list Not Found');
+        }
+
+        return $this->response->paginator($companyList, new CompanyTransformer());
     }
 
     /**
@@ -43,7 +54,13 @@ class CompanyController extends Controller
      */
     public function store(CreateCompanyRequest $request)
     {
-        return $this->repository->create($request);
+        $company = $this->repository->create($request);
+
+        if (! $company) {
+            throw new StoreResourceFailedException('Company Create failed');
+        }
+
+        return $this->response->created('/products/company', $company);
     }
 
     /**
@@ -53,7 +70,13 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->get($id);
+        $company = $this->repository->get($id);
+
+        if (! $company) {
+            throw new NotFoundHttpException('Company Not Found');
+        }
+
+        return $this->response->item($company, new CompanyTransformer());
     }
 
     /**
@@ -70,11 +93,17 @@ class CompanyController extends Controller
      * Update the specified resource in storage.
      * @param UpdateCompanyRequest $request
      * @param int $id
-     * @return JsonResponse
+     * @return \Dingo\Api\Http\Response
      */
     public function update(UpdateCompanyRequest $request, $id)
     {
-        return $this->repository->update($request, $id);
+        $company = $this->repository->update($request, $id);
+
+        if (! $company) {
+            throw new UpdateResourceFailedException('Company update failed');
+        }
+
+        return $this->response->item($company, new CompanyTransformer());
     }
 
     /**
@@ -84,6 +113,12 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        $company =  $this->repository->delete($id);
+
+        if (! $company) {
+            throw new DeleteResourceFailedException('Company Delete Failed');
+        }
+
+        return responseData('Company delete successful');
     }
 }

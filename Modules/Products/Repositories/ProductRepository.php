@@ -3,7 +3,6 @@
 
 namespace Modules\Products\Repositories;
 
-use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Modules\Products\Entities\Model\Product;
 use Modules\Products\Entities\Model\ProductAdditionalInfo;
@@ -13,17 +12,14 @@ class ProductRepository
 {
     public function all()
     {
-        return Product::with('productAdditionalInfo', 'form', 'company', 'generic')->get();
+        return Product::with('productAdditionalInfo', 'form', 'company', 'generic', 'category')
+            ->paginate(10);
     }
 
     public function get($id)
     {
-        $product = Product::with('productAdditionalInfo', 'form', 'company', 'generic')->find($id);
-
-        if (!$product) {
-            throw new NotFoundHttpException('Product Not Found');
-        }
-        return $product;
+        return Product::with('productAdditionalInfo', 'form', 'company', 'generic', 'category')
+            ->find($id);
 
     }
 
@@ -65,13 +61,8 @@ class ProductRepository
             'renal_dose' => $request->renal_dose,
         ];
 
-        $newProductInfo = ProductAdditionalInfo::create($productInfo);
+        return ProductAdditionalInfo::create($productInfo);
 
-        if (!$newProductInfo) {
-            throw new StoreResourceFailedException('Product create failed');
-        }
-
-        return responseData('Product Create Successful');
     }
 
     public function update($request, $id)
@@ -118,9 +109,9 @@ class ProductRepository
             $product->form_id = $request->form_id;
         }
 
-//        if (isset($request->category_id)) {
-//            $product->category_id = $request->category_id;
-//        }
+        if (isset($request->category_id)) {
+            $product->category_id = $request->category_id;
+        }
 
         if (isset($request->generic_id)) {
             $product->generic_id = $request->generic_id;
@@ -130,9 +121,9 @@ class ProductRepository
             $product->manufacturing_company_id = $request->manufacturing_company_id;
         }
 
-//        if (isset($request->name)) {
-//            $product->primary_unit_id = $request->primary_unit_id;
-//        }
+        if (isset($request->name)) {
+            $product->primary_unit_id = $request->primary_unit_id;
+        }
 
         $product->save();
 
@@ -178,9 +169,7 @@ class ProductRepository
             $productInfo->renal_dose = $request->renal_dose;
         }
 
-        $productInfo->save();
-
-        return responseData('Product Update Successful');
+        return $productInfo->save();
 
     }
 
@@ -188,10 +177,10 @@ class ProductRepository
     {
         $product = Product::find($id);
 
-        if (!$product->delete()) {
-            throw new DeleteResourceFailedException('Product Delete Failed');
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found');
         }
 
-        return responseData('Product has been deleted.');
+        return $product->delete();
     }
 }

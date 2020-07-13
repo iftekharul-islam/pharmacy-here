@@ -2,32 +2,40 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\BaseController;
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Products\Http\Requests\CreateProductRequest;
+use Modules\Products\Http\Requests\UpdateProductRequest;
 use Modules\Products\Repositories\ProductRepository;
+use Modules\Products\Transformers\ProductTransformer;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductsController extends Controller
+class ProductsController extends BaseController
 {
     private $repository;
 
     public function __construct(ProductRepository $repository)
     {
-        $this->repository =$repository;
+        $this->repository = $repository;
     }
 
     /**
      * Display a listing of the resource.
-     * @return Builder[]|Collection
+     * @return \Dingo\Api\Http\Response
      */
     public function index()
     {
-        return $this->repository->all();
+        $productList = $this->repository->all();
+
+        if (! $productList) {
+            throw new NotFoundHttpException('Product List Not Found');
+        }
+
+        return $this->response->paginator($productList, new ProductTransformer());
     }
 
     /**
@@ -42,21 +50,33 @@ class ProductsController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param CreateProductRequest $request
-     * @return JsonResponse
+     * @return \Dingo\Api\Http\Response
      */
     public function store(CreateProductRequest $request)
     {
-        return $this->repository->create($request);
+        $product = $this->repository->create($request);
+
+        if (!$product) {
+            throw new StoreResourceFailedException('Product create failed');
+        }
+
+        return $this->response->created('/products/products', $product);
     }
 
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Builder|Builder[]|Collection|Model|null
+     * @return \Dingo\Api\Http\Response
      */
     public function show($id)
     {
-        return $this->repository->get($id);
+        $product = $this->repository->get($id);
+
+        if (!$product) {
+            throw new NotFoundHttpException('Product Not Found');
+        }
+
+        return $this->response->item($product, new ProductTransformer());
     }
 
     /**
@@ -71,13 +91,19 @@ class ProductsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param UpdateProductRequest $request
      * @param int $id
-     * @return JsonResponse
+     * @return \Dingo\Api\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
-        return $this->repository->update($request, $id);
+        $product = $this->repository->update($request, $id);
+
+        if (!$product) {
+            throw new UpdateResourceFailedException('Product update failed');
+        }
+
+        return $this->response->item($product, new ProductTransformer());
     }
 
     /**
@@ -87,6 +113,12 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        $product = $this->repository->delete($id);
+
+        if (!$product) {
+            throw new DeleteResourceFailedException('Product Delete Failed');
+        }
+
+        return responseData('Product delete successful');
     }
 }

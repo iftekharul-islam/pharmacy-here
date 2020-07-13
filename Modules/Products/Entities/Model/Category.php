@@ -3,18 +3,11 @@
 namespace Modules\Products\Entities\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Company extends Model
+class Category extends Model
 {
-    use SoftDeletes;
-
-    protected $fillable = [
-        'name',
-        'slug',
-        'status'
-    ];
+    protected $fillable = ['name', 'slug', 'status'];
 
     protected static function boot() {
         parent::boot();
@@ -28,7 +21,7 @@ class Company extends Model
         });
     }
 
-    public function products()
+    public function product()
     {
         return $this->hasMany(Product::class);
     }

@@ -5,8 +5,6 @@ namespace Modules\Products\Repositories;
 
 
 use Dingo\Api\Exception\DeleteResourceFailedException;
-use Dingo\Api\Exception\StoreResourceFailedException;
-use Dingo\Api\Exception\UpdateResourceFailedException;
 use Modules\Products\Entities\Model\Company;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -14,20 +12,14 @@ class CompanyRepository
 {
     public function all()
     {
-        return Company::all();
+        return Company::paginate(10);
     }
 
     public function create($request)
     {
         $data = $request->only('name', 'status');
 
-        $company = Company::create($data);
-
-        if (! $company) {
-            throw new StoreResourceFailedException('Company Create failed');
-        }
-
-        return $company;
+        return Company::create($data);
     }
 
     public function update($request, $id)
@@ -46,13 +38,9 @@ class CompanyRepository
             $company->status = $request->status;
         }
 
-        $companyResponse = $company->save();
+        return $company->save();
 
-        if (! $companyResponse) {
-            throw new UpdateResourceFailedException('Company not found');
-        }
 
-        return responseData('Company has been updated.');;
     }
 
     public function delete($id)
@@ -68,13 +56,13 @@ class CompanyRepository
 
     public function get($id)
     {
-        $company = Company::find($id);
+        $company =  Company::find($id);
 
-        if (! $company ) {
-            throw new NotFoundHttpException('Company Not Found');
+        if (! $company) {
+            throw new NotFoundHttpException('Company not found');
         }
 
-        return $company;
+        return $company->delete();
     }
 
 }

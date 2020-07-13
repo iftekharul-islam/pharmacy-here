@@ -9,12 +9,12 @@ use Modules\Products\Entities\Model\Form;
 
 class FormTransformer extends TransformerAbstract
 {
-    public function transform(Form $product)
+    public function transform(Form $form)
     {
         return [
-            'id'                        => $product->id,
-            'name'                      => $product->name,
-            'status'                    => $product->status,
+            'id'                        => $form->id,
+            'name'                      => $form->name,
+            'status'                    => $form->status,
         ];
     }
 }

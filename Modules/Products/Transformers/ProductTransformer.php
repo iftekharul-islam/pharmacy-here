@@ -3,13 +3,19 @@
 namespace Modules\Products\Transformers;
 
 use Modules\Products\Entities\Model\Product;
-use Dingo\Api\Http\Response;
 use League\Fractal\TransformerAbstract;
 
 class ProductTransformer extends TransformerAbstract
 {
+//    public function __construct($includes = [])
+//    {
+//        if(!empty($includes)) {
+//            $this->defaultIncludes = array_merge($this->defaultIncludes, $includes);
+//        }
+//    }
+
     protected $availableIncludes = [
-        'productAdditionalInfo', 'form', 'company', 'generic'
+        'productAdditionalInfo', 'form', 'company', 'generic', 'category'
     ];
 
     public function transform(Product $product)
@@ -39,7 +45,7 @@ class ProductTransformer extends TransformerAbstract
 
     public function includeForm(Product $product)
     {
-        return $this->item($product->user, new FormTransformer());
+        return $this->item($product->form, new FormTransformer());
     }
 
     public function includeCompany(Product $product)
@@ -51,5 +57,11 @@ class ProductTransformer extends TransformerAbstract
     {
         return $this->item($product->generic, new GenericTransformer());
     }
+
+    public function includeCategory(Product $product)
+    {
+        return $this->item($product->category, new CategoryTransformer());
+    }
+
 
 }

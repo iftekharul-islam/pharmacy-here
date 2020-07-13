@@ -15,7 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('status');
+            $table->boolean('status')->default(true);
             $table->string('name');
             $table->string('slug');
             $table->double('trading_price');

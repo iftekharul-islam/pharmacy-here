@@ -14,8 +14,8 @@ class CreateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:3',
-            'status' => 'required',
+            'name' => 'required|string|min:3',
+            'status' => 'required|boolean',
             'trading_price' => 'required',
             'purchase_price' => 'required',
             'unit' => 'required',
@@ -23,10 +23,10 @@ class CreateProductRequest extends FormRequest
             'conversion_factor' => 'required',
             'type' => 'required',
             'form_id' => 'required',
-//            'category_id' => 'required',
+            'category_id' => 'required',
             'generic_id' => 'required',
             'manufacturing_company_id' => 'required',
-//            'primary_unit_id' => 'required',
+            'primary_unit_id' => 'required',
         ];
     }
 
