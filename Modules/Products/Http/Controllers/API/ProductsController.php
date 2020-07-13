@@ -2,9 +2,14 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Products\Http\Requests\CreateProductRequest;
 use Modules\Products\Repositories\ProductRepository;
 
 class ProductsController extends Controller
@@ -18,11 +23,11 @@ class ProductsController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return Builder[]|Collection
      */
     public function index()
     {
-        return view('products::index');
+        return $this->repository->all();
     }
 
     /**
@@ -36,22 +41,22 @@ class ProductsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
+     * @param CreateProductRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        //
+        return $this->repository->create($request);
     }
 
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Response
+     * @return Builder|Builder[]|Collection|Model|null
      */
     public function show($id)
     {
-        return view('products::show');
+        return $this->repository->get($id);
     }
 
     /**
@@ -68,25 +73,20 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Response
+     * @return JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->repository->update($request, $id);
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
-    }
-
-    public function companyList()
-    {
-        return $this->repository->allCompany();
+        return $this->repository->delete($id);
     }
 }
