@@ -13,4 +13,5 @@
 
 Route::prefix('auth')->group(function() {
     Route::get('login','LoginController@showLoginForm')->name('login');
+    Route::post('login-validate','LoginController@login')->name('login-validate');
 });

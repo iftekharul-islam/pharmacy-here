@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('adminlte::auth.login')
+{{--@extends('layouts.app')--}}
 
 @section('content')
 <div class="container">
@@ -8,7 +9,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login-validate') }}">
                         @csrf
 
                         <div class="form-group row">
