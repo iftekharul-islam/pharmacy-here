@@ -3,8 +3,12 @@
 
 namespace Modules\Products\Repositories;
 
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\ValidationHttpException;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Str;
 use Modules\Products\Entities\Model\Category;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryRepository
 {
@@ -22,25 +26,17 @@ class CategoryRepository
     {
         $category = Category::find($id);
 
-        return response()->json([
-            'error' => false,
-            'data' => $category
-        ]);
+        return $category;
     }
 
     public function create($data)
     {
         $slug = Str::of($data->get('name'))->slug('-');
 
-
         $existingCategory = Category::where('slug', $slug)->first();
-//        return $existingCategory;
 
         if ($existingCategory) {
-            return response()->json([
-                'error' => true,
-                'message' => "Category already exist."
-            ]);
+            throw new ValidationHttpException('Caregory already exists.');
         }
 
         $category = Category::create([
@@ -49,39 +45,29 @@ class CategoryRepository
             'status' => $data->get('status')
         ]);
 
-        return response()->json([
-            'error' => false,
-            'data' => $category
-        ]);
+        return $category;
     }
 
     public function findBySlug($slug)
     {
         $category = Category::where('slug', $slug)->first();
 
-        return response()->json([
-            'error' => false,
-            'data' => $category
-        ]);
+        if (!$category) {
+            throw new NotFoundHttpException('Product Not Found');
+        }
+
+        return $category;
     }
 
     public function delete($id)
     {
-        $category = Category::find($id)->delete();
+        $category = Category::find($id);
 
-        if ($category) {
-            $category->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Category deleted successfully'
-            ]);
+        if (!$category->delete() ) {
+            throw new DeleteResourceFailedException('Generic Delete Failed');
         }
 
-        return response()->json([
-            'error' => true,
-            'message' => 'Category not found.'
-        ]);
+        return $category;
     }
 
 }

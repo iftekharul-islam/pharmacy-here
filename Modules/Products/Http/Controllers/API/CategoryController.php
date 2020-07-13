@@ -2,6 +2,7 @@
 
 namespace Modules\Products\Http\Controllers\API;
 
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -10,8 +11,9 @@ use Illuminate\Routing\Controller;
 use Modules\Products\Entities\Category;
 use Modules\Products\Repositories\CategoryRepository;
 use Modules\Products\Http\Requests\CategoryCreateRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
 
     private $repository;
@@ -55,7 +57,13 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        return $this->repository->findById($id);
+        $category = $this->repository->findById($id);
+
+        if (!$category) {
+            throw new NotFoundHttpException('Category Not Found');
+        }
+
+        return $category;
     }
     public function showBySlug($slug)
     {

@@ -3,6 +3,8 @@
 
 namespace Modules\Products\Repositories;
 
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Support\Str;
 use Modules\Products\Entities\Model\Unit;
 
@@ -12,20 +14,14 @@ class UnitRepository
     {
         $units = Unit::all();
 
-        return response()->json([
-            'error' => false,
-            'data' => $units
-        ]);
+        return $units;
     }
 
     public function findById($id)
     {
         $unit = Unit::find($id);
 
-        return response()->json([
-            'error' => false,
-            'data' => $unit
-        ]);
+        return $unit;
     }
 
     public function create($data)
@@ -35,10 +31,7 @@ class UnitRepository
         $existingUnit = Unit::where('slug', $slug)->first();
 
         if ($existingUnit) {
-            return response()->json([
-                'error' => true,
-                'message' => "Unit already exist."
-            ]);
+            throw new ValidationHttpException('Unit already exists.');
         }
 
         $category = Unit::create([
@@ -47,39 +40,25 @@ class UnitRepository
             'status' => $data->get('status')
         ]);
 
-        return response()->json([
-            'error' => false,
-            'data' => $category
-        ]);
+        return $category;
     }
 
     public function findBySlug($slug)
     {
         $unit = Unit::where('slug', $slug)->first();
 
-        return response()->json([
-            'error' => false,
-            'data' => $unit
-        ]);
+        return $slug;
     }
 
     public function delete($id)
     {
         $unit = Unit::find($id);
 
-        if ($unit) {
-            $unit->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Unit deleted successfully'
-            ]);
+        if (!$unit->delete() ) {
+            throw new DeleteResourceFailedException('Unit Delete Failed');
         }
 
-        return response()->json([
-            'error' => true,
-            'message' => 'Unit Not found'
-        ]);
+        return $unit;
     }
 
 }
