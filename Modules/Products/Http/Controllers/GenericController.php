@@ -1,21 +1,23 @@
 <?php
 
-namespace Modules\Products\Http\Controllers\API;
+namespace Modules\Products\Http\Controllers;
 
-use App\Http\Controllers\BaseController;
 use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Modules\Products\Entities\Model\Generic;
+use Illuminate\View\View;
 use Modules\Products\Http\Requests\CreateCompanyRequest;
 use Modules\Products\Http\Requests\UpdateCompanyRequest;
 use Modules\Products\Repositories\GenericRepository;
 use Modules\Products\Transformers\GenericTransformer;
+use Nwidart\Modules\Routing\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class GenericController extends BaseController
+class GenericController extends Controller
 {
     private $repository;
 
@@ -26,7 +28,7 @@ class GenericController extends BaseController
 
     /**
      * Display a listing of the resource.
-     * @return \Dingo\Api\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -36,24 +38,22 @@ class GenericController extends BaseController
             throw new NotFoundHttpException('Generic list Not Found');
         }
 
-        $generic = Generic::paginate(10);
-
-        return $this->response->paginator($generic, new GenericTransformer());
+        return view('products::generic.index', compact('genericList'));
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     * @return Factory|View
      */
     public function create()
     {
-
+        return view('products::generic.create');
     }
 
     /**
      * Store a newly created resource in storage.
      * @param CreateCompanyRequest $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(CreateCompanyRequest $request)
     {
@@ -63,7 +63,7 @@ class GenericController extends BaseController
             throw new StoreResourceFailedException('Generic Create failed');
         }
 
-        return $this->response->created('/products/generic', $generic);
+        return redirect()->route('generic.index');
     }
 
     /**
@@ -73,31 +73,30 @@ class GenericController extends BaseController
      */
     public function show($id)
     {
-        $generic = $this->repository->get($id);
 
-        if (! $generic ) {
-            throw new NotFoundHttpException('Generic Not Found');
-        }
-
-        return $this->response->item($generic, new GenericTransformer());
 
     }
 
     /**
      * Show the form for editing the specified resource.
      * @param int $id
-     * @return Response
+     * @return Factory|View
      */
     public function edit($id)
     {
+        $generic = $this->repository->get($id);
 
+        if (! $generic ) {
+            throw new NotFoundHttpException('Generic Not Found');
+        }
+        return view('products::generic.edit', compact('generic'));
     }
 
     /**
      * Update the specified resource in storage.
      * @param UpdateCompanyRequest $request
      * @param int $id
-     * @return Response
+     * @return RedirectResponse
      */
     public function update(UpdateCompanyRequest $request, $id)
     {
@@ -107,13 +106,13 @@ class GenericController extends BaseController
             throw new UpdateResourceFailedException('Generic Update Failed');
         }
 
-        return $this->response->item($generic, new GenericTransformer());
+        return redirect()->route('generic.index');
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return JsonResponse
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
@@ -123,6 +122,6 @@ class GenericController extends BaseController
             throw new DeleteResourceFailedException('Generic Delete Failed');
         }
 
-        return responseData('Generic delete successful');
+        return redirect()->route('generic.index');
     }
 }

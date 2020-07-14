@@ -1,20 +1,24 @@
 <?php
 
-namespace Modules\Products\Http\Controllers\API;
+namespace Modules\Products\Http\Controllers;
 
-use App\Http\Controllers\BaseController;
 use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Products\Entities\Model\Unit;
+use Illuminate\View\View;
 use Modules\Products\Http\Requests\UnitCreateRequest;
+use Modules\Products\Http\Requests\UpdateUnitRequest;
 use Modules\Products\Repositories\UnitRepository;
 use Modules\Products\Transformers\UnitTransformer;
+use Nwidart\Modules\Routing\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UnitController extends BaseController
+class UnitController extends Controller
 {
     private $repository;
 
@@ -25,7 +29,7 @@ class UnitController extends BaseController
 
     /**
      * Display a listing of the resource.
-     * @return \Dingo\Api\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -35,9 +39,7 @@ class UnitController extends BaseController
             throw new NotFoundHttpException('Unit list Not Found');
         }
 
-        $unit = Unit::paginate(10);
-
-        return $this->response->paginator($unit, new UnitTransformer());
+        return view('products::unit.index', compact('unitList'));
     }
 
     /**
@@ -46,7 +48,7 @@ class UnitController extends BaseController
      */
     public function create()
     {
-        return view('products::create');
+        return view('products::unit.create');
     }
 
     /**
@@ -62,7 +64,7 @@ class UnitController extends BaseController
             throw new StoreResourceFailedException('Unit Create failed');
         }
 
-        return $this->response->created('/products/units', $unit);
+        return redirect()->route('unit.index');
     }
 
     /**
@@ -72,13 +74,7 @@ class UnitController extends BaseController
      */
     public function show($id)
     {
-        $unit = $this->repository->findById($id);
 
-        if (! $unit ) {
-            throw new NotFoundHttpException('Unit Not Found');
-        }
-
-        return $this->response->item($unit, new UnitTransformer());
     }
 
     /**
@@ -94,28 +90,40 @@ class UnitController extends BaseController
     /**
      * Show the form for editing the specified resource.
      * @param int $id
-     * @return Response
+     * @return Factory|View
      */
     public function edit($id)
     {
-        return view('products::edit');
+        $unit = $this->repository->findById($id);
+
+        if (! $unit ) {
+            throw new NotFoundHttpException('Unit Not Found');
+        }
+
+        return view('products::unit.edit', compact('unit'));
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param UpdateUnitRequest $request
      * @param int $id
-     * @return Response
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUnitRequest $request, $id)
     {
-        //
+        $unit = $this->repository->update($request, $id);
+
+        if (! $unit) {
+            throw new UpdateResourceFailedException('Unit update failed');
+        }
+
+        return redirect()->route('unit.index');
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return JsonResponse
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
@@ -125,6 +133,6 @@ class UnitController extends BaseController
             throw new DeleteResourceFailedException('Unit Delete Failed');
         }
 
-        return responseData('Unit delete successful');
+        return redirect()->route('unit.index');
     }
 }

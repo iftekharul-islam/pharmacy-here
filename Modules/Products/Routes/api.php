@@ -20,8 +20,8 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) use ($namespace) {
     $api->group(['prefix' => 'products'], function ($api) use ($namespace) {
-        $api->get('company', $namespace . '\CompanyController@index');
-        $api->get('company/{id}', $namespace . '\CompanyController@show');
+        $api->get('category', $namespace . '\CompanyController@index');
+        $api->get('category/{id}', $namespace . '\CompanyController@show');
 
         $api->get('generic', $namespace . '\GenericController@index');
         $api->get('generic/{id}', $namespace . '\GenericController@show');
@@ -42,9 +42,9 @@ $api->version('v1', function ($api) use ($namespace) {
     });
 
     $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
-        $api->post('company', $namespace . '\CompanyController@store');
-        $api->put('company/{id}', $namespace . '\CompanyController@update');
-        $api->delete('company/{id}', $namespace . '\CompanyController@destroy');
+        $api->post('category', $namespace . '\CompanyController@store');
+        $api->put('category/{id}', $namespace . '\CompanyController@update');
+        $api->delete('category/{id}', $namespace . '\CompanyController@destroy');
 
         $api->post('generic', $namespace . '\GenericController@store');
         $api->put('generic/{id}', $namespace . '\GenericController@update');

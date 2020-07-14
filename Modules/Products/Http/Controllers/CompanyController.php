@@ -2,12 +2,18 @@
 
 namespace Modules\Products\Http\Controllers;
 
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Modules\Products\Http\Requests\CreateCompanyRequest;
 use Modules\Products\Http\Requests\UpdateCompanyRequest;
 use Modules\Products\Repositories\CompanyRepository;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CompanyController extends Controller
 {
@@ -20,12 +26,12 @@ class CompanyController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return Factory|View
      */
     public function index()
     {
-        $company = $this->repository->all();
-        return view('products::index');
+        $companyList = $this->repository->all();
+        return view('products::company.index', compact('companyList'));
     }
 
     /**
@@ -34,18 +40,23 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('products::create');
+        return view('products::company.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
+     * @param CreateCompanyRequest $request
+     * @return RedirectResponse
      */
     public function store(CreateCompanyRequest $request)
     {
-        //
-        return $this->repository->create($request);
+        $company = $this->repository->create($request);
+
+        if (! $company) {
+            throw new StoreResourceFailedException('Company Create Failed');
+        }
+
+        return redirect()->route('company.index');
     }
 
     /**
@@ -55,7 +66,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        return view('products::show');
+
     }
 
     /**
@@ -65,7 +76,13 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        return view('products::edit');
+        $company = $this->repository->get($id);
+
+        if (! $company) {
+            throw new NotFoundHttpException('Company Not Found');
+        }
+
+        return view('products::company.edit', compact('company'));
     }
 
     /**
@@ -76,8 +93,13 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, $id)
     {
-        //
-        return $this->repository->update($request, $id);
+        $company = $this->repository->update($request, $id);
+
+        if (! $company) {
+            throw new UpdateResourceFailedException('Company update failed');
+        }
+
+        return redirect()->route('company.index');
     }
 
     /**

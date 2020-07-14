@@ -65,11 +65,11 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_image' => true,
+    'usermenu_desc' => true,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -236,104 +236,126 @@ return [
             'search' => true,
             'topnav' => true,
         ],
+//        [
+//            'text' => 'blog',
+//            'url'  => 'admin/blog',
+//            'can'  => 'manage-blog',
+//        ],
+//        [
+//            'text'        => 'pages',
+//            'url'         => 'admin/pages',
+//            'icon'        => 'far fa-fw fa-file',
+//            'label'       => 4,
+//            'label_color' => 'success',
+//        ],
+//        [
+//            'text'        => 'users',
+//            'url'         => 'admin/pages',
+//            'icon'        => 'far fa-fw fa-file',
+//            'label'       => 4,
+//            'label_color' => 'success',
+//        ],
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        [
-            'text'        => 'users',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        [
-            'text'    => 'Product',
+            'text'    => 'Manage Product',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
                 [
-                    'text' => 'Product List',
+                    'text' => 'Product',
+                    'icon_color' => 'cyan',
                     'url'  => 'products',
                 ],
                 [
-                    'text' => 'Create Product',
-                    'url'  => 'products/create',
+                    'text' => 'Product Category',
+                    'icon_color' => 'cyan',
+                    'url'  => 'products/category',
+                ],
+                [
+                    'text' => 'Product Generic',
+                    'icon_color' => 'cyan',
+                    'url'  => 'products/generic',
+                ],
+                [
+                    'text' => 'Product Form',
+                    'icon_color' => 'cyan',
+                    'url'  => 'products/form',
+                ],
+                [
+                    'text' => 'Product Unit',
+                    'icon_color' => 'cyan',
+                    'url'  => 'products/unit',
+                ],
+                [
+                    'text' => 'Product Company',
+                    'icon_color' => 'cyan',
+                    'url'  => 'products/company',
                 ],
             ],
         ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
-        ],
+//        ['header' => 'account_settings'],
+//        [
+//            'text' => 'profile',
+//            'url'  => 'admin/settings',
+//            'icon' => 'fas fa-fw fa-user',
+//        ],
+//        [
+//            'text' => 'change_password',
+//            'url'  => 'admin/settings',
+//            'icon' => 'fas fa-fw fa-lock',
+//        ],
+//        [
+//            'text'    => 'multilevel',
+//            'icon'    => 'fas fa-fw fa-share',
+//            'submenu' => [
+//                [
+//                    'text' => 'level_one',
+//                    'url'  => '#',
+//                ],
+//                [
+//                    'text'    => 'level_one',
+//                    'url'     => '#',
+//                    'submenu' => [
+//                        [
+//                            'text' => 'level_two',
+//                            'url'  => '#',
+//                        ],
+//                        [
+//                            'text'    => 'level_two',
+//                            'url'     => '#',
+//                            'submenu' => [
+//                                [
+//                                    'text' => 'level_three',
+//                                    'url'  => '#',
+//                                ],
+//                                [
+//                                    'text' => 'level_three',
+//                                    'url'  => '#',
+//                                ],
+//                            ],
+//                        ],
+//                    ],
+//                ],
+//                [
+//                    'text' => 'level_one',
+//                    'url'  => '#',
+//                ],
+//            ],
+//        ],
+//        ['header' => 'labels'],
+//        [
+//            'text'       => 'important',
+//            'icon_color' => 'red',
+//            'url'        => '#',
+//        ],
+//        [
+//            'text'       => 'warning',
+//            'icon_color' => 'yellow',
+//            'url'        => '#',
+//        ],
+//        [
+//            'text'       => 'information',
+//            'icon_color' => 'cyan',
+//            'url'        => '#',
+//        ],
     ],
 
     /*
@@ -421,11 +443,11 @@ return [
         ],
         [
             'name' => 'Sweetalert2',
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
             ],

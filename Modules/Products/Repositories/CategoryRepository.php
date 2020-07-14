@@ -12,7 +12,7 @@ class CategoryRepository
 {
     public function all()
     {
-        return Category::paginate(10);
+        return Category::get();
     }
 
     public function findById($id)
@@ -27,7 +27,7 @@ class CategoryRepository
         $existingCategory = Category::where('slug', $slug)->first();
 
         if ($existingCategory) {
-            throw new ValidationHttpException('Caregory already exists.');
+            throw new ValidationHttpException('Category already exists.');
         }
 
         return Category::create([
@@ -41,6 +41,27 @@ class CategoryRepository
     public function findBySlug($slug)
     {
         return Category::where('slug', $slug)->first();
+    }
+
+    public function update($request, $id)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            throw new NotFoundHttpException('Category not found');
+        }
+
+        if (isset($request->name)) {
+            $category->name = $request->name;
+        }
+
+        if (isset($request->status)) {
+            $category->status = $request->status;
+        }
+
+        return $category->save();
+
+
     }
 
     public function delete($id)

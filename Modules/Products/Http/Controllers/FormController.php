@@ -1,21 +1,21 @@
 <?php
 
-namespace Modules\Products\Http\Controllers\API;
+namespace Modules\Products\Http\Controllers;
 
-use App\Http\Controllers\BaseController;
 use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Modules\Products\Entities\Model\Form;
+use Illuminate\View\View;
 use Modules\Products\Http\Requests\CreateFormRequest;
 use Modules\Products\Http\Requests\UpdateFormRequest;
 use Modules\Products\Repositories\FormRepository;
-use Modules\Products\Transformers\FormTransformer;
+use Nwidart\Modules\Routing\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class FormController extends BaseController
+class FormController extends Controller
 {
     private $repository;
 
@@ -26,7 +26,7 @@ class FormController extends BaseController
 
     /**
      * Display a listing of the resource.
-     * @return \Dingo\Api\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -36,15 +36,18 @@ class FormController extends BaseController
             throw new NotFoundHttpException('Form list Not Found');
         }
 
-        $form = Form::paginate(10);
+        return view('products::form.index', compact('formList'));
+    }
 
-        return $this->response->paginator($form, new FormTransformer());
+    public function create()
+    {
+        return view('products::form.create');
     }
 
     /**
      * Store a newly created resource in storage.
      * @param CreateFormRequest $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(CreateFormRequest $request)
     {
@@ -54,7 +57,7 @@ class FormController extends BaseController
             throw new StoreResourceFailedException('Form Create failed');
         }
 
-        return $this->response->created('/products/form', $form);
+        return redirect()->route('form.index');
     }
 
     /**
@@ -64,20 +67,25 @@ class FormController extends BaseController
      */
     public function show($id)
     {
+
+    }
+
+    public function edit($id)
+    {
         $form = $this->repository->get($id);
 
         if (! $form) {
             throw new NotFoundHttpException('Form Not Found');
         }
 
-        return $this->response->item($form, new FormTransformer());
+        return view('products::form.edit', compact('form'));
     }
 
     /**
      * Update the specified resource in storage.
      * @param UpdateFormRequest $request
      * @param int $id
-     * @return \Dingo\Api\Http\Response
+     * @return RedirectResponse
      */
     public function update(UpdateFormRequest $request, $id)
     {
@@ -87,13 +95,13 @@ class FormController extends BaseController
             throw new UpdateResourceFailedException('Form update failed');
         }
 
-        return $this->response->item($form, new FormTransformer());
+        return redirect()->route('form.index');
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return JsonResponse
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
@@ -103,6 +111,6 @@ class FormController extends BaseController
             throw new DeleteResourceFailedException('Form Delete Failed');
         }
 
-        return responseData('Form delete successful');
+        return redirect()->route('form.index');
     }
 }

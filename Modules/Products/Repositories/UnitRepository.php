@@ -12,7 +12,7 @@ class UnitRepository
 {
     public function all()
     {
-        return Unit::paginate(10);
+        return Unit::get();
     }
 
     public function findById($id)
@@ -32,13 +32,13 @@ class UnitRepository
             throw new ValidationHttpException('Unit already exists.');
         }
 
-        $category = Unit::create([
+        return Unit::create([
             'name' => $data->get('name'),
             'slug' => $slug,
             'status' => $data->get('status')
         ]);
 
-        return $category;
+
     }
 
     public function findBySlug($slug)
@@ -46,6 +46,27 @@ class UnitRepository
         $unit = Unit::where('slug', $slug)->first();
 
         return $slug;
+    }
+
+    public function update($request, $id)
+    {
+        $unit = Unit::find($id);
+
+        if (!$unit) {
+            throw new NotFoundHttpException('Unit not found');
+        }
+
+        if (isset($request->name)) {
+            $unit->name = $request->name;
+        }
+
+        if (isset($request->status)) {
+            $unit->status = $request->status;
+        }
+
+        return $unit->save();
+
+
     }
 
     public function delete($id)

@@ -7,15 +7,9 @@ use League\Fractal\TransformerAbstract;
 
 class ProductTransformer extends TransformerAbstract
 {
-//    public function __construct($includes = [])
-//    {
-//        if(!empty($includes)) {
-//            $this->defaultIncludes = array_merge($this->defaultIncludes, $includes);
-//        }
-//    }
 
     protected $availableIncludes = [
-        'productAdditionalInfo', 'form', 'company', 'generic', 'category'
+        'productAdditionalInfo', 'form', 'category', 'generic', 'category', 'primaryUnit'
     ];
 
     public function transform(Product $product)
@@ -61,6 +55,11 @@ class ProductTransformer extends TransformerAbstract
     public function includeCategory(Product $product)
     {
         return $this->item($product->category, new CategoryTransformer());
+    }
+
+    public function includePrimaryUnit(Product $product)
+    {
+        return $this->item($product->primaryUnit, new UnitTransformer());
     }
 
 
