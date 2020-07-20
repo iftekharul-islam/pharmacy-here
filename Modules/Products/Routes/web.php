@@ -11,52 +11,52 @@
 |
 */
 
-Route::prefix('products')->group(function() {
-    Route::get('/', 'ProductsController@index')->name('index');
-    Route::get('create', 'ProductsController@create')->name('create');
-    Route::post('store', 'ProductsController@store')->name('store');
-    Route::get('{id}/edit', 'ProductsController@edit')->name('edit');
-    Route::put('{id}', 'ProductsController@update')->name('update');
-    Route::delete('{id}', 'ProductsController@destroy')->name('destroy');
-//    Route::resource('/','ProductsController');
+//Route::prefix('products')->group(function() {
+    Route::get('products', 'ProductsController@index')->name('index');
+    Route::get('products/create', 'ProductsController@create')->name('create');
+    Route::post('products/store', 'ProductsController@store')->name('store');
+    Route::get('products/{id}/edit', 'ProductsController@edit')->name('edit');
+    Route::put('products/{id}', 'ProductsController@update')->name('update');
+    Route::delete('products/{id}', 'ProductsController@destroy')->name('destroy');
+//    Route::resource('products','ProductsController');
 
-//    Route::resource('company', 'CompanyController');
-    Route::get('company', 'CompanyController@index')->name('company.index');
-    Route::get('company/create', 'CompanyController@create')->name('company.create');
-    Route::post('company/store', 'CompanyController@store')->name('company.store');
-    Route::get('company/{id}/edit', 'CompanyController@edit')->name('company.edit');
-    Route::put('company/{id}', 'CompanyController@update')->name('company.update');
-    Route::delete('company/{id}', 'CompanyController@destroy')->name('company.destroy');
+//    Route::resource('companies', 'CompanyController');
+    Route::get('companies', 'CompanyController@index')->name('company.index');
+    Route::get('companies/create', 'CompanyController@create')->name('company.create');
+    Route::post('companies/store', 'CompanyController@store')->name('company.store');
+    Route::get('companies/{id}/edit', 'CompanyController@edit')->name('company.edit');
+    Route::put('companies/{id}', 'CompanyController@update')->name('company.update');
+    Route::delete('companies/{id}', 'CompanyController@destroy')->name('company.destroy');
 
-//    Route::resource('category', 'CategoryController');
-    Route::get('category', 'CategoryController@index')->name('category.index');
-    Route::get('category/create', 'CategoryController@create')->name('category.create');
-    Route::post('category/store', 'CategoryController@store')->name('category.store');
-    Route::get('category/{id}/edit', 'CategoryController@edit')->name('category.edit');
-    Route::put('category/{id}', 'CategoryController@update')->name('category.update');
-    Route::delete('category/{id}', 'CategoryController@destroy')->name('category.destroy');
+//    Route::resource('categories', 'CategoryController');
+    Route::get('categories', 'CategoryController@index')->name('category.index');
+    Route::get('categories/create', 'CategoryController@create')->name('category.create');
+    Route::post('categories/store', 'CategoryController@store')->name('category.store');
+    Route::get('categories/{id}/edit', 'CategoryController@edit')->name('category.edit');
+    Route::put('categories/{id}', 'CategoryController@update')->name('category.update');
+    Route::delete('categories/{id}', 'CategoryController@destroy')->name('category.destroy');
 
-//    Route::resource('form', 'FormController');
-    Route::get('form', 'FormController@index')->name('form.index');
-    Route::get('form/create', 'FormController@create')->name('form.create');
-    Route::post('form/store', 'FormController@store')->name('form.store');
-    Route::get('form/{id}/edit', 'FormController@edit')->name('form.edit');
-    Route::put('form/{id}', 'FormController@update')->name('form.update');
-    Route::delete('form/{id}', 'FormController@destroy')->name('form.destroy');
+//    Route::resource('forms', 'FormController');
+    Route::get('forms', 'FormController@index')->name('form.index');
+    Route::get('forms/create', 'FormController@create')->name('form.create');
+    Route::post('forms/store', 'FormController@store')->name('form.store');
+    Route::get('forms/{id}/edit', 'FormController@edit')->name('form.edit');
+    Route::put('forms/{id}', 'FormController@update')->name('form.update');
+    Route::delete('forms/{id}', 'FormController@destroy')->name('form.destroy');
 
-//    Route::resource('generic', 'GenericController');
-    Route::get('generic', 'GenericController@index')->name('generic.index');
-    Route::get('generic/create', 'GenericController@create')->name('generic.create');
-    Route::post('generic/store', 'GenericController@store')->name('generic.store');
-    Route::get('generic/{id}/edit', 'GenericController@edit')->name('generic.edit');
-    Route::put('generic/{id}', 'GenericController@update')->name('generic.update');
-    Route::delete('generic/{id}', 'GenericController@destroy')->name('generic.destroy');
+//    Route::resource('generics', 'GenericController');
+    Route::get('generics', 'GenericController@index')->name('generic.index');
+    Route::get('generics/create', 'GenericController@create')->name('generic.create');
+    Route::post('generics/store', 'GenericController@store')->name('generic.store');
+    Route::get('generics/{id}/edit', 'GenericController@edit')->name('generic.edit');
+    Route::put('generics/{id}', 'GenericController@update')->name('generic.update');
+    Route::delete('generics/{id}', 'GenericController@destroy')->name('generic.destroy');
 
-//    Route::resource('unit', 'UnitController');
-    Route::get('unit', 'UnitController@index')->name('unit.index');
-    Route::get('unit/create', 'UnitController@create')->name('unit.create');
-    Route::post('unit/store', 'UnitController@store')->name('unit.store');
-    Route::get('unit/{id}/edit', 'UnitController@edit')->name('unit.edit');
-    Route::put('unit/{id}', 'UnitController@update')->name('unit.update');
-    Route::delete('unit/{id}', 'UnitController@destroy')->name('unit.destroy');
-});
+//    Route::resource('units', 'UnitController');
+    Route::get('units', 'UnitController@index')->name('unit.index');
+    Route::get('units/create', 'UnitController@create')->name('unit.create');
+    Route::post('units/store', 'UnitController@store')->name('unit.store');
+    Route::get('units/{id}/edit', 'UnitController@edit')->name('unit.edit');
+    Route::put('units/{id}', 'UnitController@update')->name('unit.update');
+    Route::delete('units/{id}', 'UnitController@destroy')->name('unit.destroy');
+//});

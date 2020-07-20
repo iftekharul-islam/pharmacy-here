@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::prefix('auth')->group(function() {
+
+
+
+//Route::prefix('auth')->group(function() {
     Route::get('login','LoginController@showLoginForm')->name('login');
-    Route::post('login-validate','LoginController@login')->name('login-validate');
-});
+    Route::post('login','LoginController@login');
+//});
 
 //Auth::routes();

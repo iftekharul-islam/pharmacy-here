@@ -12,6 +12,9 @@
             <!-- form start -->
             <form role="form" action="{{ route('store') }}" method="POST">
                 @csrf
+                @if($errors->any())
+                    {!! implode('', $errors->all('<div>:message</div>')) !!}
+                @endif
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="type" class="col-sm-4 col-form-label">Type</label>

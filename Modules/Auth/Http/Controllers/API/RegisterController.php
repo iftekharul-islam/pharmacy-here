@@ -8,8 +8,10 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
-use Modules\Auth\Http\Requests\RegistrationValidationRequest;
+use Modules\Auth\Http\Requests\PharmacyRegistrationRequest;
+use Modules\Auth\Http\Requests\PhoneValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class RegisterController extends Controller
 {
@@ -47,10 +49,10 @@ class RegisterController extends Controller
     }
 
     /**
-     * @param RegistrationValidationRequest $request
+     * @param PhoneValidationRequest $request
      * @return JsonResponse
      */
-    public function createOtp(RegistrationValidationRequest $request)
+    public function createOtp(PhoneValidationRequest $request)
     {
         $otp = $this->repository->createOtp($request);
 
@@ -61,12 +63,52 @@ class RegisterController extends Controller
         return responseData('Otp create successful');
     }
 
-    public function verifyOtp(RegistrationValidationRequest $request)
+    public function verifyOtp(PhoneValidationRequest $request)
     {
-        $user = $this->repository->verifyOtp($request);
+        $otpResponse = $this->repository->verifyOtp($request);
+
+        if (! $otpResponse) {
+            throw new StoreResourceFailedException('Failed to verify OTP');
+        }
+
+        $user = $this->repository->createUser($request);;
 
         if (! $user) {
             throw new StoreResourceFailedException('Failed to verify OTP');
+        }
+
+        return $user;
+    }
+
+    public function registerPharmacyWithOtp(PhoneValidationRequest $request)
+    {
+        $isPhoneExists = $this->repository->checkPhoneNumber($request->phone_number);
+
+        if ($isPhoneExists) {
+            throw new UnauthorizedHttpException('','Phone Number exists!');
+        }
+
+        $otp = $this->repository->createOtp($request);
+
+        if (! $otp) {
+            throw new StoreResourceFailedException('Failed to create OTP');
+        }
+
+        return responseData('Otp create successful');
+    }
+
+    public function registerPharmacy(PharmacyRegistrationRequest $request)
+    {
+//        $otpResponse = $this->repository->verifyOtp($request);
+//
+//        if (! $otpResponse) {
+//            throw new StoreResourceFailedException('Failed to verify OTP');
+//        }
+
+        $user = $this->repository->createUser($request);;
+
+        if (! $user) {
+            throw new StoreResourceFailedException('Pharmacy registration unsuccessful');
         }
 
         return $user;

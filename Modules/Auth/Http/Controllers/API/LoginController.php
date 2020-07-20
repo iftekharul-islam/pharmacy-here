@@ -4,9 +4,12 @@ namespace Modules\Auth\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Http\Requests\LoginValidationRequest;
+use Modules\Auth\Http\Requests\PhoneValidationRequest;
+use Modules\Auth\Repositories\AuthRepository;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class LoginController extends Controller
@@ -31,16 +34,19 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    private $repository;
+
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param AuthRepository $repository
      */
-    public function __construct()
+    public function __construct(AuthRepository $repository)
     {
         $this->middleware('guest')->except('logout');
+        $this->repository = $repository;
     }
-	
+
 	/**
 	 * @param LoginValidationRequest $request
 	 *
@@ -56,7 +62,7 @@ class LoginController extends Controller
 
         throw new UnauthorizedHttpException('','Unauthorized User');
     }
-	
+
 	/**
 	 * @param $token
 	 *
@@ -74,5 +80,35 @@ class LoginController extends Controller
     public function guard()
     {
         return Auth::guard();
+    }
+
+    public function createOtp(PhoneValidationRequest $request)
+    {
+        $otp = $this->repository->createOtp($request);
+
+        if (! $otp) {
+            throw new StoreResourceFailedException('Failed to create OTP');
+        }
+
+        return responseData('Otp create successful');
+    }
+
+    public function verifyOtp(PhoneValidationRequest $request)
+    {
+
+        $otpResponse = $this->repository->verifyOtp($request);
+
+        if (! $otpResponse) {
+            throw new StoreResourceFailedException('Failed to verify OTP');
+        }
+
+
+        $token = $this->repository->loginWithPhone($request->phone_number);;
+
+        if (! $token) {
+            throw new StoreResourceFailedException('Failed to verify OTP');
+        }
+
+        return $this->respondWithToken($token);
     }
 }
