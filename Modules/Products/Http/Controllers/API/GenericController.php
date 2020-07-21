@@ -8,6 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Modules\Products\Entities\Model\Generic;
 use Modules\Products\Http\Requests\CreateCompanyRequest;
 use Modules\Products\Http\Requests\UpdateCompanyRequest;
 use Modules\Products\Repositories\GenericRepository;
@@ -35,7 +36,9 @@ class GenericController extends BaseController
             throw new NotFoundHttpException('Generic list Not Found');
         }
 
-        return $this->response->paginator($genericList, new GenericTransformer());
+        $generic = Generic::paginate(10);
+
+        return $this->response->paginator($generic, new GenericTransformer());
     }
 
     /**

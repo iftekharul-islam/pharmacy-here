@@ -21,6 +21,7 @@ class ProductsDatabaseSeeder extends Seeder
          $this->call(CategoryTableSeeder::class);
          $this->call(GenericTableSeeder::class);
          $this->call(FormTableSeeder::class);
+         $this->call(UnitTableSeeder::class);
          $this->call(ProductTableSeeder::class);
     }
 }

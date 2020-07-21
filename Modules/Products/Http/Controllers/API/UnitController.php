@@ -8,6 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Products\Entities\Model\Unit;
 use Modules\Products\Http\Requests\UnitCreateRequest;
 use Modules\Products\Repositories\UnitRepository;
 use Modules\Products\Transformers\UnitTransformer;
@@ -34,7 +35,9 @@ class UnitController extends BaseController
             throw new NotFoundHttpException('Unit list Not Found');
         }
 
-        return $this->response->paginator($unitList, new UnitTransformer());
+        $unit = Unit::paginate(10);
+
+        return $this->response->paginator($unit, new UnitTransformer());
     }
 
     /**

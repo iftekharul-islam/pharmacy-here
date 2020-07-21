@@ -60,7 +60,7 @@ class CompanyController extends BaseController
             throw new StoreResourceFailedException('Company Create failed');
         }
 
-        return $this->response->created('/products/company', $company);
+        return $this->response->created('/products/category', $company);
     }
 
     /**

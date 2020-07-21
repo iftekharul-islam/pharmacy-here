@@ -8,6 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Products\Entities\Model\Category;
 use Modules\Products\Repositories\CategoryRepository;
 use Modules\Products\Http\Requests\CategoryCreateRequest;
 use Modules\Products\Transformers\CategoryTransformer;
@@ -34,7 +35,8 @@ class CategoryController extends BaseController
             throw new NotFoundHttpException('Category list Not Found');
         }
 
-        return $this->response->paginator($categoryList, new CategoryTransformer());
+        $category = Category::paginate(10);
+        return $this->response->paginator($category, new CategoryTransformer());
     }
 
     /**

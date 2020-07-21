@@ -10,7 +10,7 @@ class GenericRepository
 {
     public function all()
     {
-        return Generic::paginate(10);
+        return Generic::get();
     }
 
     public function create($request)

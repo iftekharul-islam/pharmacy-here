@@ -14,7 +14,7 @@ class FormRepository
 {
     public function all()
     {
-        return Form::paginate(10);
+        return Form::get();
     }
 
     public function get($id)

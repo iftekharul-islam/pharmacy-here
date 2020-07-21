@@ -64,4 +64,9 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function primaryUnit()
+    {
+        return $this->belongsTo(Unit::class, 'primary_unit_id', 'id');
+    }
+
 }

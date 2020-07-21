@@ -29,7 +29,7 @@ class UserDatabaseSeeder extends Seeder
 			    "email" => "feroj@augnitive.com",
 			    "password" => "12345678",
 			    "role" => "admin",
-                "phone" => "01680722104"
+                "phone_number" => "01680722104"
 		    ],
 		    [
 			    "name" => "Pharmacy",
@@ -43,14 +43,14 @@ class UserDatabaseSeeder extends Seeder
 			    "email" => "accounts@augnitive.com",
 			    "password" => "12345678",
 			    "role" => "accountant",
-                "phone" => "01680722106"
+                "phone_number" => "01680722106"
 		    ],
 		    [
 			    "name" => "Customer",
 			    "email" => "customer@augnitive.com",
 			    "password" => "12345678",
 			    "role" => "customer",
-                "phone" => "01680722107"
+                "phone_number" => "01680722107"
 		    ]
 
 	    ];

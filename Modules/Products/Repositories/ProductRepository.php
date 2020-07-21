@@ -4,21 +4,26 @@
 namespace Modules\Products\Repositories;
 
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Modules\Products\Entities\Model\Category;
+use Modules\Products\Entities\Model\Company;
+use Modules\Products\Entities\Model\Form;
+use Modules\Products\Entities\Model\Generic;
 use Modules\Products\Entities\Model\Product;
 use Modules\Products\Entities\Model\ProductAdditionalInfo;
+use Modules\Products\Entities\Model\Unit;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductRepository
 {
     public function all()
     {
-        return Product::with('productAdditionalInfo', 'form', 'company', 'generic', 'category')
-            ->paginate(10);
+        return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+            ->get();
     }
 
     public function get($id)
     {
-        return Product::with('productAdditionalInfo', 'form', 'company', 'generic', 'category')
+        return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
             ->find($id);
 
     }
@@ -182,5 +187,30 @@ class ProductRepository
         }
 
         return $product->delete();
+    }
+
+    public function getAllCategory()
+    {
+        return Category::all();
+    }
+
+    public function getAllGeneric()
+    {
+        return Generic::all();
+    }
+
+    public function getAllForm()
+    {
+        return Form::all();
+    }
+
+    public function getAllCompany()
+    {
+        return Company::all();
+    }
+
+    public function getAllUnit()
+    {
+        return Unit::all();
     }
 }

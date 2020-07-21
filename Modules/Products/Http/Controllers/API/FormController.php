@@ -8,6 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Modules\Products\Entities\Model\Form;
 use Modules\Products\Http\Requests\CreateFormRequest;
 use Modules\Products\Http\Requests\UpdateFormRequest;
 use Modules\Products\Repositories\FormRepository;
@@ -35,7 +36,9 @@ class FormController extends BaseController
             throw new NotFoundHttpException('Form list Not Found');
         }
 
-        return $this->response->paginator($formList, new FormTransformer());
+        $form = Form::paginate(10);
+
+        return $this->response->paginator($form, new FormTransformer());
     }
 
     /**

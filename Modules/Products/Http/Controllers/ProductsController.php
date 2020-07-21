@@ -2,10 +2,20 @@
 
 namespace Modules\Products\Http\Controllers;
 
+use Dingo\Api\Exception\DeleteResourceFailedException;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
+use Modules\Products\Http\Requests\CreateProductRequest;
+use Modules\Products\Http\Requests\UpdateProductRequest;
 use Modules\Products\Repositories\ProductRepository;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductsController extends Controller
 {
@@ -18,36 +28,54 @@ class ProductsController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return Response
+     * @return Factory|View
      */
     public function index()
     {
-        return view('products::index');
+        $productList = $this->repository->all();
+
+        if (! $productList) {
+            throw new NotFoundHttpException('Product List Not Found');
+        }
+
+        return view('products::index', compact('productList'));
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     * @return Factory|View
      */
     public function create()
     {
-        return view('products::create');
+        $categories = $this->repository->getAllCategory();
+        $generics = $this->repository->getAllGeneric();
+        $forms = $this->repository->getAllForm();
+        $companies = $this->repository->getAllCompany();
+        $units = $this->repository->getAllUnit();
+
+        return view('products::create', compact('categories', 'generics', 'forms', 'companies', 'units'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
+     * @param CreateProductRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        //
+        $product = $this->repository->create($request);
+
+        if (!$product) {
+            throw new StoreResourceFailedException('Product create failed');
+        }
+
+        return redirect()->route('index');
     }
 
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Response
+     * @return Factory|View
      */
     public function show($id)
     {
@@ -57,31 +85,51 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      * @param int $id
-     * @return Response
+     * @return Factory|View
      */
     public function edit($id)
     {
-        return view('products::edit');
+        $product = $this->repository->get($id);
+        $categories = $this->repository->getAllCategory();
+        $generics = $this->repository->getAllGeneric();
+        $forms = $this->repository->getAllForm();
+        $companies = $this->repository->getAllCompany();
+        $units = $this->repository->getAllUnit();
+
+        return view('products::edit', compact('product', 'categories', 'generics', 'forms', 'companies', 'units'));
     }
 
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Response
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = $this->repository->update($request, $id);
+
+        if (!$product) {
+            throw new UpdateResourceFailedException('Product update failed');
+        }
+
+        return redirect()->route('index');
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Response
+     * @return RedirectResponse|Redirector
      */
     public function destroy($id)
     {
-        //
+//        print_r($id);die();
+        $product = $this->repository->delete($id);
+
+        if (!$product) {
+            throw new DeleteResourceFailedException('Product Delete Failed');
+        }
+
+        return redirect()->route('index');
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Auth\Http\Requests;
+namespace Modules\Products\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegistrationValidationRequest extends FormRequest
+class UpdateCategoryRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,8 @@ class RegistrationValidationRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|min:11|max:11',
+            'name' => 'required|string|min:3',
+            'status' => 'required|boolean'
         ];
     }
 

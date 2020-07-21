@@ -19,15 +19,15 @@ $namespace = 'Modules\Products\Http\Controllers\API';
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) use ($namespace) {
-    $api->group(['prefix' => 'products'], function ($api) use ($namespace) {
-        $api->get('company', $namespace . '\CompanyController@index');
-        $api->get('company/{id}', $namespace . '\CompanyController@show');
+//    $api->group(['prefix' => 'products'], function ($api) use ($namespace) {
+        $api->get('companies', $namespace . '\CompanyController@index');
+        $api->get('companies/{id}', $namespace . '\CompanyController@show');
 
-        $api->get('generic', $namespace . '\GenericController@index');
-        $api->get('generic/{id}', $namespace . '\GenericController@show');
+        $api->get('generics', $namespace . '\GenericController@index');
+        $api->get('generics/{id}', $namespace . '\GenericController@show');
 
-        $api->get('form', $namespace . '\FormController@index');
-        $api->get('form/{id}', $namespace . '\FormController@show');
+        $api->get('forms', $namespace . '\FormController@index');
+        $api->get('forms/{id}', $namespace . '\FormController@show');
 
         $api->get('products', $namespace . '\ProductsController@index');
         $api->get('products/{id}', $namespace . '\ProductsController@show');
@@ -39,20 +39,20 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->get('units', $namespace . '\UnitController@index');
         $api->get('units/{id}', $namespace . '\UnitController@show');
         $api->get('units/slug/{slug}', $namespace . '\UnitController@showBySlug');
-    });
+//    });
 
-    $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
-        $api->post('company', $namespace . '\CompanyController@store');
-        $api->put('company/{id}', $namespace . '\CompanyController@update');
-        $api->delete('company/{id}', $namespace . '\CompanyController@destroy');
+//    $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
+        $api->post('companies', $namespace . '\CompanyController@store');
+        $api->put('companies/{id}', $namespace . '\CompanyController@update');
+        $api->delete('companies/{id}', $namespace . '\CompanyController@destroy');
 
-        $api->post('generic', $namespace . '\GenericController@store');
-        $api->put('generic/{id}', $namespace . '\GenericController@update');
-        $api->delete('generic/{id}', $namespace . '\GenericController@destroy');
+        $api->post('generics', $namespace . '\GenericController@store');
+        $api->put('generics/{id}', $namespace . '\GenericController@update');
+        $api->delete('generics/{id}', $namespace . '\GenericController@destroy');
 
-        $api->post('form', $namespace . '\FormController@store');
-        $api->put('form/{id}', $namespace . '\FormController@update');
-        $api->delete('form/{id}', $namespace . '\FormController@destroy');
+        $api->post('forms', $namespace . '\FormController@store');
+        $api->put('forms/{id}', $namespace . '\FormController@update');
+        $api->delete('forms/{id}', $namespace . '\FormController@destroy');
 
         $api->post('products', $namespace . '\ProductsController@store');
         $api->put('products/{id}', $namespace . '\ProductsController@update');
@@ -66,5 +66,5 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->put('units/{id}', $namespace . '\UnitController@update');
         $api->delete('units/{id}', $namespace . '\UnitController@destroy');
 
-    });
+//    });
 });

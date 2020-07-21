@@ -62,7 +62,7 @@ class CompanyRepository
             throw new NotFoundHttpException('Company not found');
         }
 
-        return $company->delete();
+        return $company;
     }
 
 }

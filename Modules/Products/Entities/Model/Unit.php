@@ -12,12 +12,12 @@ class Unit extends Model
     protected static function boot() {
         parent::boot();
 
-        static::creating(function ($company) {
-            $company->slug = Str::slug($company->name);
+        static::creating(function ($unit) {
+            $unit->slug = Str::slug($unit->name);
         });
 
-        static::updating(function ($company) {
-            $company->slug = Str::slug($company->name);
+        static::updating(function ($unit) {
+            $unit->slug = Str::slug($unit->name);
         });
     }
 
