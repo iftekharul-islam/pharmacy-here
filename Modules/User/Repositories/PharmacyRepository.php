@@ -48,7 +48,9 @@ class PharmacyRepository
 
         $pharmacyBusiness->user_id = $id;
 
-        return $pharmacyBusiness->save();
+        $pharmacyBusiness->save();
+
+        return $pharmacyBusiness;
 
 
     }
