@@ -14,9 +14,9 @@ class PharmacyRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|min:11|max:11',
+            'phone_number' => 'required|min:11|max:11|unique:users,phone_number',
             'name' => 'required|min:3',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'alternative_phone_number' => 'required|min:11|max:11',
             'dob' => 'required',
             'gender' => 'required',

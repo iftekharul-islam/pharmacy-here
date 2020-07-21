@@ -13,7 +13,7 @@ class CreatePharmacyBusinessTable extends Migration
      */
     public function up()
     {
-        Schema::create('pharmacy_business', function (Blueprint $table) {
+        Schema::create('pharmacy_businesses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('pharmacy_name')->nullable();
             $table->string('pharmacy_address')->nullable();
@@ -37,6 +37,6 @@ class CreatePharmacyBusinessTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pharmacy_business');
+        Schema::dropIfExists('pharmacy_businesses');
     }
 }
