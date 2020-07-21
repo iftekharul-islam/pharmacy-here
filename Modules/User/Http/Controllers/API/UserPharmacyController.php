@@ -74,7 +74,7 @@ class UserPharmacyController extends Controller
 
     public function createBusinessInfo(PharmacyBusinessRequest $request)
     {
-        $id = \Illuminate\Support\Facades\Auth::id();;
+        $id = \Illuminate\Support\Facades\Auth::id();
 
         return $this->repository->createBusinessInfo($request, $id);
     }

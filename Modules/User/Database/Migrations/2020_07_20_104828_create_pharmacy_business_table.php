@@ -37,6 +37,6 @@ class CreatePharmacyBusinessTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pharmacy_business');
+        Schema::dropIfExists('pharmacy_businesses');
     }
 }
