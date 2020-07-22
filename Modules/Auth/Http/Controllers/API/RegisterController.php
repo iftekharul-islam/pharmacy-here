@@ -76,7 +76,6 @@ class RegisterController extends Controller
                 'verify_otp' => true,
             ]
         ]);
-
     }
 
     public function registerPharmacyWithOtp(PhoneValidationRequest $request)
