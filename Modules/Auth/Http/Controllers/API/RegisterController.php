@@ -71,13 +71,12 @@ class RegisterController extends Controller
             throw new StoreResourceFailedException('Failed to verify OTP');
         }
 
-        $user = $this->repository->createUser($request);;
+        return response()->json([
+            'data' => [
+                'verify_otp' => true,
+            ]
+        ]);
 
-        if (! $user) {
-            throw new StoreResourceFailedException('Failed to verify OTP');
-        }
-
-        return $user;
     }
 
     public function registerPharmacyWithOtp(PhoneValidationRequest $request)
