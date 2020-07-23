@@ -103,25 +103,15 @@ class AuthRepository
         $created_at = new Carbon($otp->created_at);
         $timeDiff = $created_at->diffInSeconds(Carbon::now());
         if (trim($otp->otp) !== trim($request->input('otp'))) {
-//            return [
-//                'error' => true,
-//                'message' => 'wrongOtp'
-//            ];
             throw new UnauthorizedHttpException('', 'Wrong OTP');
         }
 
         if ($timeDiff >= $lifetime) {
-//            return [
-//                'error' => true,
-//                'message' => 'timeout'
-//            ];
+
             throw new UnauthorizedHttpException('', 'Timeout');
         }
 
-
         return true;
-//        return $this->createUser($request);
-
     }
 
     /**
