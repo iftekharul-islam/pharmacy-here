@@ -5,6 +5,9 @@ namespace Modules\User\Repositories;
 
 
 use Modules\User\Entities\Models\PharmacyBusiness;
+use Modules\User\Entities\Models\User;
+use Modules\User\Entities\Models\Weekends;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PharmacyRepository
 {
@@ -53,5 +56,46 @@ class PharmacyRepository
         return $pharmacyBusiness;
 
 
+    }
+
+    public function createWeekendsAndWorkingHoursInfo($request, $id)
+    {
+        $user = User::find($id);
+
+        if (! $user) {
+            throw new NotFoundHttpException('Pharmacy Not Found');
+        }
+
+
+        $weekends = $request->weekends;
+
+        foreach ($weekends as $weekend) {
+            $weekendDays = new Weekends();
+            $weekendDays->user_id = $id;
+            $weekendDays->days = $weekend;
+
+            $weekendDays->save();
+        }
+
+
+        $pharmacyInfo = PharmacyBusiness::where('user_id', $id)->first();
+
+        if (isset($request->start_time)) {
+            $pharmacyInfo->start_time = $request->start_time;
+        }
+
+        if (isset($request->end_time)) {
+            $pharmacyInfo->end_time = $request->end_time;
+        }
+
+        if (isset($request->break_start_time)) {
+            $pharmacyInfo->break_start_time = $request->break_start_time;
+        }
+
+        if (isset($request->break_end_time)) {
+            $pharmacyInfo->break_end_time = $request->break_end_time;
+        }
+
+        return $pharmacyInfo->save();
     }
 }

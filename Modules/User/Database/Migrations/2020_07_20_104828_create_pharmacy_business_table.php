@@ -22,6 +22,10 @@ class CreatePharmacyBusinessTable extends Migration
             $table->string('nid_img_path')->nullable();
             $table->string('trade_img_path')->nullable();
             $table->string('drug_img_path')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->time('break_start_time')->nullable();
+            $table->time('break_end_time')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
