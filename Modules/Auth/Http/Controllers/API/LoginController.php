@@ -84,6 +84,12 @@ class LoginController extends Controller
 
     public function createOtp(PhoneValidationRequest $request)
     {
+        $verifyNumber = $this->repository->verifyPhoneNumber($request);
+
+        if (! $verifyNumber) {
+            throw new UnauthorizedHttpException('', 'Phone Number is not registered');
+        }
+
         $otp = $this->repository->createOtp($request);
 
         if (! $otp) {
