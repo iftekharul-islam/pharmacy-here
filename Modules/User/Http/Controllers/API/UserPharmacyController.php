@@ -3,11 +3,14 @@
 namespace Modules\User\Http\Controllers\API;
 
 use Dingo\Api\Auth\Auth;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\User\Http\Requests\CreateWeekendsAndWorkingHourRequest;
 use Modules\User\Http\Requests\PharmacyBusinessRequest;
 use Modules\User\Repositories\PharmacyRepository;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserPharmacyController extends Controller
 {
@@ -77,5 +80,18 @@ class UserPharmacyController extends Controller
         $id = \Illuminate\Support\Facades\Auth::id();
 
         return $this->repository->createBusinessInfo($request, $id);
+    }
+
+    public function createWeekendsAndWorkingHoursInfo(CreateWeekendsAndWorkingHourRequest $request)
+    {
+        $id = \Illuminate\Support\Facades\Auth::id();
+
+        $infoResponse = $this->repository->createWeekendsAndWorkingHoursInfo($request, $id);
+
+        if (! $infoResponse) {
+            throw new StoreResourceFailedException('Weekends and working hour create failed');
+        }
+
+        return responseData('Weekends and working hour create successful');
     }
 }

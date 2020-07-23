@@ -177,10 +177,5 @@ class AuthRepository
         return JWTAuth::fromUser($user);
     }
 
-    public function verifyPhoneNumber($request)
-    {
-        return User::where('phone_number', $request->phone_number)->count();
-    }
-
 
 }
