@@ -19,7 +19,6 @@ $namespace = 'Modules\Products\Http\Controllers\API';
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) use ($namespace) {
-//    $api->group(['prefix' => 'products'], function ($api) use ($namespace) {
         $api->get('companies', $namespace . '\CompanyController@index');
         $api->get('companies/{id}', $namespace . '\CompanyController@show');
 
@@ -39,7 +38,7 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->get('units', $namespace . '\UnitController@index');
         $api->get('units/{id}', $namespace . '\UnitController@show');
         $api->get('units/slug/{slug}', $namespace . '\UnitController@showBySlug');
-//    });
+
 
 //    $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
         $api->post('companies', $namespace . '\CompanyController@store');

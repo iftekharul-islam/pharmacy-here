@@ -1,5 +1,9 @@
 {
     "User": true,
     "Auth": true,
-    "Products": true
+    "Products": true,
+    "Order": true,
+    "Orders": true,
+    "Addresses": true,
+    "Locations": true
 }

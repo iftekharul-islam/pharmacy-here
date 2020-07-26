@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Modules\Auth\Notifications\PasswordResetNotification;
+use Modules\Locations\Entities\Models\Address;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -74,4 +75,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return 'profile/username';
     }
+
+    public function address()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+
 }

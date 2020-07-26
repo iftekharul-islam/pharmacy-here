@@ -27,9 +27,6 @@ $api->version('v1', ['middleware' => ['api.auth', 'role:admin']], function ($api
 
 $api->version('v1', function ($api) use ($namespace) {
     $api->group(['prefix' => 'user', 'middleware' => 'role:pharmacy'], function ($api) use ($namespace) {
-//        $api->post('pharmacy', $namespace . '\UserPharmacyController@store');
-//        $api->put('pharmacy/{id}', $namespace . '\UserPharmacyController@update');
-//        $api->delete('pharmacy/{id}', $namespace . '\UserPharmacyController@destroy');
         $api->post('pharmacy/name', $namespace . '\UserPharmacyController@name');
 
 
