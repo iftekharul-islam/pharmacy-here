@@ -17,7 +17,6 @@ class PharmacyRegistrationRequest extends FormRequest
             'phone_number' => 'required|min:11|max:11|unique:users,phone_number',
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email',
-            'alternative_phone_number' => 'required|min:11|max:11',
             'dob' => 'required',
             'gender' => 'required',
             'role' => 'required',
