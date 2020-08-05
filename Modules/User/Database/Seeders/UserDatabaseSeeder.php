@@ -32,11 +32,12 @@ class UserDatabaseSeeder extends Seeder
                 "phone_number" => "01680722104"
 		    ],
 		    [
-			    "name" => "Pharmacy",
-			    "email" => "pharmacy@augnitive.com",
+			    "name" => "John Pharmacy",
+			    "email" => "payel@augnitive.com",
 			    "password" => "12345678",
 			    "role" => "pharmacy",
-                "phone_number" => "01680722105"
+                "phone_number" => "01817257862",
+                "is_pharmacy" => true
 		    ],
 		    [
 			    "name" => "Accountant",
@@ -50,7 +51,7 @@ class UserDatabaseSeeder extends Seeder
 			    "email" => "customer@augnitive.com",
 			    "password" => "12345678",
 			    "role" => "customer",
-                "phone_number" => "01680722107"
+                "phone_number" => "01680722103"
 		    ]
 
 	    ];

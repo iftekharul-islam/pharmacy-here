@@ -7,6 +7,7 @@ namespace Modules\User\Repositories;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\Weekends;
+use Monolog\Logger;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PharmacyRepository
@@ -97,5 +98,58 @@ class PharmacyRepository
         }
 
         return $pharmacyInfo->save();
+    }
+
+    public function getPharmacyInformation($id)
+    {
+        $pharmacyInfo = User::with('pharmacyBusiness', 'weekends')->find($id);
+
+        return $pharmacyInfo;
+    }
+
+    public function updatePharmacyInformation($request, $id)
+    {
+        $user = User::find($id);
+
+
+
+        if (! $user) {
+            throw new NotFoundHttpException('Pharmacy user not found');
+        }
+
+        if (isset($request->pharmacy_name)) {
+
+            $pharmacyBusinessInfo = PharmacyBusiness::where('user_id', $id)->first();
+            if (! $pharmacyBusinessInfo) {
+                throw new NotFoundHttpException('Pharmacy Business information not found');
+            }
+            $pharmacyBusinessInfo->pharmacy_name = $request->pharmacy_name;
+            $pharmacyBusinessInfo->save();
+        }
+
+
+
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+
+
+
+        if (isset($request->phone_number)) {
+            $user->phone_number = $request->phone_number;
+        }
+
+        if (isset($request->alternative_phone_number)) {
+            $user->alternative_phone_number = $request->alternative_phone_number;
+        }
+
+        if (isset($request->email)) {
+            $user->email = $request->email;
+        }
+
+        $user->save();
+
+        return $user;
+
     }
 }

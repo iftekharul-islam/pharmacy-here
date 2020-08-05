@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class PharmacyBusiness extends Model
 {
     protected $fillable = ['pharmacy_name', 'pharmacy_address', 'bank_account', 'bkash'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
