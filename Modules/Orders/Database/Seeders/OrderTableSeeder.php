@@ -35,13 +35,13 @@ class OrderTableSeeder extends Seeder
             'quantity' => 12,
             'rate' => 8,
             'order_id' => $order->id,
-            'product_id' => 3
+            'product_id' => 1
         ]);
         OrderItems::create([
             'quantity' => 12,
             'rate' => 8,
             'order_id' => $order->id,
-            'product_id' => 4
+            'product_id' => 2
         ]);
 
         Order::create([

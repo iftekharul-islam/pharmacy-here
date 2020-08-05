@@ -188,7 +188,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Response Transformer
+    | Response Transformers
     |--------------------------------------------------------------------------
     |
     | Responses can be transformed so that they are easier to format. By

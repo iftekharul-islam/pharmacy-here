@@ -33,5 +33,7 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->post('me/pharmacy/business', $namespace . '\UserPharmacyController@createBusinessInfo');
         $api->post('me/pharmacy/weekends-and-working-hours', $namespace . '\UserPharmacyController@createWeekendsAndWorkingHoursInfo');
 
+        $api->get('me/pharmacy', $namespace . '\UserPharmacyController@getPharmacyProfile');
+        $api->put('me/pharmacy', $namespace . '\UserPharmacyController@updatePharmacyProfile');
     });
 });

@@ -2,17 +2,18 @@
 
 namespace Modules\User\Http\Controllers\API;
 
-use Dingo\Api\Auth\Auth;
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\BaseController;
 use Modules\User\Http\Requests\CreateWeekendsAndWorkingHourRequest;
 use Modules\User\Http\Requests\PharmacyBusinessRequest;
+use Modules\User\Http\Requests\UpdatePharmacyProfileRequest;
 use Modules\User\Repositories\PharmacyRepository;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Modules\User\Transformers\PharmacyTransformer;
 
-class UserPharmacyController extends Controller
+class UserPharmacyController extends BaseController
 {
     private $repository;
 
@@ -93,5 +94,31 @@ class UserPharmacyController extends Controller
         }
 
         return responseData('Weekends and working hour create successful');
+    }
+
+    public function getPharmacyProfile()
+    {
+        $id = \Illuminate\Support\Facades\Auth::id();
+
+        $infoResponse = $this->repository->getPharmacyInformation($id);
+
+        return $this->response->item($infoResponse, new PharmacyTransformer());
+
+
+    }
+
+    public function updatePharmacyProfile(UpdatePharmacyProfileRequest $request)
+    {
+        $id = \Illuminate\Support\Facades\Auth::id();
+
+        $infoResponse = $this->repository->updatePharmacyInformation($request, $id);
+
+        if (! $infoResponse) {
+            throw new UpdateResourceFailedException('Pharmacy profile update failed');
+        }
+
+        return $this->response->item($infoResponse, new PharmacyTransformer());
+
+
     }
 }
