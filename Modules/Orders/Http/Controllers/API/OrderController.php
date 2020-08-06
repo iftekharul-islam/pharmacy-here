@@ -61,7 +61,13 @@ class OrderController extends BaseController
      */
     public function show($id)
     {
-        return view('orders::show');
+//        $id = \Illuminate\Support\Facades\Auth::id();
+
+        $orderDetails = $this->repository->get($id);
+
+        return $this->response->item($orderDetails, new OrderTransformer());
+
+
     }
 
     /**

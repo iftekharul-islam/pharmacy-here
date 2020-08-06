@@ -5,6 +5,7 @@ namespace Modules\Products\Entities\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Modules\Orders\Entities\Models\OrderItems;
 
 class Product extends Model
 {
@@ -67,6 +68,11 @@ class Product extends Model
     public function primaryUnit()
     {
         return $this->belongsTo(Unit::class, 'primary_unit_id', 'id');
+    }
+
+    public function orderItems()
+    {
+        return $this->hasOne(OrderItems::class);
     }
 
 }
