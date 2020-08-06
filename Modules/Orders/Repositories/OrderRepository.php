@@ -25,4 +25,9 @@ class OrderRepository
     {
         return Order::where('customer_id', $customer_id)->get();
     }
+
+    public function get($id)
+    {
+        return Order::where('id', $id)->first();
+    }
 }
