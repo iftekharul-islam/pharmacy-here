@@ -109,11 +109,17 @@ class LoginController extends Controller
         }
 
 
-        $token = $this->repository->loginWithPhone($request->phone_number);;
+        $token = $this->repository->loginWithPhone($request->phone_number);
 
         if (! $token) {
             throw new StoreResourceFailedException('Failed to verify OTP');
         }
+
+//        $pharmacyName = $this->repository->getPharmacyNameByPhone($request->phone_number);
+//
+//        return $pharmacyName;
+
+//        return $this->respondWithTokenAndName($token);
 
         return $this->respondWithToken($token);
     }
