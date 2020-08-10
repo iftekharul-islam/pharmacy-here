@@ -1,13 +1,23 @@
 <?php
 
-namespace Modules\Locations\Http\Controllers;
+namespace Modules\Locations\Http\Controllers\API;
 
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Repositories\LocationRepository;
+use Modules\Locations\Transformers\DistrictTransformer;
 
-class LocationsController extends Controller
+class LocationController extends BaseController
 {
+
+    private $repository;
+
+    public function __construct(LocationRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      * @return Response
@@ -77,5 +87,10 @@ class LocationsController extends Controller
         //
     }
 
+    public function areas()
+    {
+        $areaList = $this->repository->get();
 
+        return $this->response->collection($areaList, new DistrictTransformer());
+    }
 }

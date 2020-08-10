@@ -26,5 +26,9 @@ class Thana extends Model
         return $this->belongsTo(District::class, 'district_id', 'id');
     }
 
+    public function areas() {
+        return $this->hasMany(Area::class);
+    }
+
 
 }

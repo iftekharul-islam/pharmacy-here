@@ -19,8 +19,8 @@ class CreateAddressesTable extends Migration
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('thana_id');
-            $table->foreign('thana_id')->references('id')->on('thanas')->onDelete('cascade');
+            $table->unsignedBigInteger('area_id');
+            $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
 
             $table->timestamps();
         });

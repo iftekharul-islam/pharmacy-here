@@ -3,15 +3,14 @@
 namespace Modules\Locations\Entities\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\User\Entities\Models\User;
 
 class Address extends Model
 {
-    protected $fillable = ['user_id', 'address', 'thana_id'];
+    protected $fillable = ['user_id', 'address', 'area_id'];
 
-    public function thana()
+    public function area()
     {
-        return $this->hasOne(Thana::class);
+        return $this->hasOne(Area::class);
     }
 
 

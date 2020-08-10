@@ -5,7 +5,7 @@ namespace Modules\Locations\Entities\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Division extends Model
+class Area extends Model
 {
     protected $fillable = ['name', 'bn_name', 'slug', 'status'];
 
@@ -20,4 +20,11 @@ class Division extends Model
             $division->slug = Str::slug($division->name);
         });
     }
+
+    public function thana()
+    {
+        return $this->belongsTo(Thana::class, 'thana_id', 'id');
+    }
+
+
 }

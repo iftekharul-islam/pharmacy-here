@@ -22,22 +22,22 @@ class AddressesTableSeeder extends Seeder
         Address::create([
             'user_id' => 1,
             'address' => '950/A, Road: 11, Avenue 2',
-            'thana_id' => 1
+            'area_id' => 1
         ]);
         Address::create([
             'user_id' => 2,
             'address' => '800/A, Road: 10, Avenue 2',
-            'thana_id' => 1
+            'area_id' => 1
         ]);
         Address::create([
             'user_id' => 3,
             'address' => '700/A, Road: 8, Avenue 2',
-            'thana_id' => 1
+            'area_id' => 1
         ]);
         Address::create([
             'user_id' => 4,
             'address' => '750/A, Road: 8, Avenue 2',
-            'thana_id' => 1
+            'area_id' => 1
         ]);
     }
 }
