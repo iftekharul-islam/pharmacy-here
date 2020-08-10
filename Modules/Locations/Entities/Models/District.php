@@ -27,6 +27,6 @@ class District extends Model
     }
 
     public function thanas() {
-        return $this->hasMany(Thana::class );
+        return $this->hasMany(Thana::class);
     }
 }

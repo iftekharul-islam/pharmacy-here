@@ -2,12 +2,14 @@
 
 namespace Modules\Locations\Http\Controllers\API;
 
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Locations\Repositories\LocationRepository;
+use Modules\Locations\Transformers\DistrictTransformer;
 
-class LocationController extends Controller
+class LocationController extends BaseController
 {
 
     private $repository;
@@ -87,6 +89,8 @@ class LocationController extends Controller
 
     public function areas()
     {
-        return $this->repository->get();
+        $areaList = $this->repository->get();
+
+        return $this->response->collection($areaList, new DistrictTransformer());
     }
 }
