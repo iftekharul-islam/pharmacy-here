@@ -18,9 +18,9 @@ class PharmacyBusinessRequest extends FormRequest
             'pharmacy_address' => 'required|min:3',
             'area_id' => 'required',
 
-            'nid_image' => 'required|image|max:2000',
-            'trade_license_image' => 'required|image|max:2000',
-            'drug_license_image' => 'required|image|max:2000',
+//            'nid_image' => 'required|image|max:2000',
+//            'trade_license_image' => 'required|image|max:2000',
+//            'drug_license_image' => 'required|image|max:2000',
         ];
     }
 
