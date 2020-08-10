@@ -16,23 +16,38 @@ class PharmacyRepository
     {
         $pharmacyBusiness = new PharmacyBusiness();
 
-        if ($request->file('nid')) {
-            $image = $request->file('nid');
+        if ($request->file('nid_image')) {
+            $image = $request->file('nid_image');
             $image_name =$image->storeAs( 'nid_' . time() .'.jpg');
-            $pharmacyBusiness->nid_img_path = $request->file('nid')->save(storage_path('app/public/image/'), $image_name, 'public');
+//            $pharmacyBusiness->nid_img_path = $request->file('nid_image')->save(storage_path('app/public/image/'), $image_name, 'public');
+            $pharmacyBusiness->nid_img_path = "https://dummyimage.com/600x400/000/fff";
         }
 
         if ($request->file('trade_licence')) {
             $image = $request->file('trade_licence');
             $image_name =$image->storeAs( 'trade_licence_' . time() .'.jpg');
-            $pharmacyBusiness->trade_img_path = $request->file('trade_licence')->save(storage_path('app/public/image/'), $image_name, 'public');
+//            $pharmacyBusiness->trade_img_path = $request->file('trade_licence')->save(storage_path('app/public/image/'), $image_name, 'public');
+            $pharmacyBusiness->trade_img_path = "https://dummyimage.com/600x400/000/fff";
         }
 
         if ($request->file('drug_licence')) {
             $image = $request->file('drug_licence');
             $image_name =$image->storeAs( 'trade_licence_' . time() .'.jpg');
-            $pharmacyBusiness->drug_img_path = $request->file('drug_licence')->save(storage_path('app/public/image/'), $image_name, 'public');
+//            $pharmacyBusiness->drug_img_path = $request->file('drug_licence')->save(storage_path('app/public/image/'), $image_name, 'public');
+            $pharmacyBusiness->drug_img_path = "https://dummyimage.com/600x400/000/fff";
         }
+
+//        if ($request->file('nid_image')) {
+//            $pharmacyBusiness->nid_img_path = Storage::disk('s3')->put('pharmacy/nid', $request->nid_image);
+//        }
+//
+//        if ($request->file('trade_license_image')) {
+//            $pharmacyBusiness->trade_img_path = Storage::disk('s3')->put('pharmacy/trade', $request->trade_license_image);
+//        }
+//
+//        if ($request->file('drug_license_image')) {
+//            $pharmacyBusiness->drug_img_path = Storage::disk('s3')->put('pharmacy/drugs', $request->drug_license_image);
+//        }
 
         if (isset($request->pharmacy_name)) {
             $pharmacyBusiness->pharmacy_name = $request->pharmacy_name;
@@ -40,6 +55,10 @@ class PharmacyRepository
 
         if (isset($request->pharmacy_address)) {
             $pharmacyBusiness->pharmacy_address = $request->pharmacy_address;
+        }
+
+        if (isset($request->area_id)) {
+            $pharmacyBusiness->area_id = $request->area_id;
         }
 
         if (isset($request->bank_account)) {
