@@ -20,6 +20,7 @@ class LocationsDatabaseSeeder extends Seeder
         $this->call(DivisionTableSeeder::class);
         $this->call(DistrictTableSeeder::class);
         $this->call(ThanaTableSeeder::class);
+        $this->call(AreaTableSeeder::class);
         $this->call(AddressesTableSeeder::class);
     }
 }

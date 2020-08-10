@@ -1,13 +1,21 @@
 <?php
 
-namespace Modules\Locations\Http\Controllers;
+namespace Modules\Locations\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Repositories\LocationRepository;
 
-class LocationsController extends Controller
+class LocationController extends Controller
 {
+
+    private $repository;
+
+    public function __construct(LocationRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      * @return Response
@@ -77,5 +85,8 @@ class LocationsController extends Controller
         //
     }
 
-
+    public function areas()
+    {
+        return $this->repository->get();
+    }
 }

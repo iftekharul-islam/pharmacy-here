@@ -3,11 +3,14 @@
 namespace Modules\Orders\Entities\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Locations\Entities\Models\Address;
 use Modules\User\Entities\Models\User;
 
 class Order extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'payment_type',
         'delivery_type',

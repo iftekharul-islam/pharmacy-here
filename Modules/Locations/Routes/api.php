@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/locations', function (Request $request) {
     return $request->user();
 });
+
+
+
+
+$namespace = 'Modules\Locations\Http\Controllers\API';
+
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) use ($namespace) {
+    $api->get('areas', $namespace . '\LocationController@areas');
+});
