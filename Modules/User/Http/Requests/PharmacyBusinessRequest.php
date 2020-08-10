@@ -16,8 +16,11 @@ class PharmacyBusinessRequest extends FormRequest
         return [
             'pharmacy_name' => 'required|min:3',
             'pharmacy_address' => 'required|min:3',
-            'bank_account' => 'required|string',
-            'bkash_number' => 'required|min:11|max:11'
+            'area_id' => 'required',
+
+            'nid_image' => 'required|image|max:2000',
+            'trade_license_image' => 'required|image|max:2000',
+            'drug_license_image' => 'required|image|max:2000',
         ];
     }
 

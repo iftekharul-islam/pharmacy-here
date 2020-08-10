@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PharmacyBusiness extends Model
 {
-    protected $fillable = ['pharmacy_name', 'pharmacy_address', 'bank_account', 'bkash'];
+    protected $fillable = ['pharmacy_name', 'pharmacy_address', 'area_id'];
 
     public function user()
     {
