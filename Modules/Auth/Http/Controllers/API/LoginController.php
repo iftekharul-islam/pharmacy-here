@@ -115,12 +115,21 @@ class LoginController extends Controller
             throw new StoreResourceFailedException('Failed to verify OTP');
         }
 
-        return $this->repository->getPharmacyNameByPhone($request->phone_number);
+        $pharmacyName = $this->repository->getPharmacyNameByPhone($request->phone_number);
 
-//        return $pharmacyName;
 
-//        return $this->respondWithTokenAndName($token);
+        return $this->respondWithTokenAndName($token, $pharmacyName->pharmacy_name);
 
 //        return $this->respondWithToken($token);
+    }
+
+    public function respondWithTokenAndName($token,$pharmacyName)
+    {
+        return response()->json([
+            'pharmacy_name' => $pharmacyName,
+            'access_token' => $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => $this->guard()->factory()->getTTL()
+        ]);
     }
 }
