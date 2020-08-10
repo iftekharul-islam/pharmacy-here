@@ -17,7 +17,10 @@ class CreatePharmacyBusinessTable extends Migration
             $table->bigIncrements('id');
             $table->string('pharmacy_name')->nullable();
             $table->string('pharmacy_address')->nullable();
-            $table->string('bank_account')->nullable();
+            $table->string('bank_account_name')->nullable();
+            $table->string('bank_account_number')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bank_brunch_name')->nullable();
             $table->string('bkash_number')->nullable();
             $table->string('nid_img_path')->nullable();
             $table->string('trade_img_path')->nullable();
