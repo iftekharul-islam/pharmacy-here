@@ -11,6 +11,7 @@ use Modules\Auth\Entities\Models\OneTimePassword;
 use Modules\Auth\Entities\Models\PasswordReset;
 use Modules\Auth\Jobs\SendOtp;
 use Modules\Auth\Notifications\PasswordResetNotification;
+use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -176,6 +177,13 @@ class AuthRepository
 
         return JWTAuth::fromUser($user);
     }
+
+//    public function getPharmacyNameByPhone($phone)
+//    {
+//        $user = User::where('phone_number', $phone)->first();
+//
+//        return PharmacyBusiness::where('user_id', $user->id)->first();
+//    }
 
 
 
