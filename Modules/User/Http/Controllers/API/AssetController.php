@@ -17,8 +17,10 @@ class AssetController extends BaseController
      * @param Request $request
      * @return Response
      */
-    public function store(UserCreateRequest $request)
+    public function store(Request $request)
     {
-	    $path = Storage::disk('s3')->put('images/originals', $request->file);
+	    $path = Storage::disk('s3')->put($request->get('path'), $request->file, 'public');
+	
+	    return response()->json(["url" => Storage::disk('s3')->url($path)]);
     }
 }

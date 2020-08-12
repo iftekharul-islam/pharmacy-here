@@ -23,6 +23,7 @@
         }
     },
     "require": {
-        "spatie/laravel-permission": "3.13"
+        "spatie/laravel-permission": "3.13",
+        "league/flysystem-aws-s3-v3": "1.0"
     }
 }

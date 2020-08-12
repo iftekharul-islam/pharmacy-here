@@ -41,7 +41,9 @@ $api->version('v1', function ($api) use ($namespace) {
 
         $api->get('me/pharmacy/bank-info', $namespace . '\UserPharmacyController@getPharmacyBankInfo');
         $api->put('me/pharmacy/bank-info', $namespace . '\UserPharmacyController@updatePharmacyBankInfo');
-        
-        $api->post('me/assets', $namespace . '\AssetController@store');
     });
+});
+
+$api->version('v1', function ($api) use ($namespace) {
+	$api->post('me/assets', $namespace . '\AssetController@store');
 });
