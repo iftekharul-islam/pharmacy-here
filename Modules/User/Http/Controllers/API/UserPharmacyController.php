@@ -7,11 +7,16 @@ use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\BaseController;
+use Illuminate\Support\Facades\Auth;
 use Modules\User\Http\Requests\CreateWeekendsAndWorkingHourRequest;
 use Modules\User\Http\Requests\PharmacyBusinessRequest;
+use Modules\User\Http\Requests\UpdatePharmacyBankInfoRequest;
 use Modules\User\Http\Requests\UpdatePharmacyProfileRequest;
+use Modules\User\Http\Requests\UpdateWeekendsAndWorkingHourRequest;
 use Modules\User\Repositories\PharmacyRepository;
+use Modules\User\Transformers\PharmacyBusinessTransformer;
 use Modules\User\Transformers\PharmacyTransformer;
+use Modules\User\Transformers\WeekendsTransformer;
 
 class UserPharmacyController extends BaseController
 {
@@ -71,23 +76,48 @@ class UserPharmacyController extends BaseController
         //
     }
 
-    public function name()
-    {
-        return responseData('Authorised pharmacy');
-    }
-
+    /**
+     * POST /api/user/me/pharmacy/business
+     *
+     * @param PharmacyBusinessRequest $request
+     * @return \Modules\User\Entities\Models\PharmacyBusiness
+     */
     public function createBusinessInfo(PharmacyBusinessRequest $request)
     {
-        $id = \Illuminate\Support\Facades\Auth::id();
-
-        return $this->repository->createBusinessInfo($request, $id);
+        return $this->repository->createBusinessInfo($request, Auth::id());
     }
 
+
+    /**
+     * GET /api/user/me/pharmacy/weekends-and-working-hours
+     *
+     * @param CreateWeekendsAndWorkingHourRequest $request
+     * @return \Dingo\Api\Http\Response
+     */
+    public function getWeekendsAndWorkingHoursInfo()
+    {
+
+        $infoResponse = $this->repository->getWeekendsAndWorkingHoursInfo(Auth::id());
+
+        if (! $infoResponse) {
+            throw new StoreResourceFailedException('Weekends and working hour create failed');
+        }
+
+        return $this->response->collection($infoResponse, new WeekendsTransformer());
+
+//        return responseData('Weekends and working hour create successful');
+    }
+
+    /**
+     * POST /api/user/me/pharmacy/weekends-and-working-hours
+     *
+     * @param CreateWeekendsAndWorkingHourRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createWeekendsAndWorkingHoursInfo(CreateWeekendsAndWorkingHourRequest $request)
     {
-        $id = \Illuminate\Support\Facades\Auth::id();
 
-        $infoResponse = $this->repository->createWeekendsAndWorkingHoursInfo($request, $id);
+        $infoResponse = $this->repository->createWeekendsAndWorkingHoursInfo($request, Auth::id());
 
         if (! $infoResponse) {
             throw new StoreResourceFailedException('Weekends and working hour create failed');
@@ -96,22 +126,47 @@ class UserPharmacyController extends BaseController
         return responseData('Weekends and working hour create successful');
     }
 
+    /**
+     * PUT /api/user/me/pharmacy/weekends-and-working-hours
+     *
+     * @param UpdateWeekendsAndWorkingHourRequest $request
+     * @return \Dingo\Api\Http\Response
+     */
+    public function updateWeekendsAndWorkingHoursInfo(UpdateWeekendsAndWorkingHourRequest $request)
+    {
+
+        $infoResponse = $this->repository->updateWeekendsAndWorkingHoursInfo($request, Auth::id());
+
+        if (! $infoResponse) {
+            throw new StoreResourceFailedException('Weekends and working hour update failed');
+        }
+
+        return $this->response->item($infoResponse, new PharmacyBusinessTransformer());
+    }
+
+    /**
+     * GET /api/user/me/pharmacy
+     *
+     * @return \Dingo\Api\Http\Response
+     */
     public function getPharmacyProfile()
     {
-        $id = \Illuminate\Support\Facades\Auth::id();
-
-        $infoResponse = $this->repository->getPharmacyInformation($id);
+        $infoResponse = $this->repository->getPharmacyInformation(Auth::id());
 
         return $this->response->item($infoResponse, new PharmacyTransformer());
 
 
     }
 
+    /**
+     * PUT /api/user/me/pharmacy
+     *
+     * @param UpdatePharmacyProfileRequest $request
+     * @return \Dingo\Api\Http\Response
+     */
     public function updatePharmacyProfile(UpdatePharmacyProfileRequest $request)
     {
-        $id = \Illuminate\Support\Facades\Auth::id();
-
-        $infoResponse = $this->repository->updatePharmacyInformation($request, $id);
+        $infoResponse = $this->repository->updatePharmacyInformation($request, Auth::id());
 
         if (! $infoResponse) {
             throw new UpdateResourceFailedException('Pharmacy profile update failed');
@@ -120,5 +175,35 @@ class UserPharmacyController extends BaseController
         return $this->response->item($infoResponse, new PharmacyTransformer());
 
 
+    }
+
+    /**
+     * GET /api/user/me/pharmacy/bank-info
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function getPharmacyBankInfo()
+    {
+        $infoResponse = $this->repository->getPharmacyBankInformation(Auth::id());
+
+        return $this->response->item($infoResponse, new PharmacyBusinessTransformer());
+    }
+
+    /**
+     * PUT /api/user/me/pharmacy/bank-info
+     *
+     * @param UpdatePharmacyBankInfoRequest $request
+     * @return \Dingo\Api\Http\Response
+     */
+    public function updatePharmacyBankInfo(UpdatePharmacyBankInfoRequest $request)
+    {
+
+        $infoResponse = $this->repository->updatePharmacyBankInformation($request, Auth::id());
+
+        if (! $infoResponse) {
+            throw new UpdateResourceFailedException('Pharmacy bank information update failed');
+        }
+
+        return $this->response->item($infoResponse, new PharmacyBusinessTransformer());
     }
 }

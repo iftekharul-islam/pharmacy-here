@@ -180,9 +180,9 @@ class AuthRepository
 
     public function getPharmacyNameByPhone($phone)
     {
-        $user = User::where('phone_number', $phone)->first();
+        $user = User::with('pharmacyBusiness')->where('phone_number', $phone)->first();
 
-        return PharmacyBusiness::where('user_id', $user->id)->first();
+        return $user->pharmacyBusiness->pharmacy_name ?? '';
     }
 
 
