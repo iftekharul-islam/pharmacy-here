@@ -9,7 +9,7 @@ use Modules\User\Entities\Models\User;
 
 class Order extends Model
 {
-
+    use SoftDeletes;
 
     protected $fillable = [
         'payment_type',

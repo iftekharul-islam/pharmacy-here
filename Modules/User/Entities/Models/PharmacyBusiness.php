@@ -3,7 +3,6 @@
 namespace Modules\User\Entities\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PharmacyBusiness extends Model
 {
@@ -12,5 +11,10 @@ class PharmacyBusiness extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function weekends()
+    {
+        return $this->hasMany(Weekends::class, 'user_id', 'user_id');
     }
 }

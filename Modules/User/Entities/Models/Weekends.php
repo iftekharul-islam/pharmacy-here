@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Weekends extends Model
 {
+    use SoftDeletes;
 
     protected $fillable = ['days'];
 }
