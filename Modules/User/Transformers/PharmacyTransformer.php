@@ -10,7 +10,7 @@ use Modules\User\Entities\Models\User;
 class PharmacyTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
-        'pharmacyBusiness'
+        'pharmacyBusiness', 'weekends'
     ];
 
     public function transform(User $item)
@@ -30,6 +30,12 @@ class PharmacyTransformer extends TransformerAbstract
     public function includePharmacyBusiness(User $item)
     {
         return $this->item($item->pharmacyBusiness, new PharmacyBusinessTransformer());
+    }
+
+    public function includeWeekends(User $item)
+    {
+
+        return $this->collection($item->weekends, new WeekendsTransformer());
     }
 
 

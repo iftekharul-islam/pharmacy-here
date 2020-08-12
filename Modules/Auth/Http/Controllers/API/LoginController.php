@@ -96,7 +96,7 @@ class LoginController extends Controller
             throw new StoreResourceFailedException('Failed to create OTP');
         }
 
-        return responseData('Otp create successful');
+        return responseData('Otp creation successful');
     }
 
     public function verifyOtp(PhoneValidationRequest $request)
@@ -117,8 +117,7 @@ class LoginController extends Controller
 
         $pharmacyName = $this->repository->getPharmacyNameByPhone($request->phone_number);
 
-
-        return $this->respondWithTokenAndName($token, $pharmacyName->pharmacy_name);
+        return $this->respondWithTokenAndName($token, $pharmacyName);
 
 //        return $this->respondWithToken($token);
     }
