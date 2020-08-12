@@ -35,5 +35,7 @@ $api->version('v1', function ($api) use ($namespace) {
 
         $api->get('me/pharmacy', $namespace . '\UserPharmacyController@getPharmacyProfile');
         $api->put('me/pharmacy', $namespace . '\UserPharmacyController@updatePharmacyProfile');
+        
+        $api->post('me/assets', $namespace . '\AssetController@store');
     });
 });

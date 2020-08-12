@@ -21,7 +21,7 @@ class FreshDatabase extends Command
      * @var string
      */
     protected $description = 'Fresh all database';
-
+ 
     /**
      * Create a new command instance.
      *
