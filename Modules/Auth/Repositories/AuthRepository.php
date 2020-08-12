@@ -182,7 +182,7 @@ class AuthRepository
     {
         $user = User::with('pharmacyBusiness')->where('phone_number', $phone)->first();
 
-        return $user['pharmacyBusiness']['pharmacy_name'];
+        return $user->pharmacyBusiness->pharmacy_name ?? '';
     }
 
 
