@@ -31,6 +31,14 @@ class PharmacyRepository
             $pharmacyBusiness->area_id = $request->area_id;
         }
 
+        if (isset($request->pharmacy_address)) {
+            $pharmacyBusiness->pharmacy_address = $request->pharmacy_address;
+        }
+
+        if (isset($request->pharmacy_name)) {
+            $pharmacyBusiness->pharmacy_name = $request->pharmacy_name;
+        }
+
         $pharmacyBusiness->user_id = $id;
 
         $pharmacyBusiness->save();
