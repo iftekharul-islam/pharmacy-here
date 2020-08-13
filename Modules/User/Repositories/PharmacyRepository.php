@@ -15,7 +15,7 @@ class PharmacyRepository
     {
         $pharmacyBusiness = new PharmacyBusiness();
 
-        if ($request->file('nid_image')) {
+        if ($request->has('nid_image')) {
             $pharmacyBusiness->nid_img_path = $request->get('nid_image');
         }
 
@@ -88,12 +88,6 @@ class PharmacyRepository
 
     public function updateWeekendsAndWorkingHoursInfo($request, $id)
     {
-//        $user = User::find($id);
-//
-//        if (! $user) {
-//            throw new NotFoundHttpException('Pharmacy Not Found');
-//        }
-
         $weekends = $request->weekends;
 
         Weekends::where('user_id', $id)->delete();
@@ -161,8 +155,6 @@ class PharmacyRepository
             $user->name = $request->name;
         }
 
-
-
         if (isset($request->phone_number)) {
             $user->phone_number = $request->phone_number;
         }
@@ -173,6 +165,10 @@ class PharmacyRepository
 
         if (isset($request->email)) {
             $user->email = $request->email;
+        }
+
+        if ($request->has('image')) {
+            $user->image = $request->get('image');
         }
 
         $user->save();
