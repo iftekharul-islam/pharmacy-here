@@ -125,7 +125,7 @@ class UserPharmacyController extends BaseController
 
         $pharmacy = $this->repository->getPharmacyInformation(Auth::id());
 
-        return json_encode([
+        return response()->json([
             'data' => $pharmacy,
             'status_code' => 200
         ]);
