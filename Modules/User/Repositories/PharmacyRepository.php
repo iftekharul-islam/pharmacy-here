@@ -83,7 +83,9 @@ class PharmacyRepository
             $pharmacyInfo->break_end_time = $request->break_end_time;
         }
 
-        return $pharmacyInfo->save();
+        $pharmacyInfo->save();
+
+        return $pharmacyInfo;
     }
 
     public function updateWeekendsAndWorkingHoursInfo($request, $id)

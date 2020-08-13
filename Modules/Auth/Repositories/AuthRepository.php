@@ -178,11 +178,12 @@ class AuthRepository
         return JWTAuth::fromUser($user);
     }
 
-    public function getPharmacyNameByPhone($phone)
+    public function getUserByPhone($phone)
     {
         $user = User::with('pharmacyBusiness')->where('phone_number', $phone)->first();
 
-        return $user->pharmacyBusiness->pharmacy_name ?? '';
+        return $user;
+//        return $user->pharmacyBusiness->pharmacy_name ?? '';
     }
 
 
