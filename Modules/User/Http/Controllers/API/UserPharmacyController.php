@@ -112,7 +112,7 @@ class UserPharmacyController extends BaseController
      * POST /api/user/me/pharmacy/weekends-and-working-hours
      *
      * @param CreateWeekendsAndWorkingHourRequest $request
-     * @return \Dingo\Api\Http\Response
+     * @return false|string
      */
     public function createWeekendsAndWorkingHoursInfo(CreateWeekendsAndWorkingHourRequest $request)
     {
@@ -125,7 +125,12 @@ class UserPharmacyController extends BaseController
 
         $pharmacy = $this->repository->getPharmacyInformation(Auth::id());
 
-        return $this->response->item($pharmacy, new PharmacyTransformer());
+        return json_encode([
+            'data' => $pharmacy,
+            'status_code' => 200
+        ]);
+
+//        return $this->response->item($pharmacy, new PharmacyTransformer());
 
 //        return responseData('Weekends and working hour create successful');
     }
