@@ -16,7 +16,7 @@ class UpdateWeekendsAndWorkingHourRequest extends FormRequest
         return [
             'start_time' => 'required',
             'end_time' => 'required',
-            'weekends' => 'required|array'
+//            'weekends' => 'required|array'
         ];
     }
 
