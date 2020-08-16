@@ -204,6 +204,12 @@ class AuthRepository
 
         $user->save();
 
+        $role = Role::where('name', $request->role)->first();
+
+        if ($user && $role) {
+            $user->assignRole($role);
+        }
+
         return $this->createOtp($request);
     }
 
