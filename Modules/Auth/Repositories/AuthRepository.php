@@ -119,7 +119,7 @@ class AuthRepository
      * @param $request
      * @return mixed
      */
-    public function createUser($request)
+    public function createPharmacyUser($request)
     {
         $user = new User();
 
@@ -180,10 +180,31 @@ class AuthRepository
 
     public function getUserByPhone($phone)
     {
-        $user = User::with('pharmacyBusiness')->where('phone_number', $phone)->first();
+        $user = User::where('phone_number', $phone)->first();
 
-        return $user;
+        if ($user->hasRole('pharmacy')) {
+            return User::with('pharmacyBusiness')->where('phone_number', $phone)->first();
+        }
+        return User::where('phone_number', $phone)->first();
+
 //        return $user->pharmacyBusiness->pharmacy_name ?? '';
+    }
+
+    public function createCustomerUser($request)
+    {
+        $user = new User();
+
+        if ($request->has('name')) {
+            $user->name = $request->name;
+        }
+
+        if ($request->has('phone_number')) {
+            $user->phone_number = $request->phone_number;
+        }
+
+        $user->save();
+
+        return $this->createOtp($request);
     }
 
 
