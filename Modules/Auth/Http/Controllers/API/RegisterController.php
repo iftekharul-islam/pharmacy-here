@@ -8,6 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
+use Modules\Auth\Http\Requests\CustomerRegistrationRequest;
 use Modules\Auth\Http\Requests\PharmacyRegistrationRequest;
 use Modules\Auth\Http\Requests\PhoneValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
@@ -60,7 +61,7 @@ class RegisterController extends Controller
             throw new StoreResourceFailedException('Failed to create OTP');
         }
 
-        return responseData('Otp create successful');
+        return responseData('Otp creation successful');
     }
 
     public function verifyOtp(PhoneValidationRequest $request)
@@ -71,11 +72,15 @@ class RegisterController extends Controller
             throw new StoreResourceFailedException('Failed to verify OTP');
         }
 
-        return response()->json([
-            'data' => [
-                'verify_otp' => true,
-            ]
-        ]);
+        $token = $this->repository->loginWithPhone($request->phone_number);
+
+        return $this->respondWithToken($token);
+
+//        return response()->json([
+//            'data' => [
+//                'verify_otp' => true,
+//            ]
+//        ]);
     }
 
     public function registerPharmacyWithOtp(PhoneValidationRequest $request)
@@ -97,18 +102,34 @@ class RegisterController extends Controller
 
     public function registerPharmacy(PharmacyRegistrationRequest $request)
     {
-//        $otpResponse = $this->repository->verifyOtp($request);
-//
-//        if (! $otpResponse) {
-//            throw new StoreResourceFailedException('Failed to verify OTP');
-//        }
-
-        $user = $this->repository->createUser($request);;
+        $user = $this->repository->createPharmacyUser($request);;
 
         if (! $user) {
             throw new StoreResourceFailedException('Pharmacy registration unsuccessful');
         }
 
         return $user;
+    }
+
+    public function registerCustomer(CustomerRegistrationRequest $request)
+    {
+//        return $request->all();
+
+        $responseInfo = $this->repository->createCustomerUser($request);;
+
+        if (! $responseInfo) {
+            throw new StoreResourceFailedException('Failed to create OTP');
+        }
+
+        return responseData('Otp creation successful');
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => $this->guard()->factory()->getTTL()
+        ]);
     }
 }

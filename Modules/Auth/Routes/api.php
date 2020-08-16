@@ -34,6 +34,8 @@ $api->version('v1', function ($api) use ($authNamespace){
         $api->post('pharmacy/register/create-otp', $authNamespace . '\RegisterController@registerPharmacyWithOtp');
         $api->post('pharmacy/register', $authNamespace . '\RegisterController@registerPharmacy');
 
+        $api->post('customer/register', $authNamespace . '\RegisterController@registerCustomer');
+
 
 //    });
 });
