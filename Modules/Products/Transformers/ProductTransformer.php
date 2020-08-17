@@ -9,7 +9,7 @@ class ProductTransformer extends TransformerAbstract
 {
 
     protected $availableIncludes = [
-        'productAdditionalInfo', 'form', 'category', 'generic', 'category', 'primaryUnit'
+        'productAdditionalInfo', 'form', 'category', 'generic', 'category', 'primaryUnit', 'company'
     ];
 
     public function transform(Product $product)

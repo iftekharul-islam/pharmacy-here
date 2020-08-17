@@ -54,7 +54,7 @@ class FormController extends BaseController
             throw new StoreResourceFailedException('Form Create failed');
         }
 
-        return $this->response->created('/products/form', $form);
+        return $this->response->created('/forms', $form);
     }
 
     /**

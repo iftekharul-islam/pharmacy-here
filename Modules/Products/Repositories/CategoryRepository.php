@@ -59,7 +59,9 @@ class CategoryRepository
             $category->status = $request->status;
         }
 
-        return $category->save();
+        $category->save();
+
+        return $category;
 
 
     }
