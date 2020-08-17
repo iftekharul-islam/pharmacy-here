@@ -173,8 +173,8 @@ class ProductRepository
         if (isset($request->renal_dose)) {
             $productInfo->renal_dose = $request->renal_dose;
         }
-
-        return $productInfo->save();
+        $productInfo->save();
+        return $product;
 
     }
 
@@ -212,5 +212,13 @@ class ProductRepository
     public function getAllUnit()
     {
         return Unit::all();
+    }
+
+    public function getRelatedProductByProductId($id)
+    {
+        $product = Product::find($id)->first();
+
+        return Product::where('generic_id', $product->generic_id)->get();
+
     }
 }

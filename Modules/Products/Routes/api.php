@@ -39,6 +39,8 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->get('units/{id}', $namespace . '\UnitController@show');
         $api->get('units/slug/{slug}', $namespace . '\UnitController@showBySlug');
 
+    $api->get('products/{id}/related_product', $namespace . '\ProductsController@getRelatedProductByProductId');
+
 
 //    $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
         $api->post('companies', $namespace . '\CompanyController@store');
@@ -69,5 +71,7 @@ $api->version('v1', function ($api) use ($namespace) {
 
     $api->group(['middleware' => 'role:customer'], function ($api) use ($namespace) {
         $api->get('carts', $namespace . '\CartController@index');
+
+//        $api->get('customer/products/{id}', $namespace . '\ProductsController@getRelatedProductByProductId');
     });
 });

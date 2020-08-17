@@ -38,7 +38,8 @@ class CompanyRepository
             $company->status = $request->status;
         }
 
-        return $company->save();
+        $company->save();
+        return $company;
 
 
     }

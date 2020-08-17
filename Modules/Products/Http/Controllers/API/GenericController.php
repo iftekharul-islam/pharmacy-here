@@ -36,9 +36,9 @@ class GenericController extends BaseController
             throw new NotFoundHttpException('Generic list Not Found');
         }
 
-        $generic = Generic::paginate(10);
+//        $generic = Generic::paginate(10);
 
-        return $this->response->paginator($generic, new GenericTransformer());
+        return $this->response->collection($genericList, new GenericTransformer());
     }
 
     /**
