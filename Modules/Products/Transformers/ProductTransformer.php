@@ -28,7 +28,9 @@ class ProductTransformer extends TransformerAbstract
             'category_id'               => $product->category_id,
             'generic_id'                => $product->generic_id,
             'manufacturing_company_id'  => $product->manufacturing_company_id,
-            'primary_unit_id'           => $product->primary_unit_id
+            'primary_unit_id'           => $product->primary_unit_id,
+            'is_prescripted'            => $product->is_prescripted,
+            'is_pre_order'              => $product->is_pre_order,
         ];
     }
 
