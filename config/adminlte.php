@@ -267,27 +267,27 @@ return [
                 [
                     'text' => 'Product Category',
                     'icon_color' => 'cyan',
-                    'url'  => 'products/category',
+                    'url'  => 'categories',
                 ],
                 [
                     'text' => 'Product Generic',
                     'icon_color' => 'cyan',
-                    'url'  => 'products/generic',
+                    'url'  => 'generics',
                 ],
                 [
                     'text' => 'Product Form',
                     'icon_color' => 'cyan',
-                    'url'  => 'products/form',
+                    'url'  => 'forms',
                 ],
                 [
                     'text' => 'Product Unit',
                     'icon_color' => 'cyan',
-                    'url'  => 'products/unit',
+                    'url'  => 'units',
                 ],
                 [
                     'text' => 'Product Company',
                     'icon_color' => 'cyan',
-                    'url'  => 'products/company',
+                    'url'  => 'companies',
                 ],
             ],
         ],
