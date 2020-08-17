@@ -41,7 +41,8 @@ class GenericRepository
             $generic->status = $request->status;
         }
 
-        return $generic->save();
+        $generic->save();
+        return $generic;
     }
 
     public function delete($id)

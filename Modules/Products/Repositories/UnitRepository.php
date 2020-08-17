@@ -63,8 +63,9 @@ class UnitRepository
         if (isset($request->status)) {
             $unit->status = $request->status;
         }
+        $unit->save();
 
-        return $unit->save();
+        return $unit;
 
 
     }

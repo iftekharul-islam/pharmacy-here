@@ -123,4 +123,15 @@ class ProductsController extends BaseController
 
         return responseData('Product delete successful');
     }
+
+    public function getRelatedProductByProductId($id)
+    {
+        $product = $this->repository->getRelatedProductByProductId($id);
+
+        if (!$product) {
+            throw new UpdateResourceFailedException('Product update failed');
+        }
+
+        return $this->response->collection($product, new ProductTransformer());
+    }
 }
