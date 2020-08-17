@@ -66,4 +66,8 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->delete('units/{id}', $namespace . '\UnitController@destroy');
 
 //    });
+
+    $api->group(['middleware' => 'role:customer'], function ($api) use ($namespace) {
+        $api->get('carts', $namespace . '\CartController@index');
+    });
 });
