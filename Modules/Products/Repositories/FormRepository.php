@@ -45,8 +45,8 @@ class FormRepository
         if (isset($request->status)) {
             $form->status = $request->status;
         }
-
-        return $form->save();
+        $form->save();
+        return $form;
 
     }
 

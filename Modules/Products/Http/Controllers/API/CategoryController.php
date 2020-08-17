@@ -5,10 +5,12 @@ namespace Modules\Products\Http\Controllers\API;
 use App\Http\Controllers\BaseController;
 use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Products\Entities\Model\Category;
+use Modules\Products\Http\Requests\UpdateCategoryRequest;
 use Modules\Products\Repositories\CategoryRepository;
 use Modules\Products\Http\Requests\CategoryCreateRequest;
 use Modules\Products\Transformers\CategoryTransformer;
@@ -35,8 +37,7 @@ class CategoryController extends BaseController
             throw new NotFoundHttpException('Category list Not Found');
         }
 
-        $category = Category::paginate(10);
-        return $this->response->paginator($category, new CategoryTransformer());
+        return $this->response->collection($categoryList, new CategoryTransformer());
     }
 
     /**
@@ -61,7 +62,7 @@ class CategoryController extends BaseController
             throw new StoreResourceFailedException('Category create failed');
         }
 
-        return $this->response->created('/products/categories', $category);
+        return $this->response->created('/categories', $category);
     }
 
     /**
@@ -107,9 +108,15 @@ class CategoryController extends BaseController
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        //
+        $data = $this->repository->update($request, $id);
+
+        if (! $data) {
+            throw new UpdateResourceFailedException('Category update failed');
+        }
+
+        return $this->response->item($data, new CategoryTransformer());
     }
 
     /**
