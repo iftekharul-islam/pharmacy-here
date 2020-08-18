@@ -75,4 +75,9 @@ class Product extends Model
         return $this->hasOne(OrderItems::class);
     }
 
+    public function cartItems()
+    {
+        return $this->hasOne(CartItem::class);
+    }
+
 }

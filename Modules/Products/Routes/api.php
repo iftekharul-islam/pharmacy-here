@@ -39,7 +39,7 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->get('units/{id}', $namespace . '\UnitController@show');
         $api->get('units/slug/{slug}', $namespace . '\UnitController@showBySlug');
 
-    $api->get('products/{id}/related_product', $namespace . '\ProductsController@getRelatedProductByProductId');
+    $api->get('products/{id}/related-products', $namespace . '\ProductsController@getRelatedProductByProductId');
 
 
 //    $api->group(['prefix' => 'products', 'middleware' => 'role:admin'], function ($api) use ($namespace) {
@@ -71,7 +71,10 @@ $api->version('v1', function ($api) use ($namespace) {
 
     $api->group(['middleware' => 'role:customer'], function ($api) use ($namespace) {
         $api->get('carts', $namespace . '\CartController@index');
+        $api->post('carts', $namespace . '\CartController@store');
 
-//        $api->get('customer/products/{id}', $namespace . '\ProductsController@getRelatedProductByProductId');
+        $api->put('cart-items/{id}', $namespace . '\CartController@updateCartItem');
+
+//        $api->get('products/{id}/related_product', $namespace . '\ProductsController@getRelatedProductByProductId');
     });
 });

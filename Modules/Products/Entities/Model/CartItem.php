@@ -3,15 +3,11 @@
 namespace Modules\Products\Entities\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
-use Modules\User\Entities\Models\User;
 
-class Cart extends Model
+class CartItem extends Model
 {
-    use SoftDeletes;
 
-    protected $fillable = ['customer_id', 'order_from'];
+    protected $fillable = ['product_id', 'quantity', 'amount'];
 
 //    protected static function boot() {
 //        parent::boot();
@@ -25,10 +21,13 @@ class Cart extends Model
 //        });
 //    }
 //
-    public function customer()
+//    public function cart()
+//    {
+//        return $this->hasMany(Cart::class, 'cart_id', 'id');
+//    }
+
+    public function product()
     {
-        return $this->belongsTo(User::class, 'customer_id', 'id');
+        return $this->hasMany(Product::class, 'id', 'product_id');
     }
-
-
 }

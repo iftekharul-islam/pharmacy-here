@@ -14,6 +14,7 @@ class ProductTransformer extends TransformerAbstract
 
     public function transform(Product $product)
     {
+
         return [
             'id'                        => $product->id,
             'name'                      => $product->name,
@@ -31,6 +32,7 @@ class ProductTransformer extends TransformerAbstract
             'primary_unit_id'           => $product->primary_unit_id,
             'is_prescripted'            => $product->is_prescripted,
             'is_pre_order'              => $product->is_pre_order,
+//            'uuu'   => $product->load('form')
         ];
     }
 
