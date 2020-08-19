@@ -7,6 +7,7 @@ use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Products\Entities\Model\Product;
 use Modules\Products\Http\Requests\CreateProductRequest;
@@ -28,16 +29,17 @@ class ProductsController extends BaseController
      * Display a listing of the resource.
      * @return \Dingo\Api\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $productList = $this->repository->all();
+        $productList = $this->repository->all($request);
+
+//        return $productList;
 
         if (! $productList) {
             throw new NotFoundHttpException('Product List Not Found');
         }
 
-        $products = Product::paginate(10);
-        return $this->response->paginator($products, new ProductTransformer());
+        return $this->response->collection($productList, new ProductTransformer());
     }
 
     /**

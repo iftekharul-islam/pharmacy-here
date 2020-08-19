@@ -3,16 +3,15 @@
 namespace Modules\Products\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
-use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Products\Entities\Model\Category;
+use Illuminate\Support\Facades\Auth;
+use Modules\Products\Http\Requests\CartCreateRequest;
+use Modules\Products\Http\Requests\UpdateCartItemRequest;
 use Modules\Products\Repositories\CartRepository;
-use Modules\Products\Http\Requests\CategoryCreateRequest;
-use Modules\Products\Transformers\CategoryTransformer;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Modules\Products\Transformers\CartItemTransformer;
 
 class CartController extends BaseController
 {
@@ -48,20 +47,20 @@ class CartController extends BaseController
         return view('products::create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param CategoryCreateRequest $request
-     * @return \Dingo\Api\Http\Response
-     */
-    public function store(CategoryCreateRequest $request)
+
+    public function store(CartCreateRequest $request)
+//    public function store(Request $request)
     {
-//        $category = $this->repository->create($request);
-//
-//        if (! $category) {
-//            throw new StoreResourceFailedException('Category create failed');
-//        }
-//
-//        return $this->response->created('/products/categories', $category);
+//        return Auth::id();
+//        return $request->all();
+
+        $cartInfo = $this->repository->create($request->cart_items, $request->order_from, Auth::id());
+
+        if (! $cartInfo) {
+            throw new StoreResourceFailedException('Cart creation failed');
+        }
+
+        return $this->response->collection($cartInfo, new CartItemTransformer());
     }
 
     /**
@@ -126,5 +125,17 @@ class CartController extends BaseController
 //        }
 //
 //        return responseData('Category delete successful');
+    }
+
+    public function updateCartItem(UpdateCartItemRequest $request, $id)
+    {
+//        return $id;
+        $cartInfo = $this->repository->updateCartItem($request, $id);
+
+        if (! $cartInfo) {
+            throw new StoreResourceFailedException('Cart creation failed');
+        }
+
+        return $this->response->item($cartInfo, new CartItemTransformer());
     }
 }

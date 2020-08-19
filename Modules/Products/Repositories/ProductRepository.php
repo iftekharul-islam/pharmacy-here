@@ -15,9 +15,37 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductRepository
 {
-    public function all()
+    public function all($request)
     {
-        return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+        $products = Product::query();
+
+        if ($request->has('form_id')) {
+            $products->where('form_id', $request->get('form_id'));
+        }
+
+        if ($request->has('medicine') && $request->get('medicine')) {
+            $medicine = $request->get('medicine');
+            $products->where('name', 'LIKE', "%$medicine%");
+        }
+
+        if ($request->has('brand') && $request->get('brand')) {
+            $brand = $request->get('brand');
+            $products->where('name', 'LIKE', "%$brand%");
+        }
+
+        if ($request->has('generic') && $request->get('generic')) {
+            $genericName = $request->get('generic');
+            $generic = Generic::where('name', 'LIKE', "%$genericName%")->get()->pluck('id')->toArray();
+            $products->whereIn('generic_id', $generic);
+        }
+
+        if ($request->has('company') && $request->get('company')) {
+            $companyName = $request->get('company');
+            $company = Company::where('name', 'LIKE', "%$companyName%")->get()->pluck('id')->toArray();
+            $products->whereIn('company_id', $company);
+        }
+
+        return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
             ->get();
     }
 

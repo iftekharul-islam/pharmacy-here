@@ -5,6 +5,8 @@ namespace Modules\Products\Repositories;
 
 use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Support\Str;
+use Modules\Products\Entities\Model\Cart;
+use Modules\Products\Entities\Model\CartItem;
 use Modules\Products\Entities\Model\Category;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -12,67 +14,100 @@ class CartRepository
 {
     public function all()
     {
-//        return Category::get();
+
     }
 
     public function findById($id)
     {
-//        return Category::find($id);
+
     }
 
-    public function create($data)
+    public function create($request, $order_from, $customerId)
     {
-//        $slug = Str::of($data->get('name'))->slug('-');
+        $cartId = 0;
+        foreach ($request as $req)
+        {
+//            print_r($req['cart_id']);
+//            print_r("\n");
+//            print_r($req['product_id']);
+//            print_r("\n");
+////            print_r($req->quantity);
+////            print_r("\n");
+////            print_r($req->amount);
+//            print_r("\n");
+//            print_r("\n");
+
+            if (!isset($req['cart_id'])) {
+//                $cartInfo = new Cart();
+//                $cartInfo->customer_id = $customerId;
+//                $cartInfo->save();
 //
-//        $existingCategory = Category::where('slug', $slug)->first();
-//
-//        if ($existingCategory) {
-//            throw new ValidationHttpException('Category already exists.');
-//        }
-//
-//        return Category::create([
-//            'name' => $data->get('name'),
-//            'slug' => $slug,
-//            'status' => $data->get('status')
-//        ]);
+//                $cartId = $cartInfo->id;
+
+                $cartInfo = Cart::create([
+                    'customer_id' => $customerId,
+                    'order_from' => $order_from,
+                ]);
+
+            } else {
+                $cartId = $req['cart_id'];
+            }
+
+            $this->createCartItem($req, $cartId);
+        }
+        die();
+        return CartItem::where('cart_id', $cartId)->get();
 
     }
 
     public function findBySlug($slug)
     {
-//        return Category::where('slug', $slug)->first();
+
     }
 
     public function update($request, $id)
     {
-//        $category = Category::find($id);
-//
-//        if (!$category) {
-//            throw new NotFoundHttpException('Category not found');
-//        }
-//
-//        if (isset($request->name)) {
-//            $category->name = $request->name;
-//        }
-//
-//        if (isset($request->status)) {
-//            $category->status = $request->status;
-//        }
-//
-//        return $category->save();
-
 
     }
 
     public function delete($id)
     {
-//        $category = Category::find($id);
-//
-//        if (! $category) {
-//            throw new NotFoundHttpException('Category not found');
-//        }
-//
-//        return $category->delete();
+
+    }
+
+    public function createCartItem($request, $cart_id)
+    {
+//        $cartItemsInfo = new CartItem();
+//        $cartItemsInfo->cart_id = $cart_id;
+//        $cartItemsInfo->product_id = $request->product_id;
+//        $cartItemsInfo->quantity = $request->quantity;
+//        $cartItemsInfo->amount = $request->amount;
+//        $cartItemsInfo->save();
+
+        $cartItemsInfo = CartItem::create([
+            'cart_id' => $cart_id,
+            'product_id' => $request['product_id'],
+            'quantity' => $request['quantity'],
+            'amount' => $request['amount'],
+        ]);
+
+        return $cartItemsInfo;
+    }
+
+    public function updateCartItem($request, $cartItemId)
+    {
+        $cartItemInfo = CartItem::findOrFail($cartItemId);
+
+        if (!$cartItemInfo) {
+            throw new NotFoundHttpException('Cart Item not found');
+        }
+
+        if ($request->has('quantity')){
+            $cartItemInfo->quantity = $request->quantity;
+        }
+
+        $cartItemInfo->save();
+        return $cartItemInfo;
     }
 
 }
