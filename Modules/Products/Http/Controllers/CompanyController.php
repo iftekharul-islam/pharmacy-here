@@ -2,6 +2,7 @@
 
 namespace Modules\Products\Http\Controllers;
 
+use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Contracts\View\Factory;
@@ -110,6 +111,14 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         //
-        return $this->repository->delete($id);
+        //return $this->repository->delete($id);
+
+        $company = $this->repository->delete($id);
+
+        if (! $company) {
+            throw new DeleteResourceFailedException('Company Delete Failed');
+        }
+
+        return redirect()->route('company.index');
     }
 }

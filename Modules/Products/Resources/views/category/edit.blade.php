@@ -1,6 +1,6 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
-
+@section('title', 'Edit Product Category')
 
 @section('content')
     <div class="col-md-6">

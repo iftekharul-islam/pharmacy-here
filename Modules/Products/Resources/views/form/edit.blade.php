@@ -1,6 +1,7 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
 
+@section('title', 'Edit Product Form')
 
 @section('content')
     <div class="col-md-6">

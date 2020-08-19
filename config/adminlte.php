@@ -291,6 +291,11 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Pharmacies',
+            'icon'    => 'fas fa-store-alt',
+            'url'     => 'pharmacies'
+        ],
 //        ['header' => 'account_settings'],
 //        [
 //            'text' => 'profile',

@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-
+@section('title', 'Create Product Unit')
 
 @section('content')
     <div class="col-md-6">
