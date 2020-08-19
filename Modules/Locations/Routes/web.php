@@ -13,4 +13,11 @@
 
 Route::prefix('locations')->group(function() {
     Route::get('/', 'LocationsController@index');
+    Route::get('/districts', 'DistrictController@index')->name('districts');
+    Route::get('districts/create', 'DistrictController@create')->name('district.create');
+    Route::post('districts/store', 'DistrictController@store')->name('district.store');
+    Route::get('districts/{id}/edit', 'DistrictController@edit')->name('district.edit');
+    Route::put('districts/{id}', 'DistrictController@update')->name('district.update');
+    Route::delete('districts/{id}', 'DistrictController@destroy')->name('district.destroy');
+    
 });

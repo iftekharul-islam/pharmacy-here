@@ -20,4 +20,9 @@ class Division extends Model
             $division->slug = Str::slug($division->name);
         });
     }
+
+    public function districts()
+    {
+        return $this->hasMany(District::class);
+    }
 }

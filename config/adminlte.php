@@ -296,6 +296,32 @@ return [
             'icon'    => 'fas fa-store-alt',
             'url'     => 'pharmacies'
         ],
+        [
+            'text'    => 'Location',
+            'icon'    => 'fas fa-map',
+            'submenu' => [
+                // [
+                //     'text' => 'Divisions',
+                //     'icon_color' => 'cyan',
+                //     'url'  => '',
+                // ],
+                [
+                    'text' => 'Districts',
+                    'icon_color' => 'cyan',
+                    'url'  => 'locations/districts',
+                ],
+                [
+                    'text' => 'Thana',
+                    'icon_color' => 'cyan',
+                    'url'  => '',
+                ],
+                [
+                    'text' => 'Area',
+                    'icon_color' => 'cyan',
+                    'url'  => '',
+                ],
+            ],
+        ],
 //        ['header' => 'account_settings'],
 //        [
 //            'text' => 'profile',

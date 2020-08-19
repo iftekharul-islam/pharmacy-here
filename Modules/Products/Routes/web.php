@@ -52,7 +52,7 @@
     Route::put('generics/{id}', 'GenericController@update')->name('generic.update');
     Route::delete('generics/{id}', 'GenericController@destroy')->name('generic.destroy');
 
-//    Route::resource('units', 'UnitController');
+    //Route::resource('units', 'UnitController');
     Route::get('units', 'UnitController@index')->name('unit.index');
     Route::get('units/create', 'UnitController@create')->name('unit.create');
     Route::post('units/store', 'UnitController@store')->name('unit.store');
@@ -67,4 +67,5 @@
     Route::get('pharmacies/{id}/edit', 'PharmacyController@edit')->name('pharmacy.edit');
     Route::put('pharmacies/{id}', 'PharmacyController@update')->name('pharmacy.update');
     Route::delete('pharmacies/{id}', 'PharmacyController@destroy')->name('pharmacy.destroy');
+    
 //});
