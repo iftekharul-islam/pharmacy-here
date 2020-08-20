@@ -1,6 +1,6 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
-@section('title', 'Districts')
+@section('title', 'Create Districts')
 
 @section('content')
     <div class="col-md-6">
@@ -16,7 +16,7 @@
                     <div class="form-group row">
                         <label for="name" class="col-sm-4 col-form-label">Name(English)</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="District Name" required>
+                            <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" placeholder="District Name" required>
                             @if ($errors->has('name'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -27,7 +27,7 @@
                     <div class="form-group row">
                         <label for="bn_name" class="col-sm-4 col-form-label">Name(Bangla)</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="bn_name" class="form-control" id="bn_name" placeholder="District Name(Bangla)" required>
+                            <input type="text" name="bn_name" class="form-control" id="bn_name" value="{{ old('bn_name') }}" placeholder="District Name(Bangla)" required>
                             @if ($errors->has('bn_name'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('bn_name') }}</strong>
@@ -42,7 +42,7 @@
                             <select class="form-control" name="division_id" required>
                                 <option value="" hidden selected></option>
                                 @foreach($divisions as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                <option value="{{ $item->id }}" @if($item->id == old('division_id')) selected @endif>{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('division_id'))
@@ -56,8 +56,8 @@
                         <label for="status" class="col-sm-4 col-form-label">Active</label>
                         <div class="col-sm-8  ">
                             <select class="form-control" name="status" required>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
+                                <option value="1" @if(old('status') == 1) selected @endif>Yes</option>
+                                <option value="0" @if(old('status') == 0) selected @endif>No</option>
                             </select>
                             @if ($errors->has('status'))
                                 <span class="text-danger">
@@ -72,7 +72,8 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{ route('districts') }}" class="btn btn-danger">Back</a>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
         </div>

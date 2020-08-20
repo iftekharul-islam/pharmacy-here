@@ -300,11 +300,11 @@ return [
             'text'    => 'Location',
             'icon'    => 'fas fa-map',
             'submenu' => [
-                // [
-                //     'text' => 'Divisions',
-                //     'icon_color' => 'cyan',
-                //     'url'  => '',
-                // ],
+                [
+                    'text' => 'Divisions',
+                    'icon_color' => 'cyan',
+                    'url'  => 'locations/divisions',
+                ],
                 [
                     'text' => 'Districts',
                     'icon_color' => 'cyan',

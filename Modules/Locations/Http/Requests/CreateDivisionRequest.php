@@ -3,9 +3,8 @@
 namespace Modules\Locations\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateDistrictRequest extends FormRequest
+class CreateDivisionRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,9 +14,8 @@ class UpdateDistrictRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string|unique:districts,name,{$this->id}",
+            'name' => 'required|string|unique:divisions,name',
             'bn_name' => 'required|string',
-            'division_id' => 'required',
             'status' => 'required'
         ];
     }

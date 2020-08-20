@@ -5,12 +5,15 @@ namespace Modules\Locations\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Http\Requests\CreatethanaRequest;
+use Modules\Locations\Http\Requests\UpdateThanaRequest;
 use Modules\Locations\Repositories\DistrictRepository;
 use Modules\Locations\Repositories\ThanaRepository;
 
 class ThanaController extends Controller
 {
     private $districtRepository, $thanaRepository;
+    
     public function __construct(DistrictRepository $districtRepository, ThanaRepository $thanaRepository)
     {
         $this->districtRepository = $districtRepository;
@@ -41,7 +44,7 @@ class ThanaController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(CreatethanaRequest $request)
     {
         $thana = $this->thanaRepository->create($request);
         return redirect()->route('thana')->with('success', 'Thana created successfully');
@@ -75,7 +78,7 @@ class ThanaController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(UpdateThanaRequest $request, $id)
     {
         $thana = $this->thanaRepository->update($request, $id);
         return redirect()->route('thana')->with('success', 'Thana updated successfully');

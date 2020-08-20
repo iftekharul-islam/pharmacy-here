@@ -1,23 +1,22 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
-@section('title', 'Edit Thana')
+@section('title', 'Create Division')
 
 @section('content')
     <div class="col-md-6">
         <div class="card card-primary-outline">
             <div class="card-header">
-                <h3 class="card-title">Edit Thana</h3>
+                <h3 class="card-title">Create Division</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('thana.update', $thana->id) }}" method="POST">
+            <form role="form" action="{{ route('division.store') }}" method="POST">
                 @csrf
-                @method('PUT')
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="name" class="col-sm-4 col-form-label">Name(English)</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Thana Name" value="{{ $thana->name }}" required>
+                            <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" placeholder="Division Name" required>
                             @if ($errors->has('name'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -28,7 +27,7 @@
                     <div class="form-group row">
                         <label for="bn_name" class="col-sm-4 col-form-label">Name(Bangla)</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="bn_name" class="form-control" id="bn_name" placeholder="Thana Name(Bangla)" value="{{ $thana->bn_name }}" required>
+                            <input type="text" name="bn_name" class="form-control" id="bn_name" value="{{ old('bn_name') }}" placeholder="Division Name(Bangla)" required>
                             @if ($errors->has('bn_name'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('bn_name') }}</strong>
@@ -36,31 +35,13 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="district_id" class="col-sm-4 col-form-label">Districts</label>
-                        <div class="col-sm-8  ">
-                            <select class="form-control" name="district_id" required>
-                                <option value="" hidden selected></option>
-                                @if($districts->isNotEmpty())
-                                    @foreach($districts as $item)
-                                    <option value="{{ $item->id }}" @if($item->id == $thana->district_id) selected @endif >{{ $item->name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            @if ($errors->has('district_id'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('district_id') }}</strong>
-                                </span>
-                            @endif
-
-                        </div>
-                    </div>
+                   
                     <div class="form-group row">
                         <label for="status" class="col-sm-4 col-form-label">Active</label>
                         <div class="col-sm-8  ">
                             <select class="form-control" name="status" required>
-                                <option value="1" @if($thana->status == 1) selected @endif >Yes</option>
-                                <option value="0" @if($thana->status == 0) selected @endif>No</option>
+                                <option value="1" @if(old('status') == 1) selected @endif>Yes</option>
+                                <option value="0" @if(old('status') == 0) selected @endif>No</option>
                             </select>
                             @if ($errors->has('status'))
                                 <span class="text-danger">
@@ -69,12 +50,14 @@
                             @endif
                         </div>
                     </div>
+                    
+                
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="{{ route('thana') }}" class="btn btn-danger">Back</a>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{ route('divisions') }}" class="btn btn-danger">Back</a>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
         </div>

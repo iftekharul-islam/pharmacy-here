@@ -13,8 +13,7 @@ class DistrictRepository
     public function get()
     {
         // return District::with('thanas.areas')->get();
-        return District::orderby('name', 'asc')->get();
-        // return District::get();
+        return District::orderby('name', 'asc')->paginate(20);
     }
 
     public function create($data)

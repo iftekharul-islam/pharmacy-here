@@ -14,12 +14,12 @@
 Route::prefix('locations')->group(function() {
     Route::get('/', 'LocationsController@index');
 
-    Route::get('/divisions', 'DistrictController@index')->name('divisions');
-    Route::get('divisions/create', 'DistrictController@create')->name('division.create');
-    Route::post('divisions/store', 'DistrictController@store')->name('division.store');
-    Route::get('divisions/{id}/edit', 'DistrictController@edit')->name('division.edit');
-    Route::put('divisions/{id}', 'DistrictController@update')->name('division.update');
-    Route::delete('divisions/{id}', 'DistrictController@destroy')->name('division.destroy');
+    Route::get('/divisions', 'DivisionController@index')->name('divisions');
+    Route::get('divisions/create', 'DivisionController@create')->name('division.create');
+    Route::post('divisions/store', 'DivisionController@store')->name('division.store');
+    Route::get('divisions/{id}/edit', 'DivisionController@edit')->name('division.edit');
+    Route::put('divisions/{id}', 'DivisionController@update')->name('division.update');
+    Route::delete('divisions/{id}', 'DivisionController@destroy')->name('division.destroy');
 
     Route::get('/districts', 'DistrictController@index')->name('districts');
     Route::get('districts/create', 'DistrictController@create')->name('district.create');
@@ -34,5 +34,12 @@ Route::prefix('locations')->group(function() {
     Route::get('thana/{id}/edit', 'ThanaController@edit')->name('thana.edit');
     Route::put('thana/{id}', 'ThanaController@update')->name('thana.update');
     Route::delete('thana/{id}', 'ThanaController@destroy')->name('thana.destroy');
+
+    Route::get('/areas', 'AreaController@index')->name('areas');
+    Route::get('area/create', 'AreaController@create')->name('area.create');
+    Route::post('area/store', 'AreaController@store')->name('area.store');
+    Route::get('area/{id}/edit', 'AreaController@edit')->name('area.edit');
+    Route::put('area/{id}', 'AreaController@update')->name('area.update');
+    Route::delete('area/{id}', 'AreaController@destroy')->name('area.destroy');
     
 });

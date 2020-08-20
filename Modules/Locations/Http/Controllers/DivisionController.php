@@ -5,16 +5,28 @@ namespace Modules\Locations\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Http\Requests\CreateDivisionRequest;
+use Modules\Locations\Http\Requests\UpdateDivisionRequest;
+use Modules\Locations\Repositories\DivisionRepository;
 
 class DivisionController extends Controller
 {
+    private $repository;
+
+    public function __construct(DivisionRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('locations::index');
+        $divisions = $this->repository->get();
+        return view('locations::division.index', compact('divisions'));
     }
 
     /**
@@ -23,7 +35,7 @@ class DivisionController extends Controller
      */
     public function create()
     {
-        return view('locations::create');
+        return view('locations::division.create');
     }
 
     /**
@@ -31,9 +43,10 @@ class DivisionController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(CreateDivisionRequest $request)
     {
-        //
+        $division = $this->repository->create($request);
+        return redirect()->route('divisions')->with('success', 'Division created successfully');
     }
 
     /**
@@ -53,7 +66,8 @@ class DivisionController extends Controller
      */
     public function edit($id)
     {
-        return view('locations::edit');
+        $division = $this->repository->findById($id);
+        return view('locations::division.edit', compact('division'));
     }
 
     /**
@@ -62,9 +76,10 @@ class DivisionController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDivisionRequest $request, $id)
     {
-        //
+        $division = $this->repository->update($request, $id);
+        return redirect()->route('divisions')->with('success', 'Division updated successfully');
     }
 
     /**
@@ -74,6 +89,7 @@ class DivisionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $divisions = $this->repository->delete($id);
+        return redirect()->route('divisions')->with('success', 'Division deleted successfully');
     }
 }

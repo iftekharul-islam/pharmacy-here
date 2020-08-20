@@ -28,7 +28,6 @@ class DistrictController extends Controller
     public function index()
     {
         $districts = $this->repository->get();
-        // dd($districts);
         return view('locations::district.index', compact('districts'));
     }
 

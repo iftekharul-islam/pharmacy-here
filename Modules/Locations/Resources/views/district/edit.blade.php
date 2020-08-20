@@ -75,6 +75,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
+                    <a href="{{ route('districts') }}" class="btn btn-danger">Back</a>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>

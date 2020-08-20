@@ -10,7 +10,7 @@
                     <h1>Districts</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a href="{{ route('district.create') }}" class="btn btn-lg btn-success float-right">
+                    <a href="{{ route('district.create') }}" class="btn btn-sm btn-success float-right">
                         Create District
                     </a>
                 </div>
@@ -26,7 +26,8 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
-            <table id="example1" class="table table-bordered table-striped data-table">
+            <!-- <table id="example1" class="table table-bordered table-striped data-table"> -->
+            <table id="example1" class="table mb-3">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -37,33 +38,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                   
-                    @foreach($districts as $item)
-                        <tr>
-                            <td>{{ $item['name'] }}</td>
-                            <td>{{ $item['bn_name'] }}</td>
-                            <td>{{ $item['division']['name'] }}</td>
-                            <td>@include('products::status', ['status' => $item->status])</td>
-                            <td>
-                                <a href="{{ route('district.edit', $item['id']) }}" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-edit"></i> </a>
-                                <form id="delete-form-{{ $loop->index }}" action="{{ route('district.destroy', $item['id']) }}"
-                                    method="post" class="form-horizontal d-inline">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <div class="btn-group">
-                                        <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                class="btn btn-danger waves-effect waves-light d-flex align-items-center">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-
+                   @if($districts->isNotEmpty())
+                        @foreach($districts as $item)
+                            <tr>
+                                <td>{{ $item['name'] }}</td>
+                                <td>{{ $item['bn_name'] }}</td>
+                                <td>{{ $item['division']['name'] }}</td>
+                                <td>@include('products::status', ['status' => $item->status])</td>
+                                <td>
+                                    <a href="{{ route('district.edit', $item['id']) }}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-edit"></i> </a>
+                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('district.destroy', $item['id']) }}"
+                                        method="post" class="form-horizontal d-inline">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <div class="btn-group">
+                                            <button onclick="removeItem({{ $loop->index }})" type="button"
+                                                    class="btn btn-danger waves-effect waves-light d-flex align-items-center">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
+            {{ $districts->links() }}
         </div>
         <!-- /.card-body -->
     </div>

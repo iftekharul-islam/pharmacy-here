@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Thana')
+@section('title', 'Areas')
 
 @section('content_header')
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Thana</h1>
+                    <h1>Areas</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a href="{{ route('thana.create') }}" class="btn btn-sm btn-success float-right">
-                        Create Thana
+                    <a href="{{ route('area.create') }}" class="btn btn-sm btn-success float-right">
+                        Create Area
                     </a>
                 </div>
             </div>
@@ -22,32 +22,32 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thana List</h3>
+            <h3 class="card-title">Area List</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
-            <table id="example1" class="table mb-3">
+            <table id="example1" class="table  mb-3">
                 <thead>
                 <tr>
                     <th>Name</th>
                     <th>Name(Bangla)</th>
-                    <th>District</th>
+                    <th>Thana</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @if($thanas->isNotEmpty())
-                        @foreach($thanas as $item)
+                    @if($areas->isNotEmpty())
+                        @foreach($areas as $item)
                             <tr>
                                 <td>{{ $item['name'] }}</td>
                                 <td>{{ $item['bn_name'] }}</td>
-                                <td>{{ $item['district']['name'] }}</td>
+                                <td>{{ $item['thana']['name'] }}</td>
                                 <td>@include('products::status', ['status' => $item->status])</td>
                                 <td>
-                                    <a href="{{ route('thana.edit', $item['id']) }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('area.edit', $item['id']) }}" class="btn btn-sm btn-primary">
                                         <i class="fa fa-edit"></i> </a>
-                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('thana.destroy', $item['id']) }}"
+                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('area.destroy', $item['id']) }}"
                                         method="post" class="form-horizontal d-inline">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="_method" value="DELETE">
@@ -65,7 +65,7 @@
 
                 </tbody>
             </table>
-            {{ $thanas->links() }}
+            {{ $areas->links() }}
         </div>
         <!-- /.card-body -->
     </div>
