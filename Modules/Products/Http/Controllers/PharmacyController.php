@@ -5,6 +5,7 @@ namespace Modules\Products\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Products\Http\Requests\UpdatePharmacyRequest;
 use Modules\Products\Repositories\PharmacyRepository;
 
 class PharmacyController extends Controller
@@ -63,7 +64,6 @@ class PharmacyController extends Controller
     public function edit($id)
     {
         $pharmacy = $this->repository->findById($id);
-        // dd($pharmacy);
         return view('products::pharmacy.edit', compact('pharmacy'));
     }
 
@@ -73,9 +73,10 @@ class PharmacyController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePharmacyRequest $request, $id)
     {
-        //
+        $pharmacy = $this->repository->update($request, $id);
+        return redirect()->route('pharmacy.index')->with('success', 'Pharmacy updated Successfully');
     }
 
     /**
@@ -85,7 +86,7 @@ class PharmacyController extends Controller
      */
     public function destroy($id)
     {
-        // $pharmacy = $this->repository->delete($id)
-        dd($id);
+        $pharmacy = $this->repository->delete($id);
+        return redirect()->route('pharmacy.index');
     }
 }

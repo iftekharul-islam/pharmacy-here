@@ -51,6 +51,23 @@
                             <div class="col-sm-8 pt-2" id="bkash"> </div>
                         </div>
                         <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Start Time</label>
+                            <div class="col-sm-8 pt-2" id="startTime"> </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">End Time</label>
+                            <div class="col-sm-8 pt-2" id="endTime"> </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Break Start Time</label>
+                            <div class="col-sm-8 pt-2" id="breakStart"> </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Break End Time</label>
+                            <div class="col-sm-8 pt-2" id="breakEnd"> </div>
+                        </div>
+                        
+                        <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">National ID</label>
                             <div class="col-sm-8 pt-2" id="nid"> </div>
                         </div>

@@ -14,10 +14,8 @@ class PharmacyRepository
 {
     public function all()
     {
-        // return User::with('pharmacyBusiness', 'weekends')->where('is_pharmacy', 1)->paginate(10);
         return User::with('pharmacyBusiness', 'weekends')->where('is_pharmacy', 1)->paginate(20);
     }
-
 
     public function update($request, $id)
     {
@@ -26,18 +24,8 @@ class PharmacyRepository
         if (!$pharmacy) {
             throw new NotFoundHttpException('Pharmacy not found');
         }
-
-        if (isset($request->name)) {
-            $pharmacy->name = $request->name;
-        }
-
-        if (isset($request->status)) {
-            $pharmacy->status = $request->status;
-        }
-
-        $pharmacy->save();
+        $pharmacy->update($request->all());
         return $pharmacy;
-
     }
 
     /** 

@@ -6,7 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class PharmacyBusiness extends Model
 {
-    protected $fillable = ['pharmacy_name', 'pharmacy_address', 'area_id'];
+    protected $fillable = [
+        'pharmacy_name', 
+        'pharmacy_address', 
+        'bank_account_name', 
+        'bank_account_number', 
+        'bank_name', 
+        'bank_brunch_name', 
+        'bkash_number',
+        'start_time',
+        "end_time",
+        "break_start_time",
+        "break_end_time",
+        'area_id'
+    ];
 
     public function user()
     {
