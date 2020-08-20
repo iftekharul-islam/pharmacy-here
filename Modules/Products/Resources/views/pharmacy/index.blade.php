@@ -27,9 +27,10 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
-            <table id="example1" class="table table-bordered table-striped data-table">
+            <table id="example1" class="table">
                 <thead>
                     <tr>
+                        <th>SL</th>
                         <th>Owner</th>
                         <th>Pharmacy Name</th>
                         <th>Phone</th>
@@ -40,10 +41,11 @@
                 </thead>
                 <tbody>
                 @if($pharmacies->isNotEmpty())
-                    @foreach($pharmacies as $item)
+                    @foreach($pharmacies as $index => $item)
                         <tr>
+                            <td>{{ $pharmacies->firstItem() + $index }}</td>
                             <td>{{ $item->name }}</td>
-                            <td>{{ $item->pharmacyBusiness->pharmacy_name }}</td>
+                            <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_name }}@endisset</td>
                             <td>{{ $item->phone_number }}</td>
                             <td>{{ $item->email }}</td>
                             <td>@include('products::status', ['status' => $item->status]) </td>
@@ -51,21 +53,23 @@
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
                                 </button>
-                                <!-- <a href="{{ route('pharmacy.edit', $item['id']) }}" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-edit"></i> </a> -->
-                                <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
-                                    method="post"
-                                    class="form-horizontal d-inline">
-                                    {{--                            @method('DELETE')--}}
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <div class="btn-group">
-                                        <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </form>
+                                @isset($item->pharmacyBusiness)
+                                    <a href="{{ route('pharmacy.edit', $item->pharmacyBusiness->id) }}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-edit"></i> </a>
+                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
+                                        method="post"
+                                        class="form-horizontal d-inline">
+                                        {{--                            @method('DELETE')--}}
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <div class="btn-group">
+                                            <button onclick="removeItem({{ $loop->index }})" type="button"
+                                                    class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                @endisset
                             </td>
                         </tr>
                     @endforeach
