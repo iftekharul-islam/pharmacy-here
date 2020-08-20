@@ -102,6 +102,10 @@
             $('#bank_name').html(item.pharmacy_business.bank_name);
             $('#branch').html(item.pharmacy_business.bank_brunch_name);
             $('#bkash').html(item.pharmacy_business.bkash_number);
+            $('#startTime').html(item.pharmacy_business.start_time);
+            $('#endTime').html(item.pharmacy_business.end_time);
+            $('#breakStart').html(item.pharmacy_business.break_start_time);
+            $('#breakEnd').html(item.pharmacy_business.break_end_time);
             if(item.pharmacy_business.nid_img_path) {
                 $('#nid').html('<img src="'+ item.pharmacy_business.nid_img_path +'" width="100" />');
             }
