@@ -1,55 +1,46 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
-@section('title', 'Districts')
+@section('title', 'Create Thana')
 
 @section('content')
     <div class="col-md-6">
         <div class="card card-primary-outline">
             <div class="card-header">
-                <h3 class="card-title">Create District</h3>
+                <h3 class="card-title">Create Thana</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('district.store') }}" method="POST">
+            <form role="form" action="{{ route('thana.store') }}" method="POST">
                 @csrf
+                @if($errors->any())
+                    {!! implode('', $errors->all('<div>:message</div>')) !!}
+                @endif
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="name" class="col-sm-4 col-form-label">Name(English)</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="District Name" required>
-                            @if ($errors->has('name'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('name') }}</strong>
-                                </span>
-                            @endif
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Thana Name" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="bn_name" class="col-sm-4 col-form-label">Name(Bangla)</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="bn_name" class="form-control" id="bn_name" placeholder="District Name(Bangla)" required>
-                            @if ($errors->has('bn_name'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('bn_name') }}</strong>
-                                </span>
-                            @endif
+                            <input type="text" name="bn_name" class="form-control" id="bn_name" placeholder="Thana Name(Bangla)" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="division_id" class="col-sm-4 col-form-label">Division</label>
+                        <label for="district_id" class="col-sm-4 col-form-label">District</label>
                         <div class="col-sm-8  ">
 
-                            <select class="form-control" name="division_id" required>
+                            <select class="form-control" name="district_id" required>
                                 <option value="" hidden selected></option>
-                                @foreach($divisions as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
+                                @if($districts->isNotEmpty())
+                                    @foreach($districts as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
-                            @if ($errors->has('division_id'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('division_id') }}</strong>
-                                </span>
-                            @endif
+
                         </div>
                     </div>
                     <div class="form-group row">
@@ -59,11 +50,7 @@
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             </select>
-                            @if ($errors->has('status'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('status') }}</strong>
-                                </span>
-                            @endif
+
                         </div>
                     </div>
                     
@@ -72,7 +59,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
         </div>

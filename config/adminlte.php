@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Subidha</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -257,7 +257,7 @@ return [
 //        ],
         [
             'text'    => 'Manage Product',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-cogs',
             'submenu' => [
                 [
                     'text' => 'Product',
@@ -313,12 +313,12 @@ return [
                 [
                     'text' => 'Thana',
                     'icon_color' => 'cyan',
-                    'url'  => '',
+                    'url'  => 'locations/thana',
                 ],
                 [
                     'text' => 'Area',
                     'icon_color' => 'cyan',
-                    'url'  => '',
+                    'url'  => 'locations/areas',
                 ],
             ],
         ],
