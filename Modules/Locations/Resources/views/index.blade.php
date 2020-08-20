@@ -1,4 +1,6 @@
-@extends('locations::layouts.master')
+<!-- @extends('locations::layouts.master') -->
+@extends('adminlte::page')
+
 
 @section('content')
     <h1>Hello World</h1>

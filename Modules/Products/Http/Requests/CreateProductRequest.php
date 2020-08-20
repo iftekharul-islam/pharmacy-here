@@ -27,6 +27,9 @@ class CreateProductRequest extends FormRequest
             'generic_id' => 'required',
             'manufacturing_company_id' => 'required',
             'primary_unit_id' => 'required',
+            'is_prescripted' => 'required',
+            'is_pre_order' => 'required',
+            'min_order_qty' => 'required'
         ];
     }
 

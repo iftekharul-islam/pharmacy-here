@@ -52,11 +52,20 @@
     Route::put('generics/{id}', 'GenericController@update')->name('generic.update');
     Route::delete('generics/{id}', 'GenericController@destroy')->name('generic.destroy');
 
-//    Route::resource('units', 'UnitController');
+    //Route::resource('units', 'UnitController');
     Route::get('units', 'UnitController@index')->name('unit.index');
     Route::get('units/create', 'UnitController@create')->name('unit.create');
     Route::post('units/store', 'UnitController@store')->name('unit.store');
     Route::get('units/{id}/edit', 'UnitController@edit')->name('unit.edit');
     Route::put('units/{id}', 'UnitController@update')->name('unit.update');
     Route::delete('units/{id}', 'UnitController@destroy')->name('unit.destroy');
+
+    // pharmacy route
+    Route::get('pharmacies', 'PharmacyController@index')->name('pharmacy.index');
+    Route::get('pharmacies/create', 'PharmacyController@create')->name('pharmacy.create');
+    Route::post('pharmacies/store', 'PharmacyController@store')->name('pharmacy.store');
+    Route::get('pharmacies/{id}/edit', 'PharmacyController@edit')->name('pharmacy.edit');
+    Route::put('pharmacies/{id}', 'PharmacyController@update')->name('pharmacy.update');
+    Route::delete('pharmacies/{id}', 'PharmacyController@destroy')->name('pharmacy.destroy');
+    
 //});

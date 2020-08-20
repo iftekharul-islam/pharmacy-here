@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Area extends Model
 {
-    protected $fillable = ['name', 'bn_name', 'slug', 'status'];
+    protected $fillable = ['name', 'bn_name', 'slug', 'status', 'thana_id'];
 
     protected static function boot() {
         parent::boot();

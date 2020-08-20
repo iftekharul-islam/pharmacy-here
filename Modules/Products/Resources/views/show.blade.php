@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Product Details</h4>
@@ -119,6 +119,18 @@
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Saleable</label>
                             <div class="col-sm-8 pt-2" id="is_saleable">
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Is Prescribed</label>
+                            <div class="col-sm-8 pt-2" id="is_prescripted"></div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Is Pre Order Allowed</label>
+                            <div class="col-sm-8 pt-2" id="is_pre_order"></div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Min Order Qty</label>
+                            <div class="col-sm-8 pt-2" id="min_order_qty"></div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Status</label>

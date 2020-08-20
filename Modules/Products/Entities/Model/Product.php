@@ -26,6 +26,9 @@ class Product extends Model
         'generic_id',
         'manufacturing_company_id',
         'primary_unit_id',
+        'is_prescripted',
+        'is_pre_order',
+        'min_order_qty'
     ];
 
     protected static function boot() {
