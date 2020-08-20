@@ -14,7 +14,8 @@ class PharmacyRepository
 {
     public function all()
     {
-        return User::with('pharmacyBusiness', 'weekends')->where('is_pharmacy', 1)->paginate(20);
+        // return User::with('pharmacyBusiness', 'weekends')->where('is_pharmacy', 1)->paginate(20);
+        return PharmacyBusiness::with('user', 'weekends')->paginate(20);
     }
 
     public function update($request, $id)
@@ -45,7 +46,7 @@ class PharmacyRepository
 
     public function delete($id)
     {
-        $pharmacy = User::find($id);
+        $pharmacy = PharmacyBusiness::find($id);
 
         if (! $pharmacy->delete() ) {
             throw new DeleteResourceFailedException('Pharmacy not found');
@@ -56,7 +57,7 @@ class PharmacyRepository
 
     public function get($id)
     {
-        $company =  User::find($id);
+        $company =  PharmacyBusiness::find($id);
 
         if (! $company) {
             throw new NotFoundHttpException('Pharmacy not found');

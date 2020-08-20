@@ -30,9 +30,9 @@ class ProductsController extends Controller
      * Display a listing of the resource.
      * @return Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $productList = $this->repository->all();
+        $productList = $this->repository->all($request);
 
         if (! $productList) {
             throw new NotFoundHttpException('Product List Not Found');

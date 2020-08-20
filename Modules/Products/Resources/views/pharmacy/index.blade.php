@@ -33,9 +33,9 @@
                         <th>SL</th>
                         <th>Owner</th>
                         <th>Pharmacy Name</th>
+                        <th>Pharmacy Address</th>
                         <th>Phone</th>
                         <th>Email</th>
-                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -44,17 +44,17 @@
                     @foreach($pharmacies as $index => $item)
                         <tr>
                             <td>{{ $pharmacies->firstItem() + $index }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_name }}@endisset</td>
-                            <td>{{ $item->phone_number }}</td>
-                            <td>{{ $item->email }}</td>
-                            <td>@include('products::status', ['status' => $item->status]) </td>
+                            <td>{{ $item->user->name }}</td>
+                            <td>{{ $item->pharmacy_name }}</td>
+                            <td>{{ $item->pharmacy_address }}</td>
+                            <td>{{ $item->user->phone_number }}</td>
+                            <td>{{ $item->user->email }}</td>
                             <td>
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
                                 </button>
-                                @isset($item->pharmacyBusiness)
-                                    <a href="{{ route('pharmacy.edit', $item->pharmacyBusiness->id) }}" class="btn btn-sm btn-primary">
+                                
+                                    <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">
                                         <i class="fa fa-edit"></i> </a>
                                     <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
                                         method="post"
@@ -69,7 +69,7 @@
                                             </button>
                                         </div>
                                     </form>
-                                @endisset
+                               
                             </td>
                         </tr>
                     @endforeach
@@ -92,30 +92,30 @@
 
         function showProduct(item) {
             console.log(item)
-            $('#name').html(item.name);
-            $('#pharmacy_name').html(item.pharmacy_business.pharmacy_name);
-            $('#phone').html(item.phone_number);
-            $('#email').html(item.email);
-            $('#address').html(item.pharmacy_business.pharmacy_address);
-            $('#bank_account').html(item.pharmacy_business.bank_account_name);
-            $('#account_no').html(item.pharmacy_business.bank_account_number);
-            $('#bank_name').html(item.pharmacy_business.bank_name);
-            $('#branch').html(item.pharmacy_business.bank_brunch_name);
-            $('#bkash').html(item.pharmacy_business.bkash_number);
-            $('#startTime').html(item.pharmacy_business.start_time);
-            $('#endTime').html(item.pharmacy_business.end_time);
-            $('#breakStart').html(item.pharmacy_business.break_start_time);
-            $('#breakEnd').html(item.pharmacy_business.break_end_time);
-            if(item.pharmacy_business.nid_img_path) {
-                $('#nid').html('<img src="'+ item.pharmacy_business.nid_img_path +'" width="100" />');
+            $('#name').html(item.user.name);
+            $('#pharmacy_name').html(item.pharmacy_name);
+            $('#phone').html(item.user.phone_number);
+            $('#email').html(item.user.email);
+            $('#address').html(item.pharmacy_address);
+            $('#bank_account').html(item.bank_account_name);
+            $('#account_no').html(item.bank_account_number);
+            $('#bank_name').html(item.bank_name);
+            $('#branch').html(item.bank_brunch_name);
+            $('#bkash').html(item.bkash_number);
+            $('#startTime').html(item.start_time);
+            $('#endTime').html(item.end_time);
+            $('#breakStart').html(item.break_start_time);
+            $('#breakEnd').html(item.break_end_time);
+            if(item.nid_img_path) {
+                $('#nid').html('<img src="'+ item.nid_img_path +'" width="100" />');
             }
-            if(item.pharmacy_business.trade_img_path) {
-                $('#trade').html('<img src="'+ item.pharmacy_business.trade_img_path +'" width="100"/>');
+            if(item.trade_img_path) {
+                $('#trade').html('<img src="'+ item.rade_img_path +'" width="100"/>');
             }
-            if(item.pharmacy_business.drug_img_path) {
-                $('#drug').html('<img src="'+ item.pharmacy_business.drug_img_path +'" width="100" />');
+            if(item.drug_img_path) {
+                $('#drug').html('<img src="'+ item.drug_img_path +'" width="100" />');
             }
-            $('#status').html(checkStatus(item.status));
+            // $('#status').html(checkStatus(item.status));
         }
 
         function removeItem(id) {
