@@ -29,6 +29,7 @@
             <table id="example1" class="table mb-3">
                 <thead>
                 <tr>
+                    <th>SL</th>
                     <th>Name</th>
                     <th>Name(Bangla)</th>
                     <th>District</th>
@@ -38,8 +39,9 @@
                 </thead>
                 <tbody>
                     @if($thanas->isNotEmpty())
-                        @foreach($thanas as $item)
+                        @foreach($thanas as $index => $item)
                             <tr>
+                                <td>{{ $thanas->firstItem() + $index }}</td>
                                 <td>{{ $item['name'] }}</td>
                                 <td>{{ $item['bn_name'] }}</td>
                                 <td>{{ $item['district']['name'] }}</td>

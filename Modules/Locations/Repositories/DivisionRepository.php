@@ -11,7 +11,7 @@ class DivisionRepository
 {
     public function get()
     {
-        return Division::orderby('name', 'asc')->get();
+        return Division::orderby('name', 'asc')->paginate(20);
     }
 
     public function create($data)

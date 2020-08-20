@@ -30,6 +30,7 @@
             <table id="example1" class="table mb-3">
                 <thead>
                 <tr>
+                    <th>SL</th>
                     <th>Name</th>
                     <th>Name(Bangla)</th>
                     <th>Status</th>
@@ -38,8 +39,9 @@
                 </thead>
                 <tbody>
                     @if($divisions->isNotEmpty())
-                        @foreach($divisions as $item)
+                        @foreach($divisions as $index => $item)
                             <tr>
+                                <td>{{ $divisions->firstItem() + $index }}</td>
                                 <td>{{ $item['name'] }}</td>
                                 <td>{{ $item['bn_name'] }}</td>
                                 <td>@include('products::status', ['status' => $item->status])</td>

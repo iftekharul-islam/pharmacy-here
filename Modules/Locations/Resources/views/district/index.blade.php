@@ -30,6 +30,7 @@
             <table id="example1" class="table mb-3">
                 <thead>
                 <tr>
+                    <th>SL</th>
                     <th>Name</th>
                     <th>Name(Bangla)</th>
                     <th>Division</th>
@@ -39,8 +40,9 @@
                 </thead>
                 <tbody>
                    @if($districts->isNotEmpty())
-                        @foreach($districts as $item)
+                        @foreach($districts as $index => $item)
                             <tr>
+                                <td>{{ $districts->firstItem() + $index }}</td>
                                 <td>{{ $item['name'] }}</td>
                                 <td>{{ $item['bn_name'] }}</td>
                                 <td>{{ $item['division']['name'] }}</td>

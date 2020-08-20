@@ -29,6 +29,7 @@
             <table id="example1" class="table  mb-3">
                 <thead>
                 <tr>
+                    <th>SL</th>
                     <th>Name</th>
                     <th>Name(Bangla)</th>
                     <th>Thana</th>
@@ -38,8 +39,9 @@
                 </thead>
                 <tbody>
                     @if($areas->isNotEmpty())
-                        @foreach($areas as $item)
+                        @foreach($areas as $index => $item)
                             <tr>
+                                <td>{{ $areas->firstItem() + $index }}</td>
                                 <td>{{ $item['name'] }}</td>
                                 <td>{{ $item['bn_name'] }}</td>
                                 <td>{{ $item['thana']['name'] }}</td>
