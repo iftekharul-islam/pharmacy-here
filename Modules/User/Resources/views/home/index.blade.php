@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Home')
+@section('title', 'Dashboard')
 
 @section('content')
-    <h1>Hello World</h1>
-
+    <h1>Dashboard</h1>
+    {{ var_dump(Auth::check()) }}
     <p>
         This view is loaded from module: {!! config('user.name') !!}
     </p>

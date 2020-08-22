@@ -26,7 +26,8 @@ class UserController extends Controller
     {
     	$users = $this->repository->all();
     	
-        return view('user::index', compact('users'));
+        // return view('user::index', compact('users'));
+        return view('user::home.index', compact('users'));
     }
 
     /**

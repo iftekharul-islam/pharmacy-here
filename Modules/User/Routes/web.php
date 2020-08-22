@@ -15,5 +15,6 @@
 Route::get('home','HomeController@index');
 
 Route::prefix('user')->group(function() {
-    Route::get('/', 'UserController@index');
+    Route::get('/', 'UserController@index')->name('user.dashboard');
+    Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
 });
