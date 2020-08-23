@@ -65,4 +65,4 @@ class LoginController extends Controller
 
         return redirect()->back()->with('error', 'Wrong email / password provided');
     }
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

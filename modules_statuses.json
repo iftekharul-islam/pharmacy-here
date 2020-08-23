@@ -5,5 +5,7 @@
     "Order": true,
     "Orders": true,
     "Addresses": true,
-    "Locations": true
+    "Locations": true,
+    "Prescriptoin": true,
+    "Prescription": true
 }
