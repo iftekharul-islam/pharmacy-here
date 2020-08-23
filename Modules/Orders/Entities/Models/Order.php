@@ -5,6 +5,7 @@ namespace Modules\Orders\Entities\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Locations\Entities\Models\Address;
+use Modules\Prescription\Entities\Models\Prescription;
 use Modules\User\Entities\Models\User;
 
 class Order extends Model
@@ -43,7 +44,10 @@ class Order extends Model
         return $this->hasMany(OrderItems::class, 'order_id', 'id');
     }
 
-
+    public function prescriptoins()
+    {
+        return $this->hasMany(OrderPrescription::class);
+    }
 
 }
 

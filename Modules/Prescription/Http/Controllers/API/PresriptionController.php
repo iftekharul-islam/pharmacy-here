@@ -2,15 +2,18 @@
 
 namespace Modules\Prescription\Http\Controllers\API;
 
+use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Modules\Prescription\Http\Requests\CreatePrescriptionRequest;
+use Modules\Prescription\Http\Requests\UpdatePrescriptionRequest;
 use Modules\Prescription\Repositories\PrescriptionRepository;
+use  Modules\Prescription\Transformers\PrescriptonTransformer;
 
-class PresriptionController extends Controller
+class PresriptionController extends BaseController
 {
     private $repository;
 
@@ -27,7 +30,8 @@ class PresriptionController extends Controller
     {
         $user = Auth::user();
         $prescriptions = $this->repository->getCustomerPrescription(Auth::user()->id);
-        return $prescriptions;
+        return $this->response->collection($prescriptions, new PrescriptonTransformer());
+        // return $prescriptions;
     }
 
     /**
@@ -38,8 +42,8 @@ class PresriptionController extends Controller
     {
         $user = Auth::user();
         $prescription = $this->repository->create($request, $user->id);
-        // return $this->response->item($prescription);
-        return $prescription;
+        return $this->response->item($prescription, new PrescriptonTransformer());
+        // return $prescription;
     }
 
     /**
@@ -59,7 +63,8 @@ class PresriptionController extends Controller
      */
     public function show($id)
     {
-        return view('prescription::show');
+        $prescription = $this->repository->findById($id);
+        return $this->response->item($prescription, new PrescriptonTransformer());
     }
 
     /**
@@ -80,7 +85,9 @@ class PresriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $prescription = $this->repository->update($request, $id);
+
+        return $this->response->item($prescription, new PrescriptonTransformer());
     }
 
     /**
@@ -90,6 +97,8 @@ class PresriptionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $prescription = $this->repository->delete($id);
+
+        return responseData('Prescripiton deleted successfully');
     }
 }
