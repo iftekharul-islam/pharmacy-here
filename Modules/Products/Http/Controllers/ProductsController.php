@@ -2,6 +2,7 @@
 
 namespace Modules\Products\Http\Controllers;
 
+use App\Http\Controllers\BaseController;
 use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
@@ -17,7 +18,7 @@ use Modules\Products\Http\Requests\UpdateProductRequest;
 use Modules\Products\Repositories\ProductRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductsController extends Controller
+class ProductsController extends BaseController
 {
     private $repository;
 

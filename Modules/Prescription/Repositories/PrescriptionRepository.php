@@ -23,9 +23,9 @@ class PrescriptionRepository
 
     public function findById($id)
     {
-        // $unit = Unit::find($id);
+        $Prescription = Prescription::find($id);
 
-        // return $unit;
+        return $Prescription;
     }
 
     public function create($data, $user_id)
@@ -66,10 +66,6 @@ class PrescriptionRepository
             $prescription->url = $request->url;
         }
 
-        if (isset($request->user_id)) {
-            $prescription->user_id = $request->user_id;
-        }
-
         $prescription->save();
 
         return $prescription;
@@ -78,13 +74,13 @@ class PrescriptionRepository
 
     public function delete($id)
     {
-        // $unit = Unit::find($id);
+        $prescription = Prescription::find($id);
 
-        // if (! $unit) {
-        //     throw new NotFoundHttpException('Unit not found');
-        // }
+        if (! $prescription) {
+            throw new NotFoundHttpException('Prescripiton not found');
+        }
 
-        // return $unit->delete();
+        return $prescription->delete();
     }
 
 }

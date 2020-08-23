@@ -20,6 +20,7 @@ class CreatePrescriptionsTable extends Migration
             $table->string('url');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

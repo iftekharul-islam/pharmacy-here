@@ -17,12 +17,11 @@ $namespace = 'Modules\Prescription\Http\Controllers\API';
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function ($api) use ($namespace) {
+// $api->version('v1', ['middleware' => ['api.auth', 'role:customer']], function ($api) use ($namespace) {
+$api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namespace) {
     $api->get('customer/prescriptions/', $namespace . '\PresriptionController@customerPrescriptons');
+    $api->get('prescription/{id}', $namespace . '\PresriptionController@show');
     $api->post('prescription/create', $namespace . '\PresriptionController@create');
+    $api->put('prescription/update/{id}', $namespace . '\PresriptionController@update');
+    $api->delete('prescription/delete/{id}', $namespace . '\PresriptionController@destroy');
 });
-
-
-// Route::middleware('auth:api')->get('/prescription', function (Request $request) {
-//     return $request->user();
-// });
