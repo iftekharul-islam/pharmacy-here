@@ -161,6 +161,18 @@ class ProductRepository
             $product->primary_unit_id = $request->primary_unit_id;
         }
 
+        if (isset($request->is_prescripted)) {
+            $product->is_prescripted = $request->is_prescripted;
+        }
+
+        if (isset($request->is_pre_order)) {
+            $product->is_pre_order = $request->is_pre_order;
+        }
+
+        if (isset($request->min_order_qty)) {
+            $product->min_order_qty = $request->min_order_qty;
+        }
+
         $product->save();
 
         $productInfo = ProductAdditionalInfo::where('product_id', $id)->first();

@@ -177,6 +177,34 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label for="is_prescripted" class="col-sm-4 col-form-label">Is Prescribed</label>
+                        <div class="col-sm-8 " id="">
+                            <select class="form-control" name="is_prescripted" id="is_prescripted">
+                                <option value="1" @if ($product->is_prescripted == 1) selected @endif>Yes</option>
+                                <option value="0" @if ($product->is_prescripted == 0) selected @endif>No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="is_pre_order" class="col-sm-4 col-form-label">Is Pre Order Allowed</label>
+                        <div class="col-sm-8 " id="">
+                            <select class="form-control" name="is_pre_order" id="is_pre_order">
+                                <option value="1" @if ($product->is_pre_order == 1) selected @endif>Yes</option>
+                                <option value="0" @if ($product->is_pre_order == 0) selected @endif>No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="min_order_qty" class="col-sm-4 col-form-label">Min Order Qty</label>
+                        <div class="col-sm-8 " id="">
+                            <input type="number" class="form-control" name="min_order_qty" value="{{$product->min_order_qty}}" id="min_order_qty">
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <label for="status" class="col-sm-4 col-form-label">Status</label>
                         <div class="col-sm-8" id="">

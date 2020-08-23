@@ -5,6 +5,8 @@ namespace Modules\Auth\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Modules\Auth\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
 {
@@ -40,6 +42,27 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return redirect()->route('user.dashboard');
+        }
         return view('auth::auth.login');
+
+        // echo 'gggggg';
     }
-}
+
+    public function doLogin(LoginRequest $request)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            Auth::user();
+            if (Auth::check()) {
+                // dd( Auth::user());
+                return redirect()->route('user.dashboard');
+            } else {
+                return redirect()->back()->with('error', 'Wrong email / password provided');
+            }
+
+        } 
+
+        return redirect()->back()->with('error', 'Wrong email / password provided');
+    }
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

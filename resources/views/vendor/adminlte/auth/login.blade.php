@@ -19,11 +19,17 @@
 @endif
 
 @section('auth_header', __('adminlte::adminlte.login_message'))
-
+@section('title', 'Login')
 @section('auth_body')
-    <form action="{{ $login_url }}" method="post">
+    
+    @if(Session::has('error'))
+        <div class="alert alert-warning" role="alert">
+            {{ Session::get('error') }}
+        </div>
+    @endif
+    <form action="{{ route('do.login') }}" method="post">
         {{ csrf_field() }}
-
+    
         {{-- Email field --}}
         <div class="input-group mb-3">
             <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"

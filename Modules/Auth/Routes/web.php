@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 //Route::prefix('auth')->group(function() {
     Route::get('login','LoginController@showLoginForm')->name('login');
-    Route::post('login','LoginController@login');
+    Route::post('do/login','LoginController@doLogin')->name('do.login');
 //});
 
 //Auth::routes();

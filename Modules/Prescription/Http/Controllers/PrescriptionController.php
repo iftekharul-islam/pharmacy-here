@@ -1,48 +1,35 @@
 <?php
 
-namespace Modules\User\Http\Controllers;
+namespace Modules\Prescription\Http\Controllers;
 
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\User\Repositories\UserRepository;
 
-class UserController extends Controller
+class PrescriptionController extends Controller
 {
-	/**
-	 * @var UserRepository
-	 */
-	private $repository;
-	
-	public function __construct(UserRepository $repository) {
-		$this->repository = $repository;
-	}
-	
-	/**
+    /**
      * Display a listing of the resource.
-     * @return Response
+     * @return Renderable
      */
     public function index()
     {
-    	$users = $this->repository->all();
-    	
-        // return view('user::index', compact('users'));
-        return view('user::home.index', compact('users'));
+        return view('prescription::index');
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     * @return Renderable
      */
     public function create()
     {
-        return view('user::create');
+        return view('prescription::create');
     }
 
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return Response
+     * @return Renderable
      */
     public function store(Request $request)
     {
@@ -52,28 +39,28 @@ class UserController extends Controller
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Response
+     * @return Renderable
      */
     public function show($id)
     {
-        return view('user::show');
+        return view('prescription::show');
     }
 
     /**
      * Show the form for editing the specified resource.
      * @param int $id
-     * @return Response
+     * @return Renderable
      */
     public function edit($id)
     {
-        return view('user::edit');
+        return view('prescription::edit');
     }
 
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Response
+     * @return Renderable
      */
     public function update(Request $request, $id)
     {
@@ -83,7 +70,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Response
+     * @return Renderable
      */
     public function destroy($id)
     {

@@ -44,7 +44,7 @@
                     @foreach($pharmacies as $index => $item)
                         <tr>
                             <td>{{ $pharmacies->firstItem() + $index }}</td>
-                            <td>{{ $item->user->name }}</td>
+                            <td>@isset($item->user) {{ $item->user->name }} @endisset</td>
                             <td>{{ $item->pharmacy_name }}</td>
                             <td>{{ $item->pharmacy_address }}</td>
                             <td>{{ $item->user->phone_number }}</td>
@@ -92,7 +92,9 @@
 
         function showProduct(item) {
             console.log(item)
-            $('#name').html(item.user.name);
+            if (item.user) {
+                $('#name').html(item.user.name);
+            }
             $('#pharmacy_name').html(item.pharmacy_name);
             $('#phone').html(item.user.phone_number);
             $('#email').html(item.user.email);
