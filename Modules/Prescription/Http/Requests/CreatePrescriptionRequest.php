@@ -14,10 +14,9 @@ class CreatePrescriptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'doctor_name' => 'nullable',
-            'prescription_date' => 'nullable',
+            'doctor_name' => 'required',
+            'prescription_date' => 'required',
             'url' => 'required',
-            'user_id' => 'required',
         ];
     }
 
