@@ -1,5 +1,6 @@
 <?php
 
+use Aws\Middleware;
 use Illuminate\Http\Request;
 
 /*
@@ -18,7 +19,8 @@ $namespace = 'Modules\Orders\Http\Controllers\API';
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function ($api) use ($namespace) {
+$api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namespace) {
     $api->get('orders', $namespace . '\OrderController@index');
     $api->get('orders/{order_id}', $namespace . '\OrderController@show');
+    $api->post('orders/create', $namespace . '\OrderController@create');
 });

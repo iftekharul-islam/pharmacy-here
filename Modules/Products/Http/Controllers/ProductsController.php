@@ -18,7 +18,7 @@ use Modules\Products\Http\Requests\UpdateProductRequest;
 use Modules\Products\Repositories\ProductRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductsController extends BaseController
+class ProductsController extends Controller
 {
     private $repository;
 

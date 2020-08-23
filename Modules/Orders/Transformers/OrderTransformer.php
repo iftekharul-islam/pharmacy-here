@@ -13,7 +13,7 @@ class OrderTransformer extends TransformerAbstract
 {
 
     protected $availableIncludes = [
-        'pharmacy', 'address', 'customer', 'orderItems'
+        'pharmacy', 'address', 'customer', 'orderItems', 'orderPrescriptions'
     ];
 
     public function transform(Order $item)
@@ -37,4 +37,9 @@ class OrderTransformer extends TransformerAbstract
         return $this->collection($item->orderItems, new OrderItemTransformer());
     }
 
+    public function includeOrderPrescriptions(Order $item)
+    {
+        return $this->collection($item->orderPrescriptions, new OrderPrescriptionTransformer());
+    }
+   
 }

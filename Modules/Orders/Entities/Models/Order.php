@@ -13,8 +13,10 @@ class Order extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'phone_number',
         'payment_type',
         'delivery_type',
+        'notes',
         'status',
         'amount',
         'delivery_charge',
@@ -44,9 +46,9 @@ class Order extends Model
         return $this->hasMany(OrderItems::class, 'order_id', 'id');
     }
 
-    public function prescriptoins()
+    public function orderPrescriptoins()
     {
-        return $this->hasMany(OrderPrescription::class);
+        return $this->hasMany(OrderPrescription::class, 'order_id', 'id');
     }
 
 }

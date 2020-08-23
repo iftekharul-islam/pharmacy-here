@@ -6,27 +6,31 @@ namespace Modules\Orders\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use Modules\Orders\Entities\Models\OrderItems;
+use Modules\Orders\Entities\Models\OrderPrescription;
+use Modules\Prescription\Transformers\PrescriptonTransformer;
 use Modules\Products\Transformers\ProductTransformer;
 
-class OrderItemTransformer extends TransformerAbstract
+class OrderPrescriptionTransformer extends TransformerAbstract
 {
 
     protected $availableIncludes = [
-        'product'
+        'prescription'
     ];
 
-    public function transform(OrderItems $item)
+    public function transform(OrderPrescription $item)
     {
+        logger('prescripton: '. $item);
         return [
             'id'            => $item->id,
-            'quantity'      => $item->quantity,
-            'rate'          => $item->rate
+            'doctor'        => $item->doctor_name,
+            'prescription_date' => $item->prescription_date,
+            'url'           => $item->url
         ];
     }
 
-    public function includeProduct(OrderItems $item)
+    public function includePrescription(OrderPrescription $item)
     {
-        return $this->item($item->product, new ProductTransformer());
+        return $this->item($item->prescription, new PrescriptonTransformer());
     }
 
 //    public function includeProductAdditionalInfo(Product $product)

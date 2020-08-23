@@ -16,6 +16,6 @@ class OrderPrescription extends Model
 
     public function prescription()
     {
-        return $this->belongsTo(Prescription::class);
+        return $this->belongsTo(Prescription::class, 'prescription_id', 'id');
     }
 }
