@@ -31,6 +31,7 @@ class PrescriptionRepository
     public function create($data, $user_id)
     {
         return Prescription::create([
+            'patient_name' => $data->get('patient_name'),
             'doctor_name' => $data->get('doctor_name'),
             'prescription_date' => $data->get('prescription_date'),
             'url' => $data->get('url'),

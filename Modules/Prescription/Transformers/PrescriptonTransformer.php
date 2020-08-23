@@ -18,6 +18,7 @@ class PrescriptonTransformer extends TransformerAbstract
 
         return [
             'id'                => $prescription->id,
+            'patient_name'      => $prescription->patient_name,
             'doctor_name'       => $prescription->doctor_name,
             'prescription_date' => $prescription->prescription_date,
             'url'               => $prescription->url ,

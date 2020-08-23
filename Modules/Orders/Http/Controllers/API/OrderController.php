@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Modules\Orders\Http\Requests\CreateOrderRrequest;
 use Modules\Orders\Repositories\OrderRepository;
 use Modules\Orders\Transformers\OrderTransformer;
 
@@ -39,19 +40,13 @@ class OrderController extends BaseController
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create()
+    public function create(CreateOrderRrequest $request)
     {
-        return view('orders::create');
-    }
+        $user = Auth::user();
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $order = $this->repository->create($request, Auth::user()->id);
+
+        return $this->response->item($order, new OrderTransformer());
     }
 
     /**
@@ -61,13 +56,9 @@ class OrderController extends BaseController
      */
     public function show($id)
     {
-//        $id = \Illuminate\Support\Facades\Auth::id();
-
         $orderDetails = $this->repository->get($id);
 
         return $this->response->item($orderDetails, new OrderTransformer());
-
-
     }
 
     /**
