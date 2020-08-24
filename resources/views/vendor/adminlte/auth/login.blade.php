@@ -20,6 +20,16 @@
 
 @section('auth_header', __('adminlte::adminlte.login_message'))
 @section('title', 'Login')
+
+@section('adminlte_css') 
+    <style>
+        .btn-primary{
+            background-color: #57A250;
+            border-color: #57A250;
+        }
+        .card-primary.card-outline{border-color: #57A250;}
+    </style>
+@endsection
 @section('auth_body')
     
     @if(Session::has('error'))
@@ -83,20 +93,20 @@
 
 @section('auth_footer')
     {{-- Password reset link --}}
-    @if($password_reset_url)
+    <!-- @if($password_reset_url)
         <p class="my-0">
             <a href="{{ $password_reset_url }}">
                 {{ __('adminlte::adminlte.i_forgot_my_password') }}
             </a>
         </p>
-    @endif
+    @endif -->
 
     {{-- Register link --}}
-    @if($register_url)
+    <!-- @if($register_url)
         <p class="my-0">
             <a href="{{ $register_url }}">
                 {{ __('adminlte::adminlte.register_a_new_membership') }}
             </a>
         </p>
-    @endif
+    @endif -->
 @stop
