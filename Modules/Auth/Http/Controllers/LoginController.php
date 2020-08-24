@@ -54,11 +54,8 @@ class LoginController extends Controller
         if (Auth::guard("web")->attempt($credentials)) {
             if (Auth::guard("web")->check()) {
                 return redirect()->route('user.dashboard');
-                // return redirect()->route('areas');
-                // return view('auth::create');
             }
             return redirect()->back()->with('error', 'Wrong email / password provided');
-
         }
 
         return redirect()->back()->with('error', 'Wrong email / password provided');
