@@ -47,8 +47,8 @@
                             <td>@isset($item->user) {{ $item->user->name }} @endisset</td>
                             <td>@isset($item->pharmacy_name) {{ $item->pharmacy_name }} @endisset</td>
                             <td>@isset($item->pharmacy_address) {{ $item->pharmacy_address }} @endisset</td>
-                            <td>@isset($item->phone_number) {{ $item->user->phone_number }} @endisset</td>
-                            <td>@isset($item->email) {{ $item->user->email }} @endisset</td>
+                            <td>@isset($item->user) {{ $item->user->phone_number }} @endisset</td>
+                            <td>@isset($item->user) {{ $item->user->email }} @endisset</td>
                             <td>
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
@@ -92,11 +92,9 @@
 
         function showProduct(item) {
             console.log(item)
-            if (item.user) {
-                $('#name').html(item.user.name);
-            }
-            $('#pharmacy_name').html(item.pharmacy_name);
-            $('#phone').html(item.user.phone_number);
+            if (item.user) { $('#name').html(item.user.name);}
+            if (item.pharmacy_name) { $('#pharmacy_name').html(item.pharmacy_name); }
+            if (item.user.phone_number) {$('#phone').html(item.user.phone_number); }
             $('#email').html(item.user.email);
             $('#address').html(item.pharmacy_address);
             $('#bank_account').html(item.bank_account_name);
