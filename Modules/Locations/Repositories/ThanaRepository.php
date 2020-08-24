@@ -15,6 +15,11 @@ class ThanaRepository
         return Thana::orderby('name', 'asc')->paginate(20);
     }
 
+    public function all()
+    {
+        return Thana::orderby('name', 'asc')->get();
+    }
+
     public function create($data)
     {
         return Thana::create([

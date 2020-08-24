@@ -16,6 +16,13 @@ class DistrictRepository
         return District::orderby('name', 'asc')->paginate(20);
     }
 
+
+    public function all()
+    {
+        // return District::with('thanas.areas')->get();
+        return District::orderby('name', 'asc')->get();
+    }
+
     public function create($data)
     {
         return District::create([

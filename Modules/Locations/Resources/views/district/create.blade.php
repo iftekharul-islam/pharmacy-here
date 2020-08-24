@@ -40,7 +40,7 @@
                         <div class="col-sm-8  ">
 
                             <select class="form-control" name="division_id" required>
-                                <option value="" hidden selected></option>
+                                <option value="" hidden selected>Select Division</option>
                                 @foreach($divisions as $item)
                                 <option value="{{ $item->id }}" @if($item->id == old('division_id')) selected @endif>{{ $item->name }}</option>
                                 @endforeach

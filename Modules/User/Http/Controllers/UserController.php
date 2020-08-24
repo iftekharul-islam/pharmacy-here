@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\User\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -24,6 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        dd(Auth::user());
     	$users = $this->repository->all();
     	
         // return view('user::index', compact('users'));

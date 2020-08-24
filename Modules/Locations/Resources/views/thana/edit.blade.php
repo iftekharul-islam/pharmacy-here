@@ -2,6 +2,14 @@
 @extends('adminlte::page')
 @section('title', 'Edit Thana')
 
+@section('adminlte_css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+      .select2-container .select2-selection--single{height:auto;}
+      .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 1;}
+  </style>
+@endsection
+
 @section('content')
     <div class="col-md-6">
         <div class="card card-primary-outline">
@@ -39,7 +47,7 @@
                     <div class="form-group row">
                         <label for="district_id" class="col-sm-4 col-form-label">Districts</label>
                         <div class="col-sm-8  ">
-                            <select class="form-control" name="district_id" required>
+                            <select class="form-control select2" name="district_id" required>
                                 <option value="" hidden selected></option>
                                 @if($districts->isNotEmpty())
                                     @foreach($districts as $item)
@@ -80,6 +88,16 @@
         </div>
     </div>
 @endsection
+
+@section('adminlte_js')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+     $(document).ready(function() {
+            $('.select2').select2();
+        });
+</script>
+@endsection
+
 
 @section('js')
     <script !src="">

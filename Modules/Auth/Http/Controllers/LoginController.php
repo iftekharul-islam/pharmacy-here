@@ -42,7 +42,8 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        if (Auth::check()) {
+        // dd(\Auth::user());
+        if (Auth::guard()->check()) {
             return redirect()->route('user.dashboard');
         }
         return view('auth::auth.login');
@@ -52,16 +53,16 @@ class LoginController extends Controller
 
     public function doLogin(LoginRequest $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            Auth::user();
-            if (Auth::check()) {
+        $credentials = ['email' => $request->email, 'password' => $request->password];
+        if (Auth::guard()->attempt($credentials)) {
+            if (Auth::guard()->check()) {
                 // dd( Auth::user());
                 return redirect()->route('user.dashboard');
             } else {
                 return redirect()->back()->with('error', 'Wrong email / password provided');
             }
 
-        } 
+        }
 
         return redirect()->back()->with('error', 'Wrong email / password provided');
     }
