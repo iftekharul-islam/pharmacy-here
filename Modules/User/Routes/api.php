@@ -26,7 +26,7 @@ $api->version('v1', ['middleware' => ['api.auth', 'role:admin']], function ($api
 
 
 $api->version('v1', function ($api) use ($namespace) {
-    $api->group(['prefix' => 'user', 'middleware' => 'role:pharmacy'], function ($api) use ($namespace) {
+    $api->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function ($api) use ($namespace) {
         $api->post('pharmacy/name', $namespace . '\UserPharmacyController@name');
 
 
