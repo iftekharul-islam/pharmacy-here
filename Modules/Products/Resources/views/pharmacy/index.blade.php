@@ -45,10 +45,10 @@
                         <tr>
                             <td>{{ $pharmacies->firstItem() + $index }}</td>
                             <td>@isset($item->user) {{ $item->user->name }} @endisset</td>
-                            <td>{{ $item->pharmacy_name }}</td>
-                            <td>{{ $item->pharmacy_address }}</td>
-                            <td>{{ $item->user->phone_number }}</td>
-                            <td>{{ $item->user->email }}</td>
+                            <td>@isset($item->pharmacy_name) {{ $item->pharmacy_name }} @endisset</td>
+                            <td>@isset($item->pharmacy_address) {{ $item->pharmacy_address }} @endisset</td>
+                            <td>@isset($item->phone_number) {{ $item->user->phone_number }} @endisset</td>
+                            <td>@isset($item->email) {{ $item->user->email }} @endisset</td>
                             <td>
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
