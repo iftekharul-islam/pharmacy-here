@@ -12,7 +12,7 @@ class AreaRepository
 {
     public function get()
     {
-        return Area::with('thana')->orderby('name', 'asc')->get();
+        return Area::with('thana')->orderby('name', 'asc')->paginate(20);
     }
 
     public function create($data)
