@@ -30,6 +30,7 @@ class PharmacyBusinessTransformer extends TransformerAbstract
             'end_time'                  => $item->end_time,
             'break_start_time'          => $item->break_start_time,
             'break_end_time'            => $item->break_end_time,
+            'bank_routing_number'       => $item->bank_routing_number
         ];
     }
 
