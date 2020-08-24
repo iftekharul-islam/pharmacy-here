@@ -42,25 +42,22 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        // dd(\Auth::user());
         if (Auth::guard()->check()) {
             return redirect()->route('user.dashboard');
         }
         return view('auth::auth.login');
-
-        // echo 'gggggg';
     }
 
     public function doLogin(LoginRequest $request)
     {
         $credentials = ['email' => $request->email, 'password' => $request->password];
-        if (Auth::guard()->attempt($credentials)) {
-            if (Auth::guard()->check()) {
-                // dd( Auth::user());
-                return redirect()->route('user.dashboard');
-            } else {
-                return redirect()->back()->with('error', 'Wrong email / password provided');
+        if (Auth::guard("web")->attempt($credentials)) {
+            if (Auth::guard("web")->check()) {
+                // return redirect()->route('user.dashboard');
+                return redirect()->route('areas');
+                // return view('auth::create');
             }
+            return redirect()->back()->with('error', 'Wrong email / password provided');
 
         }
 

@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('locations')->group(function() {
+Route::group(["middleware" => ["web", "role:admin"], "prefix" => "locations"], function() {
     Route::get('/', 'LocationsController@index');
 
     Route::get('/divisions', 'DivisionController@index')->name('divisions');
