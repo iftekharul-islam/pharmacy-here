@@ -53,8 +53,8 @@ class LoginController extends Controller
         $credentials = ['email' => $request->email, 'password' => $request->password];
         if (Auth::guard("web")->attempt($credentials)) {
             if (Auth::guard("web")->check()) {
-                // return redirect()->route('user.dashboard');
-                return redirect()->route('areas');
+                return redirect()->route('user.dashboard');
+                // return redirect()->route('areas');
                 // return view('auth::create');
             }
             return redirect()->back()->with('error', 'Wrong email / password provided');
@@ -62,5 +62,10 @@ class LoginController extends Controller
         }
 
         return redirect()->back()->with('error', 'Wrong email / password provided');
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect('/login');
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

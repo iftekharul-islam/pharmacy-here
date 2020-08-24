@@ -20,11 +20,11 @@
 @stop
 
 @section('content')
-@auth("web")
+<!-- @auth("web")
     <h1>Hello world</h1>
     {{ Auth::guard('web')->user()->can('create.user') }}
 
-@endauth
+@endauth -->
 
 
     <div class="card">

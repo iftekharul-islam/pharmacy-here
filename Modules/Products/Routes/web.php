@@ -11,7 +11,8 @@
 |
 */
 
-//Route::prefix('products')->group(function() {
+Route::group(["middleware" => ["web", "role:admin"]], function() {
+
     Route::get('products', 'ProductsController@index')->name('index');
     Route::get('products/create', 'ProductsController@create')->name('create');
     Route::post('products/store', 'ProductsController@store')->name('store');
@@ -68,4 +69,4 @@
     Route::put('pharmacies/{id}', 'PharmacyController@update')->name('pharmacy.update');
     Route::delete('pharmacies/{id}', 'PharmacyController@destroy')->name('pharmacy.destroy');
     
-//});
+});
