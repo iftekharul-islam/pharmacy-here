@@ -25,7 +25,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        dd(Auth::user());
     	$users = $this->repository->all();
     	
         // return view('user::index', compact('users'));

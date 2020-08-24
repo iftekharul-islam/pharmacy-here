@@ -11,8 +11,8 @@
                     <h1>Pharmacies</h1>
                 </div>
                 <!-- <div class="col-sm-6">
-                    <a href="{{ route('generic.create') }}" class="btn btn-lg btn-success float-right">
-                        Create Product Generic
+                    <a href="{{ route('generic.create') }}" class="btn btn-sm btn-success float-right">
+                        Create Pharmacy
                     </a>
                 </div> -->
             </div>

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 Route::group(['middleware' => 'web'], function () {
     Route::get('login','LoginController@showLoginForm')->name('login');
     Route::post('do/login','LoginController@doLogin')->name('do.login');
+    Route::post('logout','LoginController@logout')->name('logout');
 });
 
 //Auth::routes();

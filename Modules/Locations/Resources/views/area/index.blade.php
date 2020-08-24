@@ -20,6 +20,13 @@
 @stop
 
 @section('content')
+<!-- @auth("web")
+    <h1>Hello world</h1>
+    {{ Auth::guard('web')->user()->can('create.user') }}
+
+@endauth -->
+
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Area List</h3>

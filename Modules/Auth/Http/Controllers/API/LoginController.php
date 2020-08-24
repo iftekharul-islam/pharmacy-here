@@ -79,7 +79,7 @@ class LoginController extends Controller
 
     public function guard()
     {
-        return Auth::guard();
+        return Auth::guard('api');
     }
 
     public function createOtp(PhoneValidationRequest $request)
