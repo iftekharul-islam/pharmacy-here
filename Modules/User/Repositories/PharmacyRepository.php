@@ -219,6 +219,10 @@ class PharmacyRepository
 
         if ($request->has('bank_brunch_name')) {
             $pharmacyBusinessInfo->bank_brunch_name = $request->bank_brunch_name;
+        } 
+        
+        if ($request->has('bank_routing_number')) {
+            $pharmacyBusinessInfo->bank_routing_number = $request->bank_routing_number;
         }
 
         $pharmacyBusinessInfo->save();
