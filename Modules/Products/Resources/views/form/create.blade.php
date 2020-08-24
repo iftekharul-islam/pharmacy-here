@@ -17,6 +17,11 @@
                         <label for="name" class="col-sm-4 col-form-label">Name</label>
                         <div class="col-sm-8  " id="name">
                             <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+                            @if ($errors->has('name'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
@@ -26,6 +31,11 @@
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
                             </select>
+                            @if ($errors->has('status'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('status') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
