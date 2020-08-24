@@ -12,7 +12,7 @@
                     <h1>Product Form</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a href="{{ route('form.create') }}" class="btn btn-lg btn-success float-right">
+                    <a href="{{ route('form.create') }}" class="btn btn-sm btn-success float-right">
                         Create Product From
                     </a>
                 </div>
@@ -49,13 +49,13 @@
                                 <i class="fa fa-edit"></i> </a>
                             <form id="delete-form-{{ $loop->index }}" action="{{ route('form.destroy', $item['id']) }}"
                                   method="post"
-                                  class="form-horizontal">
+                                  class="form-horizontal d-inline">
                                 {{--                            @method('DELETE')--}}
                                 {{ csrf_field() }}
                                 <input type="hidden" name="_method" value="DELETE">
                                 <div class="btn-group">
                                     <button onclick="removeItem({{ $loop->index }})" type="button"
-                                            class="btn btn-danger waves-effect waves-light btn-sm d-flex align-items-center">
+                                            class="btn btn-danger waves-effect waves-light btn-sm  align-items-center">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>

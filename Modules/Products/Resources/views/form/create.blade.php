@@ -6,7 +6,7 @@
     <div class="col-md-6">
         <div class="card card-primary-outline">
             <div class="card-header">
-                <h3 class="card-title">Create Product Category</h3>
+                <h3 class="card-title">Create Product Form</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
@@ -17,6 +17,11 @@
                         <label for="name" class="col-sm-4 col-form-label">Name</label>
                         <div class="col-sm-8  " id="name">
                             <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+                            @if ($errors->has('name'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
@@ -26,6 +31,11 @@
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
                             </select>
+                            @if ($errors->has('status'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('status') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
