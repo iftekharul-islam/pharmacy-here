@@ -14,6 +14,11 @@ class DivisionRepository
         return Division::orderby('name', 'asc')->paginate(20);
     }
 
+    public function all()
+    {
+        return Division::orderby('name', 'asc')->get();
+    }
+
     public function create($data)
     {
         return Division::create([

@@ -36,7 +36,7 @@ class AreaController extends Controller
      */
     public function create()
     {
-        $thanas = $this->thanaRepository->get();
+        $thanas = $this->thanaRepository->all();
         return view('locations::area.create', compact('thanas'));
     }
 
@@ -68,7 +68,7 @@ class AreaController extends Controller
      */
     public function edit($id)
     {
-        $thanas = $this->thanaRepository->get();
+        $thanas = $this->thanaRepository->all();
         $area = $this->areaRepository->findById($id);
         return view('locations::area.edit', compact('thanas', 'area'));
     }

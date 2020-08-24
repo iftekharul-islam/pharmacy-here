@@ -35,7 +35,7 @@ class ThanaController extends Controller
      */
     public function create()
     {
-        $districts = $this->districtRepository->get();
+        $districts = $this->districtRepository->all();
         return view('locations::thana.create', compact('districts'));
     }
 
@@ -68,7 +68,7 @@ class ThanaController extends Controller
     public function edit($id)
     {
         $thana = $this->thanaRepository->findById($id);
-        $districts = $this->districtRepository->get();
+        $districts = $this->districtRepository->all();
         return view('locations::thana.edit', compact('thana', 'districts'));
     }
 

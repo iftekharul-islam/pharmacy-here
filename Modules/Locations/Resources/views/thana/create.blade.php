@@ -2,6 +2,14 @@
 @extends('adminlte::page')
 @section('title', 'Create Thana')
 
+@section('adminlte_css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+      .select2-container .select2-selection--single{height:auto;}
+      .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 1;}
+  </style>
+@endsection
+
 @section('content')
     <div class="col-md-6">
         <div class="card card-primary-outline">
@@ -39,8 +47,8 @@
                         <label for="district_id" class="col-sm-4 col-form-label">District</label>
                         <div class="col-sm-8  ">
 
-                            <select class="form-control" name="district_id" required>
-                                <option value="" hidden selected></option>
+                            <select class="form-control select2" name="district_id" required>
+                                <option value="" hidden selected>Select District</option>
                                 @if($districts->isNotEmpty())
                                     @foreach($districts as $item)
                                         <option value="{{ $item->id }}"  @if($item->id == old('district_id')) selected @endif>{{ $item->name }}</option>
@@ -60,7 +68,7 @@
                         <div class="col-sm-8  ">
                             <select class="form-control" name="status" required>
                                 <option value="1" @if(old('status') == 1) selected @endif>Yes</option>
-                                <option value="0" @if(old('status') == 0) selected @endif>No</option>
+                                <option value="0" @if(old('status') === 0) selected @endif>No</option>
                             </select>
                             @if ($errors->has('status'))
                                 <span class="text-danger">
@@ -81,6 +89,15 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('adminlte_js')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+     $(document).ready(function() {
+            $('.select2').select2();
+        });
+</script>
 @endsection
 
 @section('js')
