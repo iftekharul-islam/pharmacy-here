@@ -12,7 +12,7 @@ class ThanaRepository
 {
     public function get()
     {
-        return Thana::orderby('name', 'asc')->paginate(20);
+        return Thana::orderby('name', 'asc')->get();
     }
 
     public function all()
