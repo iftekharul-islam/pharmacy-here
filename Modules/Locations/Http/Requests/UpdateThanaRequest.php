@@ -14,7 +14,8 @@ class UpdateThanaRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string|unique:thanas,name,{$this->id}",
+            // 'name' => "required|string|unique:thanas,name,{$this->id}",
+            'name' => "required|string",
             'bn_name' => 'required|string',
             'district_id' => 'required',
             'status' => 'required'

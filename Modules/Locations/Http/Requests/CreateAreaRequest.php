@@ -14,7 +14,8 @@ class CreateAreaRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:areas,name',
+            // 'name' => 'required|string|unique:areas,name',
+            'name' => 'required|string',
             'bn_name' => 'required|string',
             'thana_id' => 'required',
             'status' => 'required'

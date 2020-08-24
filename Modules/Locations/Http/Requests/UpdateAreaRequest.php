@@ -14,7 +14,8 @@ class UpdateAreaRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string|unique:areas,name,{$this->id}",
+            // 'name' => "required|string|unique:areas,name,{$this->id}",
+            'name' => "required|string",
             'bn_name' => 'required|string',
             'thana_id' => 'required',
             'status' => 'required'
