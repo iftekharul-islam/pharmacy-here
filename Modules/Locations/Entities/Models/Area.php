@@ -4,6 +4,7 @@ namespace Modules\Locations\Entities\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Modules\Address\Entities\CustomerAddress;
 
 class Area extends Model
 {
@@ -26,5 +27,10 @@ class Area extends Model
         return $this->belongsTo(Thana::class, 'thana_id', 'id');
     }
 
+
+    public function customer()
+    {
+        return $this->hasMany(CustomerAddress::class);
+    }
 
 }
