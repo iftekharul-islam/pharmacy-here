@@ -26,7 +26,7 @@
             <h3 class="card-title">Pharmacies</h3>
         </div>
         <!-- /.card-header -->
-        <div class="card-body table-responsive">
+        <div class="card-body table-responsive mb-3">
             <table id="example1" class="table">
                 <thead>
                     <tr>
@@ -79,7 +79,10 @@
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
+        <div class="col-md-12">
+            {{ $pharmacies->links() }}
+        </div>
+        
     </div>
 
     @include('products::pharmacy.show')
