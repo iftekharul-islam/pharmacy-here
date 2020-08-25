@@ -14,7 +14,7 @@ class PharmacyRepository
 {
     public function all()
     {
-        return User::with('pharmacyBusiness', 'weekends')->where('is_pharmacy', 1)->paginate(20);
+        return User::with('pharmacyBusiness', 'weekends')->where('is_pharmacy', 1)->orderby('id', 'desc')->paginate(20);
         // return PharmacyBusiness::with('user', 'weekends')->paginate(20);
     }
 

@@ -14,22 +14,41 @@ class PharmacyImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
+        echo "importing...\n";
         foreach ($rows as $row) 
         {
+            
             if (isset($row['mobile']) && $row['mobile'] != null) {
                 // logger($row['name']);
+                // $user = User::firstOrNew([
+                //     'name' => $row['name'],
+                //     'email' => $row['email'],
+                //     'dob' => $row['dob'],
+                //     'gender' => $row['gender'],
+                //     'status' => 1,
+                //     'is_pharmacy' => 1,
+                //     'phone_number' => '0'.$row['mobile'],
+                //     'password' => Hash::make('12345678')
+                // ]);
                 $user = User::firstOrNew([
-                    'name' => $row['name'],
-                    'email' => $row['email'],
-                    'dob' => $row['dob'],
-                    'gender' => $row['gender'],
-                    'status' => 1,
-                    'is_pharmacy' => 1,
-                    'phone_number' => $row['mobile'],
-                    'password' => Hash::make('12345678')
+                    'phone_number' => '0'.$row['mobile'],
                 ]);
-                // logger($user);
+
+                $user->name = $row['name'];
+                $user->email = $row['email'];
+                $user->dob = $row['dob'];
+                $user->gender = $row['gender'];
+                $user->status = 1;
+                $user->is_pharmacy = 1;
+                $user->phone_number = '0'.$row['mobile'];
+                $user->password = Hash::make('12345678');
+                
+                $user->save();
+
+                echo $user->name . "\n";
             }
+            
         }
+        echo "done...\n";
     }
 }
