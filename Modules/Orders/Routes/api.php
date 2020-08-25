@@ -23,4 +23,6 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     $api->get('orders', $namespace . '\OrderController@index');
     $api->get('orders/{order_id}', $namespace . '\OrderController@show');
     $api->post('orders/create', $namespace . '\OrderController@create');
+    $api->get('pharmacy/orders', $namespace . '\OrderController@ordersByPharmacyId');
+    $api->get('customer/orders', $namespace . '\OrderController@ordersByCustomerId');
 });
