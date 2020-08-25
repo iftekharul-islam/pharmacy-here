@@ -44,31 +44,33 @@
                     @foreach($pharmacies as $index => $item)
                         <tr>
                             <td>{{ $pharmacies->firstItem() + $index }}</td>
-                            <td>@isset($item->user) {{ $item->user->name }} @endisset</td>
-                            <td>@isset($item->pharmacy_name) {{ $item->pharmacy_name }} @endisset</td>
-                            <td>@isset($item->pharmacy_address) {{ $item->pharmacy_address }} @endisset</td>
-                            <td>@isset($item->user) {{ $item->user->phone_number }} @endisset</td>
-                            <td>@isset($item->user) {{ $item->user->email }} @endisset</td>
+                            <td>@isset($item->name) {{ $item->name }} @endisset</td>
+                            <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_name }} @endisset</td>
+                            <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_address }} @endisset</td>
+                            <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
+                            <td>@isset($item->email) {{ $item->email }} @endisset</td>
                             <td>
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
                                 </button>
-                                
+                                @if($item->pharmacyBusiness)
                                     <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">
-                                        <i class="fa fa-edit"></i> </a>
-                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
-                                        method="post"
-                                        class="form-horizontal d-inline">
-                                        {{--                            @method('DELETE')--}}
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <div class="btn-group">
-                                            <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                    class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </form>
+                                    <i class="fa fa-edit"></i> </a>
+                                @endif
+                                
+                                <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
+                                    method="post"
+                                    class="form-horizontal d-inline">
+                                    {{--                            @method('DELETE')--}}
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <div class="btn-group">
+                                        <button onclick="removeItem({{ $loop->index }})" type="button"
+                                                class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </form>
                                
                             </td>
                         </tr>
@@ -92,28 +94,28 @@
 
         function showProduct(item) {
             console.log(item)
-            if (item.user) { $('#name').html(item.user.name);}
-            if (item.pharmacy_name) { $('#pharmacy_name').html(item.pharmacy_name); }
-            if (item.user.phone_number) {$('#phone').html(item.user.phone_number); }
-            $('#email').html(item.user.email);
-            $('#address').html(item.pharmacy_address);
-            $('#bank_account').html(item.bank_account_name);
-            $('#account_no').html(item.bank_account_number);
-            $('#bank_name').html(item.bank_name);
-            $('#branch').html(item.bank_brunch_name);
-            $('#bkash').html(item.bkash_number);
-            $('#startTime').html(item.start_time);
-            $('#endTime').html(item.end_time);
-            $('#breakStart').html(item.break_start_time);
-            $('#breakEnd').html(item.break_end_time);
-            if(item.nid_img_path) {
-                $('#nid').html('<img src="'+ item.nid_img_path +'" width="100" />');
+            if (item.name) { $('#name').html(item.name);}
+            if (item.pharmacy_business) { $('#pharmacy_name').html(item.pharmacy_business.pharmacy_name); }
+            if (item.phone_number) {$('#phone').html(item.phone_number); }
+            if (item.email) { $('#email').html(item.email); }
+            if (item.pharmacy_business) {$('#address').html(item.pharmacy_business.pharmacy_address); }
+            if (item.pharmacy_business) {$('#bank_account').html(item.pharmacy_business.bank_account_name); }
+            if (item.pharmacy_business) {$('#account_no').html(item.pharmacy_business.bank_account_number); }
+            if (item.pharmacy_business) {$('#bank_name').html(item.pharmacy_business.bank_name); }
+            if (item.pharmacy_business) {$('#branch').html(item.pharmacy_business.bank_brunch_name); }
+            if (item.pharmacy_business) {$('#bkash').html(item.pharmacy_business.bkash_number); }
+            if (item.pharmacy_business) {$('#startTime').html(item.pharmacy_business.start_time); }
+            if (item.pharmacy_business) {$('#endTime').html(item.pharmacy_business.end_time); }
+            if (item.pharmacy_business) {$('#breakStart').html(item.pharmacy_business.break_start_time); }
+            if (item.pharmacy_business) {$('#breakEnd').html(item.pharmacy_business.break_end_time); }
+            if(item.pharmacy_business && item.pharmacy_business.nid_img_path) {
+                $('#nid').html('<img src="'+ item.pharmacy_business.nid_img_path +'" width="100" />');
             }
-            if(item.trade_img_path) {
-                $('#trade').html('<img src="'+ item.rade_img_path +'" width="100"/>');
+            if(item.pharmacy_business && item.pharmacy_business.trade_img_path) {
+                $('#trade').html('<img src="'+ item.pharmacy_business.trade_img_path +'" width="100"/>');
             }
-            if(item.drug_img_path) {
-                $('#drug').html('<img src="'+ item.drug_img_path +'" width="100" />');
+            if(item.pharmacy_business && item.pharmacy_business.drug_img_path) {
+                $('#drug').html('<img src="'+ item.pharmacy_business.drug_img_path +'" width="100" />');
             }
             // $('#status').html(checkStatus(item.status));
         }

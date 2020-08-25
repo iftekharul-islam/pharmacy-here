@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Products\Http\Requests\UpdatePharmacyRequest;
 use Modules\Products\Repositories\PharmacyRepository;
+use Modules\User\Entities\Models\User;
 
 class PharmacyController extends Controller
 {
@@ -24,6 +25,7 @@ class PharmacyController extends Controller
     public function index()
     {
         $pharmacies = $this->repository->all();
+        // dd($pharmacies);
         return view('products::pharmacy.index', compact('pharmacies'));
     }
 
@@ -64,6 +66,7 @@ class PharmacyController extends Controller
     public function edit($id)
     {
         $pharmacy = $this->repository->findById($id);
+        // dd($pharmacy);
         return view('products::pharmacy.edit', compact('pharmacy'));
     }
 
