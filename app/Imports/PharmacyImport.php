@@ -19,17 +19,7 @@ class PharmacyImport implements ToCollection, WithHeadingRow
         {
             
             if (isset($row['mobile']) && $row['mobile'] != null) {
-                // logger($row['name']);
-                // $user = User::firstOrNew([
-                //     'name' => $row['name'],
-                //     'email' => $row['email'],
-                //     'dob' => $row['dob'],
-                //     'gender' => $row['gender'],
-                //     'status' => 1,
-                //     'is_pharmacy' => 1,
-                //     'phone_number' => '0'.$row['mobile'],
-                //     'password' => Hash::make('12345678')
-                // ]);
+                
                 $user = User::firstOrNew([
                     'phone_number' => '0'.$row['mobile'],
                 ]);
