@@ -54,9 +54,10 @@
                                     <i class="fa fa-eye"></i>
                                 </button>
                                 @if($item->pharmacyBusiness)
-                                <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i> </a>
                                 @endif
+                                
                                 <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
                                     method="post"
                                     class="form-horizontal d-inline">
