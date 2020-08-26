@@ -42,7 +42,7 @@ class OrderController extends BaseController
      */
     public function create(CreateOrderRrequest $request)
     {
-        $user = Auth::user();
+        //$user = Auth::user();
 
         $order = $this->repository->create($request, Auth::user()->id);
 
@@ -100,6 +100,13 @@ class OrderController extends BaseController
     public function ordersByCustomerId()
     {
         return $this->repository->byCustomerId(Auth::guard('api')->user()->id);
+    }
+
+    public function ordersStatusUpdate($order_id, $status_id)
+    {
+        $order = $this->repository->updateStatus($order_id, $status_id);
+        // return $this->response->item($order, new OrderTransformer);
+        return $order;
     }
 
 } 
