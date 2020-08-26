@@ -25,10 +25,10 @@ class OrderController extends BaseController
      */
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         if ($user->hasRole('pharmacy')) {
-            $orders = $this->repository->byPharmacyId($user->id);
+            $orders = $this->repository->byPharmacyId(1);
         } else {
             $orders = $this->repository->byCustomerId($user->id);
         }
@@ -92,8 +92,14 @@ class OrderController extends BaseController
         //
     }
 
-    public function ordersByPharmacyId($pharmacy_id)
+    public function ordersByPharmacyId()
     {
-        return $this->repository->all($pharmacy_id);
+        return $this->repository->byPharmacyId(Auth::guard('api')->user()->id);
     }
-}
+
+    public function ordersByCustomerId()
+    {
+        return $this->repository->byCustomerId(Auth::guard('api')->user()->id);
+    }
+
+} 

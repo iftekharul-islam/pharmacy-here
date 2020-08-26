@@ -16,7 +16,8 @@ class OrderRepository
      */
     public function byPharmacyId($pharmacy_id)
     {
-        return Order::where('pharmacy_id', $pharmacy_id)->get();
+        return Order::with(['orderItems.product', 'address', 'pharmacy'])
+            ->where('pharmacy_id', $pharmacy_id)->get();
     }
 
     /**
@@ -25,7 +26,9 @@ class OrderRepository
      */
     public function byCustomerId($customer_id)
     {
-        return Order::where('customer_id', $customer_id)->get();
+        return Order::with(['orderItems.product', 'address', 'pharmacy'])
+            ->where('customer_id', $customer_id)
+            ->paginate(20);
     }
 
     public function get($id)
