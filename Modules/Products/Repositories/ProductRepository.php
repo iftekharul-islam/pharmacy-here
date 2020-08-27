@@ -96,6 +96,7 @@ class ProductRepository
             'adult_dose' => $request->adult_dose,
             'child_dose' => $request->child_dose,
             'renal_dose' => $request->renal_dose,
+            'description' => $request->description
             
         ];
 
@@ -223,6 +224,11 @@ class ProductRepository
         if (isset($request->renal_dose)) {
             $productInfo->renal_dose = $request->renal_dose;
         }
+        
+        if (isset($request->description)) {
+            $productInfo->description = $request->description;
+        }
+        
         $productInfo->save();
         return $product;
 

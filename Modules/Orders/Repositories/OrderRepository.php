@@ -137,6 +137,6 @@ class OrderRepository
         $order->status = $status_id;
         $order->save();
 
-        return $order;
+        return responseData('Order status updated');
     }
 }

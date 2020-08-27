@@ -287,6 +287,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="description" class="col-sm-4 col-form-label">Description</label>
+                        <div class="col-sm-8 " id="">
+                            <textarea class="form-control" name="description" id="description" >{{$product->productAdditionalInfo->description}}</textarea>
+                            @if ($errors->has('description'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('description') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="is_saleable" class="col-sm-4 col-form-label">Saleable</label>
                         <div class="col-sm-8 " id="">
                             <select class="form-control" name="is_saleable" id="is_saleable">

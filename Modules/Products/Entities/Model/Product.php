@@ -29,7 +29,8 @@ class Product extends Model
         'is_prescripted',
         'is_pre_order',
         'min_order_qty',
-        'strength'
+        'strength',
+        'description'
     ];
 
     protected static function boot() {
