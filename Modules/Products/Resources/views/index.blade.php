@@ -24,9 +24,10 @@
         <div class="card-header">
             <h3 class="card-title">Product List</h3>
         </div>
-        <!-- /.card-header -->
-        <div class="card-body table-responsive">
-            <table id="example1" class="table table-bordered table-striped data-table">
+        
+        <div class="card-body table-responsive mb-3">
+            @if($productList->isNotEmpty())
+            <table id="example1" class="table data-table">
                 <thead>
                 <tr>
                     <th>Type</th>
@@ -74,8 +75,13 @@
 
                 </tbody>
             </table>
+            @else
+                <p> No Product Found</p>
+            @endif
         </div>
-        <!-- /.card-body -->
+        <div class="col-md">
+            {{ $productList->links() }}
+        </div>
     </div>
 
     @include('products::show')
@@ -84,9 +90,9 @@
 
 @section('js')
     <script>
-        $(document).ready(function () {
-            $('.data-table').dataTable();
-        });
+        // $(document).ready(function () {
+        //     $('.data-table').dataTable();
+        // });
 
         function showProduct(item) {
             $('#type').html((item.type));
