@@ -28,7 +28,8 @@ class Product extends Model
         'primary_unit_id',
         'is_prescripted',
         'is_pre_order',
-        'min_order_qty'
+        'min_order_qty',
+        'strength'
     ];
 
     protected static function boot() {

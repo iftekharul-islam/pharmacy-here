@@ -74,9 +74,10 @@ class ProductRepository
             'primary_unit_id',
             'is_prescripted',
             'is_pre_order',
-            'min_order_qty'
+            'min_order_qty',
+            'strength'
         );
-
+        
         $newProduct = Product::create($productData);
 
         if (!$newProduct) {
@@ -95,6 +96,7 @@ class ProductRepository
             'adult_dose' => $request->adult_dose,
             'child_dose' => $request->child_dose,
             'renal_dose' => $request->renal_dose,
+            
         ];
 
         return ProductAdditionalInfo::create($productInfo);
@@ -103,6 +105,7 @@ class ProductRepository
 
     public function update($request, $id)
     {
+
         $product = Product::find($id);
 
         if (!$product) {
@@ -171,6 +174,10 @@ class ProductRepository
 
         if (isset($request->min_order_qty)) {
             $product->min_order_qty = $request->min_order_qty;
+        } 
+        
+        if (isset($request->strength)) {
+            $product->strength = $request->strength;
         }
 
         $product->save();

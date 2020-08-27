@@ -101,6 +101,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="strength" class="col-sm-4 col-form-label">Strength</label>
+                                <div class="col-sm-8 pt-2" id="strength"> </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Adult Dose</label>
                             <div class="col-sm-8 pt-2" id="adult_dose">
                             </div>

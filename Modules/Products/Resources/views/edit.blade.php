@@ -242,6 +242,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="strength" class="col-sm-4 col-form-label">Strength</label>
+                        <div class="col-sm-8" >
+                            <input type="text" name="strength" class="form-control" id="strength" value="{{ $product->strength }}" placeholder="Strength">
+                            @if ($errors->has('strength'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('strength') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="adult_dose" class="col-sm-4 col-form-label">Adult Dose</label>
                         <div class="col-sm-8  " id="">
                             <input type="text" value="{{ $product->productAdditionalInfo->adult_dose }}" name="adult_dose" class="form-control" id="adult_dose" placeholder="Adult Dose">
@@ -279,7 +291,7 @@
                         <div class="col-sm-8 " id="">
                             <select class="form-control" name="is_saleable" id="is_saleable">
                                 <option value="1" @if ($product->is_saleable == 1) selected @endif>Yes</option>
-                                <option value="0" @if ($product->is_saleable == 1) selected @endif>No</option>
+                                <option value="0" @if ($product->is_saleable === 0) selected @endif>No</option>
                             </select>
                             @if ($errors->has('is_saleable'))
                                 <span class="text-danger">
@@ -309,7 +321,7 @@
                         <div class="col-sm-8 " id="">
                             <select class="form-control" name="is_pre_order" id="is_pre_order">
                                 <option value="1" @if ($product->is_pre_order == 1) selected @endif>Yes</option>
-                                <option value="0" @if ($product->is_pre_order == 0) selected @endif>No</option>
+                                <option value="0" @if ($product->is_pre_order === 0) selected @endif>No</option>
                             </select>
                             @if ($errors->has('is_pre_order'))
                                 <span class="text-danger">
