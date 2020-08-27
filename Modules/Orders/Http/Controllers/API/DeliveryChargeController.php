@@ -72,13 +72,13 @@ class DeliveryChargeController extends BaseController
             ];
         }
        
-        $data = [
-            'normal_delivery' => $normalDelivery,
-            'express_delivery' => $expressDelivery,
-            'collect_from_pharmacy' => $collectFromPharmacy
-        ];
+        // $data = [
+        //     'normal_delivery' => $normalDelivery,
+        //     'express_delivery' => $expressDelivery,
+        //     'collect_from_pharmacy' => $collectFromPharmacy
+        // ];
 
-        return responseData($data);
+        return responsePreparedData($data);
         
     }
 
