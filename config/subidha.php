@@ -33,5 +33,6 @@ return [
             'name' => 'E-cash',
             'charge_percentage' => 2.3
         ]
-    ]
+    ],
+    'item_per_page' => 20
 ];

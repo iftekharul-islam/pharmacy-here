@@ -44,9 +44,9 @@ class ProductRepository
             $company = Company::where('name', 'LIKE', "%$companyName%")->get()->pluck('id')->toArray();
             $products->whereIn('company_id', $company);
         }
-
+        
         return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
-            ->get();
+            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
 
     public function get($id)
