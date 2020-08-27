@@ -122,6 +122,7 @@
             $('#is_pre_order').html(checkStatus(item.is_pre_order));
             $('#min_order_qty').html(item.min_order_qty);
             $('#strength').html(item.strength);
+            $('#description').html((item.product_additional_info.description));
         }
 
         function removeItem(id) {

@@ -120,6 +120,11 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Description</label>
+                            <div class="col-sm-8 pt-2" id="description">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Saleable</label>
                             <div class="col-sm-8 pt-2" id="is_saleable">
                             </div>

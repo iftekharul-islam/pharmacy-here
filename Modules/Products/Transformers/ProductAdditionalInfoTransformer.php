@@ -24,6 +24,7 @@ class ProductAdditionalInfoTransformer extends TransformerAbstract
             'adult_dose' => $product->adult_dose,
             'child_dose' => $product->child_dose,
             'renal_dose' => $product->renal_dose,
+            'description' => $product->description,
         ];
     }
 

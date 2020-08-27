@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomeController@index')->name('home');
+// Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', function() {
+    return redirect()->route('login');
+});
 
-// Auth::routes();
