@@ -4,6 +4,7 @@
 namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Support\Carbon as SupportCarbon;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
@@ -40,6 +41,8 @@ class OrderRepository
     public function create($request, $id)
     {
         $order = new Order();
+        $delivery_time = Carbon::parse($request->get('delivery_time'))->format('H:i');
+        // return $delivery_time;
         $order->phone_number = $request->get('phone_number');
         $order->payment_type = $request->get('payment_type');
         $order->delivery_type = $request->get('delivery_type');
@@ -47,7 +50,7 @@ class OrderRepository
         $order->delivery_charge = $request->get('delivery_charge');
         $order->amount = $request->get('amount');
         $order->order_date = Carbon::now()->format('Y-m-d');
-        $order->delivery_time =$request->get('delivery_time');
+        $order->delivery_time = $delivery_time;
         $order->notes =$request->get('notes');
         $order->customer_id = $id;
         $order->pharmacy_id = $request->get('pharmacy_id');

@@ -115,6 +115,7 @@
             $('#is_prescripted').html(checkStatus(item.is_prescripted));
             $('#is_pre_order').html(checkStatus(item.is_pre_order));
             $('#min_order_qty').html(item.min_order_qty);
+            $('#strength').html(item.strength);
         }
 
         function removeItem(id) {
