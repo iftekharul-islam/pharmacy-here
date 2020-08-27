@@ -125,9 +125,7 @@ class OrderRepository
     public function forwardOrder($order_id, $status_id) {
         $order = Order::with('address')->find($order_id); 
         $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
-
         $previousPharmacies[] = $order->pharmacy_id;
-
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
             ->whereNotIn('user_id', $previousPharmacies)
             ->inRandomOrder()->first();
