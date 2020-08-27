@@ -4,10 +4,13 @@
 namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
+use Modules\Address\Entities\CustomerAddress;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
+use Modules\User\Entities\Models\PharmacyBusiness;
 
 class OrderRepository
 {
@@ -37,25 +40,31 @@ class OrderRepository
         return Order::where('id', $id)->first();
     }
 
+    public function getNearestPharmacyId($address_id) {
+        $address = CustomerAddress::find($address_id);
+        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
+        return $pharmacy->user_id;
+    }
 
-    public function create($request, $id)
+    public function create($request, $customer_id)
     {
         $order = new Order();
+        $pharmacy_id = $this->getNearestPharmacyId($request->get('shipping_address_id'));
         $delivery_time = Carbon::parse($request->get('delivery_time'))->format('H:i');
-        // return $delivery_time;
+        
         $order->phone_number = $request->get('phone_number');
         $order->payment_type = $request->get('payment_type');
         $order->delivery_type = $request->get('delivery_type');
-        $order->status = $request->get('status');
+        $order->status = 0;
         $order->delivery_charge = $request->get('delivery_charge');
         $order->amount = $request->get('amount');
         $order->order_date = Carbon::now()->format('Y-m-d');
         $order->delivery_time = $delivery_time;
-        $order->notes =$request->get('notes');
-        $order->customer_id = $id;
-        $order->pharmacy_id = $request->get('pharmacy_id');
-        $order->shipping_address_id =$request->get('shipping_address_id');
-        
+        $order->notes = $request->get('notes');
+        $order->customer_id = $customer_id;
+        $order->pharmacy_id = $pharmacy_id;
+        $order->shipping_address_id = $request->get('shipping_address_id');
+
         $order->save();
 
         if ( $request->order_items ) {
@@ -94,5 +103,40 @@ class OrderRepository
                 ]);
             }
         }
+    }
+
+    public function updateStatus($order_id, $status_id) {
+        $order = Order::with('address')->find($order_id); 
+        
+        if ($status_id == 5 || $status_id == 6) {
+            $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
+
+            $previousPharmacies[] = $order->pharmacy_id;
+            logger('old pharmacies: '. $previousPharmacies);
+
+            $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+                ->whereNotIn('user_id', $previousPharmacies)
+                ->inRandomOrder()->first();
+                
+            if($nearestPharmacy) {
+                $orderHistory = new OrderHistory();
+                $orderHistory->order_id = $order->id;
+                $orderHistory->user_id = $order->pharmacy_id;
+                $orderHistory->status = $status_id;
+                $orderHistory->save();
+
+                $order->pharmacy_id = $nearestPharmacy->user_id;
+                $order->status = 0;
+                $order->save();
+                return $order;
+            }
+
+            return responseData('No Pharmacy Found');
+        }
+
+        $order->status = $status_id;
+        $order->save();
+
+        return $order;
     }
 }

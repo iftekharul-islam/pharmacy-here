@@ -25,5 +25,8 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     $api->post('orders/create', $namespace . '\OrderController@create');
     $api->get('pharmacy/orders', $namespace . '\OrderController@ordersByPharmacyId');
     $api->get('customer/orders', $namespace . '\OrderController@ordersByCustomerId');
+
+    //order status update
+    $api->put('orders/{order_id}/status/{status_id}', $namespace . '\OrderController@ordersStatusUpdate');
     $api->post('delivery/charge', $namespace . '\DeliveryChargeController@index');
 });

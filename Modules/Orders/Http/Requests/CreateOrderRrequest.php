@@ -17,11 +17,11 @@ class CreateOrderRrequest extends FormRequest
             'phone_number' => 'required',
             'payment_type' => 'required',
             'delivery_type' => 'required',
-            'status' => 'required',
+            //'status' => 'required',
             'delivery_charge' => 'required',
             'amount' => 'required',
             'delivery_time' => 'required',
-            'pharmacy_id' => 'required',
+            //'pharmacy_id' => 'required',
             'shipping_address_id' => 'required',
             'order_items' => 'required',
             'notes' => 'nullable'
