@@ -11,3 +11,16 @@ if (!function_exists('responseData')) {
         return response()->json($response, $code); // Status code here
     }
 }
+
+
+if (!function_exists('responsePreparedData')) {
+    function responsePreparedData($data, $code = 200)
+    {
+        $response = [
+            'data' => $data,
+            'status_code' => $code
+        ];
+
+        return response()->json($response, $code); // Status code here
+    }
+}

@@ -16,8 +16,69 @@ class DeliveryChargeController extends BaseController
      */
     public function index(DeliveryChargeRequest $request)
     {
+
+        $orderAmount = $request->get('amount');
+        $normalDelivery = [];
+        $expressDelivery = [];
+        $collectFromPharmacy = [];
+
+        $data = [];
         
-        return $request->all();
+        if ($orderAmount <= config('subidha.free_delivery_amount')) {
+            $normalEcash = (config('subidha.normal_delivery_charge') + $request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100;
+            $expressEcash = (config('subidha.express_delivery_charge') + $request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100;
+            $normalDelivery = [
+                'cash' => number_format( config('subidha.normal_delivery_charge') + ($request->get('amount')) * config('subidha.cash_payment_charge_percentage') / 100, 2),
+                'ecash' => number_format(config('subidha.normal_delivery_charge') + $normalEcash, 2)
+            ];
+
+            $expressDelivery = [
+                'cash' => number_format(config('subidha.express_delivery_charge') + ($request->get('amount') * config('subidha.cash_payment_charge_percentage') / 100), 2),
+                'ecash' => number_format(config('subidha.express_delivery_charge') + $expressEcash, 2)
+            ];
+
+            $collectFromPharmacy = [
+                'cash' => number_format(config('subidha.collect_from_pharmacy_charge'), 2),
+                'ecash' => number_format(config('subidha.collect_from_pharmacy_charge') - ($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100), 2)
+            ];
+
+            $data = [
+                'normal_delivery' => $normalDelivery,
+                'express_delivery' => $expressDelivery,
+                'collect_from_pharmacy' => $collectFromPharmacy
+            ];
+        } else {
+            $normalEcash = (config('subidha.normal_delivery_charge') + $request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100;
+            $expressEcash = (config('subidha.express_delivery_charge') + $request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100;
+            $normalDelivery = [
+                // 'cash' => number_format( config('subidha.normal_delivery_charge') + ($request->get('amount')) * config('subidha.cash_payment_charge_percentage') / 100, 2),
+                'ecash' => number_format(config('subidha.normal_delivery_charge') + $normalEcash, 2)
+            ];
+
+            $expressDelivery = [
+                // 'cash' => number_format(config('subidha.express_delivery_charge') + ($request->get('amount') * config('subidha.cash_payment_charge_percentage') / 100), 2),
+                'ecash' => number_format(config('subidha.express_delivery_charge') + $expressEcash, 2)
+            ];
+
+            $collectFromPharmacy = [
+                // 'cash' => number_format(config('subidha.collect_from_pharmacy_charge'), 2),
+                'ecash' => number_format(config('subidha.collect_from_pharmacy_charge') - ($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100), 2)
+            ];
+
+            $data = [
+                'normal_delivery' => $normalDelivery,
+                'express_delivery' => $expressDelivery,
+                'collect_from_pharmacy' => $collectFromPharmacy
+            ];
+        }
+       
+        // $data = [
+        //     'normal_delivery' => $normalDelivery,
+        //     'express_delivery' => $expressDelivery,
+        //     'collect_from_pharmacy' => $collectFromPharmacy
+        // ];
+
+        return responsePreparedData($data);
         
     }
 
