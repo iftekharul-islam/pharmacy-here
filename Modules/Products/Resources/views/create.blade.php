@@ -237,6 +237,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="strength" class="col-sm-4 col-form-label">Strength</label>
+                        <div class="col-sm-8" >
+                            <input type="text" name="strength" class="form-control" id="strength" placeholder="Strength">
+                            @if ($errors->has('strength'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('strength') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="adult_dose" class="col-sm-4 col-form-label">Adult Dose</label>
                         <div class="col-sm-8  " id="">
                             <input type="text" name="adult_dose" class="form-control" id="adult_dose" placeholder="Adult Dose">

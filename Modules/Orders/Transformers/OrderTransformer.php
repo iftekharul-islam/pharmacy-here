@@ -3,8 +3,7 @@
 
 namespace Modules\Orders\Transformers;
 
-
-
+use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
 use Modules\Orders\Entities\Models\Order;
 use Modules\User\Transformers\PharmacyTransformer;
@@ -18,6 +17,7 @@ class OrderTransformer extends TransformerAbstract
 
     public function transform(Order $item)
     {
+        // $delivery_time = Carbon::parse($item->delivery_time)->format('g:i A');
         return [
             'id'                        => $item->id,
             'customer_name'             => $item->customer->name,

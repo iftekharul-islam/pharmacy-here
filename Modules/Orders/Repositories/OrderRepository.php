@@ -5,6 +5,7 @@ namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
 use Modules\Address\Entities\CustomerAddress;
+use Illuminate\Support\Carbon as SupportCarbon;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
@@ -49,6 +50,8 @@ class OrderRepository
     {
         $order = new Order();
         $pharmacy_id = $this->getNearestPharmacyId($request->get('shipping_address_id'));
+        $delivery_time = Carbon::parse($request->get('delivery_time'))->format('H:i');
+        
         $order->phone_number = $request->get('phone_number');
         $order->payment_type = $request->get('payment_type');
         $order->delivery_type = $request->get('delivery_type');
@@ -56,12 +59,12 @@ class OrderRepository
         $order->delivery_charge = $request->get('delivery_charge');
         $order->amount = $request->get('amount');
         $order->order_date = Carbon::now()->format('Y-m-d');
-        $order->delivery_time = $request->get('delivery_time');
+        $order->delivery_time = $delivery_time;
         $order->notes = $request->get('notes');
         $order->customer_id = $customer_id;
         $order->pharmacy_id = $pharmacy_id;
         $order->shipping_address_id = $request->get('shipping_address_id');
-        
+
         $order->save();
 
         if ( $request->order_items ) {

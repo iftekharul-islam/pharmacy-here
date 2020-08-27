@@ -32,7 +32,8 @@ class ProductTransformer extends TransformerAbstract
             'primary_unit_id'           => $product->primary_unit_id,
             'is_prescripted'            => $product->is_prescripted,
             'is_pre_order'              => $product->is_pre_order,
-//            'uuu'   => $product->load('form')
+            'min_order_qty'             => $product->min_order_qty,
+            'strength'                  => $product->strength,
         ];
     }
 

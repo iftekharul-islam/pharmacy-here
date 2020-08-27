@@ -33,13 +33,11 @@ class ProductsController extends BaseController
     {
         $productList = $this->repository->all($request);
 
-//        return $productList;
-
         if (! $productList) {
             throw new NotFoundHttpException('Product List Not Found');
         }
 
-        return $this->response->collection($productList, new ProductTransformer());
+        return $this->response->paginator($productList, new ProductTransformer());
     }
 
     /**

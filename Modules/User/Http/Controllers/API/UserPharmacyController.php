@@ -215,4 +215,9 @@ class UserPharmacyController extends BaseController
 
         return $this->response->item($infoResponse, new PharmacyBusinessTransformer());
     }
+
+    public function isPharmacyAvailable($area_id) {
+        $isAvailable = $this->repository->checkPharmacyByArea($area_id);
+        return responsePreparedData($isAvailable);
+    }
 }
