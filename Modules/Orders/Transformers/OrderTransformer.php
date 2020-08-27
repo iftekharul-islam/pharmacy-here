@@ -26,7 +26,7 @@ class OrderTransformer extends TransformerAbstract
             "delivery_charge"           => $item->delivery_charge,
             "delivery_type"             => $item->delivery_type,
             "payment_type"              => $item->payment_type,
-            "delivery_time"             => $delivery_time,
+            "delivery_time"             => $item->delivery_time,
             "status"                    => $item->status,
             "order_date"                => $item->created_at,
         ];

@@ -2,6 +2,7 @@
 
 namespace Modules\Orders\Entities\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Locations\Entities\Models\Address;
@@ -49,6 +50,11 @@ class Order extends Model
     public function orderPrescriptoins()
     {
         return $this->hasMany(OrderPrescription::class, 'order_id', 'id');
+    }
+
+    public function getDeliveryTimeAttribute($value)
+    {
+        return Carbon::parse($value)->format('g:i A');
     }
 
 }
