@@ -39,7 +39,8 @@ class DeliveryChargeController extends BaseController
 
             $collectFromPharmacy = [
                 'cash' => number_format(config('subidha.collect_from_pharmacy_charge'), 2),
-                'ecash' => number_format(config('subidha.collect_from_pharmacy_charge') - ($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100), 2)
+                'ecash' => number_format(config('subidha.collect_from_pharmacy_charge') - ($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100), 2),
+                'ecash_discount' => number_format($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100, 2)
             ];
 
             $data = [
@@ -62,7 +63,8 @@ class DeliveryChargeController extends BaseController
 
             $collectFromPharmacy = [
                 // 'cash' => number_format(config('subidha.collect_from_pharmacy_charge'), 2),
-                'ecash' => number_format(config('subidha.collect_from_pharmacy_charge') - ($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100), 2)
+                'ecash' => number_format(config('subidha.collect_from_pharmacy_charge') - ($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100), 2),
+                'ecash_discount' => number_format($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100, 2)
             ];
 
             $data = [
@@ -71,15 +73,8 @@ class DeliveryChargeController extends BaseController
                 'collect_from_pharmacy' => $collectFromPharmacy
             ];
         }
-       
-        // $data = [
-        //     'normal_delivery' => $normalDelivery,
-        //     'express_delivery' => $expressDelivery,
-        //     'collect_from_pharmacy' => $collectFromPharmacy
-        // ];
 
         return responsePreparedData($data);
-        
     }
 
     /**
