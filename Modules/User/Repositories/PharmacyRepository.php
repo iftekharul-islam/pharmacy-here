@@ -230,4 +230,9 @@ class PharmacyRepository
         return $pharmacyBusinessInfo;
 
     }
+
+    public function checkPharmacyByArea($area_id) {
+        $count = PharmacyBusiness::where('area_id', $area_id)->count();
+        return $count > 0 ? true : false;
+    }
 }
