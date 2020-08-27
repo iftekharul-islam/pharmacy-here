@@ -108,34 +108,51 @@ class OrderRepository
     public function updateStatus($order_id, $status_id) {
         $order = Order::with('address')->find($order_id); 
         
+        if ($order->status == 8 ) {
+            return responseData('Orphan order');
+        }
+
         if ($status_id == 5 || $status_id == 6) {
-            $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
-
-            $previousPharmacies[] = $order->pharmacy_id;
-            logger('old pharmacies: '. $previousPharmacies);
-
-            $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                ->whereNotIn('user_id', $previousPharmacies)
-                ->inRandomOrder()->first();
-                
-            if($nearestPharmacy) {
-                $orderHistory = new OrderHistory();
-                $orderHistory->order_id = $order->id;
-                $orderHistory->user_id = $order->pharmacy_id;
-                $orderHistory->status = $status_id;
-                $orderHistory->save();
-
-                $order->pharmacy_id = $nearestPharmacy->user_id;
-                $order->status = 0;
-                $order->save();
-                return $order;
-            }
-
-            return responseData('No Pharmacy Found');
+           return $this->forwardOrder($order_id, $status_id);
         }
 
         $order->status = $status_id;
         $order->save();
+
+        return responseData('Order status updated');
+    }
+
+    public function forwardOrder($order_id, $status_id) {
+        $order = Order::with('address')->find($order_id); 
+        $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
+
+        $previousPharmacies[] = $order->pharmacy_id;
+
+        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+            ->whereNotIn('user_id', $previousPharmacies)
+            ->inRandomOrder()->first();
+            
+        if ($nearestPharmacy) {
+            $orderHistory = new OrderHistory();
+            $orderHistory->order_id = $order->id;
+            $orderHistory->user_id = $order->pharmacy_id;
+            $orderHistory->status = $status_id;
+            $orderHistory->save();
+
+            $order->pharmacy_id = $nearestPharmacy->user_id;
+            $order->status = 0;
+            $order->save();
+            return responseData('Order status updated');
+        }
+
+        $order->status = 8;
+        $order->save();
+
+        $orderHistory = new OrderHistory();
+        $orderHistory->order_id = $order->id;
+        $orderHistory->user_id = $order->pharmacy_id;
+        $orderHistory->status = $status_id;
+        $orderHistory->save();
 
         return responseData('Order status updated');
     }

@@ -10,5 +10,6 @@ return [
         5 => 'Rejected By Client',
         6 => 'Forwarded',
         7 => 'Expired',
+        8 => 'Orphan',
     ],
 ];
