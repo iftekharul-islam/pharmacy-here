@@ -44,7 +44,7 @@ class OrderController extends BaseController
     {
         //$user = Auth::user();
 
-        $order = $this->repository->create($request, Auth::user()->id);
+        $order = $this->repository->create($request, Auth::id());
 
         return $this->response->item($order, new OrderTransformer());
         // return responseData($order);
