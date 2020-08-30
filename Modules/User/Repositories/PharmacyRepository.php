@@ -219,8 +219,8 @@ class PharmacyRepository
 
         if ($request->has('bank_brunch_name')) {
             $pharmacyBusinessInfo->bank_brunch_name = $request->bank_brunch_name;
-        } 
-        
+        }
+
         if ($request->has('bank_routing_number')) {
             $pharmacyBusinessInfo->bank_routing_number = $request->bank_routing_number;
         }
@@ -234,5 +234,18 @@ class PharmacyRepository
     public function checkPharmacyByArea($area_id) {
         $count = PharmacyBusiness::where('area_id', $area_id)->count();
         return $count > 0 ? true : false;
+    }
+
+    public function getAvailablePharmacyList($thana_id)
+    {
+        $pharmacyList = PharmacyBusiness::with(
+            ['area.thana'
+            => function ($query) use($thana_id) {
+                $query->where('id', $thana_id);
+            }
+            ]
+        )->get();
+
+        return $pharmacyList;
     }
 }
