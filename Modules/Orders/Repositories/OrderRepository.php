@@ -11,6 +11,7 @@ use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
 use Modules\User\Entities\Models\PharmacyBusiness;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderRepository
 {
@@ -43,13 +44,17 @@ class OrderRepository
     public function getNearestPharmacyId($address_id) {
         $address = CustomerAddress::find($address_id);
         $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
-        return $pharmacy->user_id;
+        
+        return  $pharmacy ? $pharmacy->user_id : '';
     }
 
     public function create($request, $customer_id)
     {
         $order = new Order();
-        $pharmacy_id = $this->getNearestPharmacyId($request->get('shipping_address_id'));
+        $pharmacy_id = $request->get('pharmacy_id') ? $request->get('pharmacy_id') : $this->getNearestPharmacyId($request->get('shipping_address_id'));
+        if (empty($pharmacy_id)) {
+            throw new NotFoundHttpException('Pharmacy Not Found');
+        }
         $delivery_time = Carbon::parse($request->get('delivery_time'))->format('H:i');
         
         $order->phone_number = $request->get('phone_number');
