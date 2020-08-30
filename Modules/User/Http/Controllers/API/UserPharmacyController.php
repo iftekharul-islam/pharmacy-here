@@ -220,4 +220,13 @@ class UserPharmacyController extends BaseController
         $isAvailable = $this->repository->checkPharmacyByArea($area_id);
         return responsePreparedData($isAvailable);
     }
+
+    public function availablePharmacyList($thana_id)
+    {
+        $availablePharmacyList = $this->repository->getAvailablePharmacyList($thana_id);
+
+//        return $availablePharmacyList;
+
+        return $this->response->collection($availablePharmacyList, new PharmacyBusinessTransformer() );
+    }
 }

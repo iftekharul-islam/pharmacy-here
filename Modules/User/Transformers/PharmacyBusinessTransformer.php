@@ -5,12 +5,13 @@ namespace Modules\User\Transformers;
 
 
 use League\Fractal\TransformerAbstract;
+use Modules\Locations\Transformers\AreaTransformer;
 use Modules\User\Entities\Models\PharmacyBusiness;
 
 class PharmacyBusinessTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
-        'weekends'
+        'weekends', 'area'
     ];
     public function transform(PharmacyBusiness $item)
     {
@@ -37,6 +38,11 @@ class PharmacyBusinessTransformer extends TransformerAbstract
     public function includeWeekends(PharmacyBusiness $item)
     {
         return $this->collection($item->weekends, new WeekendsTransformer());
+    }
+
+    public function includeArea(PharmacyBusiness $item)
+    {
+        return $this->item($item->area, new AreaTransformer());
     }
 
 }
