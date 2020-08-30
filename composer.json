@@ -22,7 +22,8 @@
         "maatwebsite/excel": "^3.1",
         "nwidart/laravel-modules": "^7.1",
         "spatie/laravel-permission": "3.13",
-        "tymon/jwt-auth": "1.0.0"
+        "tymon/jwt-auth": "1.0.0",
+      "ext-curl": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
