@@ -15,7 +15,7 @@ class CreateUserDeviceIdTable extends Migration
     {
         Schema::create('user_device_ids', function (Blueprint $table) {
             $table->id();
-            $table->string('device_id');
+            $table->string('device_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
