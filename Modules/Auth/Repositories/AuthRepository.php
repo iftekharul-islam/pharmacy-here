@@ -13,6 +13,7 @@ use Modules\Auth\Jobs\SendOtp;
 use Modules\Auth\Notifications\PasswordResetNotification;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
+use Modules\User\Entities\Models\UserDeviceId;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
@@ -148,6 +149,11 @@ class AuthRepository
 
         $user->save();
 
+        UserDeviceId::create([
+            'user_id' => $user->id,
+            'device_id' => $request->device_id,
+        ]);
+
 
         $role = Role::where('name', $request->role)->first();
 
@@ -178,16 +184,19 @@ class AuthRepository
         return JWTAuth::fromUser($user);
     }
 
-    public function getUserByPhone($phone)
+    public function getUserByPhone($phone, $device_token)
     {
         $user = User::where('phone_number', $phone)->first();
+
+        UserDeviceId::create([
+            'user_id' => $user->id,
+            'device_id' => $device_token,
+        ]);
 
         if ($user->hasRole('pharmacy')) {
             return User::with('pharmacyBusiness')->where('phone_number', $phone)->first();
         }
         return User::where('phone_number', $phone)->first();
-
-//        return $user->pharmacyBusiness->pharmacy_name ?? '';
     }
 
     public function createCustomerUser($request)

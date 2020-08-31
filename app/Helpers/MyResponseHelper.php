@@ -28,14 +28,14 @@ if (!function_exists('responsePreparedData')) {
 
 if (!function_exists('sendPushNotification')) {
     function sendPushNotification($fcm_token, $title, $message, $id="") {
-        $push_notification_key = ENV(PUSH_NOTIFICATION_KEY);
+        $push_notification_key = env('PUSH_NOTIFICATION_KEY');
         $url = "https://fcm.googleapis.com/fcm/send";
         $header = array("authorization: key=" . $push_notification_key . "",
             "content-type: application/json"
         );
 
         $postdata = '{
-            "to" : $deviceToken,
+            "to" : $fcm_token,
             "notification" : {
                 "title":"Notification title",
                 "text" : "Test Message"
