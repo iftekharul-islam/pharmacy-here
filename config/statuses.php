@@ -7,7 +7,7 @@ return [
         2 => 'On Processing',
         3 => 'Completed',
         4 => 'Not Completed',
-        5 => 'Rejected By Client',
+        5 => 'Rejected By Pharmacy',
         6 => 'Forwarded',
         7 => 'Expired',
         8 => 'Orphan',

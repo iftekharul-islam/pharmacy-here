@@ -10,6 +10,7 @@ use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
 use Modules\User\Entities\Models\PharmacyBusiness;
+use Modules\User\Entities\Models\UserDeviceId;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderRepository
@@ -79,6 +80,14 @@ class OrderRepository
         if ( $request->prescriptions ) {
             $this->storeAssociatePrescriptions($request->prescriptions, $order->id);
         }
+
+        $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
+        $title = 'New Order Available';
+
+        foreach ($deviceIds as $deviceId){
+            sendPushNotification($deviceId, $title, $request->order_items, $id="");
+        }
+
 
         return $order;
     }

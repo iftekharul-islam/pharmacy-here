@@ -28,7 +28,7 @@ class OrderTransformer extends TransformerAbstract
             "payment_type"              => $item->payment_type,
             "delivery_time"             => $item->delivery_time,
             "status"                    => $item->status,
-            "order_date"                => $item->created_at,
+            "order_date"                => Carbon::parse($item->created_at)->format('d-m-Y'),
         ];
     }
 
@@ -41,5 +41,5 @@ class OrderTransformer extends TransformerAbstract
     {
         return $this->collection($item->orderPrescriptions, new OrderPrescriptionTransformer());
     }
-   
+
 }

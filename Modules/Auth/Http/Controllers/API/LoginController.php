@@ -115,7 +115,7 @@ class LoginController extends Controller
             throw new StoreResourceFailedException('Failed to verify OTP');
         }
 
-        $user = $this->repository->getUserByPhone($request->phone_number);
+        $user = $this->repository->getUserByPhone($request->phone_number, $request->device_token);
 //        return $user;
 
         return $this->respondWithTokenAndName($token, $user);
