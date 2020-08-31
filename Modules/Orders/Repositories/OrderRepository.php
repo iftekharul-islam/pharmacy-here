@@ -5,7 +5,6 @@ namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
 use Modules\Address\Entities\CustomerAddress;
-use Illuminate\Support\Carbon as SupportCarbon;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
@@ -44,7 +43,7 @@ class OrderRepository
     public function getNearestPharmacyId($address_id) {
         $address = CustomerAddress::find($address_id);
         $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
-        
+
         return  $pharmacy ? $pharmacy->user_id : '';
     }
 
@@ -56,7 +55,7 @@ class OrderRepository
             throw new NotFoundHttpException('Pharmacy Not Found');
         }
         $delivery_time = Carbon::parse($request->get('delivery_time'))->format('H:i');
-        
+
         $order->phone_number = $request->get('phone_number');
         $order->payment_type = $request->get('payment_type');
         $order->delivery_type = $request->get('delivery_type');
@@ -84,7 +83,7 @@ class OrderRepository
         return $order;
     }
 
-    public function storeAssociateProducts($items, $order_id) 
+    public function storeAssociateProducts($items, $order_id)
     {
         if (is_array($items) && count($items) > 0 ) {
             foreach($items as $item) {
@@ -98,7 +97,7 @@ class OrderRepository
         }
     }
 
-    public function storeAssociatePrescriptions($items, $order_id) 
+    public function storeAssociatePrescriptions($items, $order_id)
     {
         if (is_array($items) && count($items) > 0 ) {
             foreach($items as $item) {
@@ -111,8 +110,8 @@ class OrderRepository
     }
 
     public function updateStatus($order_id, $status_id) {
-        $order = Order::with('address')->find($order_id); 
-        
+        $order = Order::with('address')->find($order_id);
+
         if ($order->status == 8 ) {
             return responseData('Orphan order');
         }
@@ -128,13 +127,13 @@ class OrderRepository
     }
 
     public function forwardOrder($order_id, $status_id) {
-        $order = Order::with('address')->find($order_id); 
+        $order = Order::with('address')->find($order_id);
         $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
         $previousPharmacies[] = $order->pharmacy_id;
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
             ->whereNotIn('user_id', $previousPharmacies)
             ->inRandomOrder()->first();
-            
+
         if ($nearestPharmacy) {
             $orderHistory = new OrderHistory();
             $orderHistory->order_id = $order->id;
@@ -158,5 +157,11 @@ class OrderRepository
         $orderHistory->save();
 
         return responseData('Order status updated');
+    }
+
+    public function pharmacyOrdersByStatus($pharmacy_id, $status_id)
+    {
+        return Order::with(['orderItems.product', 'address', 'pharmacy'])
+            ->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->paginate(10);
     }
 }

@@ -28,7 +28,7 @@ class OrderController extends BaseController
         $user = Auth::guard('api')->user();
 
         if ($user->hasRole('pharmacy')) {
-            $orders = $this->repository->byPharmacyId(1);
+            $orders = $this->repository->byPharmacyId($user->id);
         } else {
             $orders = $this->repository->byCustomerId($user->id);
         }
@@ -110,4 +110,13 @@ class OrderController extends BaseController
         return $order;
     }
 
-} 
+    public function pharmacyOrdersByStatus($status_id)
+    {
+        $orderList = $this->repository->pharmacyOrdersByStatus(Auth::guard('api')->user()->id, $status_id);
+
+        return $this->response->paginator($orderList, new OrderTransformer());
+    }
+
+
+
+}
