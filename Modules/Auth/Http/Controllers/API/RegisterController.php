@@ -102,7 +102,7 @@ class RegisterController extends Controller
 
     public function registerPharmacy(PharmacyRegistrationRequest $request)
     {
-        $user = $this->repository->createPharmacyUser($request);;
+        $user = $this->repository->createPharmacyUser($request);
 
         if (! $user) {
             throw new StoreResourceFailedException('Pharmacy registration unsuccessful');

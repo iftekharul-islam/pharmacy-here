@@ -151,9 +151,8 @@ class AuthRepository
 
         UserDeviceId::create([
             'user_id' => $user->id,
-            'device_id' => $request->device_id,
+            'device_id' => $request->device_token,
         ]);
-
 
         $role = Role::where('name', $request->role)->first();
 
