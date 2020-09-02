@@ -107,9 +107,9 @@ class PaymentController extends BaseController
         $post_data['currency'] = "BDT";
 //        $post_data['tran_id'] = $tranId;
         $post_data['tran_id'] = $requestData['tran_id'];
-        $post_data['success_url'] = url('/api/initialPaymentSuccess');
-        $post_data['fail_url'] = url('/api/initialPaymentFail');
-        $post_data['cancel_url'] = url('/api/initialPaymentCancel');
+        $post_data['success_url'] = url('/api/payment/success');
+        $post_data['fail_url'] = url('/api/payment/failed');
+        $post_data['cancel_url'] = url('/api/payment/cancel');
         $post_data['value_a'] = 'VALUE_A';
         $post_data['value_b'] = 'VALUE_B';
         $post_data['value_c'] = 'VALUE_C';
@@ -146,5 +146,28 @@ class PaymentController extends BaseController
         }
     }
 
+    public function paymentSuccess()
+    {
+        return response()->json([
+            'message' => 'success'
+        ]);
 
-}
+    }
+
+    public function paymentFailed()
+    {
+        return response()->json([
+            'message' => 'failed'
+        ]);
+
+    }
+
+    public function paymentCancel()
+    {
+        return response()->json([
+            'message' => 'canceled'
+        ]);
+    }
+
+
+    }
