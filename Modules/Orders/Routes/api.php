@@ -19,6 +19,11 @@ $namespace = 'Modules\Orders\Http\Controllers\API';
 
 $api = app('Dingo\Api\Routing\Router');
 
+$api->version('v1', function ($api) use ($namespace) {
+    //payment
+    $api->get('payment', $namespace . '\PaymentController@payment');
+});
+
 $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namespace) {
     $api->get('orders', $namespace . '\OrderController@index');
     $api->get('orders/{order_id}', $namespace . '\OrderController@show');
@@ -33,6 +38,5 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     $api->put('orders/{order_id}/status/{status_id}', $namespace . '\OrderController@ordersStatusUpdate');
     $api->post('delivery/charge', $namespace . '\DeliveryChargeController@index');
 
-    //payment
-    $api->get('payment', $namespace . '\PaymentController@payment');
+
 });
