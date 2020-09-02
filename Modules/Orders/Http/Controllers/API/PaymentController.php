@@ -95,64 +95,18 @@ class PaymentController extends BaseController
 
     public function payment(Request $request)
     {
-//        $aa = $request->all();
-//        foreach ($aa as $k=>$v){
-//            $cc = $k;
-//        }
-//        $postData = json_decode($cc, true);
-//        $customerProductInfo = $postData['CustomerProductInfo'];
-//        $productDetail = $postData['ProductDetail'];
-        // get current delivery charge
-//        $deliveryCharge = DeliveryCharges::where('valid_from', '<=', Carbon::parse(date('Y-m-d'))->format('Y-m-d'))->where('valid_upto', '>=', Carbon::parse(date('Y-m-d'))->format('Y-m-d'))->first();
-//        $deliveryCharge = isset($deliveryCharge->amount)?$deliveryCharge->amount:0;
-//        $CustomerProductInfoTable = CustomerProductInfo::where('customer_id', $customerProductInfo['CustomerId'])->latest()->first();
-//        $customerProduct = [];
-//        $customerProduct['plan_name'] = $productDetail['plan_name'];
-//        $customerProduct['partyTypeId'] = $productDetail['partyTypeId'];
-//        $customerProduct['vehicle_type_id'] = $productDetail['vehicle_type_id'];
-//        $customerProduct['temp_id'] = $productDetail['temp_id'];
-//        $customerProduct['cc'] = $customerProductInfo['CC'];
-//        $customerProduct['seats'] = $customerProductInfo['NoOfSeats'];
-//        $customerProduct['ton'] = $customerProductInfo['Ton'];
-//        $customerProduct['fitness_expiry_date'] = null;
-//        $customerProduct['token_expiry_date'] = null;
-//        $customerProduct['no_driver'] = $productDetail['no_driver'];
-//        $customerProduct['per_driver_cost'] = $productDetail['per_driver_cost'];
-//        $customerProduct['per_pasenger_cost'] = $productDetail['per_pasenger_cost'];
-//        $customerProduct['no_passenger'] = $productDetail['no_passenger'];
-//        $customerProduct['insurance_start_date'] = $customerProductInfo['InsStartDate'];
-//        $customerProduct['insurance_end_date'] = $customerProductInfo['InsEndDate'];
-//        $customerProduct['capacity'] = $productDetail['capacity'];
-//        $customerProduct['act_liability_premium'] = $productDetail['act_liability_premium'];
-//        $customerProduct['total_pasenger_cost'] = $productDetail['total_pasenger_cost'];
-//        $customerProduct['total_driver_cost'] = $productDetail['total_driver_cost'];
-//        $customerProduct['netPremium'] = $productDetail['netPremium'];
-//        $customerProduct['vatPercentageValue'] = $productDetail['vatPercentageValue'];
-//        $customerProduct['grossPremium'] = $productDetail['grossPremium'];
-//        $customerProduct['grossPremiumDiscount'] = $productDetail['grossPremiumDiscount'];
-//        $customerProduct['discount_type'] = $productDetail['discount_type'];
-//        $customerProduct['discount_value'] = $productDetail['discount_value'];
-//        $customerProduct['discount_text'] = $productDetail['discount_text'];
-//        $customerProduct['totalDays'] = $productDetail['totalDays'];
-//        $customerProduct['vendor_id'] = $productDetail['vendor_id'];
-//        $customerProduct['customer_product_info_id'] = $CustomerProductInfoTable['id'];
-//        $customerProduct['delivery_charge'] = $deliveryCharge;
-//        $cKey = 'CustomerApp-'.$customerProductInfo['CustomerId'];
-//        Cache::put($cKey, $customerProduct, now()->addMinutes(60));
-//        $fromCache = Cache::get($cKey);
-//        $tranId = $this->generateOrderNo($customerProductInfo['CustomerId'], $productDetail['vendor_id']);
-        // dd($customerProduct);
+        $requestData = $request->all();
 
-//        $direct_api_url = "https://securepay.sslcommerz.com/gwprocess/v3/api.php";
-        $direct_api_url = "https://sandbox.sslcommerz.com/gwprocess/v3/api.php";
+        $direct_api_url = env('SSL_COMMERZ_URL');
+//        dd($direct_api_url);
         $post_data = array();
-        $post_data['store_id'] = 'subid5f4f5f3ee699c';
-        $post_data['store_passwd'] = 'subid5f4f5f3ee699c@ssl';
+        $post_data['store_id'] = env('SSL_STORE_ID');
+        $post_data['store_passwd'] = env('SSL_STORE_PASSWORD');
 //        $post_data['total_amount'] = round($productDetail['totalAmount']+$deliveryCharge, 2);
-        $post_data['total_amount'] = 150;
+        $post_data['total_amount'] = $requestData['total_amount'];
         $post_data['currency'] = "BDT";
 //        $post_data['tran_id'] = $tranId;
-        $post_data['tran_id'] = 1;
+        $post_data['tran_id'] = $requestData['tran_id'];
         $post_data['success_url'] = url('/api/initialPaymentSuccess');
         $post_data['fail_url'] = url('/api/initialPaymentFail');
         $post_data['cancel_url'] = url('/api/initialPaymentCancel');
@@ -170,7 +124,6 @@ class PaymentController extends BaseController
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
         $content = curl_exec($handle);
         $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-//        print_r('CONTENT : '.$content."\n") ;
         if ($code == 200 && !(curl_errno($handle))) {
             curl_close($handle);
             $sslcommerzResponse = $content;
