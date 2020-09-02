@@ -22,9 +22,9 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', function ($api) use ($namespace) {
     //payment
     $api->get('payment', $namespace . '\PaymentController@payment');
-    $api->get('payment/success', $namespace . '\PaymentController@paymentSuccess');
-    $api->get('payment/failed', $namespace . '\PaymentController@paymentFailed');
-    $api->get('payment/cancel', $namespace . '\PaymentController@paymentCancel');
+    $api->post('payment/success', $namespace . '\PaymentController@paymentSuccess');
+    $api->post('payment/failed', $namespace . '\PaymentController@paymentFailed');
+    $api->post('payment/cancel', $namespace . '\PaymentController@paymentCancel');
 
 
 
