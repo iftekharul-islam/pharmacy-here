@@ -34,5 +34,5 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     $api->post('delivery/charge', $namespace . '\DeliveryChargeController@index');
 
     //payment
-    $api->post('payment', $namespace . '\PaymentController@payment');
+    $api->get('payment', $namespace . '\PaymentController@payment');
 });
