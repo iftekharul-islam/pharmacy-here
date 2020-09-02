@@ -32,4 +32,7 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     //order status update
     $api->put('orders/{order_id}/status/{status_id}', $namespace . '\OrderController@ordersStatusUpdate');
     $api->post('delivery/charge', $namespace . '\DeliveryChargeController@index');
+
+    //payment
+    $api->post('payment', $namespace . '\PaymentController@payment');
 });
