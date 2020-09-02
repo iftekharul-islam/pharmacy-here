@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Client;
+
 if (!function_exists('responseData')) {
     function responseData($message, $code = 200)
     {
@@ -28,42 +30,29 @@ if (!function_exists('responsePreparedData')) {
 
 if (!function_exists('sendPushNotification')) {
     function sendPushNotification($fcm_token, $title, $message, $id="") {
-        $push_notification_key = env('PUSH_NOTIFICATION_KEY');
+        $push_notification_key = "AAAAPzxd2Vc:APA91bGFaHMD4U3MIj0_m1tayV_mVdlct1oBU3QgGcwr1m-eogh1gCyXVvbkdkcAmMRZcKRKAYqlWgXq-BQAE2-xtZ1w59wc8fcVotPPfFpaUaKJV9M6ZK82Lc9Y6QQiPBu0WXtLuuuU";
         $url = "https://fcm.googleapis.com/fcm/send";
-        $header = array("authorization: key=" . $push_notification_key . "",
-            "content-type: application/json"
-        );
 
-        $postdata = '{
-            "to" : $fcm_token,
-            "notification" : {
-                "title":"Notification title",
-                "text" : "Test Message"
-            },
-            "data" : {
-                "id" : "123",
-                "title":"test",
-                "description" : "test",
-                "text" : "message",
-                "order" : 12,
-                "is_read": 0
-            }
-        }';
+        $prepareData = [
+            'form_params' => [
+                'to' => $fcm_token,
+                'notification' => [
+                    'title' => $title,
+                    'text'  => 'Test Message',
+                ],
+                'data' => $message,
+            ]
 
-        $ch = curl_init();
-        $timeout = 120;
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        ];
 
-        // Get URL content
-        $result = curl_exec($ch);
-        // close handle to release resources
-        curl_close($ch);
+        $post = new Client([
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'key=' . $push_notification_key
+            ]
+        ]);
+        $result = $post->request('POST', $url, $prepareData);
 
-        return $result;
+        return $result->getBody()->getContents();
     }
 }
