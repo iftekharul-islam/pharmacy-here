@@ -38,7 +38,8 @@ class OrderRepository
 
     public function get($id)
     {
-        return Order::where('id', $id)->first();
+//        dd(Order::where('id', $id)->first());
+        return Order::with('orderPrescriptions')->where('id', $id)->first();
     }
 
     public function getNearestPharmacyId($address_id) {
