@@ -93,7 +93,11 @@ class NoticeController extends BaseController
         $status = 1;
         $item = $this->repository->getLatestNotice($status);
 
-        return $this->response->item($item, new NoticeTransformer());
+//        return $this->response->item($item, new NoticeTransformer());
+        if ($item) {
+            return $this->response->item($item, new NoticeTransformer());
+        }
+        return responsePreparedData([]);
     }
 
     public function latestCustomerNotice()
