@@ -29,13 +29,16 @@ class PharmacyTransformer extends TransformerAbstract
 
     public function includePharmacyBusiness(User $item)
     {
-        return $this->item($item->pharmacyBusiness, new PharmacyBusinessTransformer());
+        if ($item->pharmacyBusiness != null) {
+            return $this->item($item->pharmacyBusiness, new PharmacyBusinessTransformer());
+        }
     }
 
     public function includeWeekends(User $item)
     {
-
-        return $this->collection($item->weekends, new WeekendsTransformer());
+        if($item->weekends != null) {
+            return $this->collection($item->weekends, new WeekendsTransformer());
+        }
     }
 
 
