@@ -6,13 +6,13 @@ namespace Modules\Orders\Transformers;
 use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
 use Modules\Orders\Entities\Models\Order;
-use Modules\User\Transformers\PharmacyTransformer;
+use Modules\Prescription\Transformers\PrescriptionTransformer;
 
 class OrderTransformer extends TransformerAbstract
 {
 
     protected $availableIncludes = [
-        'pharmacy', 'address', 'customer', 'orderItems', 'orderPrescriptions'
+        'pharmacy', 'address', 'customer', 'orderItems', 'prescriptions'
     ];
 
     public function transform(Order $item)
@@ -37,9 +37,9 @@ class OrderTransformer extends TransformerAbstract
         return $this->collection($item->orderItems, new OrderItemTransformer());
     }
 
-    public function includeOrderPrescriptions(Order $item)
-    {
-        return $this->collection($item->orderPrescriptions, new OrderPrescriptionTransformer());
+    public function includePrescriptions(Order $item) {
+
+        return $this->collection($item->prescriptions, new PrescriptionTransformer());
     }
 
 }
