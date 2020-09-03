@@ -33,6 +33,8 @@ if (!function_exists('sendPushNotification')) {
         $push_notification_key = "AAAAPzxd2Vc:APA91bGFaHMD4U3MIj0_m1tayV_mVdlct1oBU3QgGcwr1m-eogh1gCyXVvbkdkcAmMRZcKRKAYqlWgXq-BQAE2-xtZ1w59wc8fcVotPPfFpaUaKJV9M6ZK82Lc9Y6QQiPBu0WXtLuuuU";
         $url = "https://fcm.googleapis.com/fcm/send";
 
+        logger('device id: ' .$fcm_token);
+
         $prepareData = [
             'form_params' => [
                 'to' => $fcm_token,
@@ -52,6 +54,7 @@ if (!function_exists('sendPushNotification')) {
             ]
         ]);
         $result = $post->request('POST', $url, $prepareData);
+        logger('response: ' . $result->getBody()->getContents());
 
         return $result->getBody()->getContents();
     }

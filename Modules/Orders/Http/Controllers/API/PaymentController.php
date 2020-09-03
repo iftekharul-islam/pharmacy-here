@@ -148,25 +148,19 @@ class PaymentController extends BaseController
 
     public function paymentSuccess()
     {
-        return response()->json([
-            'message' => 'success'
-        ]);
+        return '';
 
     }
 
     public function paymentFailed()
     {
-        return response()->json([
-            'message' => 'failed'
-        ]);
+        return '';
 
     }
 
     public function paymentCancel()
     {
-        return response()->json([
-            'message' => 'canceled'
-        ]);
+        return '';
     }
 
 

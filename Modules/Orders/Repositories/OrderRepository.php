@@ -82,6 +82,7 @@ class OrderRepository
         }
 
         $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
+        logger('device ids: '.  $deviceIds);
         $title = 'New Order Available';
 
         foreach ($deviceIds as $deviceId){
