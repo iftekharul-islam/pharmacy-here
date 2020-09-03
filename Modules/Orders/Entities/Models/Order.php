@@ -47,9 +47,9 @@ class Order extends Model
         return $this->hasMany(OrderItems::class, 'order_id', 'id');
     }
 
-    public function orderPrescriptions()
+    public function prescriptions()
     {
-        return $this->hasMany(OrderPrescription::class, 'id', 'order_id');
+        return $this->hasManyThrough(Prescription::class, OrderPrescription::class, 'order_id', 'id');
     }
 
     public function getDeliveryTimeAttribute($value)

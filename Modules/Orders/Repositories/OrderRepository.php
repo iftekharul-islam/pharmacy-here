@@ -22,7 +22,7 @@ class OrderRepository
     public function byPharmacyId($pharmacy_id)
     {
         return Order::with(['orderItems.product', 'address', 'pharmacy'])
-            ->where('pharmacy_id', $pharmacy_id)->get();
+            ->where('pharmacy_id', $pharmacy_id)->paginate(5);
     }
 
     /**
@@ -38,8 +38,7 @@ class OrderRepository
 
     public function get($id)
     {
-//        dd(Order::where('id', $id)->first());
-        return Order::with('orderPrescriptions')->where('id', $id)->first();
+        return Order::with('prescriptions')->where('id', $id)->first();
     }
 
     public function getNearestPharmacyId($address_id) {
