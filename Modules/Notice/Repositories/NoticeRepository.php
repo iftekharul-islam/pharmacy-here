@@ -32,6 +32,6 @@ class NoticeRepository
 
     public function getLatestNotice($status)
     {
-        return Notice::where('status', true)->where('status', $status)->orderBy('id','desc')->first();
+        return Notice::where('status', true)->where('type', $status)->orderBy('id','desc')->first();
     }
 }
