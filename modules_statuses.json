@@ -8,5 +8,6 @@
     "Locations": true,
     "Prescriptoin": true,
     "Prescription": true,
-    "Address": true
+    "Address": true,
+    "Notice": true
 }
