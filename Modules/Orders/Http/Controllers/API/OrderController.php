@@ -58,7 +58,7 @@ class OrderController extends BaseController
     public function show($id)
     {
         $orderDetails = $this->repository->get($id);
-
+//            return $orderDetails;
         return $this->response->item($orderDetails, new OrderTransformer());
     }
 
