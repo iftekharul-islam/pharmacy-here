@@ -10,6 +10,8 @@ class Prescription extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'prescriptions';
+
     protected $fillable = ['patient_name','doctor_name', 'prescription_date', 'url', 'user_id'];
 
     public function orderPrescription()
