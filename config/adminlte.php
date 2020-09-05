@@ -322,6 +322,21 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Resources',
+            'icon'    => 'fas fa-store-alt',
+            'url'     => 'resources'
+        ],
+        [
+            'text'    => 'Notice',
+            'icon'    => 'fas fa-store-alt',
+            'url'     => 'notice'
+        ],
+        [
+            'text'    => 'Customers',
+            'icon'    => 'fas fa-store-alt',
+            'url'     => 'customers'
+        ],
 //        ['header' => 'account_settings'],
 //        [
 //            'text' => 'profile',

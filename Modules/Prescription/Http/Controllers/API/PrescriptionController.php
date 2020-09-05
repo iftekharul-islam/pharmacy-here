@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Prescription\Http\Requests\CreatePrescriptionRequest;
 use Modules\Prescription\Http\Requests\UpdatePrescriptionRequest;
 use Modules\Prescription\Repositories\PrescriptionRepository;
-use  Modules\Prescription\Transformers\PrescriptonTransformer;
+use Modules\Prescription\Transformers\PrescriptionTransformer;
 
-class PresriptionController extends BaseController
+class PrescriptionController extends BaseController
 {
     private $repository;
 
@@ -24,13 +24,13 @@ class PresriptionController extends BaseController
 
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @return \Dingo\Api\Http\Response
      */
     public function customerPrescriptons()
     {
         $user = Auth::user();
         $prescriptions = $this->repository->getCustomerPrescription(Auth::user()->id);
-        return $this->response->collection($prescriptions, new PrescriptonTransformer());
+        return $this->response->collection($prescriptions, new PrescriptionTransformer());
         // return $prescriptions;
     }
 

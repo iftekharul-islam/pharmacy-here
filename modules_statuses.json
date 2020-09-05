@@ -9,5 +9,6 @@
     "Prescriptoin": true,
     "Prescription": true,
     "Address": true,
-    "Notice": true
+    "Notice": true,
+    "Resources": true
 }

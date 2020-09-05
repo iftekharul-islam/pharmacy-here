@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Notice\Http\Controllers;
+namespace Modules\Resources\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Notice\Http\Requests\CreateNoticeRequest;
-use Modules\Notice\Http\Requests\UpdateNoticeRequest;
-use Modules\Notice\Repositories\NoticeRepository;
+use Modules\Resources\Http\Requests\CreateResourceRequest;
+use Modules\Resources\Http\Requests\UpdateResourceRequest;
+use Modules\Resources\Repositories\ResourceRepository;
 
-class NoticeController extends Controller
+class ResourcesController extends Controller
 {
     private $repository;
 
-    public function __construct(NoticeRepository $repository)
+    public function __construct(ResourceRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -25,7 +25,7 @@ class NoticeController extends Controller
     public function index()
     {
         $data = $this->repository->all();
-        return view('notice::index', compact('data'));
+        return view('resources::index', compact('data'));
     }
 
     /**
@@ -34,7 +34,7 @@ class NoticeController extends Controller
      */
     public function create()
     {
-        return view('notice::create');
+        return view('resources::create');
     }
 
     /**
@@ -42,10 +42,10 @@ class NoticeController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(CreateNoticeRequest $request)
+    public function store(CreateResourceRequest $request)
     {
-        $item = $this->repository->create($request);
-        return redirect()->route('notice.index');
+        $data = $this->repository->create($request);
+        return redirect()->route('index');
     }
 
     /**
@@ -55,7 +55,7 @@ class NoticeController extends Controller
      */
     public function show($id)
     {
-        return view('notice::show');
+        return view('resources::show');
     }
 
     /**
@@ -66,19 +66,19 @@ class NoticeController extends Controller
     public function edit($id)
     {
         $data = $this->repository->get($id);
-        return view('notice::edit', compact('data'));
+        return view('resources::edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Renderable
+     * @return RedirectResponse
      */
-    public function update(UpdateNoticeRequest $request, $id)
+    public function update(UpdateResourceRequest $request, $id)
     {
         $data = $this->repository->update($request, $id);
-        return redirect()->route('notice.index')->with('success', 'Notice updated successfully');
+        return redirect()->route('index')->with('success', 'Resource updated successfully');
     }
 
     /**
@@ -89,6 +89,6 @@ class NoticeController extends Controller
     public function destroy($id)
     {
         $data = $this->repository->delete($id);
-        return redirect()->route('notice.index')->with('success', 'Notice deletion successfully');
+        return redirect()->route('index')->with('success', 'Resource deletion successfully');
     }
 }

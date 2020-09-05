@@ -4,7 +4,7 @@ namespace Modules\Notice\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateNoticeRequest extends FormRequest
+class UpdateNoticeRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
