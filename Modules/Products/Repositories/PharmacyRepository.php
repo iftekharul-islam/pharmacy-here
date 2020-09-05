@@ -52,13 +52,16 @@ class PharmacyRepository
         $pharmacy = User::find($id);
 
         $device_id = UserDeviceId::where('user_id', $id)->get();
-        $device_id->delete();
 
-        if (! $pharmacy->forceDelete() ) {
-            throw new DeleteResourceFailedException('Pharmacy not found');
+        if ($device_id != null) {
+            foreach ($device_id as $id){
+                $id->delete();
+            }
+
         }
 
-        return responseData('Pharmacy has been deleted.');
+        return $pharmacy->forceDelete();
+
     }
 
     public function get($id)
