@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Notice\Http\Requests;
+namespace Modules\Resources\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateNoticeRequest extends FormRequest
+class CreateResourceRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,10 +14,11 @@ class CreateNoticeRequest extends FormRequest
     public function rules()
     {
         return [
-            'notice' => 'required|min:3',
-            'bn_notice' => 'required|min:3',
-            'status' => 'required',
-            'type' => 'required'
+            'title' => 'required|min:3|string',
+            'bn_title' => 'required|min:3|string',
+            'description' => 'required|min:3|string',
+            'bn_description' => 'required|min:3|string',
+            'url' => 'required',
         ];
     }
 

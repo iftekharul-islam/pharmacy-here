@@ -8,6 +8,7 @@ use Dingo\Api\Exception\DeleteResourceFailedException;
 // use Modules\Products\Entities\Pharmacy;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
+use Modules\User\Entities\Models\UserDeviceId;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PharmacyRepository
@@ -29,7 +30,7 @@ class PharmacyRepository
         return $pharmacy;
     }
 
-    /** 
+    /**
      * Find pharmacy by id
      * @param $id int
     */
@@ -50,7 +51,10 @@ class PharmacyRepository
     {
         $pharmacy = User::find($id);
 
-        if (! $pharmacy->delete() ) {
+        $device_id = UserDeviceId::where('user_id', $id)->get();
+        $device_id->delete();
+
+        if (! $pharmacy->forceDelete() ) {
             throw new DeleteResourceFailedException('Pharmacy not found');
         }
 

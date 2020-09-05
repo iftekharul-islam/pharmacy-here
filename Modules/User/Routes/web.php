@@ -22,3 +22,8 @@ Route::prefix('user')->group(function() {
     Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
 });
 });
+
+Route::prefix('customers')->group(function() {
+    Route::get('/', 'CustomerController@index')->name('customer.index');
+    Route::delete('{id}', 'CustomerController@destroy')->name('customer.destroy');
+});
