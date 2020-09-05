@@ -5,11 +5,8 @@ namespace Modules\Prescription\Http\Controllers\API;
 use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Modules\Prescription\Http\Requests\CreatePrescriptionRequest;
-use Modules\Prescription\Http\Requests\UpdatePrescriptionRequest;
 use Modules\Prescription\Repositories\PrescriptionRepository;
 use Modules\Prescription\Transformers\PrescriptionTransformer;
 
@@ -30,8 +27,9 @@ class PrescriptionController extends BaseController
     {
         $user = Auth::user();
         $prescriptions = $this->repository->getCustomerPrescription(Auth::user()->id);
+
         return $this->response->collection($prescriptions, new PrescriptionTransformer());
-        // return $prescriptions;
+
     }
 
     /**
