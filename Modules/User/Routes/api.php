@@ -41,6 +41,9 @@ $api->version('v1', function ($api) use ($namespace) {
 
         $api->get('me/pharmacy/bank-info', $namespace . '\UserPharmacyController@getPharmacyBankInfo');
         $api->put('me/pharmacy/bank-info', $namespace . '\UserPharmacyController@updatePharmacyBankInfo');
+
+        $api->post('me/create-otp', $namespace . '\UserController@createOtp');
+        $api->post('me/verify-otp', $namespace . '\UserController@verifyOtp');
     });
 
     $api->get('pharmacy/available/{area_id}', $namespace . '\UserPharmacyController@isPharmacyAvailable');
