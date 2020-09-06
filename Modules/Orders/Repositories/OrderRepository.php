@@ -171,6 +171,10 @@ class OrderRepository
 
     public function pharmacyOrdersByStatus($pharmacy_id, $status_id)
     {
+        if ($status_id == 2) {
+            return Order::with(['orderItems.product', 'address', 'pharmacy'])
+                ->where('pharmacy_id', $pharmacy_id)->whereIn('status', [2,9])->orderBy('id','desc')->paginate(5);
+        }
         return Order::with(['orderItems.product', 'address', 'pharmacy'])
             ->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->orderBy('id','desc')->paginate(5);
     }
