@@ -3,6 +3,7 @@
 namespace Modules\Prescription\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
+use Dingo\Api\Http\Response;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class PrescriptionController extends BaseController
 
     /**
      * Display a listing of the resource.
-     * @return \Dingo\Api\Http\Response
+     * @return Response
      */
     public function customerPrescriptons()
     {
@@ -34,13 +35,14 @@ class PrescriptionController extends BaseController
 
     /**
      * Show the form for creating a new resource.
-     * @return Renderable
+     * @param CreatePrescriptionRequest $request
+     * @return Response
      */
     public function create(CreatePrescriptionRequest $request)
     {
         $user = Auth::user();
         $prescription = $this->repository->create($request, $user->id);
-        return $this->response->item($prescription, new PrescriptonTransformer());
+        return $this->response->item($prescription, new PrescriptionTransformer());
         // return $prescription;
     }
 
@@ -57,12 +59,12 @@ class PrescriptionController extends BaseController
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Renderable
+     * @return Response
      */
     public function show($id)
     {
         $prescription = $this->repository->findById($id);
-        return $this->response->item($prescription, new PrescriptonTransformer());
+        return $this->response->item($prescription, new PrescriptionTransformer());
     }
 
     /**
@@ -79,13 +81,13 @@ class PrescriptionController extends BaseController
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Renderable
+     * @return Response
      */
     public function update(Request $request, $id)
     {
         $prescription = $this->repository->update($request, $id);
 
-        return $this->response->item($prescription, new PrescriptonTransformer());
+        return $this->response->item($prescription, new PrescriptionTransformer());
     }
 
     /**
@@ -97,6 +99,6 @@ class PrescriptionController extends BaseController
     {
         $prescription = $this->repository->delete($id);
 
-        return responseData('Prescripiton deleted successfully');
+        return responseData('Prescription deleted successfully');
     }
 }
