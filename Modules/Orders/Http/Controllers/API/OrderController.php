@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Modules\Orders\Http\Requests\CreateOrderCancelRequest;
 use Modules\Orders\Http\Requests\CreateOrderRrequest;
 use Modules\Orders\Repositories\OrderRepository;
 use Modules\Orders\Transformers\OrderTransformer;
@@ -115,6 +116,13 @@ class OrderController extends BaseController
         $orderList = $this->repository->pharmacyOrdersByStatus(Auth::guard('api')->user()->id, $status_id);
 
         return $this->response->paginator($orderList, new OrderTransformer());
+    }
+
+    public function pharmacyOrderCancelReason(CreateOrderCancelRequest $request)
+    {
+        $data = $this->repository->pharmacyOrderCancelReason(Auth::guard('api')->user()->id, $request);
+
+        return responseData('Order cancel reason saved');
     }
 
 

@@ -12,11 +12,11 @@
 */
 
 Route::prefix('resources')->group(function() {
-    Route::get('/', 'ResourcesController@index')->name('index');
+    Route::get('/', 'ResourcesController@index')->name('resource.index');
 
-    Route::get('create', 'ResourcesController@create')->name('create');
-    Route::post('store', 'ResourcesController@store')->name('store');
-    Route::get('{id}/edit', 'ResourcesController@edit')->name('edit');
-    Route::put('{id}', 'ResourcesController@update')->name('update');
-    Route::delete('{id}', 'ResourcesController@destroy')->name('destroy');
+    Route::get('create', 'ResourcesController@create')->name('resource.create');
+    Route::post('store', 'ResourcesController@store')->name('resource.store');
+    Route::get('{id}/edit', 'ResourcesController@edit')->name('resource.edit');
+    Route::put('{id}', 'ResourcesController@update')->name('resource.update');
+    Route::delete('{id}', 'ResourcesController@destroy')->name('resource.destroy');
 });

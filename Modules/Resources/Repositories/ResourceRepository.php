@@ -45,7 +45,7 @@ class ResourceRepository
             $data->description = $request->description;
         }
         if (isset($request->bn_description)) {
-            $data->description = $request->description;
+            $data->bn_ssdescription = $request->bn_description;
         }
         if (isset($request->url)) {
             $data->url = $request->url;
