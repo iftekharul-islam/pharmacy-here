@@ -12,10 +12,4 @@ class Address extends Model
     {
         return $this->hasOne(Area::class);
     }
-
-    public function orders()
-    {
-        return $this->hasMany(Order::class, 'id', 'shipping_address_id');
-    }
-
 }
