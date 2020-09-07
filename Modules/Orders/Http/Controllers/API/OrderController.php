@@ -33,7 +33,7 @@ class OrderController extends BaseController
             $orders = $this->repository->byCustomerId($user->id);
         }
 
-        return $this->response->collection($orders, new OrderTransformer());
+        return $this->response->paginator($orders, new OrderTransformer());
     }
 
     /**

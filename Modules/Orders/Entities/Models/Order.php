@@ -24,7 +24,10 @@ class Order extends Model
         'order_date',
         'customer_id',
         'pharmacy_id',
-        'shipping_address_id'
+        'shipping_address_id',
+        'delivery_method',
+        'delivery_date',
+        'order_no'
     ];
 
     public function customer()

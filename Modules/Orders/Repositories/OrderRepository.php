@@ -22,7 +22,7 @@ class OrderRepository
     public function byPharmacyId($pharmacy_id)
     {
         return Order::with(['orderItems.product', 'address', 'pharmacy'])
-            ->where('pharmacy_id', $pharmacy_id)->paginate(10);
+            ->where('pharmacy_id', $pharmacy_id)->paginate(20);
     }
 
     /**
@@ -31,6 +31,7 @@ class OrderRepository
      */
     public function byCustomerId($customer_id)
     {
+        // return '';
         return Order::with(['orderItems.product', 'address', 'pharmacy'])
             ->where('customer_id', $customer_id)
             ->paginate(20);
@@ -69,6 +70,9 @@ class OrderRepository
         $order->customer_id = $customer_id;
         $order->pharmacy_id = $pharmacy_id;
         $order->shipping_address_id = $request->get('shipping_address_id');
+        $order->delivery_method = $request->get('delivery_method');
+        $order->delivery_date = $request->get('delivery_date');
+        $order->order_no = $this->generateOrderNo();
 
         $order->save();
 
@@ -82,15 +86,31 @@ class OrderRepository
         }
 
         $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
-        logger('device ids: '.  $deviceIds);
         $title = 'New Order Available';
 
         foreach ($deviceIds as $deviceId){
             sendPushNotification($deviceId, $title, $request->order_items, $id="");
         }
 
-
         return $order;
+    }
+
+
+    public function generateOrderNo()
+    {
+        $latestOrder = Order::orderBy('id', 'desc')->first();
+        if ($latestOrder) {
+            $lastNumber = explode('-', $latestOrder->order_no);
+            $lastNumber = preg_replace("/[^0-9]/", "", end($lastNumber) );
+            $orderNo =  date('Y').'-'.date('m').'-'.str_pad( (int) $lastNumber + 1 , 4, '0', STR_PAD_LEFT);
+            if (Order::where('order_no', $orderNo)->count() > 0) {
+                $this->generateOrderNo();
+            }
+
+            return $orderNo;
+        } 
+  
+        return date('Y').'-'.date('m').'-001';
     }
 
     public function storeAssociateProducts($items, $order_id)

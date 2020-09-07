@@ -24,7 +24,9 @@ class CreateOrderRrequest extends FormRequest
             //'pharmacy_id' => 'required',
             'shipping_address_id' => 'required',
             'order_items' => 'required',
-            'notes' => 'nullable'
+            'notes' => 'nullable',
+            'delivery_method' => 'required',
+            'delivery_date' => 'required|date'
         ];
     }
 
