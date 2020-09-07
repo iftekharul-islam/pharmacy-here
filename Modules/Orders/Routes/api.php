@@ -44,5 +44,8 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     $api->put('orders/{order_id}/status/{status_id}', $namespace . '\OrderController@ordersStatusUpdate');
     $api->post('delivery/charge', $namespace . '\DeliveryChargeController@index');
 
+    //pharmacy order cancel reason
+    $api->post('orders/cancel-reason', $namespace . '\OrderController@pharmacyOrderCancelReason');
+
 
 });

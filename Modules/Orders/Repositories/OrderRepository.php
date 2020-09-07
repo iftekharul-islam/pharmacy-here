@@ -6,23 +6,33 @@ namespace Modules\Orders\Repositories;
 use Carbon\Carbon;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\OrderCancelReason;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
 use Modules\User\Entities\Models\PharmacyBusiness;
+use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderRepository
 {
     /**
+     * @param $request
      * @param $pharmacy_id
      * @return mixed
      */
-    public function byPharmacyId($pharmacy_id)
+    public function byPharmacyId($request, $pharmacy_id)
     {
-        return Order::with(['orderItems.product', 'address', 'pharmacy'])
-            ->where('pharmacy_id', $pharmacy_id)->paginate(20);
+        $order = Order::query();
+
+        if ($request->has('customer_name') && $request->get('customer_name')) {
+            $customerName = $request->get('customer_name');
+            $customerIds = User::where('name', 'LIKE', "%$customerName%")->pluck('id');
+            $order->whereIn('customer_id', $customerIds);
+        }
+        return $order->with(['orderItems.product', 'address', 'pharmacy'])
+            ->where('pharmacy_id', $pharmacy_id)->paginate(10);
     }
 
     /**
@@ -197,5 +207,14 @@ class OrderRepository
         }
         return Order::with(['orderItems.product', 'address', 'pharmacy'])
             ->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->orderBy('id','desc')->paginate(5);
+    }
+
+    public function pharmacyOrderCancelReason($pharmacy_id, $request)
+    {
+        return OrderCancelReason::create([
+            'user_id' => $pharmacy_id,
+            'order_id' => $request->order_id,
+            'reason' => $request->reason,
+        ]);
     }
 }
