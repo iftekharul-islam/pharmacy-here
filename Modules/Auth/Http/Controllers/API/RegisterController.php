@@ -47,6 +47,7 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
         $this->repository = $registerRepository;
+        $this->guard = "api";
     }
 
     /**
@@ -129,7 +130,7 @@ class RegisterController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'bearer',
-            'expires_in'   => $this->guard()->factory()->getTTL()
+            'expires_in'   => auth($this->guard)->factory()->getTTL() * 60
         ]);
     }
 }
