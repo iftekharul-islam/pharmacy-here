@@ -32,7 +32,7 @@ class OrderRepository
     public function byCustomerId($customer_id)
     {
         // return '';
-        return Order::with(['orderItems.product', 'address', 'pharmacy'])
+        return Order::with(['orderItems.product', 'address.area', 'pharmacy'])
             ->where('customer_id', $customer_id)
             ->paginate(20);
     }

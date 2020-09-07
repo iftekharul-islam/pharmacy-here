@@ -19,7 +19,6 @@ class OrderTransformer extends TransformerAbstract
 
     public function transform(Order $item)
     {
-        // $delivery_time = Carbon::parse($item->delivery_time)->format('g:i A');
         return [
             'id'                        => $item->id,
             'customer_name'             => $item->customer->name,
@@ -46,10 +45,5 @@ class OrderTransformer extends TransformerAbstract
 
         return $this->collection($item->prescriptions, new PrescriptionTransformer());
     }
-
-    // public function includeAddress(Order $item) {
-
-    //     return $this->item($item->address, new AddressTransformer());
-    // }
 
 }
