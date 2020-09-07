@@ -22,19 +22,20 @@ class OrderController extends BaseController
 
     /**
      * Display a listing of the resource.
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::guard('api')->user();
 
         if ($user->hasRole('pharmacy')) {
-            $orders = $this->repository->byPharmacyId($user->id);
+            $orders = $this->repository->byPharmacyId($request, $user->id);
         } else {
             $orders = $this->repository->byCustomerId($user->id);
         }
 
-        return $this->response->collection($orders, new OrderTransformer());
+        return $this->response->paginator($orders, new OrderTransformer());
     }
 
     /**

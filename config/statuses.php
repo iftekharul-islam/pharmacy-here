@@ -11,6 +11,7 @@ return [
         6 => 'Forwarded',
         7 => 'Expired',
         8 => 'Orphan',
-        9 => 'On The Way'
+        9 => 'On The Way',
+        10 => 'Cancel'
     ],
 ];
