@@ -5,8 +5,10 @@ namespace Modules\Orders\Transformers;
 
 use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
+use Modules\Address\Transformers\AddressTransformer;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Prescription\Transformers\PrescriptionTransformer;
+use SebastianBergmann\Environment\Console;
 
 class OrderTransformer extends TransformerAbstract
 {
@@ -17,7 +19,6 @@ class OrderTransformer extends TransformerAbstract
 
     public function transform(Order $item)
     {
-        // $delivery_time = Carbon::parse($item->delivery_time)->format('g:i A');
         return [
             'id'                        => $item->id,
             'customer_name'             => $item->customer->name,
@@ -29,6 +30,9 @@ class OrderTransformer extends TransformerAbstract
             "delivery_time"             => $item->delivery_time,
             "status"                    => $item->status,
             "order_date"                => Carbon::parse($item->created_at)->format('d-m-Y'),
+            "delivery_method"           => $item->delivery_method,
+            "delivery_date"             => isset($item->delivery_date) ? Carbon::parse($item->delivery_date)->format('d-m-Y') : '',
+            "order_no"                  => $item->order_no
         ];
     }
 

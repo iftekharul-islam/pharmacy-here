@@ -5,6 +5,7 @@ namespace Modules\Orders\Entities\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Address\Entities\CustomerAddress;
 use Modules\Locations\Entities\Models\Address;
 use Modules\Prescription\Entities\Models\Prescription;
 use Modules\User\Entities\Models\User;
@@ -24,7 +25,10 @@ class Order extends Model
         'order_date',
         'customer_id',
         'pharmacy_id',
-        'shipping_address_id'
+        'shipping_address_id',
+        'delivery_method',
+        'delivery_date',
+        'order_no'
     ];
 
     public function customer()
@@ -39,7 +43,7 @@ class Order extends Model
 
     public function address()
     {
-        return $this->belongsTo(Address::class, 'shipping_address_id', 'id');
+        return $this->belongsTo(CustomerAddress::class, 'shipping_address_id', 'id');
     }
 
     public function orderItems()
