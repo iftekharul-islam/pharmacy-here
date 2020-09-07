@@ -19,7 +19,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('update', $data->id) }}" method="POST">
+            <form role="form" action="{{ route('resource.update', $data->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="card-body">

@@ -6,6 +6,7 @@ namespace Modules\Orders\Repositories;
 use Carbon\Carbon;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\OrderCancelReason;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
@@ -177,5 +178,14 @@ class OrderRepository
         }
         return Order::with(['orderItems.product', 'address', 'pharmacy'])
             ->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->orderBy('id','desc')->paginate(5);
+    }
+
+    public function pharmacyOrderCancelReason($pharmacy_id, $request)
+    {
+        return OrderCancelReason::create([
+            'user_id' => $pharmacy_id,
+            'order_id' => $request->order_id,
+            'reason' => $request->reason,
+        ]);
     }
 }

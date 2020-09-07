@@ -10,7 +10,7 @@
                     <h1>Resources</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a href="{{ route('create') }}" class="btn btn-sm btn-success float-right">
+                    <a href="{{ route('resource.create') }}" class="btn btn-sm btn-success float-right">
                         Create Resource
                     </a>
                 </div>
@@ -59,9 +59,9 @@
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
                                 </button>
-                                <a href="{{ route('edit', $item['id']) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('resource.edit', $item['id']) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i> </a>
-                                <form id="delete-form-{{ $loop->index }}" action="{{ route('destroy', $item['id']) }}"
+                                <form id="delete-form-{{ $loop->index }}" action="{{ route('resource.destroy', $item['id']) }}"
                                       method="post" class="form-horizontal d-inline">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="_method" value="DELETE">
