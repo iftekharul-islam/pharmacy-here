@@ -45,7 +45,7 @@ class ResourcesController extends Controller
     public function store(CreateResourceRequest $request)
     {
         $data = $this->repository->create($request);
-        return redirect()->route('index');
+        return redirect()->route('resource.index');
     }
 
     /**
@@ -78,7 +78,7 @@ class ResourcesController extends Controller
     public function update(UpdateResourceRequest $request, $id)
     {
         $data = $this->repository->update($request, $id);
-        return redirect()->route('index')->with('success', 'Resource updated successfully');
+        return redirect()->route('resource.index')->with('success', 'Resource updated successfully');
     }
 
     /**
@@ -89,6 +89,6 @@ class ResourcesController extends Controller
     public function destroy($id)
     {
         $data = $this->repository->delete($id);
-        return redirect()->route('index')->with('success', 'Resource deletion successfully');
+        return redirect()->route('resource.index')->with('success', 'Resource deletion successfully');
     }
 }
