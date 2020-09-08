@@ -11,6 +11,16 @@
 |
 */
 
-Route::prefix('orders')->group(function() {
-    Route::get('/', 'OrdersController@index');
-});
+//Route::prefix('orders')->group(function() {
+//    Route::get('orders', 'OrdersController@index');
+//});
+
+Route::get('orders', 'OrdersController@index')->name('order.index');
+
+Route::get('transaction-history', 'TransactionHistoryController@index')->name('transactionHistory.index');
+Route::get('transaction/create/{trans_id}', 'TransactionHistoryController@create')->name('transactionHistory.create');
+Route::post('transaction', 'TransactionHistoryController@store')->name('transactionHistory.store');
+
+//Route::get('transaction-history', function (){
+//    return 'Hello controller';
+//});

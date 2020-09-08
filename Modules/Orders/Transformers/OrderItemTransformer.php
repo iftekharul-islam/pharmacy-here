@@ -29,36 +29,6 @@ class OrderItemTransformer extends TransformerAbstract
         return $this->item($item->product, new ProductTransformer());
     }
 
-//    public function includeProductAdditionalInfo(Product $product)
-//    {
-//        return $this->item($product->productAdditionalInfo, new ProductAdditionalInfoTransformer());
-//    }
-//
-//    public function includeForm(Product $product)
-//    {
-//        return $this->item($product->form, new FormTransformer());
-//    }
-//
-//    public function includeCompany(Product $product)
-//    {
-//        return $this->item($product->company, new CompanyTransformer());
-//    }
-//
-//    public function includeGeneric(Product $product)
-//    {
-//        return $this->item($product->generic, new GenericTransformer());
-//    }
-//
-//    public function includeCategory(Product $product)
-//    {
-//        return $this->item($product->category, new CategoryTransformer());
-//    }
-//
-//    public function includePrimaryUnit(Product $product)
-//    {
-//        return $this->item($product->primaryUnit, new UnitTransformer());
-//    }
-
 
 }
 

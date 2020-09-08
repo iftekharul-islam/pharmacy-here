@@ -337,6 +337,11 @@ return [
             'icon'    => 'fas fa-store-alt',
             'url'     => 'customers'
         ],
+        [
+            'text'    => 'Transaction History',
+            'icon'    => 'fas fa-store-alt',
+            'url'     => 'transaction-history'
+        ],
 //        ['header' => 'account_settings'],
 //        [
 //            'text' => 'profile',
