@@ -61,5 +61,10 @@ class Order extends Model
         return Carbon::parse($value)->format('g:i A');
     }
 
+    public function getOrderAmountSum($pharmacy_id)
+    {
+        return Order::groupBy('pharmacy_id')->selectRaw('SUM(amount) as amount, pharmacy_id');
+    }
+
 }
 
