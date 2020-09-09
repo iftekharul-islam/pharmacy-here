@@ -10,6 +10,15 @@ return [
     'free_delivery_amount' => 5000,
     'cash_payment_charge_percentage' => 2,
     'ecash_payment_charge_percentage' => 2.3,
+    'subidha_comission_cash_percentage' => 2,
+    'subidha_comission_ecash_percentage' => 3,
+    'subidha_delivery_percentage' => 25,
+    'home_delivery' => 1,
+    'pickup_from_pharmacy' => 2,
+    'normal_delivery' => 'normal',
+    'express_delivery' => 'express',
+    'subidha_comission_collect_from_pharmacy_ecash_percentage' => 3.7,
+    'subidha_comission_collect_from_pharmacy_cash_percentage' => 3,
     'delivery_type' => [
         1 => [
             'name' => 'Normal Delivery',
@@ -34,5 +43,8 @@ return [
             'charge_percentage' => 2.3
         ]
     ],
+    'cod_payment_type' => 1,
+    'ecash_payment_type' => 2,
+
     'item_per_page' => 20
 ];

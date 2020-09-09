@@ -17,7 +17,7 @@
                     <div class="form-group row">
                         <label for="amount" class="col-sm-4 col-form-label">Amount</label>
                         <div class="col-sm-8" id="">
-                            <input type="number" name="amount" class="form-control" id="amount" placeholder="Amount">
+                            <input type="number" name="amount" value="{{ $data['total_amount'] - $data['amount'] }}" class="form-control" id="amount" placeholder="Amount">
                             @if ($errors->has('amount'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('amount') }}</strong>
@@ -39,52 +39,64 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="bank_name" class="col-sm-4 col-form-label">Bank Name</label>
+                        <label for="transaction_id" class="col-sm-4 col-form-label">Transaction ID</label>
                         <div class="col-sm-8  " id="name">
-                            <input type="text" name="bank_name" value="{{ $data->pharmacy->pharmacyBusiness['bank_name'] }}" class="form-control" id="bank_name" placeholder="Bank Name">
-                            @if ($errors->has('bank_name'))
+                            <input type="text" name="transaction_id"  class="form-control" id="transaction_id" placeholder="Transaction ID">
+                            @if ($errors->has('transaction_id'))
                                 <span class="text-danger">
-                                    <strong>{{ $errors->first('bank_name') }}</strong>
+                                    <strong>{{ $errors->first('transaction_id') }}</strong>
                                 </span>
                             @endif
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="bank_branch_name" class="col-sm-4 col-form-label">Branch Name</label>
-                        <div class="col-sm-8  " id="name">
-                            <input type="text" name="bank_branch_name" value="{{ $data->pharmacy->pharmacyBusiness['bank_brunch_name'] }}" class="form-control" id="bank_branch_name" placeholder="Branch Name">
-                            @if ($errors->has('bank_branch_name'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('bank_branch_name') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
+{{--                    <div class="form-group row">--}}
+{{--                        <label for="bank_name" class="col-sm-4 col-form-label">Bank Name</label>--}}
+{{--                        <div class="col-sm-8  " id="name">--}}
+{{--                            <input type="text" name="bank_name" value="{{ $data->pharmacy->pharmacyBusiness['bank_name'] }}" class="form-control" id="bank_name" placeholder="Bank Name">--}}
+{{--                            @if ($errors->has('bank_name'))--}}
+{{--                                <span class="text-danger">--}}
+{{--                                    <strong>{{ $errors->first('bank_name') }}</strong>--}}
+{{--                                </span>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="form-group row">
-                        <label for="bank_account_name" class="col-sm-4 col-form-label">Bank Account Name</label>
-                        <div class="col-sm-8  " id="name">
-                            <input type="text" name="bank_account_name" value="{{ $data->pharmacy->pharmacyBusiness['bank_account_name'] }}" class="form-control" id="bank_account_name" placeholder="Bank Account Name">
-                            @if ($errors->has('bank_account_name'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('bank_account_name') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
+{{--                    <div class="form-group row">--}}
+{{--                        <label for="bank_branch_name" class="col-sm-4 col-form-label">Branch Name</label>--}}
+{{--                        <div class="col-sm-8  " id="name">--}}
+{{--                            <input type="text" name="bank_branch_name" value="{{ $data->pharmacy->pharmacyBusiness['bank_brunch_name'] }}" class="form-control" id="bank_branch_name" placeholder="Branch Name">--}}
+{{--                            @if ($errors->has('bank_branch_name'))--}}
+{{--                                <span class="text-danger">--}}
+{{--                                    <strong>{{ $errors->first('bank_branch_name') }}</strong>--}}
+{{--                                </span>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="form-group row">
-                        <label for="bank_account_number" class="col-sm-4 col-form-label">Bank Account Number</label>
-                        <div class="col-sm-8  " id="name">
-                            <input type="text" name="bank_account_number" value="{{ $data->pharmacy->pharmacyBusiness['bank_account_number'] }}" class="form-control" id="bank_account_number" placeholder="Bank Account Number">
-                            @if ($errors->has('bank_account_number'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('bank_account_number') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
+{{--                    <div class="form-group row">--}}
+{{--                        <label for="bank_account_name" class="col-sm-4 col-form-label">Bank Account Name</label>--}}
+{{--                        <div class="col-sm-8  " id="name">--}}
+{{--                            <input type="text" name="bank_account_name" value="{{ $data->pharmacy->pharmacyBusiness['bank_account_name'] }}" class="form-control" id="bank_account_name" placeholder="Bank Account Name">--}}
+{{--                            @if ($errors->has('bank_account_name'))--}}
+{{--                                <span class="text-danger">--}}
+{{--                                    <strong>{{ $errors->first('bank_account_name') }}</strong>--}}
+{{--                                </span>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+{{--                    <div class="form-group row">--}}
+{{--                        <label for="bank_account_number" class="col-sm-4 col-form-label">Bank Account Number</label>--}}
+{{--                        <div class="col-sm-8  " id="name">--}}
+{{--                            <input type="text" name="bank_account_number" value="{{ $data->pharmacy->pharmacyBusiness['bank_account_number'] }}" class="form-control" id="bank_account_number" placeholder="Bank Account Number">--}}
+{{--                            @if ($errors->has('bank_account_number'))--}}
+{{--                                <span class="text-danger">--}}
+{{--                                    <strong>{{ $errors->first('bank_account_number') }}</strong>--}}
+{{--                                </span>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
 
                 </div>

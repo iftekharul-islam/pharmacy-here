@@ -37,11 +37,10 @@
                 <thead>
                 <tr>
                     <th>SL</th>
-{{--                    <th>Date</th>--}}
-{{--                    <th>Transaction ID</th>--}}
                     <th>Pharmacy Name</th>
-{{--                    <th>Payment Method</th>--}}
+                    <th>Order Amount</th>
                     <th>Paid Amount</th>
+                    <th>Due Amount</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -50,16 +49,15 @@
                     @foreach($data as $index => $item)
                         <tr>
                             <td>{{ $data->firstItem() + $index }}</td>
-{{--                            <td>{{ date('d F, Y', strtotime($item->date)) }}</td>--}}
-{{--                            <td>{{ $item->transaction_id }}</td>--}}
                             <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>
-{{--                            <td>{{ $item->payment_method }}</td>--}}
+                            <td>{{ $item->total_amount }}</td>
                             <td>{{ $item->amount }}</td>
+                            <td>{{ $item->total_amount - $item->amount }}</td>
 
                             <td>
-{{--                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">--}}
-{{--                                    <i class="fa fa-eye"></i>--}}
-{{--                                </button>--}}
+                                <a href="{{ route('transactionHistory.show', $item->pharmacy['id']) }}" type="button"  class="btn btn-sm btn-success" >
+                                    <i class="fa fa-eye"></i>
+                                </a>
                                 <a href="{{ route('transactionHistory.create', $item->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i> </a>
 

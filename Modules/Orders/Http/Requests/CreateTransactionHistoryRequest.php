@@ -15,10 +15,11 @@ class CreateTransactionHistoryRequest extends FormRequest
     {
         return [
             'amount' => 'required',
-            'bank_account_name' => 'required',
-            'bank_account_number' => 'required',
-            'bank_name' => 'required',
-            'bank_branch_name' => 'required'
+            'transaction_id' => 'required',
+//            'bank_account_name' => 'required',
+//            'bank_account_number' => 'required',
+//            'bank_name' => 'required',
+//            'bank_branch_name' => 'required'
         ];
     }
 
