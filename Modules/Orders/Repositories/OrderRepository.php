@@ -84,6 +84,78 @@ class OrderRepository
         $order->delivery_date = $request->get('delivery_date');
         $order->order_no = $this->generateOrderNo();
 
+        if ($order->delivery_type == config('subidha.home_delivery')) {
+
+            if ($order->delivery_method == config('subidha.normal_delivery')) {
+
+                if ($order->payment_type == config('subidha.cod_payment_type')) {
+
+                    $delivery_value = number_format(
+                    (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100) +
+                        config('subidha.normal_delivery_charge') ,2 );
+
+                    $amount_value = number_format(($request->get('amount')) *
+                        config('subidha.subidha_comission_cash_percentage') / 100 , 2);
+
+                    $order->subidha_comission = $amount_value + $delivery_value;
+                }
+                if ($order->payment_type == config('subidha.ecash_payment_type')) {
+
+                    $delivery_value = number_format( config('subidha.normal_delivery_charge') +
+                        config('subidha.subidha_delivery_percentage') / 100 , 2);
+                    $amount_value = number_format(($request->get('amount')) *
+                        config('subidha.subidha_comission_ecash_percentage') / 100 , 2);
+                    $order->subidha_comission = $amount_value + $delivery_value;
+                }
+
+            }
+            if ($order->delivery_method == config('subidha.express_delivery')) {
+
+                if ($order->payment_type == config('subidha.cod_payment_type')) {
+
+                    $delivery_value = number_format(
+                        config(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100) +
+                        config('subidha.express_delivery_charge') * config('subidha_delivery_percentage') /100, 2);
+
+                    $amount_value = number_format(($request->get('amount')) *
+                        config('subidha.subidha_comission_cash_percentage') / 100 , 2);
+                    $order->subidha_comission = $amount_value + $delivery_value;
+
+                }
+                if ($order->payment_type == config('subidha.ecash_payment_type')) {
+
+                    $delivery_value = number_format(
+                        config('subidha.express_delivery_charge') * config('subidha_delivery_percentage') /100 , 2);
+
+                    $amount_value = number_format(($request->get('amount')) *
+                        config('subidha.subidha_comission_ecash_percentage') / 100 , 2);
+                    $order->subidha_comission = $amount_value + $delivery_value;
+                }
+            }
+
+        }
+        if ($order->delivery_type == config('subidha.pickup_from_pharmacy')) {
+
+            if ($order->payment_type == config('subidha.cod_payment_type')) {
+
+                $amount_value = number_format(($request->get('amount')) *
+                    config('subidha.subidha_comission_collect_from_pharmacy_cash_percentage') / 100 , 2);
+
+                $order->subidha_comission = $amount_value ;
+
+            }
+            if ($order->payment_type == config('subidha.ecash_payment_type')) {
+
+                $amount_value = number_format(($request->get('amount')) *
+                    config('subidha.subidha_comission_collect_from_pharmacy_ecash_percentage') / 100 , 2);
+
+                $order->subidha_comission = $amount_value;
+            }
+        }
+
+
+
+
         $order->save();
 
         if ( $request->order_items ) {
@@ -118,8 +190,8 @@ class OrderRepository
             }
 
             return $orderNo;
-        } 
-  
+        }
+
         return date('Y').'-'.date('m').'-001';
     }
 
@@ -203,7 +275,10 @@ class OrderRepository
     {
         if ($status_id == 2) {
             return Order::with(['orderItems.product', 'address', 'pharmacy'])
-                ->where('pharmacy_id', $pharmacy_id)->whereIn('status', [2,9])->orderBy('id','desc')->paginate(5);
+                ->where('pharmacy_id', $pharmacy_id)
+                ->whereIn('status', [2,9])
+                ->orderBy('id','desc')
+                ->paginate(5);
         }
         return Order::with(['orderItems.product', 'address', 'pharmacy'])
             ->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->orderBy('id','desc')->paginate(5);
@@ -216,5 +291,37 @@ class OrderRepository
             'order_id' => $request->order_id,
             'reason' => $request->reason,
         ]);
+    }
+
+    public function ordersByStatus($request)
+    {
+        $order = Order::query();
+
+        if ($request->has('status')) {
+
+            $status = $request->get('status');
+            if ( $status == 2) {
+                $order->whereIn('status', [2,9]);
+            } else {
+                $order->where('status', $status);
+            }
+
+//            return Order::with(['orderItems.product', 'address', 'pharmacy'])
+//                ->where('status', $request->get('status'))
+//                ->orderBy('id','desc')
+//                ->paginate(10);
+        }
+        return $order->with(['orderItems.product', 'address', 'pharmacy'])
+            ->orderBy('id','desc')
+            ->paginate(10);
+
+    }
+
+    public function getOrderDetails($id)
+    {
+        return Order::with(['orderItems.product', 'address.area.thana.district', 'pharmacy.pharmacyBusiness', 'customer'])
+            ->where('id', $id)
+            ->first();
+
     }
 }

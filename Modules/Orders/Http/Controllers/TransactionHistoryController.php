@@ -27,8 +27,7 @@ class TransactionHistoryController extends Controller
     {
         $data = $this->repository->all();
 
-//        $total_received = $this->repository->pharmacyTotalRecived();
-//        return $data[0]->pharmacy->pharmacyBusiness->pharmacy_name;
+//        return $data;
 
         return view('orders::transactionHistory.index', compact('data'));
     }
@@ -41,7 +40,7 @@ class TransactionHistoryController extends Controller
     public function create($id)
     {
         $data = $this->repository->getPharmacyInfo($id);
-//        return $data->pharmacy;
+//        return $data;
         return view('orders::transactionHistory.create', compact('data'));
     }
 

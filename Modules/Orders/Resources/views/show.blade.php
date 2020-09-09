@@ -1,19 +1,27 @@
 @extends('adminlte::page')
 
-@section('title', 'Transaction History')
+@section('title', 'order Details')
 
 @section('content_header')
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Transaction History</h1>
+                <div class="col-sm-8">
+                    <div class="card" >
+                        <div class="card-header">
+                            <h4>Order Information</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <strong>Pharmacy Name : </strong> <span>{{ $data->pharmacy->pharmacyBusiness->pharmacy_name }}</span><br>
+                            <strong>Customer Name : </strong> <span>{{ $data->customer->name }}</span><br>
+                            <strong>Delivery Address : </strong> <span>{{ $data->address->address . ', ' . $data->address->area->name . ', ' . $data->address->area->thana->name .', '. $data->address->area->thana->district->name  }}</span><br>
+                            <strong>Customer Phone : </strong> <span>{{ $data->customer->phone_number }}</span><br>
+                        </div>
+
+                    </div>
+
                 </div>
-                {{--                <div class="col-sm-6">--}}
-                {{--                    <a href="{{ route('transactionHistory.create') }}" class="btn btn-sm btn-success float-right">--}}
-                {{--                        Create Notice--}}
-                {{--                    </a>--}}
-                {{--                </div>--}}
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -29,7 +37,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Transaction History List</h3>
+            <h3 class="card-title">Medicine List</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
@@ -37,24 +45,20 @@
                 <thead>
                 <tr>
                     <th>SL</th>
-                    <th>Date</th>
-                    <th>Transaction ID</th>
-                    <th>Pharmacy Name</th>
-                    <th>Payment Method</th>
+                    <th>Medicine Name</th>
+                    <th>Quantity</th>
                     <th>Amount</th>
 {{--                    <th>Action</th>--}}
                 </tr>
                 </thead>
                 <tbody>
-                @if($data->isNotEmpty())
-                    @foreach($data as $index => $item)
+                @if($data->orderItems->isNotEmpty())
+                    @foreach($data->orderItems as $index => $item)
                         <tr>
-                            <td>{{ $data->firstItem() + $index }}</td>
-                            <td>{{ date('d F, Y', strtotime($item->date)) }}</td>
-                            <td>{{ $item->transaction_id }}</td>
-                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>
-                            <td>{{ $item->payment_method }}</td>
-                            <td>{{ $item->amount }}</td>
+                            <td>{{  $index++ }}</td>
+                            <td>{{ $item->product['name'] }}</td>
+                            <td>{{ $item->quantity }}</td>
+                            <td>{{ $item->quantity * $item->product->purchase_price }}</td>
 
                             <td>
                                 {{--                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">--}}
@@ -69,7 +73,7 @@
                 @endif
                 </tbody>
             </table>
-            {{ $data->links() }}
+{{--            {{ $data->links() }}--}}
         </div>
         <!-- /.card-body -->
     </div>

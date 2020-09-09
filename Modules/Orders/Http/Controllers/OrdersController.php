@@ -5,16 +5,26 @@ namespace Modules\Orders\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Orders\Repositories\OrderRepository;
 
 class OrdersController extends Controller
 {
+    private $repository;
+
+    public function __construct(OrderRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('orders::index');
+//        return $request->status;
+        $data = $this->repository->ordersByStatus($request);
+//        return $data;
+        return view('orders::index', compact('data'));
     }
 
     /**
@@ -43,7 +53,9 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        return view('orders::show');
+        $data = $this->repository->getOrderDetails($id);
+//        return $data->address->area->thana->district;
+        return view('orders::show', compact('data'));
     }
 
     /**

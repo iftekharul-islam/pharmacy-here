@@ -15,10 +15,12 @@
 //    Route::get('orders', 'OrdersController@index');
 //});
 
-Route::get('orders', 'OrdersController@index')->name('order.index');
+Route::get('orders', 'OrdersController@index')->name('orders.index');
+Route::get('orders/{order_id}', 'OrdersController@show')->name('orders.show');
 
 Route::get('transaction-history', 'TransactionHistoryController@index')->name('transactionHistory.index');
 Route::get('transaction/create/{trans_id}', 'TransactionHistoryController@create')->name('transactionHistory.create');
+Route::get('transaction-history/{trans_id}', 'TransactionHistoryController@show')->name('transactionHistory.show');
 Route::post('transaction', 'TransactionHistoryController@store')->name('transactionHistory.store');
 
 //Route::get('transaction-history', function (){
