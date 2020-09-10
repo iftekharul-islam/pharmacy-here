@@ -30,7 +30,6 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('pharmacy_id');
             $table->foreign('pharmacy_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('shipping_address_id');
-            $table->foreign('shipping_address_id')->references('id')->on('addresses')->onDelete('cascade');
             $table->timestamps();
         });
     }
