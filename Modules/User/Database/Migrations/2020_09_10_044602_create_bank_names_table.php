@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDeletedAtInWeekendsTable extends Migration
+class CreateBankNamesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,14 @@ class AddDeletedAtInWeekendsTable extends Migration
      */
     public function up()
     {
-        Schema::table('weekends', function (Blueprint $table) {
+        Schema::create('bank_names', function (Blueprint $table) {
+            $table->id();
+            $table->string('bank_name');
+            $table->string('bn_bank_name');
+            $table->boolean('status')->default(true);
             $table->softDeletes();
+
+            $table->timestamps();
         });
     }
 
@@ -25,8 +31,6 @@ class AddDeletedAtInWeekendsTable extends Migration
      */
     public function down()
     {
-        Schema::table('weekends', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        Schema::dropIfExists('bank_names');
     }
 }

@@ -347,6 +347,11 @@ return [
             'icon'    => 'fas fa-store-alt',
             'url'     => 'orders'
         ],
+        [
+            'text'    => 'Banks',
+            'icon'    => 'fas fa-store-alt',
+            'url'     => 'bank'
+        ],
 //        ['header' => 'account_settings'],
 //        [
 //            'text' => 'profile',

@@ -14,16 +14,26 @@
 
 Route::group(['middleware' => ['auth']], function () {
 
-Route::get('home','HomeController@index');
+    Route::get('home','HomeController@index');
 
-Route::prefix('user')->group(function() {
-//    Route::get('/', 'UserController@index')->name('user.dashboard');
+    Route::prefix('user')->group(function() {
+        Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
+    });
 
-    Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
-});
+    Route::prefix('customers')->group(function() {
+        Route::get('/', 'CustomerController@index')->name('customer.index');
+        Route::delete('{id}', 'CustomerController@destroy')->name('customer.destroy');
+    });
+
+
+    Route::get('bank', 'BankController@index')->name('bank.index');
+    Route::get('bank/create', 'BankController@create')->name('bank.create');
+    Route::post('bank', 'BankController@store')->name('bank.store');
+    Route::get('bank/{id}', 'BankController@show')->name('bank.show');
+    Route::get('bank/{id}/edit', 'BankController@edit')->name('bank.edit');
+    Route::put('bank/{id}', 'BankController@update')->name('bank.update');
+    Route::delete('bank/{id}', 'BankController@destroy')->name('bank.destroy');
+
 });
 
-Route::prefix('customers')->group(function() {
-    Route::get('/', 'CustomerController@index')->name('customer.index');
-    Route::delete('{id}', 'CustomerController@destroy')->name('customer.destroy');
-});
+

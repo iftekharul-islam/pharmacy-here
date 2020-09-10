@@ -45,15 +45,19 @@
                             <div class="col-sm-8 pt-2" id="conversion_factor">
                             </div>
                         </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="inputEmail3" class="col-sm-4 col-form-label">Unit</label>--}}
+{{--                            <div class="col-sm-8 pt-2" id="unit">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Unit</label>
-                            <div class="col-sm-8 pt-2" id="unit">
+                            <div class="col-sm-8 pt-2" id="primary_unit">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Primary Unit</label>
-                            <div class="col-sm-8 pt-2" id="primary_unit">
-                            </div>
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Min Order Qty</label>
+                            <div class="col-sm-8 pt-2" id="min_order_qty"></div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Trading Price</label>
@@ -137,10 +141,7 @@
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Is Pre Order Allowed</label>
                             <div class="col-sm-8 pt-2" id="is_pre_order"></div>
                         </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Min Order Qty</label>
-                            <div class="col-sm-8 pt-2" id="min_order_qty"></div>
-                        </div>
+
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Status</label>
                             <div class="col-sm-8 pt-2" id="status">

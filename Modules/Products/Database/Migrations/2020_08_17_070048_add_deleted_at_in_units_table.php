@@ -26,7 +26,7 @@ class AddDeletedAtInUnitsTable extends Migration
     public function down()
     {
         Schema::table('units', function (Blueprint $table) {
-            $table->softDeletes();
+            $table->dropSoftDeletes();
         });
     }
 }
