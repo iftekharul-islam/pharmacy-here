@@ -53,4 +53,6 @@ $api->version('v1', function ($api) use ($namespace) {
 $api->version('v1', function ($api) use ($namespace) {
 	$api->post('me/assets', $namespace . '\AssetController@store');
 	$api->post('me/notification', $namespace . '\AssetController@notification');
+
+	$api->get('banks', $namespace . '\BankController@index');
 });

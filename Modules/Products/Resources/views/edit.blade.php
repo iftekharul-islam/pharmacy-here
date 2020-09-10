@@ -113,20 +113,20 @@
                             @endif
                         </div>
                     </div>
+{{--                    <div class="form-group row">--}}
+{{--                        <label for="unit" class="col-sm-4 col-form-label">Unit</label>--}}
+{{--                        <div class="col-sm-8" id="">--}}
+{{--                            <input type="text" value="{{ $product->unit }}" onkeypress="return isNumber(event)"--}}
+{{--                                   name="unit" class="form-control" id="unit" placeholder="Unit">--}}
+{{--                            @if ($errors->has('unit'))--}}
+{{--                                <span class="text-danger">--}}
+{{--                                    <strong>{{ $errors->first('unit') }}</strong>--}}
+{{--                                </span>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="form-group row">
-                        <label for="unit" class="col-sm-4 col-form-label">Unit</label>
-                        <div class="col-sm-8" id="">
-                            <input type="text" value="{{ $product->unit }}" onkeypress="return isNumber(event)"
-                                   name="unit" class="form-control" id="unit" placeholder="Unit">
-                            @if ($errors->has('unit'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('unit') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="primary_unit_id" class="col-sm-4 col-form-label">Primary Unit</label>
+                        <label for="primary_unit_id" class="col-sm-4 col-form-label">Unit</label>
                         <div class="col-sm-8" id="">
                             <select class="form-control" name="primary_unit_id" id="primary_unit_id">
                                 @foreach($units as $unit)
@@ -140,6 +140,18 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="min_order_qty" class="col-sm-4 col-form-label">Min Order Qty</label>
+                        <div class="col-sm-8 " id="">
+                            <input type="number" class="form-control" name="min_order_qty" value="{{$product->min_order_qty}}" id="min_order_qty">
+                            @if ($errors->has('min_order_qty'))
+                                <span class="text-danger">
+                                <strong>{{ $errors->first('min_order_qty') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <label for="trading_price" class="col-sm-4 col-form-label">Trading Price</label>
                         <div class="col-sm-8  " id="">
@@ -343,17 +355,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="min_order_qty" class="col-sm-4 col-form-label">Min Order Qty</label>
-                        <div class="col-sm-8 " id="">
-                            <input type="number" class="form-control" name="min_order_qty" value="{{$product->min_order_qty}}" id="min_order_qty">
-                            @if ($errors->has('min_order_qty'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('min_order_qty') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
+
 
                     <div class="form-group row">
                         <label for="status" class="col-sm-4 col-form-label">Status</label>

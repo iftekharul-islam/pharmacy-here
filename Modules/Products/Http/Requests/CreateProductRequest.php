@@ -18,7 +18,7 @@ class CreateProductRequest extends FormRequest
             'status' => 'required|boolean',
             'trading_price' => 'required',
             'purchase_price' => 'required',
-            'unit' => 'required',
+//            'unit' => 'required',
             'is_saleable' => 'required',
             'conversion_factor' => 'required',
             'type' => 'required',

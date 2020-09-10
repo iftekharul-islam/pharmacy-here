@@ -24,7 +24,7 @@
         <div class="card-header">
             <h3 class="card-title">Product List</h3>
         </div>
-        
+
         <div class="card-body table-responsive mb-3">
             @if($productList->isNotEmpty())
             <table id="example1" class="table data-table">
@@ -102,7 +102,7 @@
             $('#form').html((item.form.name));
             $('#company').html((item.company.name));
             $('#conversion_factor').html((item.conversion_factor));
-            $('#unit').html((item.unit));
+            // $('#unit').html((item.unit));
             $('#primary_unit').html((item.primary_unit.name));
             $('#trading_price').html((item.trading_price));
             $('#purchase_price').html((item.purchase_price));
