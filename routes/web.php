@@ -13,11 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', 'HomeController@index')->name('home');
+
 //Route::get('/', function() {
 //    return redirect()->route('login');
 //});
 
 
-Route::get('/', 'HomeController@login');
+//Route::get('/login', 'HomeController@login');
+
+
+Route::get('/', 'HomeController@index')->name('home');
+
+Route::get('/product',  'ProductsController@index')->name('product-list');
+Route::get('/product/{product_id}',  'ProductsController@show')->name('single-product');
+//Route::get('/product',  '\Modules\Products\Http\Controllers\API\ProductsController@index')->name('product');
 

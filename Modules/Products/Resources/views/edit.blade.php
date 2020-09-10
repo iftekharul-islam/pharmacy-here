@@ -42,9 +42,10 @@
                     <div class="form-group row">
                         <label for="category_id" class="col-sm-4 col-form-label">Category</label>
                         <div class="col-sm-8" id="">
+{{--                            {{ $product->category_id }}--}}
                             <select class="form-control" name="category_id" id="category_id">
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}" @if($product->category_id == $category->id) selected @endif>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('category_id'))
@@ -59,7 +60,7 @@
                         <div class="col-sm-8" id="status">
                             <select class="form-control" name="generic_id" id="generic_id">
                                 @foreach($generics as $generic)
-                                    <option value="{{ $generic->id }}">{{ $generic->name }}</option>
+                                    <option value="{{ $generic->id }}" @if($product->generic_id == $generic->id) selected @endif>{{ $generic->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('generic_id'))
@@ -74,7 +75,7 @@
                         <div class="col-sm-8" id="">
                             <select class="form-control" name="form_id" id="form_id">
                                 @foreach($forms as $form)
-                                    <option value="{{ $form->id }}">{{ $form->name }}</option>
+                                    <option value="{{ $form->id }}" @if($product->form_id == $form->id) selected @endif>{{ $form->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('form_id'))
@@ -89,7 +90,7 @@
                         <div class="col-sm-8" id="">
                             <select class="form-control" name="manufacturing_company_id" id="manufacturing_company_id">
                                 @foreach($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                    <option value="{{ $company->id }}" @if($product->company_id == $company->id) selected @endif>{{ $company->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('manufacturing_company_id'))
@@ -130,7 +131,7 @@
                         <div class="col-sm-8" id="">
                             <select class="form-control" name="primary_unit_id" id="primary_unit_id">
                                 @foreach($units as $unit)
-                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                    <option value="{{ $unit->id }}" @if($product->Unit_id == $unit->id) selected @endif>{{ $unit->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('primary_unit_id'))
