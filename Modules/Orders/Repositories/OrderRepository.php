@@ -27,11 +27,12 @@ class OrderRepository
         $order = Order::query();
 
         if ($request->has('customer_name') && $request->get('customer_name')) {
+
             $customerName = $request->get('customer_name');
             $customerIds = User::where('name', 'LIKE', "%$customerName%")->pluck('id');
             $order->whereIn('customer_id', $customerIds);
         }
-        return $order->with(['orderItems.product', 'address', 'pharmacy'])
+        return $order->with(['orderItems.product', 'address.area.thana.district', 'pharmacy'])
             ->where('pharmacy_id', $pharmacy_id)->paginate(10);
     }
 
@@ -42,7 +43,7 @@ class OrderRepository
     public function byCustomerId($customer_id)
     {
         // return '';
-        return Order::with(['orderItems.product', 'address.area', 'pharmacy'])
+        return Order::with(['orderItems.product', 'address.area.thana.district', 'pharmacy'])
             ->where('customer_id', $customer_id)
             ->paginate(20);
     }

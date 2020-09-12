@@ -5,13 +5,14 @@ namespace Modules\Orders\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Orders\Repositories\OrderRepository;
+use Illuminate\Support\Facades\Auth;
+use Modules\Orders\Repositories\CartRepository;
 
-class OrdersController extends Controller
+class CartController extends Controller
 {
     private $repository;
 
-    public function __construct(OrderRepository $repository)
+    public function __construct(CartRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -19,12 +20,12 @@ class OrdersController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index(Request $request)
+    public function index()
     {
-//        return $request->status;
-        $data = $this->repository->ordersByStatus($request);
-//        return $data;
-        return view('orders::index', compact('data'));
+        $user = Auth::user();
+        $data = $this->repository->cartItemsByCustomerId();
+
+        return view('orders::cart.index', compact('data'));
     }
 
     /**
@@ -53,9 +54,9 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $data = $this->repository->getOrderDetails($id);
-//        return $data->address->area->thana->district;
-        return view('orders::show', compact('data'));
+//        $data = $this->repository->getOrderDetails($id);
+
+//        return view('orders::show', compact('data'));
     }
 
     /**

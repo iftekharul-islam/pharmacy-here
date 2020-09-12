@@ -13,9 +13,9 @@ class RemoveCartsTable extends Migration
      */
     public function up()
     {
-        Schema::table('', function (Blueprint $table) {
+        Schema::dropIfExists('carts');
 
-        });
+        Schema::dropIfExists('cart_items');
     }
 
     /**

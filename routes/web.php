@@ -26,5 +26,4 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/product',  'ProductsController@index')->name('product-list');
 Route::get('/product/{product_id}',  'ProductsController@show')->name('single-product');
-//Route::get('/product',  '\Modules\Products\Http\Controllers\API\ProductsController@index')->name('product');
 
