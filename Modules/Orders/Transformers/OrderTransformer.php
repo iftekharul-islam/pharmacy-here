@@ -47,4 +47,9 @@ class OrderTransformer extends TransformerAbstract
         return $this->collection($item->prescriptions, new PrescriptionTransformer());
     }
 
+    public function includeAddress(Order $item) {
+
+        return $this->collection($item->address, new AddressTransformer());
+    }
+
 }
