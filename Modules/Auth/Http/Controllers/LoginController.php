@@ -4,9 +4,13 @@ namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Http\Requests\LoginRequest;
+use Modules\Auth\Http\Requests\PhoneValidationRequest;
+use Modules\Auth\Repositories\AuthRepository;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class LoginController extends Controller
 {
@@ -30,14 +34,17 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    private $repository;
+
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param AuthRepository $repository
      */
-    public function __construct()
+    public function __construct(AuthRepository $repository)
     {
         $this->middleware('guest')->except('logout');
+        $this->repository = $repository;
     }
 
     public function showLoginForm()
@@ -65,4 +72,64 @@ class LoginController extends Controller
         Auth::logout();
         return redirect('/login');
     }
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+
+    public function showCustomerLoginForm()
+    {
+        if (Auth::guard()->check()) {
+            return redirect()->route('customer.dashboard');
+        }
+        return view('auth::customer.login');
+
+    }
+
+    public function createOTP(PhoneValidationRequest $request)
+    {
+        $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
+
+        if (! $verifyNumber) {
+            throw new UnauthorizedHttpException('', 'Phone Number is not registered');
+        }
+
+        $otp = $this->repository->createOtp($request);
+
+        if (! $otp) {
+            throw new StoreResourceFailedException('Failed to create OTP');
+        }
+
+//        return view('auth::customer.verify-otp');
+        return redirect()->route('customer.OTPForm');
+    }
+
+    public function customerOTPForm()
+    {
+//        if (Auth::guard()->check()) {
+//            return redirect()->route('customer.dashboard');
+//        }
+        return view('auth::customer.verify-otp');
+
+    }
+
+    public function customerVerifyOTP(PhoneValidationRequest $request)
+    {
+
+        $otpResponse = $this->repository->verifyOtp($request);
+
+        if (! $otpResponse) {
+            throw new StoreResourceFailedException('Failed to verify OTP');
+        }
+
+
+        $token = $this->repository->loginWithPhone($request->phone_number);
+
+        if (! $token) {
+            throw new StoreResourceFailedException('Failed to verify OTP');
+        }
+
+        $user = $this->repository->getUserByPhone($request->phone_number, $request->device_token);
+
+//        return $this->respondWithTokenAndName($token, $user);
+
+//        return $this->respondWithToken($token);
+    }
+
+}

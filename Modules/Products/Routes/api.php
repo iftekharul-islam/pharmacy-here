@@ -70,10 +70,10 @@ $api->version('v1', function ($api) use ($namespace) {
 //    });
 
     $api->group(['middleware' => 'role:customer'], function ($api) use ($namespace) {
-        $api->get('carts', $namespace . '\CartController@index');
-        $api->post('carts', $namespace . '\CartController@store');
-
-        $api->put('cart-items/{id}', $namespace . '\CartController@updateCartItem');
+//        $api->get('carts', $namespace . '\CartController@index');
+//        $api->post('carts', $namespace . '\CartController@store');
+//
+//        $api->put('cart-items/{id}', $namespace . '\CartController@updateCartItem');
 
 //        $api->get('products/{id}/related_product', $namespace . '\ProductsController@getRelatedProductByProductId');
     });

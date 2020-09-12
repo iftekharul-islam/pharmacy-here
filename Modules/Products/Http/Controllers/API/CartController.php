@@ -54,13 +54,13 @@ class CartController extends BaseController
 //        return Auth::id();
 //        return $request->all();
 
-        $cartInfo = $this->repository->create($request->cart_items, $request->order_from, Auth::id());
-
-        if (! $cartInfo) {
-            throw new StoreResourceFailedException('Cart creation failed');
-        }
-
-        return $this->response->collection($cartInfo, new CartItemTransformer());
+//        $cartInfo = $this->repository->create($request->cart_items, $request->order_from, Auth::id());
+//
+//        if (! $cartInfo) {
+//            throw new StoreResourceFailedException('Cart creation failed');
+//        }
+//
+//        return $this->response->collection($cartInfo, new CartItemTransformer());
     }
 
     /**
