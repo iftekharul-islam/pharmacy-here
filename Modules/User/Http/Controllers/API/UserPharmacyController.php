@@ -130,9 +130,6 @@ class UserPharmacyController extends BaseController
             'status_code' => 200
         ]);
 
-//        return $this->response->item($pharmacy, new PharmacyTransformer());
-
-//        return responseData('Weekends and working hour create successful');
     }
 
     /**

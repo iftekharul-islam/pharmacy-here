@@ -143,8 +143,6 @@ class PharmacyRepository
     {
         $user = User::find($id);
 
-
-
         if (! $user) {
             throw new NotFoundHttpException('Pharmacy user not found');
         }
@@ -175,6 +173,14 @@ class PharmacyRepository
 
         if (isset($request->email)) {
             $user->email = $request->email;
+        }
+
+        if (isset($request->dob)) {
+            $user->dob = $request->dob;
+        }
+
+        if (isset($request->gender)) {
+            $user->gender = $request->gender;
         }
 
         if ($request->has('image')) {
