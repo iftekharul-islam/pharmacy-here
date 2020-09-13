@@ -19,7 +19,39 @@ class CustomerRepository
 
     public function update($request, $id)
     {
+        $user = User::find($id);
 
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+
+        if (isset($request->phone_number)) {
+            $user->phone_number = $request->phone_number;
+        }
+
+        if (isset($request->alternative_phone_number)) {
+            $user->alternative_phone_number = $request->alternative_phone_number;
+        }
+
+        if (isset($request->email)) {
+            $user->email = $request->email;
+        }
+
+        if (isset($request->dob)) {
+            $user->dob = $request->dob;
+        }
+
+        if (isset($request->gender)) {
+            $user->gender = $request->gender;
+        }
+
+        if ($request->has('image')) {
+            $user->image = $request->get('image');
+        }
+
+        $user->save();
+
+        return $user;
     }
 
     /**

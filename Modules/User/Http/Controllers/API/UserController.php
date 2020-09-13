@@ -101,6 +101,7 @@ class UserController extends BaseController
 
         $otp = $this->repository->createOtp($user->phone_number);
 
+
         return responseData('Otp creation successful');
 
     }

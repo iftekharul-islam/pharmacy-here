@@ -44,6 +44,9 @@ $api->version('v1', function ($api) use ($namespace) {
 
         $api->post('me/create-otp', $namespace . '\UserController@createOtp');
         $api->post('me/verify-otp', $namespace . '\UserController@verifyOtp');
+
+        $api->get('me/customer', $namespace . '\UserCustomerController@show');
+        $api->put('me/customer', $namespace . '\UserCustomerController@update');
     });
 
     $api->get('pharmacy/available/{area_id}', $namespace . '\UserPharmacyController@isPharmacyAvailable');
