@@ -14,7 +14,7 @@ class CustomerRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|min:11|max:11|unique:users,phone_number',
+            'phone_number' => 'required|max:13|unique:users,phone_number',
             'name' => 'required|min:3',
 //            'email' => 'required|email|unique:users,email',
 //            'dob' => 'required',

@@ -14,7 +14,7 @@ class PhoneValidationRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => 'required|min:11|max:11',
+            'phone_number' => 'required|max:13',
         ];
     }
 
