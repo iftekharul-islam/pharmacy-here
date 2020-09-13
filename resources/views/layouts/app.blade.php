@@ -97,6 +97,10 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                        <li class="nav-item">
+{{--                            <a class="nav-link" onclick="cart()">{{ __('Cart') }}</a>--}}
+                            <button class="nav-link" onclick="cart()">{{ __('Cart') }}</button>
+                        </li>
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('customer.login') }}">{{ __('Login') }}</a>
@@ -136,5 +140,24 @@
         </main>
     </div>
 @yield('js')
+    <script>
+        function viewCart() {
+
+            // if ( cart.length == 0) {
+            //     console.log('undefined');
+            // }
+        }
+        function addToCart(item) {
+            console.log('addToCart');
+            // console.log(item);
+
+            var cartItem = {
+                'name': item.name,
+                'price' : item.purchase_price,
+                'quantity' : item.min_order_qty
+            };
+            console.log(cartItem);
+        }
+    </script>
 </body>
 </html>

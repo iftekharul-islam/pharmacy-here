@@ -31,7 +31,7 @@
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <a class="btn btn-sm btn-success mr-3"
-                                               href="">
+                                               onclick="addToCart({{ $item }})">
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
 {{--                                            <button class="btn btn-danger btn-sm" type="button"--}}

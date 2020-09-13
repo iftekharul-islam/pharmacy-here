@@ -9,12 +9,12 @@
 
                     <div class="card-body">
 
-                        <div class="form-group row">
-                            <label for="type" class="col-sm-4 col-form-label">Type</label>
-                            <div class="col-sm-8" id="">
-                                {{ $data->type }}
-                            </div>
-                        </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="type" class="col-sm-4 col-form-label">Type</label>--}}
+{{--                            <div class="col-sm-8" id="">--}}
+{{--                                {{ $data->type }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group row">
                             <label for="name" class="col-sm-4 col-form-label">Name</label>
                             <div class="col-sm-8  " id="name">
@@ -74,54 +74,54 @@
 
 
 
-                        <div class="form-group row">
-                            <label for="administration" class="col-sm-4 col-form-label">Administration</label>
-                            <div class="col-sm-8" id="">
-                                {{ $data->productAdditionalInfo->administration }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="precaution" class="col-sm-4 col-form-label">Precaution</label>
-                            <div class="col-sm-8  " id="precaution">
-                                {{ $data->productAdditionalInfo->precaution }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="indication" class="col-sm-4 col-form-label">Indication</label>
-                            <div class="col-sm-8  " id="">
-                                {{ $data->productAdditionalInfo->indication }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="contra_indication" class="col-sm-4 col-form-label">Contra Indication</label>
-                            <div class="col-sm-8  " id="">
-                                {{ $data->productAdditionalInfo->contra_indication }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="side_effect" class="col-sm-4 col-form-label">Side Effect</label>
-                            <div class="col-sm-8  " id="">
-                                {{ $data->productAdditionalInfo->side_effect }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="mode_of_action" class="col-sm-4 col-form-label">Mode Of Action</label>
-                            <div class="col-sm-8  " id="">
-                                {{ $data->productAdditionalInfo->mode_of_action }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="interaction" class="col-sm-4 col-form-label">Interaction</label>
-                            <div class="col-sm-8  " id="">
-                                {{ $data->productAdditionalInfo->interaction }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="strength" class="col-sm-4 col-form-label">Strength</label>
-                            <div class="col-sm-8" >
-                                {{ $data->strength }}
-                            </div>
-                        </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="administration" class="col-sm-4 col-form-label">Administration</label>--}}
+{{--                            <div class="col-sm-8" id="">--}}
+{{--                                {{ $data->productAdditionalInfo->administration }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="precaution" class="col-sm-4 col-form-label">Precaution</label>--}}
+{{--                            <div class="col-sm-8  " id="precaution">--}}
+{{--                                {{ $data->productAdditionalInfo->precaution }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="indication" class="col-sm-4 col-form-label">Indication</label>--}}
+{{--                            <div class="col-sm-8  " id="">--}}
+{{--                                {{ $data->productAdditionalInfo->indication }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="contra_indication" class="col-sm-4 col-form-label">Contra Indication</label>--}}
+{{--                            <div class="col-sm-8  " id="">--}}
+{{--                                {{ $data->productAdditionalInfo->contra_indication }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="side_effect" class="col-sm-4 col-form-label">Side Effect</label>--}}
+{{--                            <div class="col-sm-8  " id="">--}}
+{{--                                {{ $data->productAdditionalInfo->side_effect }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="mode_of_action" class="col-sm-4 col-form-label">Mode Of Action</label>--}}
+{{--                            <div class="col-sm-8  " id="">--}}
+{{--                                {{ $data->productAdditionalInfo->mode_of_action }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="interaction" class="col-sm-4 col-form-label">Interaction</label>--}}
+{{--                            <div class="col-sm-8  " id="">--}}
+{{--                                {{ $data->productAdditionalInfo->interaction }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="strength" class="col-sm-4 col-form-label">Strength</label>--}}
+{{--                            <div class="col-sm-8" >--}}
+{{--                                {{ $data->strength }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
 {{--                        <div class="form-group row">--}}
 {{--                            <label for="adult_dose" class="col-sm-4 col-form-label">Adult Dose</label>--}}

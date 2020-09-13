@@ -96,7 +96,8 @@ class LoginController extends Controller
             throw new StoreResourceFailedException('Failed to create OTP');
         }
 
-        return responseData('Otp creation successful');
+        return responsePreparedData($otp);
+//        return responseData('Otp creation successful');
     }
 
     public function verifyOtp(PhoneValidationRequest $request)
