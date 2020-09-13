@@ -44,11 +44,13 @@ class OrderController extends BaseController
 
     /**
      * Show the form for creating a new resource.
+     * @param Request $request
      * @return Response
      */
     public function create(CreateOrderRrequest $request)
     {
-        //$user = Auth::user();
+//        return Auth::user();
+//        return $request->all();
 
         $order = $this->repository->create($request, Auth::guard('api')->user()->id);
 

@@ -157,15 +157,20 @@ class OrderRepository
 
 
 
+        logger($order);
         $order->save();
 
         if ( $request->order_items ) {
+            logger('Into the Order items');
             // $order->orderItems()->saveMany($request->order_items);
             $this->storeAssociateProducts($request->order_items, $order->id);
+            logger('End of Order Items');
         }
 
         if ( $request->prescriptions ) {
+            logger('Into the prescription');
             $this->storeAssociatePrescriptions($request->prescriptions, $order->id);
+            logger('End of prescription');
         }
 
         $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
