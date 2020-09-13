@@ -35,14 +35,36 @@ class SendOtp implements ShouldQueue
      */
     public function handle()
     {
-        $base_url_non_masking = 'https://smscp.datasoftbd.com/smsapi/non-masking';
+        $base_url_non_masking = 'http://smscp.datasoftbd.com/smsapi/non-masking';
 
         $api_key = '$2y$10$nCixye2JmYu8p65XRv.yFeuMV4mc4BBko4KZ6XpmwEDiaEqfh1h2O';
 
-        $url = $base_url_non_masking . "?api_key=" . $api_key . "&smsType=text&mobileNo=" . $this->phone_number . "&smsContent=" . $this->otp;
+        $message = "Your OTP code is " . $this->otp;
+
+        $phone = $this->phone_number;
+
+        $checked_digit = substr($phone, 0, 3);
+        if ($checked_digit == '+88') {
+            $phone = ltrim($phone, '+');
+        }
+        $checked_zero = substr($phone, 0, 1);
+        if ( $checked_zero == 0 ) {
+            $phone = '88' . $phone;
+        }
+        $checked_lastest = substr($phone, 0, 3);
+        if ( $checked_lastest !== '880') {
+            $phone = ltrim($phone, '88');
+            $phone = '880' . $phone;
+        }
+        logger('phone '. $phone);
+
+        $url = $base_url_non_masking . "?api_key=" . $api_key . "&smsType=text&mobileNo=" . $phone . "&smsContent=" . $message;
         $client = new Client();
         try {
-            $response = $client->request('GET', $url);
+//            $response = $client->request('GET', $url);
+            logger('Send sms');
+            $request = $client->get($url);
+            logger($request->getBody());
             OneTimePassword::create([
                 'phone_number' => $this->phone_number,
                 'otp' => $this->otp
