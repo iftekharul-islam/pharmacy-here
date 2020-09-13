@@ -122,7 +122,7 @@ class OrderRepository
                 if ($order->payment_type == config('subidha.cod_payment_type')) {
                     logger('Into subidha cod payment');
                     $delivery_value = number_format(
-                        config(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100) +
+                        (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100) +
                         config('subidha.express_delivery_charge') * config('subidha_delivery_percentage') /100, 2);
 
                     $amount_value = number_format(($request->get('amount')) *
