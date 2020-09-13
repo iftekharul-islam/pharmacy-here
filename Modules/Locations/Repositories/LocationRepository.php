@@ -10,9 +10,6 @@ class LocationRepository
 {
     public function get()
     {
-//        return District::with('thanas.areas', function($query){
-//            return $query->orderby('name', 'asc');
-//        })->orderBy('name', 'asc')->get();
-
+        return District::orderBy('name', 'ASC')->get();
     }
 }

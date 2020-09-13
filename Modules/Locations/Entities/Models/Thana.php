@@ -27,6 +27,6 @@ class Thana extends Model
     }
 
     public function areas() {
-        return $this->hasMany(Area::class);
+        return $this->hasMany(Area::class)->orderBy('name', 'ASC');
     }
 }
