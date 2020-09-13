@@ -98,8 +98,8 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item">
-{{--                            <a class="nav-link" onclick="cart()">{{ __('Cart') }}</a>--}}
-                            <button class="nav-link" onclick="cart()">{{ __('Cart') }}</button>
+                            <a class="nav-link" onclick="cart()">{{ __('Cart') }}</a>
+{{--                            <button class="nav-link" onclick="cart()">{{ __('Cart') }}</button>--}}
                         </li>
                         @guest
                             <li class="nav-item">
