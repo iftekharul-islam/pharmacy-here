@@ -81,12 +81,16 @@ class OrderRepository
         $order->order_date = Carbon::now()->format('Y-m-d');
         $order->delivery_time = $delivery_time;
         $order->notes = $request->get('notes');
+        logger('Start of Order controller create method customer: '. $customer_id);
         $order->customer_id = $customer_id;
         $order->pharmacy_id = $pharmacy_id;
+        logger('end of Order controller create method customer: '. $customer_id);
         $order->shipping_address_id = $request->get('shipping_address_id');
         $order->delivery_method = $request->get('delivery_method');
         $order->delivery_date = $request->get('delivery_date');
+        logger('Start of generate OrderNo()');
         $order->order_no = $this->generateOrderNo();
+        logger('End of generate OrderNo()');
 
         if ($order->delivery_type == config('subidha.home_delivery')) {
 
