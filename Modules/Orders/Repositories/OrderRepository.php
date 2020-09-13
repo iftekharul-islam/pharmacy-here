@@ -118,9 +118,9 @@ class OrderRepository
 
             }
             if ($order->delivery_method == config('subidha.express_delivery')) {
-
+                logger('Into subidha express delivery');
                 if ($order->payment_type == config('subidha.cod_payment_type')) {
-
+                    logger('Into subidha cod payment');
                     $delivery_value = number_format(
                         config(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100) +
                         config('subidha.express_delivery_charge') * config('subidha_delivery_percentage') /100, 2);
@@ -131,7 +131,7 @@ class OrderRepository
 
                 }
                 if ($order->payment_type == config('subidha.ecash_payment_type')) {
-
+                    logger('Into subidha ecash payment method');
                     $delivery_value = number_format(
                         config('subidha.express_delivery_charge') * config('subidha_delivery_percentage') /100 , 2);
 
