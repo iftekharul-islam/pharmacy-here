@@ -62,8 +62,11 @@ class OrderRepository
 
     public function create($request, $customer_id)
     {
+        logger('Into the Order repository create method');
         $order = new Order();
+        logger('Into the Order controller create method pharmacy_id');
         $pharmacy_id = $request->get('pharmacy_id') ? $request->get('pharmacy_id') : $this->getNearestPharmacyId($request->get('shipping_address_id'));
+        logger('End of Order controller create method pharmacy_id');
         if (empty($pharmacy_id)) {
             throw new NotFoundHttpException('Pharmacy Not Found');
         }
