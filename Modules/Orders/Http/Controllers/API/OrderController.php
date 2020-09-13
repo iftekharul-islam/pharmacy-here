@@ -34,11 +34,18 @@ class OrderController extends BaseController
         if ($user->hasRole('pharmacy')) {
 //            return 'Pharmacy';
             $orders = $this->repository->byPharmacyId($request, $user->id);
-        } else {
-//            return 'Customer';
-            $orders = $this->repository->byCustomerId($user->id);
         }
+//        else {
+//            $orders = $this->repository->byCustomerId($user->id);
+//        }
 
+        return $this->response->paginator($orders, new OrderTransformer());
+    }
+
+    public function getCustomerOrders()
+    {
+        $user = Auth::guard('api')->user();
+        $orders = $this->repository->byCustomerId($user->id);
         return $this->response->paginator($orders, new OrderTransformer());
     }
 
