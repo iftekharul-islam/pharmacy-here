@@ -90,13 +90,8 @@ class LocationController extends BaseController
 
     public function areas()
     {
-        return District::with('thanas')
-            ->whereHas('thanas', function ($query) {
-                return $query->orderby('name', 'ASC');
-            })->get();
-        $areaList = $this->repository->get();
-        return $areaList;
 
-//        return $this->response->collection($areaList, new DistrictTransformer());
+        $areaList = $this->repository->get();
+        return $this->response->collection($areaList, new DistrictTransformer());
     }
 }
