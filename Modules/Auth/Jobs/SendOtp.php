@@ -35,31 +35,46 @@ class SendOtp implements ShouldQueue
      */
     public function handle()
     {
+        $base_url_non_masking = 'https://smscp.datasoftbd.com/smsapi/non-masking';
 
-        $message = "Your OTP code is " . $this->otp;
-        $user = config('auth.sms.sms_user');
-        $pass = config('auth.sms.sms_pass');
-        $sid = config('auth.sms.sms_sid');
-        $url = "http://sms.sslwireless.com/pushapi/dynamic/server.php";
+        $api_key = '$2y$10$nCixye2JmYu8p65XRv.yFeuMV4mc4BBko4KZ6XpmwEDiaEqfh1h2O';
+
+        $url = $base_url_non_masking . "?api_key=" . $api_key . "&smsType=text&mobileNo=" . $this->phone_number . "&smsContent=" . $this->otp;
         $client = new Client();
         try {
-            $response = $client->request('POST', $url, [
-                'form_params' => [
-                    'user' => $user,
-                    'pass' => $pass,
-                    'sid'  => $sid,
-                    'sms'  => [
-                        [$this->phone_number, $message],
-                    ],
-                ],
-            ]);
+            $response = $client->request('GET', $url);
             OneTimePassword::create([
                 'phone_number' => $this->phone_number,
                 'otp' => $this->otp
             ]);
-        }
-        catch (GuzzleException $exception) {
+        } catch (GuzzleException $exception) {
             logger($exception);
         }
+
+//        $message = "Your OTP code is " . $this->otp;
+//        $user = config('auth.sms.sms_user');
+//        $pass = config('auth.sms.sms_pass');
+//        $sid = config('auth.sms.sms_sid');
+//        $url = "http://sms.sslwireless.com/pushapi/dynamic/server.php";
+//        $client = new Client();
+//        try {
+//            $response = $client->request('POST', $url, [
+//                'form_params' => [
+//                    'user' => $user,
+//                    'pass' => $pass,
+//                    'sid'  => $sid,
+//                    'sms'  => [
+//                        [$this->phone_number, $message],
+//                    ],
+//                ],
+//            ]);
+//            OneTimePassword::create([
+//                'phone_number' => $this->phone_number,
+//                'otp' => $this->otp
+//            ]);
+//        }
+//        catch (GuzzleException $exception) {
+//            logger($exception);
+//        }
     }
 }
