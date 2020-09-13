@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Entities\Models\District;
 use Modules\Locations\Repositories\LocationRepository;
 use Modules\Locations\Transformers\DistrictTransformer;
 
@@ -89,8 +90,13 @@ class LocationController extends BaseController
 
     public function areas()
     {
+        return District::with('thanas')
+            ->whereHas('thanas', function ($query) {
+                return $query->orderby('name', 'ASC');
+            })->get();
         $areaList = $this->repository->get();
+        return $areaList;
 
-        return $this->response->collection($areaList, new DistrictTransformer());
+//        return $this->response->collection($areaList, new DistrictTransformer());
     }
 }
