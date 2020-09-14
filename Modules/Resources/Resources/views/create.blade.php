@@ -9,7 +9,11 @@
 @endsection
 
 @section('title', 'Create Resource')
-
+<style type="text/css">
+    .error{
+        color: red;
+    }
+</style>
 @section('content')
 
     <div class="col-md-6">
@@ -19,7 +23,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('resource.store') }}" method="POST">
+            <form role="form" id="form" action="{{ route('resource.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
@@ -103,9 +107,28 @@
 @endsection
 
 @section('js')
-    <script !src="">
-
-
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script>
+        $('#form').validate({
+            rules: {
+                title: {
+                    required: true
+                },
+                bn_title: {
+                    required: true
+                },
+                description: {
+                    required: true
+                },
+                bn_description: {
+                    required: true
+                },
+                link: {
+                    required: true
+                },
+            }
+        });
         function isNumber(evt)
         {
             // console.log (evt);

@@ -1,7 +1,11 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
 @section('title', 'Create Product')
-
+<style type="text/css">
+    .error{
+        color: red;
+    }
+</style>
 @section('content')
     <div class="col-md-6">
         <div class="card card-primary-outline">
@@ -10,13 +14,13 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('store') }}" method="POST">
+            <form role="form" action="{{ route('store') }}" method="POST" id="form">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="type" class="col-sm-4 col-form-label">Type</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="type" class="form-control" id="type" placeholder="Type">
+                            <input type="text" name="type" class="form-control" id="type" placeholder="Type" required>
                             @if ($errors->has('type'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('type') }}</strong>
@@ -26,8 +30,8 @@
                     </div>
                     <div class="form-group row">
                         <label for="name" class="col-sm-4 col-form-label">Name</label>
-                        <div class="col-sm-8  " id="name">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+                        <div class="col-sm-8" id="name">
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Name" required>
                             @if ($errors->has('name'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -38,12 +42,16 @@
                     <div class="form-group row">
                         <label for="category_id" class="col-sm-4 col-form-label">Category</label>
                         <div class="col-sm-8" id="category">
-                            <select class="form-control" name="category_id" id="">
-                                <option value="" hidden selected></option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
+                            @if (count($categories) > 0)
+                                <select class="form-control" name="category_id" id="" required>
+                                    <option value="" hidden selected></option>
+                                    @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="text" class="form-control text-danger" value="Please fill the Category table first !!!" disabled>
+                            @endif
                             @if ($errors->has('category_id'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('category_id') }}</strong>
@@ -54,12 +62,16 @@
                     <div class="form-group row">
                         <label for="generic_id" class="col-sm-4 col-form-label">Generic</label>
                         <div class="col-sm-8" id="status">
-                            <select class="form-control" name="generic_id" id="">
-                                <option value="" hidden selected></option>
-                                @foreach($generics as $generic)
-                                    <option value="{{ $generic->id }}">{{ $generic->name }}</option>
-                                @endforeach
-                            </select>
+                            @if (count($generics) > 0)
+                                <select class="form-control" name="generic_id" id="" required>
+                                    <option value="" hidden selected></option>
+                                    @foreach($generics as $generic)
+                                        <option value="{{ $generic->id }}">{{ $generic->name }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="text" class="form-control text-danger" value="Please fill the Generic table first !!!" disabled>
+                            @endif
                             @if ($errors->has('generic_id'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('generic_id') }}</strong>
@@ -70,12 +82,16 @@
                     <div class="form-group row">
                         <label for="form_id" class="col-sm-4 col-form-label">Form</label>
                         <div class="col-sm-8" id="status">
-                            <select class="form-control" name="form_id" id="">
-                                <option value="" hidden selected></option>
-                                @foreach($forms as $form)
-                                    <option value="{{ $form->id }}">{{ $form->name }}</option>
-                                @endforeach
-                            </select>
+                            @if (count($companies) > 0)
+                                <select class="form-control" name="form_id" id="" required>
+                                    <option value="" hidden selected></option>
+                                    @foreach($forms as $form)
+                                        <option value="{{ $form->id }}">{{ $form->name }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="text" class="form-control text-danger" value="Please fill the Product Form table first !!!" disabled>
+                            @endif
                             @if ($errors->has('form_id'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('form_id') }}</strong>
@@ -86,12 +102,16 @@
                     <div class="form-group row">
                         <label for="manufacturing_company_id" class="col-sm-4 col-form-label">Company</label>
                         <div class="col-sm-8" id="status">
-                            <select class="form-control" name="manufacturing_company_id" id="">
+                            @if (count($companies) > 0)
+                            <select class="form-control" name="manufacturing_company_id" id="" required>
                                 <option value="" hidden selected></option>
-                                @foreach($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
+                                    @foreach($companies as $company)
+                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                    @endforeach
                             </select>
+                            @else
+                                <input type="text" class="form-control text-danger" value="Please fill the company table first !!!" disabled>
+                            @endif
                             @if ($errors->has('manufacturing_company_id'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('manufacturing_company_id') }}</strong>
@@ -101,8 +121,8 @@
                     </div>
                     <div class="form-group row">
                         <label for="conversion_factor" class="col-sm-4 col-form-label">Conversion Factor</label>
-                        <div class="col-sm-8  " id="">
-                            <input type="text" onkeypress="return isNumber(event)" name="conversion_factor" class="form-control" id="conversion_factor" placeholder="Conversion Factor">
+                        <div class="col-sm-8" id="">
+                            <input type="text" onkeypress="return isNumber(event)" name="conversion_factor" class="form-control" id="conversion_factor" placeholder="Conversion Factor" required>
                             @if ($errors->has('conversion_factor'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('conversion_factor') }}</strong>
@@ -124,11 +144,15 @@
                     <div class="form-group row">
                         <label for="primary_unit_id" class="col-sm-4 col-form-label">Unit</label>
                         <div class="col-sm-8" id="status">
-                            <select class="form-control" name="primary_unit_id" id="">
+                            @if (count($units) > 0)
+                            <select class="form-control" name="primary_unit_id" id="" required>
                                 @foreach($units as $unit)
                                     <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                 @endforeach
                             </select>
+                            @else
+                                <input type="text" class="form-control text-danger" value="Please fill the product unit table first !!!" disabled>
+                            @endif
                             @if ($errors->has('primary_unit_id'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('primary_unit_id') }}</strong>
@@ -139,7 +163,7 @@
                     <div class="form-group row">
                         <label for="min_order_qty" class="col-sm-4 col-form-label">Min Order Qty</label>
                         <div class="col-sm-8 " id="">
-                            <input type="number" class="form-control" name="min_order_qty" id="min_order_qty">
+                            <input type="number" class="form-control" name="min_order_qty" id="min_order_qty" required>
                             @if ($errors->has('min_order_qty'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('min_order_qty') }}</strong>
@@ -150,7 +174,7 @@
                     <div class="form-group row">
                         <label for="trading_price" class="col-sm-4 col-form-label">Trading Price</label>
                         <div class="col-sm-8  " id="">
-                            <input type="text" onkeypress="return isNumber(event)" name="trading_price" class="form-control" id="trading_price" placeholder="Trading Price">
+                            <input type="number" onkeypress="return isNumber(event)" name="trading_price" class="form-control" id="trading_price" placeholder="Trading Price" required>
                             @if ($errors->has('trading_price'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('trading_price') }}</strong>
@@ -161,7 +185,7 @@
                     <div class="form-group row">
                         <label for="purchase_price" class="col-sm-4 col-form-label">Purchase Price</label>
                         <div class="col-sm-8  " id="">
-                            <input type="text" onkeypress="return isNumber(event)" name="purchase_price" class="form-control" id="purchase_price" placeholder="Purchase Price">
+                            <input type="text" onkeypress="return isNumber(event)" name="purchase_price" class="form-control" id="purchase_price" placeholder="Purchase Price" required>
                             @if ($errors->has('purchase_price'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('purchase_price') }}</strong>
@@ -378,7 +402,34 @@
 @endsection
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <script !src="">
+
+        $('#form').validate({ // initialize the plugin
+            rules: {
+                name: {
+                    required: true
+                },
+                trading_price: {
+                    required: true,
+                    digits: true
+                },
+                purchase_price: {
+                    required: true,
+                    digits: true
+                },
+                conversion_factor: {
+                    required: true,
+                    digits: true
+                },
+                min_order_qty: {
+                    required: true,
+                    digits: true
+                },
+            }
+        });
+
         function isNumber(evt)
         {
             // console.log (evt);
