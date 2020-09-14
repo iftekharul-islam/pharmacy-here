@@ -5,14 +5,13 @@ namespace Modules\Locations\Transformers;
 
 
 use League\Fractal\TransformerAbstract;
-use Modules\Locations\Entities\Models\Area;
 use Modules\Locations\Entities\Models\Thana;
 
 class ThanaTransformer extends TransformerAbstract
 {
 
     protected $availableIncludes = [
-        'areas'
+        'areas', 'district'
     ];
     public function transform(Thana $item)
     {
@@ -27,6 +26,11 @@ class ThanaTransformer extends TransformerAbstract
     public function includeAreas(Thana $item)
     {
         return $this->collection($item->areas, new AreaTransformer());
+    }
+
+    public function includeDistrict(Thana $item)
+    {
+        return $this->item($item->district, new DistrictTransformer());
     }
 
 

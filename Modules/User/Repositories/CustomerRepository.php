@@ -6,6 +6,7 @@ namespace Modules\User\Repositories;
 
 use Dingo\Api\Exception\DeleteResourceFailedException;
 // use Modules\Products\Entities\Pharmacy;
+use Modules\Address\Entities\CustomerAddress;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,6 +21,24 @@ class CustomerRepository
     public function update($request, $id)
     {
         $user = User::find($id);
+
+        $address = CustomerAddress::where('user_id',$id)->first();
+
+//        if (!$address) {
+//            throw new NotFoundHttpException('Address not found');
+//        }
+
+        if (isset($request->address)) {
+            $address->address = $request->address;
+        }
+
+        if (isset($request->area_id)) {
+            $address->area_id = $request->area_id;
+        }
+        logger('Customer update address');
+
+        $address->save();
+        logger('Customer update address end');
 
         if (isset($request->name)) {
             $user->name = $request->name;
@@ -48,9 +67,9 @@ class CustomerRepository
         if ($request->has('image')) {
             $user->image = $request->get('image');
         }
-
+        logger('Customer update ');
         $user->save();
-
+        logger('Customer update end');
         return $user;
     }
 

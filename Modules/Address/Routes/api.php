@@ -22,7 +22,7 @@ $api->version('v1', function ($api) use ($namespace) {
     $api->group(['middleware' => 'jwt.auth'], function ($api) use ($namespace) {
         $api->get('addresses', $namespace . '\AddressController@customerAddresses');
         $api->post('address/create', $namespace . '\AddressController@create');
-        $api->put('address/update/{id}', $namespace . '\AddressController@update');
+        $api->put('address/{id}/update', $namespace . '\AddressController@update');
         $api->delete('address/delete/{id}', $namespace . '\AddressController@destroy');
     });
 });

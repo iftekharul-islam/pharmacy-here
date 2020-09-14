@@ -5,6 +5,7 @@ namespace Modules\User\Entities\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Address\Entities\CustomerAddress;
 use Modules\Auth\Notifications\PasswordResetNotification;
 use Modules\Locations\Entities\Models\Address;
 use Spatie\Permission\Traits\HasRoles;
@@ -35,7 +36,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'phone_number', 'name', 'is_pharmacy', 'email','image', 'gender', 'dob', 'status', 'alternative_phone_number', 'image', 'password', 'is_active'
+        'phone_number', 'name', 'is_pharmacy', 'email', 'image', 'gender', 'dob', 'status', 'alternative_phone_number', 'image', 'password', 'is_active'
     ];
 
     /**
@@ -89,6 +90,11 @@ class User extends Authenticatable implements JWTSubject
     public function weekends()
     {
         return $this->hasMany(Weekends::class, 'user_id', 'id');
+    }
+
+    public function customerAddress()
+    {
+        return $this->hasMany(CustomerAddress::class, 'user_id', 'id')->orderBy('id', 'ASC');
     }
 
 
