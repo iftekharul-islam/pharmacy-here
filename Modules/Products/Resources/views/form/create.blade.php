@@ -1,7 +1,10 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
-
-
+<style type="text/css">
+    .error{
+        color: red;
+    }
+</style>
 @section('content')
     <div class="col-md-6">
         <div class="card card-primary-outline">
@@ -10,7 +13,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('category.store') }}" method="POST">
+            <form role="form" id="form" action="{{ route('category.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
@@ -50,7 +53,16 @@
 @endsection
 
 @section('js')
-    <script !src="">
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script>
+        $('#form').validate({
+            rules: {
+                name: {
+                    required: true
+                },
+            }
+        });
         function isNumber(evt)
         {
             // console.log (evt);

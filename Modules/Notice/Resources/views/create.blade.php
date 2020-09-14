@@ -1,7 +1,11 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
 @section('title', 'Create Notice')
-
+<style type="text/css">
+    .error{
+        color: red;
+    }
+</style>
 @section('content')
     <div class="col-md-6">
         <div class="card card-primary-outline">
@@ -10,13 +14,13 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('notice.store') }}" method="POST">
+            <form role="form" id="form" action="{{ route('notice.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="notice" class="col-sm-4 col-form-label">Notice</label>
                         <div class="col-sm-8" id="">
-                            <input type="text" name="notice" class="form-control" id="notice" placeholder="Notice">
+                            <input type="text" name="notice" class="form-control" id="notice" placeholder="Notice" required>
                             @if ($errors->has('notice'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('notice') }}</strong>
@@ -27,7 +31,7 @@
                     <div class="form-group row">
                         <label for="bn_notice" class="col-sm-4 col-form-label">Notice(Bangla)</label>
                         <div class="col-sm-8  " id="name">
-                            <input type="text" name="bn_notice" class="form-control" id="bn_notice" placeholder="Notice(Bangla)">
+                            <input type="text" name="bn_notice" class="form-control" id="bn_notice" placeholder="Notice(Bangla)" required>
                             @if ($errors->has('bn_notice'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('bn_notice') }}</strong>
@@ -78,7 +82,19 @@
 @endsection
 
 @section('js')
-    <script !src="">
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script>
+        $('#form').validate({
+            rules: {
+                notice: {
+                    required: true
+                },
+                bn_notice: {
+                    required: true
+                },
+            }
+        });
         function isNumber(evt)
         {
             // console.log (evt);
