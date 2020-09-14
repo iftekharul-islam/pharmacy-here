@@ -24,6 +24,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/product',  'ProductsController@index')->name('product-list');
+Route::get('/medicine',  'ProductsController@index')->name('product-list');
 Route::get('/product/{product_id}',  'ProductsController@show')->name('single-product');
 

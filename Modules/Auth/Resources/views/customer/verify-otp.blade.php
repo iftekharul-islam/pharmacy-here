@@ -14,7 +14,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="phone_number" class="col-md-4 col-form-label text-md-right">{{ __('Verify OTP') }}</label>
+                            <label for="otp" class="col-md-4 col-form-label text-md-right">{{ __('Verify OTP') }}</label>
 
                             <div class="col-md-6">
                                 <input id="otp" type="number" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" required autocomplete="otp" autofocus>

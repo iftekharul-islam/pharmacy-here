@@ -6,7 +6,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Medicine LIst</div>
-
                     <div class="card-body">
                         @if (count($data) > 0)
                             <table id="example2" class="table table-bordered table-hover">

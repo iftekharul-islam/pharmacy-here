@@ -56,47 +56,18 @@ class SendOtp implements ShouldQueue
             $phone = ltrim($phone, '88');
             $phone = '880' . $phone;
         }
-        logger('phone '. $phone);
 
         $url = $base_url_non_masking . "?api_key=" . $api_key . "&smsType=text&mobileNo=" . $phone . "&smsContent=" . $message;
         $client = new Client();
         try {
-//            $response = $client->request('GET', $url);
-            logger('Send sms');
-            $request = $client->get($url);
-            logger($request->getBody());
+            if (config('env') === 'production') {
+                $client->get($url);
+            }
             OneTimePassword::create([
                 'phone_number' => $this->phone_number,
                 'otp' => $this->otp
             ]);
         } catch (GuzzleException $exception) {
-            logger($exception);
         }
-
-//        $message = "Your OTP code is " . $this->otp;
-//        $user = config('auth.sms.sms_user');
-//        $pass = config('auth.sms.sms_pass');
-//        $sid = config('auth.sms.sms_sid');
-//        $url = "http://sms.sslwireless.com/pushapi/dynamic/server.php";
-//        $client = new Client();
-//        try {
-//            $response = $client->request('POST', $url, [
-//                'form_params' => [
-//                    'user' => $user,
-//                    'pass' => $pass,
-//                    'sid'  => $sid,
-//                    'sms'  => [
-//                        [$this->phone_number, $message],
-//                    ],
-//                ],
-//            ]);
-//            OneTimePassword::create([
-//                'phone_number' => $this->phone_number,
-//                'otp' => $this->otp
-//            ]);
-//        }
-//        catch (GuzzleException $exception) {
-//            logger($exception);
-//        }
     }
 }
