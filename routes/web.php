@@ -14,16 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-//Route::get('/', function() {
-//    return redirect()->route('login');
-//});
-
-
-//Route::get('/login', 'HomeController@login');
-
-
 Route::get('/', 'HomeController@index')->name('home');
 
+
+Route::get('/login','LoginController@showCustomerLoginForm')->name('customer.login');
+Route::post('create-otp/customer','LoginController@customerCreateOTP')->name('customer.createOTP');
+Route::get('login/customer/verify','LoginController@customerOTPForm')->name('customer.OTPForm');
+Route::post('verified-otp/login/customer','LoginController@customerVerifyOTP')->name('customer.verifyOTP');
+Route::post('logout','LoginController@logout')->name('customer.logout');
+
+
+// Product routes
 Route::get('/medicine',  'ProductsController@index')->name('product-list');
-Route::get('/product/{product_id}',  'ProductsController@show')->name('single-product');
+Route::get('/medicine/{medicine_id}',  'ProductsController@show')->name('single-product');
 

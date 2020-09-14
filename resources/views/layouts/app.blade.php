@@ -99,8 +99,8 @@
                         <!-- Authentication Links -->
                         <li class="nav-item">
                             <a class="nav-link" onclick="cart()">{{ __('Cart') }}</a>
-{{--                            <button class="nav-link" onclick="cart()">{{ __('Cart') }}</button>--}}
                         </li>
+
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('customer.login') }}">{{ __('Login') }}</a>
@@ -112,13 +112,18 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
+                                <a class="nav-link" href="">
+                                {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
                                 <a class="dropdown-item" href=""
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
                             </li>

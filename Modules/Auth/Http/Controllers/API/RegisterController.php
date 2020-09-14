@@ -77,11 +77,6 @@ class RegisterController extends Controller
 
         return $this->respondWithToken($token);
 
-//        return response()->json([
-//            'data' => [
-//                'verify_otp' => true,
-//            ]
-//        ]);
     }
 
     public function registerPharmacyWithOtp(PhoneValidationRequest $request)
@@ -114,8 +109,6 @@ class RegisterController extends Controller
 
     public function registerCustomer(CustomerRegistrationRequest $request)
     {
-//        return $request->all();
-
         $responseInfo = $this->repository->createCustomerUser($request);;
 
         if (! $responseInfo) {
