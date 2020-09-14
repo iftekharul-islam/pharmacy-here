@@ -44,9 +44,10 @@ class UserCustomerController extends BaseController
      */
     public function show()
     {
-        $infoResponse = $this->repository->get(Auth::id());
+        $data = $this->repository->get(Auth::id());
+//        return $data;
 
-        return $this->response->item($infoResponse, new CustomerTransformer());
+        return $this->response->item($data, new CustomerTransformer());
     }
 
     /**
@@ -56,7 +57,7 @@ class UserCustomerController extends BaseController
      */
     public function update(Request $request)
     {
-        $infoResponse = $this->repository->update($request, Auth::id());
+        $infoResponse = $this->repository->update($request, Auth::user()->id);
 
 //        if (! $infoResponse) {
 //            throw new UpdateResourceFailedException('Pharmacy profile update failed');

@@ -6,7 +6,6 @@ namespace Modules\Address\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use Modules\Address\Entities\CustomerAddress;
-use Modules\Locations\Entities\Models\Area;
 use Modules\Locations\Transformers\AreaTransformer;
 
 class AddressTransformer extends TransformerAbstract

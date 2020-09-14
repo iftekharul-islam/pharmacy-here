@@ -5,13 +5,14 @@ namespace Modules\User\Transformers;
 
 
 use League\Fractal\TransformerAbstract;
+use Modules\Address\Transformers\AddressTransformer;
 use Modules\User\Entities\Models\User;
 
 class CustomerTransformer extends TransformerAbstract
 {
-//    protected $availableIncludes = [
-//        'pharmacyBusiness', 'weekends'
-//    ];
+    protected $availableIncludes = [
+        'customerAddress'
+    ];
 
     public function transform(User $item)
     {
@@ -27,19 +28,11 @@ class CustomerTransformer extends TransformerAbstract
         ];
     }
 
-//    public function includePharmacyBusiness(User $item)
-//    {
-//        if ($item->pharmacyBusiness != null) {
-//            return $this->item($item->pharmacyBusiness, new PharmacyBusinessTransformer());
-//        }
-//    }
-//
-//    public function includeWeekends(User $item)
-//    {
-//        if($item->weekends != null) {
-//            return $this->collection($item->weekends, new WeekendsTransformer());
-//        }
-//    }
+    public function includeCustomerAddress(User $item)
+    {
+        return $this->collection($item->customerAddress, new AddressTransformer());
+    }
+
 
 
 
