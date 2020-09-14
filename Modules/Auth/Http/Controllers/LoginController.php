@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Modules\Auth\Entities\Models\OneTimePassword;
 use Modules\Auth\Http\Requests\LoginRequest;
 use Modules\Auth\Http\Requests\PhoneValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
+use Modules\User\Entities\Models\User;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class LoginController extends Controller
@@ -25,14 +28,14 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+//    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+//    protected $redirectTo = RouteServiceProvider::HOME;
 
     private $repository;
 
@@ -68,7 +71,8 @@ class LoginController extends Controller
         return redirect()->back()->with('error', 'Wrong email / password provided');
     }
 
-    public function logout() {
+    public function logout()
+    {
         Auth::logout();
         return redirect('/login');
     }
@@ -82,21 +86,19 @@ class LoginController extends Controller
 
     }
 
-    public function createOTP(PhoneValidationRequest $request)
+    public function customerCreateOTP(PhoneValidationRequest $request)
     {
         $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
 
-        if (! $verifyNumber) {
+        if (!$verifyNumber) {
             throw new UnauthorizedHttpException('', 'Phone Number is not registered');
         }
 
         $otp = $this->repository->createOtp($request);
 
-        if (! $otp) {
+        if (!$otp) {
             throw new StoreResourceFailedException('Failed to create OTP');
         }
-
-//        return view('auth::customer.verify-otp');
         return redirect()->route('customer.OTPForm');
     }
 
@@ -109,27 +111,15 @@ class LoginController extends Controller
 
     }
 
-    public function customerVerifyOTP(PhoneValidationRequest $request)
+    public function customerVerifyOTP(Request $request)
     {
+        $otpResponse = $this->repository->verifyOtpWeb($request);
+        if ($otpResponse == true) {
+            $user = User::where('phone_number', session('phone_number'))->first();
 
-        $otpResponse = $this->repository->verifyOtp($request);
+            \Auth::login($user);
 
-        if (! $otpResponse) {
-            throw new StoreResourceFailedException('Failed to verify OTP');
+            return redirect()->route('product-list');
         }
-
-
-        $token = $this->repository->loginWithPhone($request->phone_number);
-
-        if (! $token) {
-            throw new StoreResourceFailedException('Failed to verify OTP');
-        }
-
-        $user = $this->repository->getUserByPhone($request->phone_number, $request->device_token);
-
-//        return $this->respondWithTokenAndName($token, $user);
-
-//        return $this->respondWithToken($token);
     }
-
 }

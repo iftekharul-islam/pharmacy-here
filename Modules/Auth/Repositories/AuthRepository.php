@@ -92,16 +92,35 @@ class AuthRepository
     public function createOtp($request)
     {
         $otp = rand(1000, 9999);
-        $phone = $request->phone_number;
-        SendOtp::dispatch($phone, $otp);
+        SendOtp::dispatch($request->phone_number, $otp);
+        session('phone_number', $request->phone_number);
+
+        logger(session('phone_number'));
         return $otp;
     }
 
     public function verifyOtp($request)
     {
         $lifetime = config('auth.sms.lifetime');
-        $phone_number = $request->phone_number;
-        $otp = OneTimePassword::where('phone_number', $phone_number)->latest()->first();
+        $otp = OneTimePassword::where('phone_number', $request->get('phone_number'))->latest()->first();
+        $created_at = Carbon($otp->created_at);
+        $timeDiff = $created_at->diffInSeconds(Carbon::now());
+        if (trim($otp->otp) !== trim($request->input('otp'))) {
+            throw new UnauthorizedHttpException('', 'Wrong OTP');
+        }
+
+        if ($timeDiff >= $lifetime) {
+
+            throw new UnauthorizedHttpException('', 'Timeout');
+        }
+
+        return true;
+    }
+
+    public function verifyOtpWeb($request)
+    {
+        $lifetime = config('auth.sms.lifetime');
+        $otp = OneTimePassword::where('phone_number', session('phone_number'))->latest()->first();
         $created_at = new Carbon($otp->created_at);
         $timeDiff = $created_at->diffInSeconds(Carbon::now());
         if (trim($otp->otp) !== trim($request->input('otp'))) {
