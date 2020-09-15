@@ -13,7 +13,7 @@ class AddStatusAndDeletedAtInCartsTable extends Migration
      */
     public function up()
     {
-        Schema::table('carts', function (Blueprint $table) {
+        Schema::table('cart_items', function (Blueprint $table) {
             $table->boolean('status')->default(true);
             $table->softDeletes();
         });
@@ -26,7 +26,7 @@ class AddStatusAndDeletedAtInCartsTable extends Migration
      */
     public function down()
     {
-        Schema::table('carts', function (Blueprint $table) {
+        Schema::table('cart_items', function (Blueprint $table) {
             $table->dropColumn('status');
             $table->dropSoftDeletes();
         });
