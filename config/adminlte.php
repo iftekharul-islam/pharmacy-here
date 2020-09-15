@@ -190,9 +190,9 @@ return [
 
     'dashboard_url' => 'home',
 
-    'logout_url' => 'logout',
+    'logout_url' => 'admin/logout',
 
-    'login_url' => 'login',
+    'login_url' => 'admin/login',
 
     'register_url' => 'register',
 

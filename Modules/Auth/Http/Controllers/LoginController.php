@@ -74,52 +74,9 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/login');
+//        return redirect('/login');
+        return redirect()->route('login');
     }
 
-    public function showCustomerLoginForm()
-    {
-        if (Auth::guard()->check()) {
-            return redirect()->route('customer.dashboard');
-        }
-        return view('auth::customer.login');
 
-    }
-
-    public function customerCreateOTP(PhoneValidationRequest $request)
-    {
-        $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
-
-        if (!$verifyNumber) {
-            throw new UnauthorizedHttpException('', 'Phone Number is not registered');
-        }
-
-        $otp = $this->repository->createOtp($request);
-
-        if (!$otp) {
-            throw new StoreResourceFailedException('Failed to create OTP');
-        }
-        return redirect()->route('customer.OTPForm');
-    }
-
-    public function customerOTPForm()
-    {
-//        if (Auth::guard()->check()) {
-//            return redirect()->route('customer.dashboard');
-//        }
-        return view('auth::customer.verify-otp');
-
-    }
-
-    public function customerVerifyOTP(Request $request)
-    {
-        $otpResponse = $this->repository->verifyOtpWeb($request);
-        if ($otpResponse == true) {
-            $user = User::where('phone_number', session('phone_number'))->first();
-
-            \Auth::login($user);
-
-            return redirect()->route('product-list');
-        }
-    }
 }

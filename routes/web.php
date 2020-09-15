@@ -14,16 +14,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-//Route::get('/', function() {
-//    return redirect()->route('login');
-//});
-
-
-//Route::get('/login', 'HomeController@login');
-
-
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/medicine',  'ProductsController@index')->name('product-list');
-Route::get('/product/{product_id}',  'ProductsController@show')->name('single-product');
 
+Route::get('/login','LoginController@showCustomerLoginForm')->name('customer.login');
+Route::post('create-otp/customer','OtpController@createOtp')->name('customer.createOTP');
+Route::get('login/verify-otp/customer','LoginController@customerOTPForm')->name('customer.OTPForm');
+Route::post('verified-otp/customer','OtpController@verifyOTP')->name('customer.verifyOTP');
+Route::post('logout','LoginController@logout')->name('customer.logout');
+
+
+// Product routes
+Route::get('/medicine',  'ProductsController@index')->name('product-list');
+Route::get('/medicine/{medicine_id}',  'ProductsController@show')->name('single-product');
+
+// Cart
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/', 'CartController@index')->name('cart.index');
+    Route::get('add-to-cart/{medicine_id}', 'CartController@addToCart')->name('cart.addToCart');
+});

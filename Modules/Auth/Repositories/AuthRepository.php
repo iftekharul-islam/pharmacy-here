@@ -93,9 +93,9 @@ class AuthRepository
     {
         $otp = rand(1000, 9999);
         SendOtp::dispatch($request->phone_number, $otp);
-        session('phone_number', $request->phone_number);
+        $request->session()->put('phone_number', $request->phone_number);
 
-        logger(session('phone_number'));
+        logger('Create OTP ' . $request->session()->get('phone_number'));
         return $otp;
     }
 
@@ -120,7 +120,7 @@ class AuthRepository
     public function verifyOtpWeb($request)
     {
         $lifetime = config('auth.sms.lifetime');
-        $otp = OneTimePassword::where('phone_number', session('phone_number'))->latest()->first();
+        $otp = OneTimePassword::where('phone_number', $request->session()->get('phone_number'))->latest()->first();
         $created_at = new Carbon($otp->created_at);
         $timeDiff = $created_at->diffInSeconds(Carbon::now());
         if (trim($otp->otp) !== trim($request->input('otp'))) {
