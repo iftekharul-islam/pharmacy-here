@@ -108,7 +108,7 @@ class AuthRepository
     {
         $lifetime = config('auth.sms.lifetime');
         $otp = OneTimePassword::where('phone_number', $request->get('phone_number'))->latest()->first();
-        $created_at = Carbon($otp->created_at);
+        $created_at = new Carbon($otp->created_at);
         $timeDiff = $created_at->diffInSeconds(Carbon::now());
         if (trim($otp->otp) !== trim($request->input('otp'))) {
             throw new UnauthorizedHttpException('', 'Wrong OTP');
