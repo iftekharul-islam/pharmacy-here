@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserCreateRequest;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,29 @@ class LoginController extends Controller
     public function customerOTPForm()
     {
         return view('auth.verify-otp');
+    }
+
+    public function registerForm()
+    {
+        if (Auth::guard()->check()) {
+            return redirect()->route('customer.dashboard');
+        }
+        return view('auth.register');
+
+    }
+
+    public function customerNameUpdate(UserCreateRequest $request)
+    {
+        $user = $this->repository->customerNameUpdate($request);
+
+        if (! $user) {
+            throw new UnauthorizedHttpException('', 'User Not Found');
+        }
+
+        \Auth::login($user);
+        session()->forget('phone_number');
+
+        return redirect()->route('product-list');
     }
 
     public function logout()

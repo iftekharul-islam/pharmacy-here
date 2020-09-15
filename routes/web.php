@@ -23,6 +23,10 @@ Route::get('login/verify-otp/customer','LoginController@customerOTPForm')->name(
 Route::post('verified-otp/customer','OtpController@verifyOTP')->name('customer.verifyOTP');
 Route::post('logout','LoginController@logout')->name('customer.logout');
 
+// New Customer name
+Route::get('customer/name','LoginController@registerForm')->name('customer.name');
+Route::post('customer/name/update','LoginController@customerNameUpdate')->name('customer.nameUpdate');
+
 
 // Product routes
 Route::get('/medicine',  'ProductsController@index')->name('product-list');
