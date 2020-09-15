@@ -23,13 +23,16 @@ class OtpController extends Controller
         $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
 
         if (!$verifyNumber) {
-            throw new UnauthorizedHttpException('', 'Phone Number is not registered');
+//            throw new UnauthorizedHttpException('', 'Phone Number is not registered');
+            $data = $this->repository->createCustomerWeb($request);
+
         }
+        else {
+            $otp = $this->repository->createOtpWeb($request);
 
-        $otp = $this->repository->createOtpWeb($request);
-
-        if (!$otp) {
-            throw new StoreResourceFailedException('Failed to create OTP');
+            if (!$otp) {
+                throw new StoreResourceFailedException('Failed to create OTP');
+            }
         }
         return redirect()->route('customer.OTPForm');
     }
@@ -38,13 +41,19 @@ class OtpController extends Controller
 
     public function verifyOTP(Request $request)
     {
+
         $otpResponse = $this->repository->verifyOtpWeb($request);
         if ($otpResponse == true) {
             $user = User::where('phone_number', session()->get('phone_number'))->first();
 
-            \Auth::login($user);
-            session()->forget('phone_number');
-            return redirect()->route('product-list');
+            if ($user->name != null) {
+                \Auth::login($user);
+                session()->forget('phone_number');
+                return redirect()->route('product-list');
+            }
+            return redirect()->route('customer.name');
+
+
         }
     }
 }

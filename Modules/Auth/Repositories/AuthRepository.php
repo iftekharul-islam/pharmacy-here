@@ -125,8 +125,9 @@ class AuthRepository
     public function verifyOtpWeb($request)
     {
         $lifetime = config('auth.sms.lifetime');
-        $otp = OneTimePassword::where('phone_number', session()->get('phone_number'))->latest()->first();
-        $created_at = new Carbon($otp->created_at);
+        $otp = OneTimePassword::where('phone_number', $request->session()->get('phone_number'))->latest()->first();
+        logger($otp->created_at);
+        $created_at =new Carbon($otp->created_at);
         $timeDiff = $created_at->diffInSeconds(Carbon::now());
         if (trim($otp->otp) !== trim($request->input('otp'))) {
             throw new UnauthorizedHttpException('', 'Wrong OTP');
@@ -245,7 +246,39 @@ class AuthRepository
         return $this->createOtp($request);
     }
 
+    public function customerNameUpdate($request)
+    {
+        $user = User::where('phone_number', session()->get('phone_number'))->first();
 
+        if ($request->has('name')) {
+            $user->name = $request->name;
+        }
+        $role = Role::where('name', 'customer')->first();
+        $user->assignRole($role);
+        $user->save();
+
+        return $user;
+    }
+
+    public function createCustomerWeb($request)
+    {
+        $user = new User();
+
+
+        if ($request->has('phone_number')) {
+            $user->phone_number = $request->phone_number;
+        }
+
+        $user->save();
+
+        $role = Role::where('name', $request->role)->first();
+
+        if ($user && $role) {
+            $user->assignRole($role);
+        }
+
+        return $this->createOtpWeb($request);
+    }
 
 
 }
