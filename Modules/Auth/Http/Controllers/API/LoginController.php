@@ -92,6 +92,7 @@ class LoginController extends Controller
 
         $otp = $this->repository->createOtp($request);
 
+
         if (! $otp) {
             throw new StoreResourceFailedException('Failed to create OTP');
         }

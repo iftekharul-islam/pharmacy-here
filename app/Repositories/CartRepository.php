@@ -7,7 +7,6 @@ namespace App\Repositories;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use Modules\Products\Entities\Model\Product;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class CartRepository
 {
@@ -16,14 +15,37 @@ class CartRepository
 
     }
 
-    public function get($id)
+    public function addToCart($id)
     {
+        $product = Product::find($id);
+
+        if (! $product) {
+            abort(404);
+        }
+
+        $cartData = Cart::where('product_id', $id)->where('customer_id', Auth::user()->id)->first();
+
+        if ($cartData) {
+            $cartData->quantity++;
+            return $cartData->save();
+        }
+        return Cart::create([
+            'product_id' => $id,
+            'quantity' => $product->min_order_qty,
+            'amount' => $product->min_order_qty * $product->purchase_price,
+            'customer_id' => Auth::user()->id,
+        ]);
+
 
     }
 
-    public function update($request, $id)
+    public function update($request)
     {
-        $item = Cart::find($id);
+        $item = Cart::find($request->id);
+
+        if (!$item) {
+            abort(404);
+        }
 
         if($request->id && $request->quantity)
         {
@@ -31,32 +53,20 @@ class CartRepository
 
             $item->save();
 
-            session()->flash('success', 'Cart updated successfully');
+            return $item;
         }
     }
 
-    public function delete($id)
+    public function delete($request)
     {
-        $item = Cart::find($id);
+        $item = Cart::find($request->id);
 
-        return $item->delete();
+        $item->delete();
+
     }
 
     public function getCartByCustomer($customer_id)
     {
-        return Cart::where('user_id', $customer_id)->get();
-    }
-
-    public function addToCart($request, $product_id)
-    {
-
-        return Cart::create([
-            'product_id' => $product_id,
-            'quantity' => $request->quantity,
-            'amount' => $request->amount,
-            'customer_id' => Auth::user()->id,
-        ]);
-
-
+        return Cart::with('product')->where('customer_id', $customer_id)->get();
     }
 }
