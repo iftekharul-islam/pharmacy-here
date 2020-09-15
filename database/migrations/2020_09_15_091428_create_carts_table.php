@@ -17,6 +17,7 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->double('amount')->nullable();
             $table->integer('quantity');
+            $table->boolean('status')->default(true);
             $table->unsignedInteger('customer_id');
             $table->unsignedInteger('product_id');
             $table->softDeletes();
