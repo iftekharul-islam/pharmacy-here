@@ -26,7 +26,7 @@ class OtpController extends Controller
             throw new UnauthorizedHttpException('', 'Phone Number is not registered');
         }
 
-        $otp = $this->repository->createOtp($request);
+        $otp = $this->repository->createOtpWeb($request);
 
         if (!$otp) {
             throw new StoreResourceFailedException('Failed to create OTP');
@@ -40,10 +40,10 @@ class OtpController extends Controller
     {
         $otpResponse = $this->repository->verifyOtpWeb($request);
         if ($otpResponse == true) {
-            $user = User::where('phone_number', $request->session()->get('phone_number'))->first();
+            $user = User::where('phone_number', session()->get('phone_number'))->first();
 
             \Auth::login($user);
-
+            session()->forget('phone_number');
             return redirect()->route('product-list');
         }
     }
