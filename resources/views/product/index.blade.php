@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -27,10 +32,10 @@
                                         <td>
                                             <a class="btn btn-sm btn-primary mr-3"
                                                href="{{ route('single-product', $item->id) }}">
-                                                <i class="fa fa-edit"></i>
+                                                <i class="fa fa-eye"></i>
                                             </a>
                                             <a class="btn btn-sm btn-success mr-3"
-                                               onclick="addToCart({{ $item }})">
+                                               href="{{ route('cart.addToCart', $item->id) }}">
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
 {{--                                            <button class="btn btn-danger btn-sm" type="button"--}}

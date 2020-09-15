@@ -32,4 +32,6 @@ Route::get('/medicine/{medicine_id}',  'ProductsController@show')->name('single-
 Route::group(['prefix' => 'cart'], function () {
     Route::get('/', 'CartController@index')->name('cart.index');
     Route::get('add-to-cart/{medicine_id}', 'CartController@addToCart')->name('cart.addToCart');
+    Route::patch('update-cart', 'CartController@update');
+    Route::delete('remove-from-cart', 'CartController@remove');
 });
