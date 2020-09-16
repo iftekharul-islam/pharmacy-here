@@ -35,7 +35,6 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->addToCart($id);
-
             $cartCount = $this->repository->getCartItemCount(Auth::user()->id);
             session()->put('cartCount', $cartCount);
 
@@ -99,16 +98,13 @@ class CartController extends Controller
         {
             if (Auth::user()) {
                 $data = $this->repository->update($request);
-//                session()->flash('success', 'Cart updated successfully');
-//                return redirect()->route('product-list');
+                session()->flash('success', 'Cart updated successfully');
             }
             $cart = session()->get('cart');
-
             $cart[$request->id]["quantity"] = $request->quantity;
-
             session()->put('cart', $cart);
-            session()->put('cartCount', count($cart));
 
+            session()->put('cartCount', count($cart));
             session()->flash('success', 'Cart updated successfully');
         }
     }
@@ -119,7 +115,6 @@ class CartController extends Controller
             if (Auth::user()) {
 
                 $this->repository->delete($request);
-//                return redirect()->route('cart.index');
             }
             else {
 
