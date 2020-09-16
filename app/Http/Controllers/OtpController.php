@@ -44,6 +44,7 @@ class OtpController extends Controller
     public function verifyOTP(Request $request)
     {
         $otpResponse = $this->repository->verifyOtpWeb($request);
+
         if ($otpResponse == true) {
             $user = User::where('phone_number', session()->get('phone_number'))->first();
 
@@ -70,7 +71,6 @@ class OtpController extends Controller
                             ]);
                         }
                     }
-//                    return;
 
                     session()->forget('cart');
 

@@ -20,10 +20,12 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->getCartByCustomer(Auth::user()->id);
+
+            session()->put('cartCount', count($data));
         }
         else {
             $data = session('cart');
-//            return $data;
+            session()->put('cartCount', count($data));
 
         }
         return view('cart.index', compact('data'));
@@ -33,7 +35,10 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->addToCart($id);
-            session()->flash('success', 'Product added successfully');
+            $cartCount = $this->repository->getCartItemCount(Auth::user()->id);
+            session()->put('cartCount', $cartCount);
+
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
         }
         else {
             $product = Product::find($id);
@@ -57,6 +62,8 @@ class CartController extends Controller
                 ];
 
                 session()->put('cart', $cart);
+//                session(['cart' => count(session('cart'))]);
+                session()->put('cartCount', count($cart));
 
                 return redirect()->back()->with('success', 'Product added to cart successfully!');
             }
@@ -96,6 +103,8 @@ class CartController extends Controller
             $cart = session()->get('cart');
             $cart[$request->id]["quantity"] = $request->quantity;
             session()->put('cart', $cart);
+
+            session()->put('cartCount', count($cart));
             session()->flash('success', 'Cart updated successfully');
         }
     }
@@ -116,6 +125,7 @@ class CartController extends Controller
                     unset($cart[$request->id]);
 
                     session()->put('cart', $cart);
+                    session()->put('cartCount', count($cart));
                 }
 
                 session()->flash('success', 'Product removed successfully');
