@@ -28,25 +28,47 @@
                                 <tbody>
 
                                     <?php $total = 0 ?>
-                                    @if($data)
-                                        @foreach($data as $id => $details)
+                                    @guest
+                                        @if(session('cart'))
+                                            @foreach(session('cart') as $id => $details)
 
-                                            <?php $total += $details->amount * $details->quantity ?>
+                                                <?php $total += $details['amount'] * $details['quantity'] ?>
 
-                                            <tr>
-                                                <td class="nomargin">{{ $details->product->name }}</td>
-                                                <td data-th="Price">${{ $details->amount }}</td>
-                                                <td data-th="Quantity">
-                                                    <input type="number" value="{{ $details->quantity }}" class="form-control quantity" />
-                                                </td>
-                                                <td data-th="Subtotal" class="text-center">${{ $details->amount * $details->quantity }}</td>
-                                                <td class="actions" data-th="">
-                                                    <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>
-                                                    <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $details->id  }}"><i class="fa fa-trash-o"></i></button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
+                                                <tr>
+                                                    <td data-th="Product">{{ $details['product_name'] }}</td>
+                                                    <td data-th="Price">${{ $details['amount'] }}</td>
+                                                    <td data-th="Quantity">
+                                                        <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
+                                                    </td>
+                                                    <td data-th="Subtotal" class="text-center">${{ $details['amount'] * $details['quantity'] }}</td>
+                                                    <td class="actions" data-th="">
+                                                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button>
+                                                        <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}"><i class="fa fa-trash-o"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    @else
+                                        @if($data)
+                                            @foreach($data as $id => $details)
+
+                                                <?php $total += $details['amount'] * $details['quantity'] ?>
+
+                                                <tr>
+                                                    <td class="nomargin">{{ $details->product->name }}</td>
+                                                    <td data-th="Price">${{ $details->amount }}</td>
+                                                    <td data-th="Quantity">
+                                                        <input type="number" value="{{ $details->quantity }}" class="form-control quantity" />
+                                                    </td>
+                                                    <td data-th="Subtotal" class="text-center">${{ $details->amount * $details->quantity }}</td>
+                                                    <td class="actions" data-th="">
+                                                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>
+                                                        <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $details->id  }}"><i class="fa fa-trash-o"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    @endguest
                                 </tbody>
                                 <tfoot>
                                     <tr>
