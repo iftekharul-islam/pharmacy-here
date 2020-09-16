@@ -25,7 +25,6 @@ class OtpController extends Controller
         $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
 
         if (!$verifyNumber) {
-//            throw new UnauthorizedHttpException('', 'Phone Number is not registered');
             $data = $this->repository->createCustomerWeb($request);
 
         }
@@ -50,22 +49,28 @@ class OtpController extends Controller
 
             if ($user->name != null) {
                 \Auth::login($user);
-                session()->forget('phone_number');
+//                session()->forget('phone_number');
 
                 if ($request->session()->has('cart')) {
-
                     $datas = session()->get('cart');
 
                     foreach ($datas as $id => $data) {
-                        print_r($data['amount']);
-                        Cart::create([
-                            'product_id' => $id,
-                            'customer_id' => auth()->user()->id,
-                            'amount' => $data['amount'],
-                            'quantity' => $data['quantity'],
-                        ]);
 
+                        $item = Cart::where('product_id',$id)->where('customer_id', auth()->user()->id)->first();
+                        if  ($item) {
+                            $item->quantity = $item->quantity + $data['quantity'] ;
+                            $item->save();
+                        }
+                        else {
+                            Cart::create([
+                                'product_id' => $id,
+                                'customer_id' => auth()->user()->id,
+                                'amount' => $data['amount'],
+                                'quantity' => $data['quantity'],
+                            ]);
+                        }
                     }
+//                    return;
 
                     session()->forget('cart');
 

@@ -23,6 +23,7 @@ class CartController extends Controller
         }
         else {
             $data = session('cart');
+//            return $data;
 
         }
         return view('cart.index', compact('data'));
@@ -32,7 +33,7 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->addToCart($id);
-            return redirect()->back()->with('success', 'Product added to cart successfully!');
+            session()->flash('success', 'Product added successfully');
         }
         else {
             $product = Product::find($id);
@@ -90,15 +91,11 @@ class CartController extends Controller
         {
             if (Auth::user()) {
                 $data = $this->repository->update($request);
-//                session()->flash('success', 'Cart updated successfully');
-//                return redirect()->route('product-list');
+                session()->flash('success', 'Cart updated successfully');
             }
             $cart = session()->get('cart');
-
             $cart[$request->id]["quantity"] = $request->quantity;
-
             session()->put('cart', $cart);
-
             session()->flash('success', 'Cart updated successfully');
         }
     }
@@ -109,7 +106,6 @@ class CartController extends Controller
             if (Auth::user()) {
 
                 $this->repository->delete($request);
-//                return redirect()->route('cart.index');
             }
             else {
 
