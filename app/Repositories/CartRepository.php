@@ -72,6 +72,6 @@ class CartRepository
 
     public function getCartItemCount($customer_id)
     {
-        return Cart::where('customer_id', $customer_id)->count();
+        return Cart::where('customer_id', $customer_id)->get();
     }
 }

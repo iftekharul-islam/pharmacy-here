@@ -21,11 +21,11 @@ class CartController extends Controller
         if (Auth::user()) {
             $data = $this->repository->getCartByCustomer(Auth::user()->id);
 
-            session()->put('cartCount', count($data));
+            session()->put('cartCount', count($data) ?? '');
         }
         else {
             $data = session('cart');
-            session()->put('cartCount', count($data));
+            session()->put('cartCount', count($data) ?? '');
 
         }
         return view('cart.index', compact('data'));
@@ -62,7 +62,6 @@ class CartController extends Controller
                 ];
 
                 session()->put('cart', $cart);
-//                session(['cart' => count(session('cart'))]);
                 session()->put('cartCount', count($cart));
 
                 return redirect()->back()->with('success', 'Product added to cart successfully!');
@@ -87,6 +86,7 @@ class CartController extends Controller
             ];
 
             session()->put('cart', $cart);
+            session()->put('cartCount', count($cart));
         }
 
         return redirect()->back()->with('success', 'Product added to cart successfully!');
