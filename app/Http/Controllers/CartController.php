@@ -20,10 +20,10 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->getCartByCustomer(Auth::user()->id);
-//            return $data;
         }
         else {
             $data = session('cart');
+
         }
         return view('cart.index', compact('data'));
     }
@@ -32,8 +32,7 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->addToCart($id);
-//            return $data;
-            return redirect()->route( 'cart.index' );
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
         }
         else {
             $product = Product::find($id);
