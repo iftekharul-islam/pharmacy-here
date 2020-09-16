@@ -45,6 +45,7 @@ class OtpController extends Controller
     public function verifyOTP(Request $request)
     {
         $otpResponse = $this->repository->verifyOtpWeb($request);
+
         if ($otpResponse == true) {
             $user = User::where('phone_number', session()->get('phone_number'))->first();
 
@@ -57,7 +58,7 @@ class OtpController extends Controller
                     $datas = session()->get('cart');
 
                     foreach ($datas as $id => $data) {
-                        print_r($data['amount']);
+//                        print_r($data['amount']);
                         Cart::create([
                             'product_id' => $id,
                             'customer_id' => auth()->user()->id,
