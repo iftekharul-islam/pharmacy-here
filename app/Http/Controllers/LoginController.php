@@ -55,7 +55,7 @@ class LoginController extends Controller
         \Auth::login($user);
         session()->forget('phone_number');
 
-        return redirect()->route('product-list');
+        return redirect()->route('home');
     }
 
     public function logout()

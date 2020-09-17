@@ -18,107 +18,117 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Styles -->
+    <style>
+        html, body {
+            background-color: #fff;
+            color: #636b6f;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 200;
+            height: 100vh;
+            margin: 0;
+        }
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+        .full-height {
+            height: 100vh;
+        }
 
-            .full-height {
-                height: 100vh;
-            }
+        .flex-center {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+        .position-ref {
+            position: relative;
+        }
 
-            .position-ref {
-                position: relative;
-            }
+        .top-right {
+            position: absolute;
+            right: 10px;
+            top: 18px;
+        }
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+        .content {
+            text-align: center;
+        }
 
-            .content {
-                text-align: center;
-            }
+        .title {
+            font-size: 84px;
+        }
 
-            .title {
-                font-size: 84px;
-            }
+        .links > a {
+            color: #636b6f;
+            padding: 0 25px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
+        .m-b-md {
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg subidha-menu">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Subidha') }}
+                <!-- logo -->
+                <a class="navbar-brand subidha--logo" href="{{ route('home') }}">
+                    <img src="{{ asset('images/logo.svg') }}" class="img-fluid" alt="Subidha logo"><span class="">Subidha</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                <!-- Toggle button for small device -->
+                <div class="toggler-position">
+                    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse custom-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-list ml-auto">
+                        <li>
+                            <a href="#">Offer</a>
+                        </li>
+                        <li>
+                            <a href="#">Need Help?</a>
+                        </li>
+                        <li class="language">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle language-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="img/usa.svg" alt=""> English
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#"><img src="img/bd.png" alt="bangladesh-flag">BD</a>
 
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        <li class="nav-item">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
                             <a class="nav-link" href="{{ route('cart.index') }}">{{ __('Cart') }} <span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>
                         </li>
-
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('customer.login') }}">{{ __('Login') }}</a>
+                            <li>
+                                <a class="btn--primary join" href="{{ route('customer.login') }}">{{ __('Login') }}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="">
-                                {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                            <li>
+                                <a class="btn--primary join">
+                                    {{ \Illuminate\Support\Facades\Auth::user()->name }}
                                 </a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="dropdown-item" href=""
-                                   onclick="event.preventDefault();
+                            <li>
+                                <a class="btn--primary join"  onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
@@ -132,30 +142,12 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
     </div>
 @yield('js')
-    <script>
-        function viewCart() {
-
-            // if ( cart.length == 0) {
-            //     console.log('undefined');
-            // }
-        }
-        function addToCart(item) {
-            console.log('addToCart');
-            // console.log(item);
-
-            var cartItem = {
-                'name': item.name,
-                'price' : item.purchase_price,
-                'quantity' : item.min_order_qty
-            };
-            console.log(cartItem);
-        }
-    </script>
+    <!-- font awesome -->
+    <script src="{{ asset('js/icon.js') }}"></script>
 </body>
 </html>

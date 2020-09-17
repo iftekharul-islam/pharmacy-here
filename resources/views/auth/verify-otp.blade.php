@@ -1,63 +1,39 @@
-{{--@extends('adminlte::auth.login')--}}
-{{--@extends('auth::layouts.master')--}}
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify OTP') }}</div>
-
-                <div class="card-body">
+    <section class="login-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 d-none d-md-block">
+                    <div class="login-image">
+                        <img src="{{ asset('images/login-2.svg') }}" alt="img-fluid">
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <form method="POST" action="{{ route('customer.verifyOTP') }}">
                         @csrf
-
-                        <div class="form-group row">
-                            <label for="otp" class="col-md-4 col-form-label text-md-right">{{ __('Verify OTP') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="otp" type="number" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" required autocomplete="otp" autofocus>
-
-                                @error('otp')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                        <div class="text-center mb-5"><img src="{{ asset('images/logo.svg') }}" alt="logo"></div>
+                        <div class="form-group">
+                            <label for="otp">{{ __('Verify OTP') }}</label>
+                            <input id="otp" type="number" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" autocomplete="phone_number" autofocus>
+                            @error('otp')
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-
-
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button onclick="savePhoneNumber()" type="submit" class="btn btn-primary">
-                                    {{ __('Verify OTP') }}
-                                </button>
-
-{{--                                @if (Route::has('password.request'))--}}
-{{--                                    <a class="btn btn-link" href="{{ route('password.request') }}">--}}
-{{--                                        {{ __('Forgot Your Password?') }}--}}
-{{--                                    </a>--}}
-{{--                                @endif--}}
-                            </div>
-                        </div>
+                        <button type="submit" class="btn--sign-in">
+                            {{ __('Verify OTP') }}
+                        </button>
                     </form>
+                </div>
+                <div class="col-md-3">
+                    <div class="login-image">
+                        <img src="{{ asset('images/login-1.svg') }}" alt="img-fluid">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 @endsection
 
-
-@section('js')
-    <script>
-        function savePhoneNumber() {
-            var phone = document.getElementById('phone_number').value;
-            // console.log(phone);
-
-            localStorage.setItem('phone_number', phone);
-        }
-    </script>
-@stop
