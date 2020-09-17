@@ -38,7 +38,7 @@
                                                     <td data-th="Product">{{ $details['product_name'] }}</td>
                                                     <td data-th="Price">${{ $details['amount'] }}</td>
                                                     <td data-th="Quantity">
-                                                        <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
+                                                        <input type="number" value="{{ $details['quantity'] }}" min="{{ $details['minQuantity'] }}" class="form-control quantity" />
                                                     </td>
                                                     <td data-th="Subtotal" class="text-center">${{ $details['amount'] * $details['quantity'] }}</td>
                                                     <td class="actions" data-th="">
@@ -58,7 +58,7 @@
                                                     <td class="nomargin">{{ $details->product->name }}</td>
                                                     <td data-th="Price">${{ $details->amount }}</td>
                                                     <td data-th="Quantity">
-                                                        <input type="number" value="{{ $details->quantity }}" class="form-control quantity" />
+                                                        <input type="number" value="{{ $details->quantity }}"  min="{{ $details->product->min_order_qty }}" class="form-control quantity" />
                                                     </td>
                                                     <td data-th="Subtotal" class="text-center">${{ $details->amount * $details->quantity }}</td>
                                                     <td class="actions" data-th="">

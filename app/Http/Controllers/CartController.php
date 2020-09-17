@@ -57,6 +57,7 @@ class CartController extends Controller
                     $id => [
                         "product_name" => $product->name,
                         "quantity" => $product->min_order_qty,
+                        "minQuantity" => $product->min_order_qty,
                         "amount" => $product->purchase_price,
                     ]
                 ];
@@ -82,6 +83,7 @@ class CartController extends Controller
             $cart[$id] = [
                 "product_name" => $product->name,
                 "quantity" => $product->min_order_qty,
+                "minQuantity" => $product->min_order_qty,
                 "amount" => $product->min_order_qty * $product->purchase_price,
             ];
 
