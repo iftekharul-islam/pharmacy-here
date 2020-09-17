@@ -40,7 +40,7 @@ class DeliveryChargeController extends BaseController
             $collectFromPharmacy = [
                 'cash' => number_format(config('subidha.collect_from_pharmacy_charge') - ($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100), 2),
                 'ecash' => number_format($request->get('amount') * config('subidha.ecash_payment_charge_percentage') / 100, 2),
-                'ecash_discount' => number_format($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100, 2)
+                'discount' => number_format($request->get('amount') * config('subidha.collect_from_pharmacy_discount_percentage') / 100, 2)
             ];
 
             $data = [
