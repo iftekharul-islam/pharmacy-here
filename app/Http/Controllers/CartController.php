@@ -25,7 +25,7 @@ class CartController extends Controller
         }
         else {
             $data = session('cart');
-            session()->put('cartCount', count($data) ?? '');
+            session()->put('cartCount', $data != null ? count($data) : '');
 
         }
         return view('cart.index', compact('data'));
