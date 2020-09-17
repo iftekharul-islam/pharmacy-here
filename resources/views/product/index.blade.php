@@ -10,8 +10,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Medicine LIst</div>
+                    <div class="card-header">Medicine List</div>
                     <div class="card-body">
+                        <form action="{{ route('product-list') }}" method="GET">
+                            <input class="search_input" type="text" name="medicine" placeholder="Search...">
+                            <button type="submit" class="search_icon"><i class="fa fa-search"></i></button>
+                        </form>
                         @if (count($data) > 0)
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
