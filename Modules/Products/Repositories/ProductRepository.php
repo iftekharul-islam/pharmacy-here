@@ -44,7 +44,7 @@ class ProductRepository
             $company = Company::where('name', 'LIKE', "%$companyName%")->get()->pluck('id')->toArray();
             $products->whereIn('company_id', $company);
         }
-        
+
         return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
             ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
@@ -77,7 +77,7 @@ class ProductRepository
             'min_order_qty',
             'strength'
         );
-        
+
         $newProduct = Product::create($productData);
 
         if (!$newProduct) {
@@ -97,7 +97,7 @@ class ProductRepository
             'child_dose' => $request->child_dose,
             'renal_dose' => $request->renal_dose,
             'description' => $request->description
-            
+
         ];
 
         return ProductAdditionalInfo::create($productInfo);
@@ -175,8 +175,8 @@ class ProductRepository
 
         if (isset($request->min_order_qty)) {
             $product->min_order_qty = $request->min_order_qty;
-        } 
-        
+        }
+
         if (isset($request->strength)) {
             $product->strength = $request->strength;
         }
@@ -224,11 +224,11 @@ class ProductRepository
         if (isset($request->renal_dose)) {
             $productInfo->renal_dose = $request->renal_dose;
         }
-        
+
         if (isset($request->description)) {
             $productInfo->description = $request->description;
         }
-        
+
         $productInfo->save();
         return $product;
 
@@ -276,5 +276,11 @@ class ProductRepository
 
         return Product::where('generic_id', $product->generic_id)->get();
 
+    }
+
+    public function getProductName($request)
+    {
+        $medicine = $request->get('medicine');
+        return Product::where('name', 'LIKE', "%$medicine%")->get();
     }
 }

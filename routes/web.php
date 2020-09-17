@@ -31,6 +31,7 @@ Route::post('customer/name/update','LoginController@customerNameUpdate')->name('
 // Product routes
 Route::get('/medicine',  'ProductsController@index')->name('product-list');
 Route::get('/medicine/{medicine_id}',  'ProductsController@show')->name('single-product');
+Route::get('/search/medicine-name',  'ProductsController@getProductName');
 
 Route::group(['prefix' => 'checkout'], function () {
     Route::get('preview', 'CheckoutController@index')->name('checkout.preview');

@@ -106,10 +106,10 @@
                         <li class="language">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle language-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="img/usa.svg" alt=""> English
+                                    <img src="{{ asset('images/usa.svg') }}" alt=""> English
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#"><img src="img/bd.png" alt="bangladesh-flag">BD</a>
+                                    <a class="dropdown-item" href="#"><img src="{{ asset('images/bd.png') }}" alt="bangladesh-flag">BD</a>
 
                                 </div>
                             </div>

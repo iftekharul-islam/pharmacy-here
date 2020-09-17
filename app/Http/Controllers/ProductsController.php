@@ -50,5 +50,14 @@ class ProductsController extends Controller
         return view('product.show', compact('data'));
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function getProductName(Request $request)
+    {
+        return $this->repository->getProductName($request);
+    }
+
 
 }
