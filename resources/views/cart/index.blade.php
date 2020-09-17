@@ -75,7 +75,7 @@
                                         <td><a href="{{ route('product-list')  }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                                         <td colspan="2" class="hidden-xs"></td>
                                         <td class="hidden-xs text-center"><strong>Total ${{ $total }}</strong></td>
-                                        <td><a href="{{ route('product-list')  }}" class="btn btn-warning">checkout</a></td>
+                                        <td><a href="{{ route('checkout.preview')  }}" class="btn btn-warning">checkout</a></td>
                                     </tr>
                                 </tfoot>
                             </table>
