@@ -32,9 +32,12 @@ Route::post('customer/name/update','LoginController@customerNameUpdate')->name('
 Route::get('/medicine',  'ProductsController@index')->name('product-list');
 Route::get('/medicine/{medicine_id}',  'ProductsController@show')->name('single-product');
 
-Route::group(['prefix' => 'checkout'], function () {
-    Route::get('preview', 'CheckoutController@index')->name('checkout.preview');
-    Route::post('store', 'CheckoutController@store')->name('checkout.store');
+Route::group(['middleware' => ['customerAuth']], function () {
+    Route::group(['prefix' => 'checkout'], function () {
+        Route::get('preview', 'CheckoutController@index')->name('checkout.preview');
+        Route::post('check-preview', 'CheckoutController@check')->name('checkout.check');
+        Route::post('store', 'CheckoutController@store')->name('checkout.store');
+    });
 });
 
 
@@ -46,3 +49,5 @@ Route::group(['prefix' => 'cart'], function () {
     Route::patch('update-cart', 'CartController@update');
     Route::delete('remove-from-cart', 'CartController@remove');
 });
+
+
