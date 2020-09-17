@@ -50,7 +50,6 @@ class OtpController extends Controller
 
             if ($user->name != null) {
                 \Auth::login($user);
-//                session()->forget('phone_number');
 
                 if ($request->session()->has('cart')) {
                     $datas = session()->get('cart');
@@ -76,10 +75,9 @@ class OtpController extends Controller
 
                     return redirect()->route('cart.index');
                 }
-                return redirect()->route('product-list');
+                return redirect()->route('home');
             }
             return redirect()->route('customer.name');
-
 
         }
     }
