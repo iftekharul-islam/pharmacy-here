@@ -8,9 +8,14 @@
                     <h2>We Deliver Your Medication</h2>
                     <p>Say goodbye to all your healthcare worries with us</p>
                     <label class="w-100 label-search">
-                        <input type="search" class="form-control" placeholder="Search your medicine here">
-                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                        <form action="{{ route('product-list') }}" method="GET">
+                            <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="Search your medicine here">
+                            <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                        </form>
+{{--                        <input type="search" id="medicine_search" class="form-control" placeholder="Search your medicine here">--}}
+{{--                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>--}}
                     </label>
+                    <ul id="searchResult"></ul>
                 </div>
             </div>
         </div>
@@ -134,4 +139,62 @@
             </div>
         </div>
     </footer>
+@endsection
+
+@section('js')
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script type="text/javascript">
+        var isNameSet = false;
+        $(document).ready(function(){
+
+            console.log(isNameSet);
+
+            if (!isNameSet) {
+                $("#medicine_search").keyup(function () {
+                    var search = $(this).val();
+                    console.log(search);
+                    if (search != "") {
+                        $.ajax({
+                            url: "search/medicine-name",
+                            type: 'get',
+                            data: {medicine: search},
+                            dataType: 'json',
+                            success: function (response) {
+                                var len = response.length;
+                                $("#searchResult").empty();
+                                for (var i = 0; i < len; i++) {
+                                    console.log(response[i]);
+                                    var id = response[i]['id'];
+                                    var name = response[i]['name'];
+
+                                    if (search != name) {
+                                        $("#searchResult").append("<li value='" + id + "'>" + name + "</li>");
+                                    }
+
+
+                                }
+                                // binding click event to li
+                                $("#searchResult li").bind("click", function () {
+                                    console.log(this);
+                                    setText(this);
+                                    isNameSet = true;
+                                    console.log(isNameSet);
+                                });
+                            }
+                        });
+                    } else {
+                        $("#searchResult").empty();
+                    }
+                });
+            }
+        });
+        // Set Text to search box and get details
+        function setText(element){
+            var value = $(element).text();
+            $("#medicine_search").val(value);
+            $("#searchResult").empty();
+        }
+    </script>
 @endsection
