@@ -60,9 +60,7 @@ class SendOtp implements ShouldQueue
         $url = $base_url_non_masking . "?api_key=" . $api_key . "&smsType=text&mobileNo=" . $phone . "&smsContent=" . $message;
         $client = new Client();
         try {
-            if (config('env') === 'production') {
-                $client->get($url);
-            }
+            $client->get($url);
             OneTimePassword::create([
                 'phone_number' => $this->phone_number,
                 'otp' => $this->otp
