@@ -188,7 +188,7 @@ class OrderRepository
         $title = 'New Order Available';
 
         foreach ($deviceIds as $deviceId){
-            sendPushNotification($deviceId, $title, $request->order_items, $id="");
+            sendPushNotification($deviceId->device_id, $title, $request->order_items, $id="");
         }
 
         return $order;
