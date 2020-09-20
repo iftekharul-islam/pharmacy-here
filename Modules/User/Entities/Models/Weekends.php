@@ -9,5 +9,6 @@ class Weekends extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['days'];
+    protected $fillable = ['days', 'user_id'];
+
 }

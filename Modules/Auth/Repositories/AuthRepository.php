@@ -218,7 +218,7 @@ class AuthRepository
         ]);
 
         if ($user->hasRole('pharmacy')) {
-            return User::with('pharmacyBusiness')->where('phone_number', $phone)->first();
+            return User::with('pharmacyBusiness', 'weekends')->where('phone_number', $phone)->first();
         }
         return User::where('phone_number', $phone)->first();
     }
@@ -278,6 +278,43 @@ class AuthRepository
         }
 
         return $this->createOtpWeb($request);
+    }
+
+    public function getUserState($user)
+    {
+        $pharmacy_business = $user->pharmacyBusiness;
+
+        if ($pharmacy_business->pharmacy_name == null) {
+            return 2;
+        }
+        if ($pharmacy_business->pharmacy_address == null) {
+            return 2;
+        }
+        if ($pharmacy_business->nid_img_path == null) {
+            return 2;
+        }
+        if ($pharmacy_business->trade_img_path == null) {
+            return 2;
+        }
+        if ($pharmacy_business->drug_img_path == null) {
+            return 2;
+        }
+
+        if ($pharmacy_business->start_time == null) {
+            return 3;
+        }
+        if ($pharmacy_business->end_time == null) {
+            return 3;
+        }
+
+        $weekends = $user->weekends;
+        if (empty($weekends)) {
+            return 3;
+        }
+
+        return 0;
+
+
     }
 
 

@@ -103,7 +103,7 @@ class LoginController extends Controller
 
     public function verifyOtp(PhoneValidationRequest $request)
     {
-
+        $user_state = 0;
         $otpResponse = $this->repository->verifyOtp($request);
 
         if (! $otpResponse) {
@@ -118,18 +118,23 @@ class LoginController extends Controller
         }
 
         $user = $this->repository->getUserByPhone($request->phone_number, $request->device_token);
+
+        if ($user->hasRole('pharmacy')) {
+            $user_state = $this->repository->getUserState($user);
+        }
 //        return $user;
 
-        return $this->respondWithTokenAndName($token, $user);
+        return $this->respondWithTokenAndName($token, $user, $user_state);
 
 //        return $this->respondWithToken($token);
     }
 
-    public function respondWithTokenAndName($token, $user)
+    public function respondWithTokenAndName($token, $user, $user_state)
     {
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'bearer',
+            'user_state'   => $user_state,
             // 'expires_in'   => $this->guard()->factory()->getTTL(),
             'user' => $user,
         ]);
