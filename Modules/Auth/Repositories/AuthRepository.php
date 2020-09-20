@@ -284,6 +284,9 @@ class AuthRepository
     {
         $pharmacy_business = $user->pharmacyBusiness;
 
+        if ($pharmacy_business == null) {
+            return 2;
+        }
         if ($pharmacy_business->pharmacy_name == null) {
             return 2;
         }
@@ -313,7 +316,6 @@ class AuthRepository
         }
 
         return 0;
-
 
     }
 
