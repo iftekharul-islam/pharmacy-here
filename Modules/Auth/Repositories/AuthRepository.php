@@ -212,10 +212,17 @@ class AuthRepository
     {
         $user = User::where('phone_number', $phone)->first();
 
-        UserDeviceId::create([
-            'user_id' => $user->id,
-            'device_id' => $device_token,
-        ]);
+        $count_device_id = UserDeviceId::where('device_id', $device_token)->count();
+
+        if ($count_device_id < 1)
+        {
+            UserDeviceId::create([
+                'user_id' => $user->id,
+                'device_id' => $device_token,
+            ]);
+        }
+
+
 
         if ($user->hasRole('pharmacy')) {
             return User::with('pharmacyBusiness', 'weekends')->where('phone_number', $phone)->first();
