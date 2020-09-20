@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Auth;
+use Modules\Auth\Repositories\AuthRepository;
 use Modules\User\Http\Requests\CreateWeekendsAndWorkingHourRequest;
 use Modules\User\Http\Requests\PharmacyBusinessRequest;
 use Modules\User\Http\Requests\UpdatePharmacyBankInfoRequest;
@@ -21,10 +22,12 @@ use Modules\User\Transformers\WeekendsTransformer;
 class UserPharmacyController extends BaseController
 {
     private $repository;
+    private $authRepository;
 
-    public function __construct(PharmacyRepository $repository)
+    public function __construct(PharmacyRepository $repository, AuthRepository $authRepository)
     {
         $this->repository = $repository;
+        $this->authRepository = $authRepository;
     }
     /**
      * Display a listing of the resource.
@@ -225,5 +228,24 @@ class UserPharmacyController extends BaseController
 //        return $availablePharmacyList;
 
         return $this->response->collection($availablePharmacyList, new PharmacyBusinessTransformer() );
+    }
+
+    public function pharmacyInfoCheck()
+    {
+//        return Auth::guard('api')->user()->id;
+        $data = $this->repository->getPharmacyInfo(Auth::guard('api')->user()->id);
+        $user_state = $this->authRepository->getUserState($data);
+
+        $is_all_info = false;
+
+        if  (! $user_state) {
+            $is_all_info = true;
+        }
+
+        $response = [
+            'user_state' => $user_state,
+            'is_all_info' => $is_all_info
+        ];
+        return response()->json($response) ;
     }
 }

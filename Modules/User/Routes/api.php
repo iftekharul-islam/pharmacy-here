@@ -51,6 +51,8 @@ $api->version('v1', function ($api) use ($namespace) {
 
     $api->get('pharmacy/available/{area_id}', $namespace . '\UserPharmacyController@isPharmacyAvailable');
     $api->get('pharmacy/available-list/{thana_id}', $namespace . '\UserPharmacyController@availablePharmacyList');
+
+    $api->post('pharmacy/info-check', $namespace . '\UserPharmacyController@pharmacyInfoCheck');
 });
 
 $api->version('v1', function ($api) use ($namespace) {

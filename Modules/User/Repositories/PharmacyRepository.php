@@ -254,4 +254,9 @@ class PharmacyRepository
 
         return $pharmacyList;
     }
+
+    public function getPharmacyInfo($pharmacy_id)
+    {
+        return User::with('pharmacyBusiness', 'weekends')->find($pharmacy_id);
+    }
 }
