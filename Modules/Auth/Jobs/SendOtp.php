@@ -61,6 +61,10 @@ class SendOtp implements ShouldQueue
         $client = new Client();
         try {
             $client->get($url);
+            logger('SMS info');
+            logger($url);
+            logger($this->otp);
+
             OneTimePassword::create([
                 'phone_number' => $this->phone_number,
                 'otp' => $this->otp
