@@ -25,7 +25,6 @@ class CustomerController extends Controller
     public function index()
     {
         $data = $this->repository->userDetails(Auth::user()->id);
-//        return $data;
         return view('customer.index', compact('data'));
     }
 

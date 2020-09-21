@@ -22,7 +22,7 @@
                         <div class="tab-pane show fade active my-account" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account-tab">
                             <h2 class="my-dashboard-title">My Profile</h2>
                                 <div class="my-order-list my-design">
-                                    <form method="post" action="{{ route('customer.store', $data->id) }}">
+                                    <form method="post" action="{{ route('customer.update', $data->id) }}">
                                         @csrf
                                         <input type="hidden" name="addressId" value="{{ $data->customerAddress[0]->id }}">
                                     <div class="row">
