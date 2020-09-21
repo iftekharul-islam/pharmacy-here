@@ -74,7 +74,9 @@
                                         <td></td>
                                         <td></td>
                                         <td>Total ৳{{ $total }}</td>
-                                        <td><a href="{{ route('checkout.preview')  }}" class="btn--primary d-block cart-btn">Checkout</a></td>
+                                        <td>
+                                            <a id="submit" onclick="checkMedicine({{ $data }})" {{--href="{{ route('checkout.preview')  }}"--}} class="btn--primary d-block cart-btn">Checkout</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -164,9 +166,7 @@
 
 
 @section('js')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script type="text/javascript">
+    <script>
 
         $(".update-cart").click(function (e) {
             e.preventDefault();
@@ -199,6 +199,51 @@
                 });
             }
         });
+
+        function checkMedicine(data){
+            let medicineData = data;
+
+            var preOrderMedicine = isPreOrderMedicine(medicineData);
+            // console.log('Pre order Medicine: ', preOrderMedicine);
+            if (preOrderMedicine) {
+                preOrderMedicineAlert()
+            }
+        }
+
+        function isPreOrderMedicine(medicines) {
+            let count = 0;
+            $.each(medicines, function(key, value) {
+                if (value.product.is_pre_order) {
+                    count++;
+                }
+            });
+
+            return !!count;
+
+        }
+
+        function preOrderMedicineAlert() {
+            swal({
+                title: "You have a Pre-order Medicine",
+                text: "You have a pre-order medicine in cart. It will take 3-5 days to deliver, do you want to continue?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                // showCancelButton: true,
+                // confirmButtonColor: '#3085d6',
+                // cancelButtonColor: '#d33',
+                // cancelButtonText: 'No',
+                // confirmButtonText: 'Yes',
+            })
+            .then((result) => {
+                if (result) {
+                    console.log(result);
+                }
+            });
+
+        }
+
+
 
     </script>
 
