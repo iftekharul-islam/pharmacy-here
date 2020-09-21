@@ -138,9 +138,53 @@
                 </div>
             </div>
         </nav>
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
+        <!-- footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-10 mx-auto">
+                        <div class="footer-menu">
+                            <div class="footer-menu-list">
+                                <a href="#"><img src="{{ asset('images/logo.svg') }}" alt="subidha logo" class="img-fluid"></a>
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit ut aliquam, purus
+                                    sit amet luctus venenatis</p>
+                            </div>
+
+                            <div class="footer-menu-list">
+                                <a href="#">COMPANY</a>
+                                <ul>
+                                    <li><a href="#">Home</a></li>
+                                    <li><a href="#">Services</a></li>
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">FAQs</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="footer-menu-list">
+                                <a href="#">CONTACT US</a>
+                                <address>
+                                    House 5/4/B (2nd Floor), Block A,<br> Lalmatia, Dhaka-1207<br>
+                                    <a href="#">info@subidha.com</a>
+                                    <p>+880 1234 567890</p>
+                                </address>
+                                <div class="social-icon">
+                                    <a href="#"><i class="fab fa-facebook-square"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-youtube"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 @yield('js')
     <!-- font awesome -->

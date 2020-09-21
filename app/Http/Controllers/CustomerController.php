@@ -3,9 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Modules\Address\Entities\CustomerAddress;
+use Modules\User\Entities\Models\User;
+use Modules\User\Repositories\CustomerRepository;
 
 class CustomerController extends Controller
 {
+    private $repository;
+
+    public function __construct(CustomerRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +24,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customer.index');
+        $data = $this->repository->userDetails(Auth::user()->id);
+//        return $data;
+        return view('customer.index', compact('data'));
     }
 
     /**
@@ -68,7 +81,8 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->repository->userDetailsUpdate($request, $id);
+        return redirect()->back()->with('success', 'User profile successfully updated');
     }
 
     /**

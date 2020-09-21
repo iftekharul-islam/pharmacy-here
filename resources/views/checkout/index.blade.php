@@ -40,6 +40,48 @@
                                     </div>
                                 </div>
                             </li>
+                            <!-- Delivery option -->
+                            <li>
+                                <p>Delivery Option </p>
+                                <ul class="nav nav-pills mb-3 delivery-option-tabs" id="pills-tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="pills-delivery-tab" data-toggle="pill" href="#pills-delivery" role="tab" aria-controls="pills-delivery" aria-selected="true">Home Delivery</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="pills-pharmacy-tab" data-toggle="pill" href="#pills-pharmacy" role="tab" aria-controls="pills-pharmacy" aria-selected="false">Pickup Pharmacy</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade home-delivery show active" id="pills-delivery" role="tabpanel" aria-labelledby="pills-delivery-tab">
+                                        <div class="delivery-option custom-radio-btn">
+                                            <label class="custom-radio">
+                                                <input type="radio" checked="checked" name="radio-btn">
+                                                <span class="checkmark"></span>
+                                                Normal Delivery (Charge: TK 0.00)
+                                            </label>
+                                            <label class="custom-radio">
+                                                <input type="radio" name="radio-btn">
+                                                <span class="checkmark"></span>
+                                                Express Delivery (Charge: TK 50.00)
+                                            </label>
+                                        </div>
+                                        <form action="#">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="inputdate">Choose Date</label>
+                                                    <input type="date" class="form-control" id="inputdate" placeholder="Start date" required>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="inputtime">Choose Time</label>
+                                                    <input type="time" class="form-control" id="inputtime" placeholder="Start time" required>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade pickup-pharmacy" id="pills-pharmacy" role="tabpanel" aria-labelledby="pills-pharmacy-tab">...</div>
+                                </div>
+                            </li>
                             <li>
                                 <p>Order Summary</p>
                                 <div class="order-summary">
