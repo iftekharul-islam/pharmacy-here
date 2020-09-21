@@ -36,10 +36,10 @@ if (!function_exists('sendPushNotification')) {
         logger('device id: ' .$fcm_token);
 
         $body = '{
-            "to": '. $fcm_token .',
+            "to": "'. $fcm_token .'",
             "notification": {
-                "title": '. $title .',
-                "text": " Test message"
+                "title": "' . $title . '",
+                "text": "Test message"
             },
             "data": {
                 "id": 123,
