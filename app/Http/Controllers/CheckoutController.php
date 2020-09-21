@@ -2,14 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Modules\Address\Repositories\AddressRepository;
+use Modules\Products\Repositories\ProductRepository;
+use Modules\User\Entities\Models\User;
 
 class CheckoutController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->middleware('guest')->except('logout');
-//    }
+
+    private $addressRepository;
+    private $cartRepository;
+
+    public function __construct(CartRepository $cartRepository,AddressRepository $addressRepository)
+    {
+        $this->cartRepository = $cartRepository;
+        $this->addressRepository = $addressRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,16 +27,40 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        return view('checkout.index');
+        $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
+        $addresses = $this->addressRepository->get(Auth::user()->id);
+        $user = User::find(Auth::guard('web')->user()->id);
+//        return $user;
+
+        return view('checkout.index', compact('data', 'user', 'addresses'));
     }
 
     public function check(Request $request)
     {
-        if ($request->payType == 1){
-            return 'its COD';
-        } else {
-            return $this->payment($request);
+        $data = $request->only([
+            'phone_number',
+            'delivery_type',
+            'delivery_method',
+            'status',
+            'delivery_charge',
+            'amount',
+            'order_date',
+            'pharmacy_id',
+            'shipping_address_id',
+            'prescriptions',
+            'order_items',
+            'deliveryMethod',
+            'deliveryMethod',
+            'deliveryDate'
+        ]);
+
+        return $data;
+        if ($request->payType == 2){
+//            return 'its COD';
+            $this->payment($request);
         }
+
+
     }
 
     /**
@@ -95,11 +129,9 @@ class CheckoutController extends Controller
         //
     }
 
-    public function success($id)
-    {
-        //
-    }
-
+    /**
+     * @param Request $request
+     */
     public function payment(Request $request)
     {
         $requestData = $request->all();
@@ -115,9 +147,9 @@ class CheckoutController extends Controller
         $post_data['currency'] = "BDT";
 //        $post_data['tran_id'] = $tranId;
         $post_data['tran_id'] = '3131312312';
-        $post_data['success_url'] = url('/');
-        $post_data['fail_url'] = url('/api/payment/failed');
-        $post_data['cancel_url'] = url('/api/payment/cancel');
+        $post_data['success_url'] = url('success');
+        $post_data['fail_url'] = url('failed');
+        $post_data['cancel_url'] = url('cancel');
         $post_data['value_a'] = 'VALUE_A';
         $post_data['value_b'] = 'VALUE_B';
         $post_data['value_c'] = 'VALUE_C';
@@ -154,5 +186,22 @@ class CheckoutController extends Controller
         } else {
             echo "JSON Data parsing error!";
         }
+    }
+
+    public function paymentSuccess()
+    {
+        return 'Success';
+
+    }
+
+    public function paymentFailed()
+    {
+        return 'Failed';
+
+    }
+
+    public function paymentCancel()
+    {
+        return 'Cancel';
     }
 }
