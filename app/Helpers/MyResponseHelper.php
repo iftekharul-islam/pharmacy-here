@@ -35,26 +35,38 @@ if (!function_exists('sendPushNotification')) {
 
         logger('device id: ' .$fcm_token);
 
-        $prepareData = [
-            'form_params' => [
-                'to' => $fcm_token,
-                'notification' => [
-                    'title' => $title,
-                    'text'  => 'Test Message',
-                ],
-                'data' => $message,
-            ]
-
-        ];
+        $body = '{
+            "to": '. $fcm_token .',
+            "notification": {
+                "title": '. $title .',
+                "text": '. $message .'
+            },
+            "data": {
+                "id": 123,
+                "title": "Test",
+                "description": "test Title",
+                "text": "hello world",
+                "order": "Hello",
+                "is_read": 0
+            }
+        }';
 
         $post = new Client([
             'headers' => [
                 'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
                 'Authorization' => 'key=' . $push_notification_key
-            ]
+            ],
         ]);
-        $result = $post->request('POST', $url, $prepareData);
-        logger('response: ' . $result->getBody()->getContents());
+
+
+
+        $result = $post->request('POST', $url, [
+            'body' => $body
+        ]);
+
+
+        logger('response: ' . $result->getBody());
 
         return $result->getBody()->getContents();
     }
