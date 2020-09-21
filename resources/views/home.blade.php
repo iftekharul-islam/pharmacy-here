@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <!-- Medicine section -->
-    <section class="medicine-search-section">
+    <section class="medicine-search-section" style="background: url(images/main-bg.png);">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto text-center">
@@ -17,16 +17,6 @@
                     </label>
                     <ul id="searchResult"></ul>
                 </div>
-            </div>
-        </div>
-        <div class="medicine-image">
-            <div class="left">
-                <img src="{{ asset('images/medicine-2.svg') }}" alt="medicine" class="img-fluid">
-                <img src="{{ asset('images/medicine-1.svg') }}" alt="medicine" class="img-fluid">
-                <img src="{{ asset('images/medicine-2.svg') }}" alt="medicine" class="img-fluid">
-            </div>
-            <div class="right">
-                <img src="{{ asset('images/flower.svg') }}" alt="flower" class="img-fluid">
             </div>
         </div>
     </section>
@@ -76,7 +66,7 @@
             </div>
         </div>
     </section>
-    <!-- download sec tion -->
+    <!-- download section -->
     <section class="download-section">
         <div class="container">
             <div class="row">
@@ -95,50 +85,6 @@
             </div>
         </div>
     </section>
-    <!-- footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-10 mx-auto">
-                    <div class="footer-menu">
-                        <div class="footer-menu-list">
-                            <a href="#"><img src="{{ asset('images/logo.svg') }}" alt="subidha logo" class="img-fluid"></a>
-                            <p>Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit ut aliquam, purus
-                                sit amet luctus venenatis</p>
-                        </div>
-
-                        <div class="footer-menu-list">
-                            <a href="#">COMPANY</a>
-                            <ul>
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">Services</a></li>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">FAQs</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="footer-menu-list">
-                            <a href="#">CONTACT US</a>
-                            <address>
-                                House 5/4/B (2nd Floor), Block A,<br> Lalmatia, Dhaka-1207<br>
-                                <a href="#">info@subidha.com</a>
-                                <p>+880 1234 567890</p>
-                            </address>
-                            <div class="social-icon">
-                                <a href="#"><i class="fab fa-facebook-square"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-youtube"></i></a>
-                                <a href="#"><i class="fab fa-linkedin"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </footer>
 @endsection
 
 @section('js')

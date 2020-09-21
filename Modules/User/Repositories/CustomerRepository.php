@@ -99,4 +99,42 @@ class CustomerRepository
         return $data;
     }
 
+    public function userDetails($id)
+    {
+        $data =  User::with('customerAddress')->find($id);
+
+        return $data;
+    }
+    public function userDetailsUpdate($request, $id)
+    {
+        $user =  User::findOrFail($id);
+        $data = $request->only(['name', 'phone_number', 'alternative_phone_number', 'dob', 'gender']);
+
+        if (isset($data['name'])) {
+            $user->name = $data['name'];
+        }
+        if (isset($data['phone_number'])) {
+            $user->phone_number = $data['phone_number'];
+        }
+        if (isset($data['alternative_phone_number'])) {
+            $user->alternative_phone_number = $data['alternative_phone_number'];
+        }
+        if (isset($data['dob'])) {
+            $user->dob = $data['dob'];
+        }
+        if (isset($data['gender'])) {
+            $user->gender = $data['gender'];
+        }
+        $user->save();
+
+        if (isset($request->addressId)){
+            $address = CustomerAddress::find($request->addressId);
+
+            if (isset($request->address)) {
+                $address->address = $request->address;
+            }
+            $address->save();
+        }
+    }
+
 }
