@@ -122,20 +122,16 @@
                                 <a class="btn--primary join" href="{{ route('customer.login') }}">{{ __('Login') }}</a>
                             </li>
                         @else
-                            <li>
-                                <a class="btn--primary join">
-                                    {{ \Illuminate\Support\Facades\Auth::user()->name }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="btn--primary join"  onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
+                            <li><a href="#" class="btn--primary join dropdown-toggle" id="dropdownprofile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ \Illuminate\Support\Facades\Auth::user()->name }}</a>
+                                <div class="dropdown-menu dropdown-menu-profile" aria-labelledby="dropdownprofile">
+                                    <a class="dropdown-item" href="{{ route('customer.details') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}</a>
+                                    <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
                             </li>
                         @endguest
                     </ul>
@@ -149,5 +145,15 @@
 @yield('js')
     <!-- font awesome -->
     <script src="{{ asset('js/icon.js') }}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- owl -->
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- custom jquery -->
+    <script src="js/main.js"></script>
 </body>
 </html>

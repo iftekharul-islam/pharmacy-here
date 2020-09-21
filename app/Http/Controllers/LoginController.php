@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateRequest;
-use Dingo\Api\Exception\StoreResourceFailedException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Modules\Auth\Http\Requests\PhoneValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
-use Modules\User\Entities\Models\User;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class LoginController extends Controller
@@ -35,28 +31,20 @@ class LoginController extends Controller
         return view('auth.verify-otp');
     }
 
-    public function registerForm()
-    {
-        if (Auth::guard()->check()) {
-            return redirect()->route('customer.dashboard');
-        }
-        return view('auth.register');
 
-    }
-
-    public function customerNameUpdate(UserCreateRequest $request)
-    {
-        $user = $this->repository->customerNameUpdate($request);
-
-        if (! $user) {
-            throw new UnauthorizedHttpException('', 'User Not Found');
-        }
-
-        \Auth::login($user);
-        session()->forget('phone_number');
-
-        return redirect()->route('home');
-    }
+//    public function customerNameUpdate(UserCreateRequest $request)
+//    {
+//        $user = $this->repository->customerNameUpdate($request);
+//
+//        if (! $user) {
+//            throw new UnauthorizedHttpException('', 'User Not Found');
+//        }
+//
+//        \Auth::login($user);
+//        session()->forget('phone_number');
+//
+//        return redirect()->route('home');
+//    }
 
     public function logout()
     {

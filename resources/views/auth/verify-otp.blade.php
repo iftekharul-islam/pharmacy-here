@@ -14,6 +14,10 @@
                         @csrf
                         <div class="text-center mb-5"><img src="{{ asset('images/logo.svg') }}" alt="logo"></div>
                         <div class="form-group">
+                            <label for="phone_number">{{ __('Phone Number') }}</label>
+                            <input id="phone_number" type="text" class="form-control" value="{{ session()->get('phone_number') }}" autocomplete="phone_number" disabled>
+                        </div>
+                        <div class="form-group">
                             <label for="otp">{{ __('Verify OTP') }}</label>
                             <input id="otp" type="number" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" autocomplete="phone_number" autofocus>
                             @error('otp')
