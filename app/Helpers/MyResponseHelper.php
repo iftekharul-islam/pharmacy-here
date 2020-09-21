@@ -39,7 +39,7 @@ if (!function_exists('sendPushNotification')) {
             "to": '. $fcm_token .',
             "notification": {
                 "title": '. $title .',
-                "text": '. $message .'
+                "text": " Test message"
             },
             "data": {
                 "id": 123,
