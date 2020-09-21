@@ -15806,6 +15806,7 @@ html {
 .medicine-search-section {
   position: relative;
   overflow: hidden;
+  background: url(../img/main-bg.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -15814,12 +15815,13 @@ html {
 }
 
 .medicine-search-section h2 {
-    color: #FFFFFF;
-    margin-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
 }
+
 .medicine-search-section p {
-    color: #FFFFFF;
-    opacity: .7;
+  color: #ffffff;
+  opacity: .7;
 }
 
 .label-search {
@@ -16060,26 +16062,57 @@ html {
   color: #ffffff;
 }
 
-.delivery-option {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+.delivery-option > ul {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  margin-bottom: 35px;
 }
 
-.delivery-option label {
-  margin-bottom: 15px !important;
+.delivery-option > ul li a {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
+  position: relative;
+  color: #000;
+  font-weight: 400;
+  padding-left: 30px;
 }
 
-.delivery-option label:last-child {
-  margin-bottom: 0 !important;
+.delivery-option > ul li a::after {
+  position: absolute;
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid #7B7B7B;
+  border-radius: 50%;
+  left: 0;
+}
+
+.delivery-option > ul li a.active {
+  background: transparent !important;
+  color: #000 !important;
+}
+
+.delivery-option > ul li a.active::after {
+  position: absolute;
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid #00CE5E;
+  border-radius: 50%;
+  left: 0;
+}
+
+.delivery-option > ul li a.active::before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #00CE5E;
+  border-radius: 50%;
+  left: 5px;
+  top: 13px;
 }
 
 .home-delivery {
@@ -16154,6 +16187,14 @@ html {
 .home-delivery input {
   color: #acacac;
   font-size: 14px;
+}
+
+.home-delivery article {
+  display: none;
+}
+
+.home-delivery article.on {
+  display: block;
 }
 
 .home-delivery form label {
