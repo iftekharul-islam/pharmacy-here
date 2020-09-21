@@ -53,31 +53,45 @@
                                 </ul>
                                 <div class="tab-content" id="pills-tabContent">
                                     <div class="tab-pane fade home-delivery show active" id="pills-delivery" role="tabpanel" aria-labelledby="pills-delivery-tab">
-                                        <div class="delivery-option custom-radio-btn">
-                                            <label class="custom-radio">
+                                        <div class="delivery-option">
+                                            <!-- <label class="custom-radio" id="tab1" name="tab">
                                                 <input type="radio" checked="checked" name="radio-btn">
                                                 <span class="checkmark"></span>
                                                 Normal Delivery (Charge: TK 0.00)
-                                            </label>
-                                            <label class="custom-radio">
+                                              </label>
+                                              <label class="custom-radio" id="tab2" name="tab">
                                                 <input type="radio" name="radio-btn">
                                                 <span class="checkmark"></span>
                                                 Express Delivery (Charge: TK 50.00)
-                                            </label>
-                                        </div>
-                                        <form action="#">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="inputdate">Choose Date</label>
-                                                    <input type="date" class="form-control" id="inputdate" placeholder="Start date" required>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="inputtime">Choose Time</label>
-                                                    <input type="time" class="form-control" id="inputtime" placeholder="Start time" required>
-                                                </div>
-                                            </div>
+                                              </label> -->
+                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <a class="nav-link active" id="pills-normaldelivery-tab" data-toggle="pill" href="#pills-normaldelivery" role="tab" aria-controls="pills-normaldelivery" aria-selected="true">Normal Delivery (Charge: TK 0.00)</a>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <a class="nav-link" id="pills-expressdelivery-tab" data-toggle="pill" href="#pills-expressdelivery" role="tab" aria-controls="pills-expressdelivery" aria-selected="false">Express Delivery (Charge: TK 50.00)</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-normaldelivery" role="tabpanel" aria-labelledby="pills-normaldelivery-tab">
+                                                    <form action="#">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="inputdate">Choose Date</label>
+                                                                <input type="date" class="form-control" id="inputdate" placeholder="Start date" required>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label for="inputtime">Choose Time</label>
+                                                                <input type="time" class="form-control" id="inputtime" placeholder="Start time" required>
+                                                            </div>
+                                                        </div>
 
-                                        </form>
+                                                    </form>
+                                                </div>
+                                                <div class="tab-pane fade" id="pills-expressdelivery" role="tabpanel" aria-labelledby="pills-expressdelivery-tab">...</div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="tab-pane fade pickup-pharmacy" id="pills-pharmacy" role="tabpanel" aria-labelledby="pills-pharmacy-tab">...</div>
                                 </div>
