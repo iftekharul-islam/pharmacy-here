@@ -6,6 +6,7 @@ use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Address\Repositories\AddressRepository;
+use Modules\Orders\Repositories\DeliveryChargeRepository;
 use Modules\Products\Repositories\ProductRepository;
 use Modules\User\Entities\Models\User;
 
@@ -14,11 +15,13 @@ class CheckoutController extends Controller
 
     private $addressRepository;
     private $cartRepository;
+    private $deliveryRepository;
 
-    public function __construct(CartRepository $cartRepository,AddressRepository $addressRepository)
+    public function __construct(CartRepository $cartRepository,AddressRepository $addressRepository, DeliveryChargeRepository $deliveryRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->addressRepository = $addressRepository;
+        $this->deliveryRepository = $deliveryRepository;
     }
     /**
      * Display a listing of the resource.
@@ -28,11 +31,17 @@ class CheckoutController extends Controller
     public function index()
     {
         $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
+        $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
         $addresses = $this->addressRepository->get(Auth::user()->id);
         $user = User::find(Auth::guard('web')->user()->id);
-//        return $user;
 
-        return view('checkout.index', compact('data', 'user', 'addresses'));
+//        $temp = [
+//            'data' => $data,
+//            'delivery_charge' => $delivery_charge
+//        ];
+//        return $temp;
+
+        return view('checkout.index', compact('data', 'user', 'addresses', 'delivery_charge'));
     }
 
     public function check(Request $request)

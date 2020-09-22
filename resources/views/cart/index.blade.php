@@ -53,12 +53,12 @@
                                     @if($data)
                                         @foreach($data as $id => $details)
 
-                                            <?php $total += $details['amount'] * $details['quantity'] ?>
+                                            <?php $total += $details['product']['purchase_price'] * $details['quantity'] ?>
                                             <tr>
                                                 <td scope="row">{{ $details['product']['name'] }}</td>
-                                                <td>৳ {{ $details['amount'] }}</td>
+                                                <td>৳ {{ $details['product']['purchase_price'] }}</td>
                                                 <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}"></td>
-                                                <td data-th="Subtotal" class="text-center">৳ {{ $details->amount * $details->quantity }}</td>
+                                                <td data-th="Subtotal" class="text-center">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>
                                                 <td>
                                                     <div class="actions" data-th="">
                                                         <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>
@@ -75,7 +75,7 @@
                                         <td></td>
                                         <td>Total ৳{{ $total }}</td>
                                         <td>
-                                            <a id="submit" onclick="checkMedicine({{ $data }})" {{--href="{{ route('checkout.preview')  }}"--}} class="btn--primary d-block cart-btn">Checkout</a>
+                                            <a id="submit" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -200,14 +200,23 @@
             }
         });
 
+
+
         function checkMedicine(data){
             let medicineData = data;
 
             var preOrderMedicine = isPreOrderMedicine(medicineData);
-            // console.log('Pre order Medicine: ', preOrderMedicine);
             if (preOrderMedicine) {
-                preOrderMedicineAlert()
+                preOrderMedicineAlert();
+                return;
             }
+
+            var prescribedMedicine = isPrescribedMedicine(medicineData);
+            if (prescribedMedicine) {
+                isPrescribedMedicineAlert(medicineData);
+                return;
+            }
+            window.location = "/checkout/preview";
         }
 
         function isPreOrderMedicine(medicines) {
@@ -223,24 +232,82 @@
         }
 
         function preOrderMedicineAlert() {
-            swal({
-                title: "You have a Pre-order Medicine",
+            // console.log('sweet alert');
+            Swal.fire({
+                title: "Pre-order Medicine",
                 text: "You have a pre-order medicine in cart. It will take 3-5 days to deliver, do you want to continue?",
                 icon: "warning",
-                buttons: true,
-                dangerMode: true,
-                // showCancelButton: true,
-                // confirmButtonColor: '#3085d6',
-                // cancelButtonColor: '#d33',
-                // cancelButtonText: 'No',
-                // confirmButtonText: 'Yes',
+                // buttons: true,
+                // dangerMode: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
             })
             .then((result) => {
-                if (result) {
-                    console.log(result);
+                if (result.isConfirmed) {
+                    window.location = "/checkout/preview"
+                }
+                if (result.isDismissed) {
+
                 }
             });
 
+        }
+
+        function isPrescribedMedicine(medicines) {
+            let count = 0;
+            $.each(medicines, function(key, value) {
+                if (value.product.is_prescripted) {
+                    count++;
+                }
+            });
+
+            return !!count;
+
+        }
+
+        function isPrescribedMedicineAlert(medicines) {
+            Swal.fire({
+                title: "Notice",
+                text: "You have a prescribed medicine in cart. Do you want to upload prescription?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Remove prescribed medicine',
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    // console.log(result);
+                }
+                if (result.isDismissed) {
+                    // console.log('dismissed');
+                    removePrescribedMedicine(medicines);
+                }
+            });
+        }
+
+        function removePrescribedMedicine(medicines) {
+            var medicineIds = [];
+            $.each(medicines, function(key, value) {
+                if (value.product.is_prescripted) {
+                    medicineIds.push(value.id);
+                }
+            });
+            // console.log(medicineIds);
+            $.ajax({
+                url: '{{ url('cart/remove-from-cart') }}',
+                method: "DELETE",
+                data: {_token: '{{ csrf_token() }}', id: medicineIds},
+                success: function (response) {
+                    console.log(response);
+                    window.location.reload();
+                }
+            });
+            // window.location = "/cart";
         }
 
 

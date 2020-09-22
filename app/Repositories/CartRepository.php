@@ -59,9 +59,20 @@ class CartRepository
 
     public function delete($request)
     {
-        $item = Cart::find($request->id);
+        if (is_array( $request->id)) {
+//            return $request->id;
+            foreach ($request->id as $id) {
+                $item = Cart::find($id);
 
-        $item->delete();
+                $item->delete();
+            }
+            return true;
+        }
+        else {
+            $item = Cart::find($request->id);
+
+            $item->delete();
+        }
 
     }
 
