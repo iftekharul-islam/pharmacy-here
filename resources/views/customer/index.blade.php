@@ -13,7 +13,7 @@
                     <div class="nav flex-column nav-pills my-dashboard" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="true">My Account</a>
                         <a class="nav-link" id="v-pills-orders-tab" data-toggle="pill" href="#v-pills-orders" role="tab" aria-controls="v-pills-orders" aria-selected="false">My Orders</a>
-                        <a class="nav-link" id="v-pills-wishlists-tab" data-toggle="pill" href="#v-pills-wishlists" role="tab" aria-controls="v-pills-wishlists" aria-selected="false">My Wishlists</a>
+                        <a class="nav-link" id="v-pills-wishlists-tab" data-toggle="pill" href="#v-pills-wishlists" role="tab" aria-controls="v-pills-wishlists" aria-selected="false">My Prescription</a>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -143,7 +143,78 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade my-wishlists" id="v-pills-wishlists" role="tabpanel" aria-labelledby="v-pills-wishlists-tab">...</div>
+                        <div class="tab-pane fade my-wishlists" id="v-pills-wishlists" role="tabpanel" aria-labelledby="v-pills-wishlists-tab">
+                            <h2 class="my-dashboard-title">My Prescriptions</h2>
+                            <div class="my-order-list">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary float-right mb-2" data-toggle="modal" data-target="#exampleModal">
+                                    + Prescription
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Add Prescription</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="post" action="{{ route('prescription.store') }}" enctype="multipart/form-data">
+                                                @csrf
+                                            <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="recipient-name" class="col-form-label">Customer name:</label>
+                                                        <input type="text" name="patient_name" class="form-control" id="recipient-name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="message-text" class="col-form-label">Doctor name:</label>
+                                                        <input type="text" class="form-control" name="doctor_name" id="message-text">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="message-text" class="col-form-label">Prescription date:</label>
+                                                        <input type="date" class="form-control" name="prescription_date" id="message-text">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="message-text" class="col-form-label">Prescription Image:</label>
+                                                        <input type="file" name="url">
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Patient Name</th>
+                                            <th scope="col">Doctor name</th>
+                                            <th scope="col">Prescription date</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($prescriptions as $prescription )
+                                            <tr>
+                                                <td scope="row">{{ $prescription->url }}</td>
+                                                <td>{{ $prescription->patient_name }}</td>
+                                                <td>{{ $prescription->doctor_name }}</td>
+                                                <td>{{ $prescription->prescription_date }}</td>
+                                                <td>Canceled</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
