@@ -27,6 +27,8 @@ Route::post('logout','LoginController@logout')->name('customer.logout');
 Route::get('dashboard','CustomerController@index')->name('customer.details');
 Route::post('update/customer/{id}','CustomerController@update')->name('customer.update');
 
+Route::post('store/prescribe','CustomerController@prescriptionStore')->name('prescription.store');
+
 //Route::get('customer/name','LoginController@registerForm')->name('customer.name');
 //Route::post('customer/name/update','LoginController@customerNameUpdate')->name('customer.nameUpdate');
 

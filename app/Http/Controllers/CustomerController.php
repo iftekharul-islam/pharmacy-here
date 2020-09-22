@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Address\Entities\CustomerAddress;
+use Modules\Prescription\Entities\Models\Prescription;
+use Modules\Prescription\Http\Requests\CreatePrescriptionRequest;
 use Modules\User\Entities\Models\User;
 use Modules\User\Repositories\CustomerRepository;
 
@@ -25,7 +28,8 @@ class CustomerController extends Controller
     public function index()
     {
         $data = $this->repository->userDetails(Auth::user()->id);
-        return view('customer.index', compact('data'));
+        $prescriptions = Prescription::all();
+        return view('customer.index', compact('data', 'prescriptions'));
     }
 
     /**
@@ -78,10 +82,21 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update (Request $request, $id)
     {
         $this->repository->userDetailsUpdate($request, $id);
         return redirect()->back()->with('success', 'User profile successfully updated');
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function prescriptionStore (Request $request) {
+        $data = $request->only(['patient_name', 'doctor_name', 'prescription_date', 'url', 'user_id']);
+        $data['user_id'] = Auth::user()->id;
+        Prescription::create($data);
+
+        return redirect()->back()->with('success', 'Prescription successfully Added');
     }
 
     /**
