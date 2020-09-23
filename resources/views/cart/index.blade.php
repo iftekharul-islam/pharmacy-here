@@ -53,12 +53,12 @@
                                     @if($data)
                                         @foreach($data as $id => $details)
 
-                                            <?php $total += $details['amount'] * $details['quantity'] ?>
+                                            <?php $total += $details['product']['purchase_price'] * $details['quantity'] ?>
                                             <tr>
                                                 <td scope="row">{{ $details['product']['name'] }}</td>
-                                                <td>৳ {{ $details['amount'] }}</td>
+                                                <td>৳ {{ $details['product']['purchase_price'] }}</td>
                                                 <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}"></td>
-                                                <td data-th="Subtotal" class="text-center">৳ {{ $details->amount * $details->quantity }}</td>
+                                                <td data-th="Subtotal" class="text-center">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>
                                                 <td>
                                                     <div class="actions" data-th="">
                                                         <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>
@@ -74,7 +74,9 @@
                                         <td></td>
                                         <td></td>
                                         <td>Total ৳{{ $total }}</td>
-                                        <td><a href="{{ route('checkout.preview')  }}" class="btn--primary d-block cart-btn">Checkout</a></td>
+                                        <td>
+                                            <a id="submit" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -84,89 +86,12 @@
             </div>
         </div>
     </div>
-{{--    <div class="container">--}}
-{{--        <div class="row justify-content-center">--}}
-{{--            <div class="col-md-10">--}}
-{{--                <div class="card">--}}
-{{--                    <div class="card-header">Cart List</div>--}}
-{{--                        <div class="card-body">--}}
-{{--                            <table id="cart" class="table table-hover table-condensed">--}}
-{{--                                <thead>--}}
-{{--                                    <tr>--}}
-{{--                                        <th style="width:50%">Product</th>--}}
-{{--                                        <th style="width:10%">Price</th>--}}
-{{--                                        <th style="width:8%">Quantity</th>--}}
-{{--                                        <th style="width:22%" class="text-center">Subtotal</th>--}}
-{{--                                        <th style="width:10%"></th>--}}
-{{--                                    </tr>--}}
-{{--                                </thead>--}}
-{{--                                <tbody>--}}
-
-{{--                                    <?php $total = 0 ?>--}}
-{{--                                    @guest--}}
-{{--                                        @if(session('cart'))--}}
-{{--                                            @foreach(session('cart') as $id => $details)--}}
-
-{{--                                                <?php $total += $details['amount'] * $details['quantity'] ?>--}}
-
-{{--                                                <tr>--}}
-{{--                                                    <td data-th="Product">{{ $details['product_name'] }}</td>--}}
-{{--                                                    <td data-th="Price">${{ $details['amount'] }}</td>--}}
-{{--                                                    <td data-th="Quantity">--}}
-{{--                                                        <input type="number" value="{{ $details['quantity'] }}" min="{{ $details['minQuantity'] }}" class="form-control quantity" />--}}
-{{--                                                    </td>--}}
-{{--                                                    <td data-th="Subtotal" class="text-center">${{ $details['amount'] * $details['quantity'] }}</td>--}}
-{{--                                                    <td class="actions" data-th="">--}}
-{{--                                                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button>--}}
-{{--                                                        <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}"><i class="fa fa-trash-o"></i></button>--}}
-{{--                                                    </td>--}}
-{{--                                                </tr>--}}
-{{--                                            @endforeach--}}
-{{--                                        @endif--}}
-{{--                                    @else--}}
-{{--                                        @if($data)--}}
-{{--                                            @foreach($data as $id => $details)--}}
-
-{{--                                                <?php $total += $details['amount'] * $details['quantity'] ?>--}}
-
-{{--                                                <tr>--}}
-{{--                                                    <td class="nomargin">{{ $details->product->name }}</td>--}}
-{{--                                                    <td data-th="Price">${{ $details->amount }}</td>--}}
-{{--                                                    <td data-th="Quantity">--}}
-{{--                                                        <input type="number" value="{{ $details->quantity }}"  min="{{ $details->product->min_order_qty }}" class="form-control quantity" />--}}
-{{--                                                    </td>--}}
-{{--                                                    <td data-th="Subtotal" class="text-center">${{ $details->amount * $details->quantity }}</td>--}}
-{{--                                                    <td class="actions" data-th="">--}}
-{{--                                                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>--}}
-{{--                                                        <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $details->id  }}"><i class="fa fa-trash-o"></i></button>--}}
-{{--                                                    </td>--}}
-{{--                                                </tr>--}}
-{{--                                            @endforeach--}}
-{{--                                        @endif--}}
-{{--                                    @endguest--}}
-{{--                                </tbody>--}}
-{{--                                <tfoot>--}}
-{{--                                    <tr>--}}
-{{--                                        <td><a href="{{ route('product-list')  }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>--}}
-{{--                                        <td colspan="2" class="hidden-xs"></td>--}}
-{{--                                        <td class="hidden-xs text-center"><strong>Total ${{ $total }}</strong></td>--}}
-{{--                                        <td><a href="{{ route('checkout.preview')  }}" class="btn btn-warning">checkout</a></td>--}}
-{{--                                    </tr>--}}
-{{--                                </tfoot>--}}
-{{--                            </table>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--    </div>--}}
 
 @endsection
 
 
 @section('js')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script type="text/javascript">
+    <script>
 
         $(".update-cart").click(function (e) {
             e.preventDefault();
@@ -199,6 +124,116 @@
                 });
             }
         });
+
+
+
+        function checkMedicine(data){
+            let medicineData = data;
+
+            var preOrderMedicine = isPreOrderMedicine(medicineData);
+            if (preOrderMedicine) {
+                preOrderMedicineAlert();
+                return;
+            }
+
+            var prescribedMedicine = isPrescribedMedicine(medicineData);
+            if (prescribedMedicine) {
+                isPrescribedMedicineAlert(medicineData);
+                return;
+            }
+            window.location = "/checkout/preview";
+        }
+
+        function isPreOrderMedicine(medicines) {
+            let count = 0;
+            $.each(medicines, function(key, value) {
+                if (value.product.is_pre_order) {
+                    count++;
+                }
+            });
+
+            return !!count;
+
+        }
+
+        function preOrderMedicineAlert() {
+            Swal.fire({
+                title: "Pre-order Medicine",
+                text: "You have a pre-order medicine in cart. It will take 3-5 days to deliver, do you want to continue?",
+                icon: "warning",
+                // buttons: true,
+                // dangerMode: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    window.location = "/checkout/preview"
+                }
+                if (result.isDismissed) {
+
+                }
+            });
+
+        }
+
+        function isPrescribedMedicine(medicines) {
+            let count = 0;
+            $.each(medicines, function(key, value) {
+                if (value.product.is_prescripted) {
+                    count++;
+                }
+            });
+
+            return !!count;
+
+        }
+
+        function isPrescribedMedicineAlert(medicines) {
+            Swal.fire({
+                title: "Notice",
+                text: "You have a prescribed medicine in cart. Do you want to upload prescription?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Remove prescribed medicine',
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    window.location = "/checkout/prescription/create";
+                }
+                if (result.isDismissed) {
+                    removePrescribedMedicine(medicines);
+                }
+            });
+        }
+
+        function removePrescribedMedicine(medicines) {
+            var medicineIds = [];
+            $.each(medicines, function(key, value) {
+                if (value.product.is_prescripted) {
+                    medicineIds.push(value.id);
+                }
+            });
+
+            $.ajax({
+                url: '{{ url('cart/remove-from-cart') }}',
+                method: "DELETE",
+                data: {_token: '{{ csrf_token() }}', id: medicineIds},
+                success: function (response) {
+                    console.log(response);
+                    // window.location.reload();
+                    window.location = "/checkout/preview";
+                }
+            });
+        }
+
+
 
     </script>
 

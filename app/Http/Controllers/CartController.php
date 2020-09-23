@@ -20,6 +20,7 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->getCartByCustomer(Auth::user()->id);
+//            return $data;
 
             session()->put('cartCount', count($data) ?? '');
         }
@@ -113,10 +114,12 @@ class CartController extends Controller
 
     public function remove(Request $request)
     {
-        if($request->id) {
+
+        if($request->id || is_array($request->id)) {
+
             if (Auth::user()) {
 
-                $this->repository->delete($request);
+                return $this->repository->delete($request);
             }
             else {
 
