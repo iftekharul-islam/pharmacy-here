@@ -229,9 +229,4 @@ class CheckoutController extends Controller
     {
         return 'Cancel';
     }
-
-    public function prescriptionCreate()
-    {
-        return view('prescription.create');
-    }
 }

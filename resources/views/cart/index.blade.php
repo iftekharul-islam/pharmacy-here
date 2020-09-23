@@ -205,7 +205,7 @@
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    window.location = "/checkout/prescription/create";
+                    window.location = "/prescription/create";
                 }
                 if (result.isDismissed) {
                     removePrescribedMedicine(medicines);
