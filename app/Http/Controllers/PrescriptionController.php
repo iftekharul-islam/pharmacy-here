@@ -2,32 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Modules\Address\Entities\CustomerAddress;
-use Modules\Orders\Entities\Models\Order;
-use Modules\Orders\Repositories\OrderRepository;
 use Modules\Prescription\Entities\Models\Prescription;
 use Modules\Prescription\Http\Requests\CreatePrescriptionRequest;
-use Modules\Prescription\Repositories\PrescriptionRepository;
-use Modules\User\Entities\Models\User;
-use Modules\User\Repositories\CustomerRepository;
 
-class CustomerController extends Controller
+class PrescriptionController extends Controller
 {
-    private $repository;
-    private $prescriptionRepository;
-    private $orderRepository;
-
-    public function __construct(CustomerRepository $repository, PrescriptionRepository $prescriptionRepository, OrderRepository $orderRepository)
-    {
-        $this->repository = $repository;
-        $this->prescriptionRepository = $prescriptionRepository;
-        $this->orderRepository = $orderRepository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -35,11 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $data = $this->repository->userDetails(Auth::user()->id);
-        $prescriptions = $this->prescriptionRepository->getCustomerPrescription(Auth::user()->id);
-        $orders = $this->orderRepository->orderListByUser(Auth::user()->id);
-
-        return view('customer.index', compact('data', 'prescriptions', 'orders'));
+        //
     }
 
     /**
@@ -58,9 +36,14 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePrescriptionRequest $request)
     {
-        //
+        $data = $request->only(['patient_name', 'doctor_name', 'prescription_date', 'url', 'user_id']);
+        $data['user_id'] = Auth::user()->id;
+        $data['url'] = Storage::disk('public')->put('prescription', $request->file('url'));
+        Prescription::create($data);
+
+        return redirect()->back()->with('success', 'Prescription successfully Added');
     }
 
     /**
@@ -92,10 +75,9 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update (Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $this->repository->userDetailsUpdate($request, $id);
-        return redirect()->back()->with('success', 'User profile successfully updated');
+        //
     }
 
     /**
@@ -106,6 +88,9 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $prescription = Prescription::find($id);
+        Storage::disk('public')->delete($prescription->url);
+        $prescription->delete();
+        return redirect()->back()->with('success', 'Prescription successfully Deleted');
     }
 }

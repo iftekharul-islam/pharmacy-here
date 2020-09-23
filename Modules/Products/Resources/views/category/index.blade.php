@@ -48,7 +48,7 @@
                             <form id="delete-form-{{ $loop->index }}" action="{{ route('category.destroy', $item['id']) }}"
                                   method="post"
                                   class="form-horizontal d-inline">
-                                {{--                            @method('DELETE')--}}
+{{--                                                            @method('DELETE')--}}
                                 {{ csrf_field() }}
                                 <input type="hidden" name="_method" value="DELETE">
                                 <div class="btn-group">
