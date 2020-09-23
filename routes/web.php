@@ -38,12 +38,16 @@ Route::get('/medicine/{medicine_id}',  'ProductsController@show')->name('single-
 Route::get('/search/medicine-name',  'ProductsController@getProductName');
 
 Route::group(['middleware' => ['customerAuth']], function () {
+
     Route::group(['prefix' => 'checkout'], function () {
         Route::get('preview', 'CheckoutController@index')->name('checkout.preview');
         Route::post('check-preview', 'CheckoutController@check')->name('checkout.check');
         Route::post('store', 'CheckoutController@store')->name('checkout.store');
+
+        Route::get('prescription/create', 'CheckoutController@prescriptionCreate');
     });
 });
+
 // Cart
 Route::group(['prefix' => 'cart'], function () {
     Route::get('/', 'CartController@index')->name('cart.index');

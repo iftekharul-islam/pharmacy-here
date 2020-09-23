@@ -6,6 +6,7 @@ use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Address\Repositories\AddressRepository;
+use Modules\Locations\Repositories\LocationRepository;
 use Modules\Orders\Repositories\DeliveryChargeRepository;
 use Modules\Products\Repositories\ProductRepository;
 use Modules\User\Entities\Models\User;
@@ -16,12 +17,14 @@ class CheckoutController extends Controller
     private $addressRepository;
     private $cartRepository;
     private $deliveryRepository;
+    private $locationRepository;
 
-    public function __construct(CartRepository $cartRepository,AddressRepository $addressRepository, DeliveryChargeRepository $deliveryRepository)
+    public function __construct(CartRepository $cartRepository, AddressRepository $addressRepository, DeliveryChargeRepository $deliveryRepository, LocationRepository $locationRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->addressRepository = $addressRepository;
         $this->deliveryRepository = $deliveryRepository;
+        $this->locationRepository = $locationRepository;
     }
     /**
      * Display a listing of the resource.
@@ -32,16 +35,29 @@ class CheckoutController extends Controller
     {
         $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
-        $addresses = $this->addressRepository->get(Auth::user()->id);
+        $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
+        $isPreOrderMedicine = $this->isPreOrderMedicine($data);
+        $allLocations = $this->locationRepository->getLocation();
         $user = User::find(Auth::guard('web')->user()->id);
 
 //        $temp = [
 //            'data' => $data,
-//            'delivery_charge' => $delivery_charge
+//            'addresses' => $addresses,
+//            'delivery_charge' => $delivery_charge,
+//            'isPreOrderMedicine' => $isPreOrderMedicine,
+//            'allLocations' => $allLocations,
 //        ];
 //        return $temp;
 
-        return view('checkout.index', compact('data', 'user', 'addresses', 'delivery_charge'));
+        return view('checkout.index', compact('data', 'user', 'addresses', 'delivery_charge', 'isPreOrderMedicine', 'allLocations'));
+    }
+    private function isPreOrderMedicine($medicines) {
+        foreach ($medicines as $item) {
+            if ($item['product']['is_pre_order']) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function check(Request $request)
@@ -212,5 +228,10 @@ class CheckoutController extends Controller
     public function paymentCancel()
     {
         return 'Cancel';
+    }
+
+    public function prescriptionCreate()
+    {
+        return view('prescription.create');
     }
 }

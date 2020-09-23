@@ -12,4 +12,9 @@ class LocationRepository
     {
         return District::orderBy('name', 'ASC')->get();
     }
+
+    public function getLocation()
+    {
+        return District::with('thanas.areas')->orderBy('name', 'ASC')->get();
+    }
 }

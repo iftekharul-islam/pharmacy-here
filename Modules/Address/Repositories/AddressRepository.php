@@ -63,4 +63,9 @@ class AddressRepository
 
         return responseData('Address has been deleted.');
     }
+
+    public function getCustomerAddress($user_id)
+    {
+        return CustomerAddress::with('area.thana.district')->where('user_id', $user_id)->get();
+    }
 }
