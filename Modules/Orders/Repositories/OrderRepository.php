@@ -42,10 +42,14 @@ class OrderRepository
      */
     public function byCustomerId($customer_id)
     {
-        // return '';
         return Order::with(['orderItems.product', 'address.area.thana.district', 'pharmacy'])
             ->where('customer_id', $customer_id)
             ->paginate(20);
+    }
+
+    public function orderListByUser($id)
+    {
+        return Order::where('id', $id)->get();
     }
 
     public function get($id)
