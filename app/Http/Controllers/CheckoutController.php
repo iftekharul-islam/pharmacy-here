@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Address\Repositories\AddressRepository;
 use Modules\Locations\Repositories\LocationRepository;
 use Modules\Orders\Repositories\DeliveryChargeRepository;
+use Modules\Orders\Repositories\OrderRepository;
 use Modules\Products\Repositories\ProductRepository;
 use Modules\User\Entities\Models\User;
 
@@ -18,13 +19,19 @@ class CheckoutController extends Controller
     private $cartRepository;
     private $deliveryRepository;
     private $locationRepository;
+    private $orderRepository;
 
-    public function __construct(CartRepository $cartRepository, AddressRepository $addressRepository, DeliveryChargeRepository $deliveryRepository, LocationRepository $locationRepository)
+    public function __construct(CartRepository $cartRepository,
+                                AddressRepository $addressRepository,
+                                DeliveryChargeRepository $deliveryRepository,
+                                LocationRepository $locationRepository,
+                                OrderRepository $orderRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->addressRepository = $addressRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->locationRepository = $locationRepository;
+        $this->orderRepository = $orderRepository;
     }
     /**
      * Display a listing of the resource.
@@ -62,6 +69,7 @@ class CheckoutController extends Controller
 
     public function check(Request $request)
     {
+        return $request->all();
         $data = $request->only([
             'phone_number',
             'delivery_type',
@@ -79,13 +87,22 @@ class CheckoutController extends Controller
             'deliveryDate'
         ]);
 
+        if (session()->has('prescriptions')) {
+            $data['prescriptions'] = session()->get('prescriptions');
+            session()->forget('prescriptions');
+
+        }
+
         return $data;
         if ($request->payType == 2){
 //            return 'its COD';
             $this->payment($request);
         }
 
+        $this->orderRepository->create($data, Auth::guard('web')->user()->id);
 
+
+        session()->forget('prescriptions');
     }
 
     /**
