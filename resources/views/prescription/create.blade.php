@@ -74,7 +74,7 @@
                         </div>
                         <div class="table-responsive">
                         @if (count($prescriptions) > 0)
-                            <form action="">
+                            <form method="post" action="{{ route('prescriptions.id') }}">
                                 @csrf
                                 <table class="table table-borderless">
                                     <thead class="thead-light">
@@ -90,7 +90,7 @@
                                     <tbody>
                                         @foreach($prescriptions as $prescription )
                                             <tr>
-                                                <td><input type="checkbox" name="prescription_id" value="{{ $prescription->id }}"></td>
+                                                <td><input type="checkbox" name="prescription_id[]" value="{{ $prescription->id }}"></td>
                                                 <td><img width="55px" height="60px" src="{{ asset('storage/'. $prescription->url) }}" alt=""></td>
                                                 <td>{{ $prescription->patient_name }}</td>
                                                 <td>{{ $prescription->doctor_name }}</td>
@@ -126,19 +126,19 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('prescription.destroy', $prescription->id) }}"
-                                                          method="post"
-                                                          class="form-horizontal d-inline">
-                                                        @method('DELETE')
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <div class="btn-group">
-                                                            <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                                    class="badge btn-danger">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </form>
+{{--                                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('prescription.destroy', $prescription->id) }}"--}}
+{{--                                                          method="post"--}}
+{{--                                                          class="form-horizontal d-inline">--}}
+{{--                                                        @method('DELETE')--}}
+{{--                                                        {{ csrf_field() }}--}}
+{{--                                                        <input type="hidden" name="_method" value="DELETE">--}}
+{{--                                                        <div class="btn-group">--}}
+{{--                                                            <button onclick="removeItem({{ $loop->index }})" type="button"--}}
+{{--                                                                    class="badge btn-danger">--}}
+{{--                                                                <i class="fas fa-trash"></i>--}}
+{{--                                                            </button>--}}
+{{--                                                        </div>--}}
+{{--                                                    </form>--}}
                                                 </td>
                                             </tr>
                                         @endforeach

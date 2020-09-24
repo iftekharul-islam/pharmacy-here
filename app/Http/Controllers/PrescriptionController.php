@@ -39,6 +39,17 @@ class PrescriptionController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function selectedId(Request $request)
+    {
+        session()->put('prescriptions', $request->prescription_id);
+
+        return redirect()->route('checkout.preview');
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
