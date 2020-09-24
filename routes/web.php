@@ -27,6 +27,7 @@ Route::post('logout','LoginController@logout')->name('customer.logout');
 Route::get('dashboard','CustomerController@index')->name('customer.details');
 Route::post('update/customer/{id}','CustomerController@update')->name('customer.update');
 
+Route::get('prescription/create', 'PrescriptionController@create');
 Route::post('store/prescription','PrescriptionController@store')->name('prescription.store');
 Route::delete('prescription/{id}', 'PrescriptionController@destroy')->name('prescription.destroy');
 
@@ -46,8 +47,6 @@ Route::group(['middleware' => ['customerAuth']], function () {
         Route::get('preview', 'CheckoutController@index')->name('checkout.preview');
         Route::post('check-preview', 'CheckoutController@check')->name('checkout.check');
         Route::post('store', 'CheckoutController@store')->name('checkout.store');
-
-        Route::get('prescription/create', 'CheckoutController@prescriptionCreate');
     });
 });
 

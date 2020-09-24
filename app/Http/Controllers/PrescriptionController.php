@@ -7,9 +7,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Modules\Prescription\Entities\Models\Prescription;
 use Modules\Prescription\Http\Requests\CreatePrescriptionRequest;
+use Modules\Prescription\Repositories\PrescriptionRepository;
 
 class PrescriptionController extends Controller
 {
+    private $prescriptionRepository;
+
+    public function __construct(PrescriptionRepository $prescriptionRepository)
+    {
+        $this->prescriptionRepository = $prescriptionRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +34,8 @@ class PrescriptionController extends Controller
      */
     public function create()
     {
-        //
+        $prescriptions = $this->prescriptionRepository->getCustomerPrescription(Auth::user()->id);
+        return view('prescription.create', compact('prescriptions'));
     }
 
     /**
