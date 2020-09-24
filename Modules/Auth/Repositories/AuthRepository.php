@@ -244,7 +244,7 @@ class AuthRepository
 
         $user->save();
 
-        $role = Role::where('name', $request->role)->first();
+        $role = Role::where('name', 'customer')->first();
 
         if ($user && $role) {
             $user->assignRole($role);
@@ -278,7 +278,7 @@ class AuthRepository
 
         $user->save();
 
-        $role = Role::where('name', $request->role)->first();
+        $role = Role::where('name', 'customer')->first();
 
         if ($user && $role) {
             $user->assignRole($role);
