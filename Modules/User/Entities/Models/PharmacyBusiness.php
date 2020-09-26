@@ -42,4 +42,5 @@ class PharmacyBusiness extends Model
     {
         return $this->belongsTo(BankName::class, 'bank_id', 'id');
     }
+
 }
