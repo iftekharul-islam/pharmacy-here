@@ -10,5 +10,6 @@
     "Prescription": true,
     "Address": true,
     "Notice": true,
-    "Resources": true
+    "Resources": true,
+    "Delivery": true
 }

@@ -352,6 +352,22 @@ return [
             'icon'    => 'fas fa-store-alt',
             'url'     => 'bank'
         ],
+        [
+            'text'    => 'Delivery Time',
+            'icon'    => 'fas fa-map',
+            'submenu' => [
+                [
+                    'text' => 'Normal Delivery',
+                    'icon_color' => 'cyan',
+                    'url'  => 'locations/divisions',
+                ],
+                [
+                    'text' => 'Express Delivery',
+                    'icon_color' => 'cyan',
+                    'url'  => 'locations/districts',
+                ],
+            ],
+        ],
 //        ['header' => 'account_settings'],
 //        [
 //            'text' => 'profile',
