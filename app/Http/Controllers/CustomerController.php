@@ -64,6 +64,19 @@ class CustomerController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addressStore (Request $request) {
+
+        $data = $request->only(['area_id', 'address', 'user_id']);
+        $data['user_id'] = Auth::user()->id;
+        CustomerAddress::create($data);
+
+        return redirect()->back()->with('success', 'Address added successfully!');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

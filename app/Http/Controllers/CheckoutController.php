@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\CartRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Address\Repositories\AddressRepository;
@@ -69,7 +70,8 @@ class CheckoutController extends Controller
 
     public function check(Request $request)
     {
-        return $request->all();
+            return $request->all();
+
         $data = $request->only([
             'phone_number',
             'delivery_type',
@@ -84,8 +86,21 @@ class CheckoutController extends Controller
             'order_items',
             'deliveryMethod',
             'deliveryMethod',
-            'deliveryDate'
+            'delivery_date',
+            'delivery_time',
         ]);
+        if ($request->delivery_charge_amount == 1) {
+            $data['delivery_date'] = $request->normal_delivery_date;
+            $data['delivery_time'] = $request->normal_delivery_time;
+        }else {
+            $data['delivery_date'] = $request->express_delivery_date;
+            $data['delivery_time'] = $request->express_delivery_time;
+        }
+
+        if (isset($data['delivery_date'])){
+            $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
+        }
+        return $data;
 
         if (session()->has('prescriptions')) {
             $data['prescriptions'] = session()->get('prescriptions');
