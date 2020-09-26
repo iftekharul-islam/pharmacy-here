@@ -16,7 +16,7 @@ class UpdatePharmacyBankInfoRequest extends FormRequest
         return [
             'bank_account_name' => 'required|min:3',
             'bank_account_number' => 'required|min:3',
-            'bank_name' => 'required|min:3',
+            'bank_id' => 'required',
             'bank_brunch_name' => 'required|min:3'
         ];
     }

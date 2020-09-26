@@ -37,4 +37,9 @@ class PharmacyBusiness extends Model
     {
         return $this->belongsTo(Area::class, 'area_id', 'id');
     }
+
+    public function bank()
+    {
+        return $this->belongsTo(BankName::class, 'bank_id', 'id');
+    }
 }
