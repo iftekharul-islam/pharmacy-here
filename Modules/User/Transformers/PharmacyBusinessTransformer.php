@@ -49,5 +49,4 @@ class PharmacyBusinessTransformer extends TransformerAbstract
     {
         return $this->item($item->bank, new BankTransformer());
     }
-
 }

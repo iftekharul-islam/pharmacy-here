@@ -27,7 +27,6 @@ class AddBankIdInPharmacyBusinessesTable extends Migration
     {
         Schema::table('pharmacy_businesses', function (Blueprint $table) {
             $table->dropColumn('bank_id');
-
         });
     }
 }
