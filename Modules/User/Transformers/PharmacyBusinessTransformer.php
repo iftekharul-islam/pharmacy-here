@@ -47,6 +47,8 @@ class PharmacyBusinessTransformer extends TransformerAbstract
 
     public function includeBank(PharmacyBusiness $item)
     {
-        return $this->item($item->bank, new BankTransformer());
+        if ($item->bank_id != null) {
+            return $this->item($item->bank, new BankTransformer());
+        }
     }
 }
