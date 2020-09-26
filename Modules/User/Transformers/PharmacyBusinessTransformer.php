@@ -11,7 +11,7 @@ use Modules\User\Entities\Models\PharmacyBusiness;
 class PharmacyBusinessTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
-        'weekends', 'area'
+        'weekends', 'area', 'bank'
     ];
     public function transform(PharmacyBusiness $item)
     {
@@ -21,7 +21,7 @@ class PharmacyBusinessTransformer extends TransformerAbstract
             'pharmacy_address'          => $item->pharmacy_address,
             'bank_account_name'         => $item->bank_account_name,
             'bank_account_number'       => $item->bank_account_number,
-            'bank_name'                 => $item->bank_name,
+            'bank_id'                   => $item->bank_id,
             'bank_brunch_name'          => $item->bank_brunch_name,
             'bkash_number'              => $item->bkash_number,
             'nid_img_path'              => $item->nid_img_path,
@@ -43,6 +43,11 @@ class PharmacyBusinessTransformer extends TransformerAbstract
     public function includeArea(PharmacyBusiness $item)
     {
         return $this->item($item->area, new AreaTransformer());
+    }
+
+    public function includeBank(PharmacyBusiness $item)
+    {
+        return $this->item($item->bank, new BankTransformer());
     }
 
 }

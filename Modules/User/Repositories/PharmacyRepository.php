@@ -218,9 +218,9 @@ class PharmacyRepository
             $pharmacyBusinessInfo->bank_account_number = $request->bank_account_number;
         }
 
-        if ($request->has('bank_name')) {
-            logger($request->bank_name);
-            $pharmacyBusinessInfo->bank_name = $request->bank_name;
+        if ($request->has('bank_id')) {
+            logger($request->bank_id);
+            $pharmacyBusinessInfo->bank_id = $request->bank_id;
         }
 
         if ($request->has('bank_brunch_name')) {

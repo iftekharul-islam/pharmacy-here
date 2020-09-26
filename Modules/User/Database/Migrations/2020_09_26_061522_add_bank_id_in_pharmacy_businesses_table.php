@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangeBankIdInPharmacyBusiness extends Migration
+class AddBankIdInPharmacyBusinessesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,7 @@ class ChangeBankIdInPharmacyBusiness extends Migration
     public function up()
     {
         Schema::table('pharmacy_businesses', function (Blueprint $table) {
-            $table->unsignedBigInteger('bank_name')->nullable()->change();
-            $table->renameColumn('bank_name', 'bank_id');
-
+            $table->unsignedBigInteger('bank_id')->nullable();
         });
     }
 
@@ -28,8 +26,7 @@ class ChangeBankIdInPharmacyBusiness extends Migration
     public function down()
     {
         Schema::table('pharmacy_businesses', function (Blueprint $table) {
-            $table->string('bank_id')->nullable()->change();
-            $table->renameColumn('bank_id' , 'bank_name');
+            $table->dropColumn('bank_id');
 
         });
     }
