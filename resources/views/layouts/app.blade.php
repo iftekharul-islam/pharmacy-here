@@ -194,6 +194,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- moment time -->
+    <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
     <!-- owl -->
 {{--    <script src="js/owl.carousel.min.js"></script>--}}
     <!-- custom jquery -->

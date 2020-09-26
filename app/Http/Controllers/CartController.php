@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Modules\Address\Entities\CustomerAddress;
 use Modules\Products\Entities\Model\Product;
 
 class CartController extends Controller
