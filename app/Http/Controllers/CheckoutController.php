@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Repositories\CartRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Address\Repositories\AddressRepository;
 use Modules\Locations\Repositories\LocationRepository;
+use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\OrderItems;
+use Modules\Orders\Entities\Models\OrderPrescription;
 use Modules\Orders\Repositories\DeliveryChargeRepository;
 use Modules\Orders\Repositories\OrderRepository;
 use Modules\Products\Repositories\ProductRepository;
@@ -42,6 +46,7 @@ class CheckoutController extends Controller
     public function index()
     {
         $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
+//        return $data;
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
@@ -70,31 +75,40 @@ class CheckoutController extends Controller
 
     public function check(Request $request)
     {
-            return $request->all();
+//        return $request->cart_id;
 
         $data = $request->only([
             'phone_number',
+            'payment_type',
             'delivery_type',
+            'delivery_charge',
             'delivery_method',
             'status',
-            'delivery_charge',
             'amount',
             'order_date',
             'pharmacy_id',
             'shipping_address_id',
             'prescriptions',
-            'order_items',
             'delivery_method',
             'delivery_date',
+            'customer_id',
             'delivery_time',
+            'note'
         ]);
-        if ($request->delivery_type === 1) {
+
+        $data['order_no'] = $this->generateOrderNo();
+        $data['pharmacy_id'] = 1;
+        $data['order_date'] = Carbon::today();
+        $data['customer_id'] = Auth::user()->id;
+        $data['notes'] = "Its a sample" ;
+
+        if ($request->delivery_charge === 1) {
             $data['delivery_method'] = 'normal';
         } else {
             $data['delivery_method'] = 'express';
         }
 
-        if ($request->delivery_charge_amount == 1) {
+        if ($request->delivery_charge == 1) {
             $data['delivery_date'] = $request->normal_delivery_date;
             $data['delivery_time'] = $request->normal_delivery_time;
         }else {
@@ -105,24 +119,65 @@ class CheckoutController extends Controller
         if (isset($data['delivery_date'])){
             $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
         }
-        return $data;
+//        return $data;
+        $order = Order::create($data);
 
-        if (session()->has('prescriptions')) {
-            $data['prescriptions'] = session()->get('prescriptions');
-            session()->forget('prescriptions');
 
+        if ($request->order_items) {
+            $items = json_decode($request->order_items, true);
+            foreach($items as $item) {
+                OrderItems::create([
+                    'product_id' => $item['product_id'],
+                    'rate' => $item['product']['purchase_price'],
+                    'quantity' => $item['quantity'],
+                    'order_id' => $order->id,
+                ]);
+            }
         }
 
-        return $data;
-        if ($request->payType == 2){
+        if (session()->has('prescriptions')) {
+            $prescriptions = session()->get('prescriptions');
+            foreach($prescriptions as $item) {
+                OrderPrescription::create([
+                    'prescription_id' => $item,
+                    'order_id' => $order->id,
+                ]);
+            }
+            session()->forget('prescriptions');
+        }
+
+        foreach ($request->cart_ids as $id) {
+            $item = Cart::find($id);
+            $item->delete();
+        }
+        session()->forget('prescriptions');
+        session()->forget('cartCount');
+
+        return redirect()->route('home')->with('success', 'Order successfully placed');
+        if ($request->payment_type == 2){
 //            return 'its COD';
             $this->payment($request);
         }
 
-        $this->orderRepository->create($data, Auth::guard('web')->user()->id);
+//        $this->orderRepository->create($data, Auth::guard('web')->user()->id);
 
+    }
 
-        session()->forget('prescriptions');
+    public function generateOrderNo()
+    {
+        $latestOrder = Order::orderBy('id', 'desc')->first();
+        if ($latestOrder) {
+            $lastNumber = explode('-', $latestOrder->order_no);
+            $lastNumber = preg_replace("/[^0-9]/", "", end($lastNumber) );
+            $orderNo =  date('Y').'-'.date('m').'-'.str_pad( (int) $lastNumber + 1 , 4, '0', STR_PAD_LEFT);
+            if (Order::where('order_no', $orderNo)->count() > 0) {
+                $this->generateOrderNo();
+            }
+
+            return $orderNo;
+        }
+
+        return date('Y').'-'.date('m').'-001';
     }
 
     /**

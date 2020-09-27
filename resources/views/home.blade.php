@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <!-- Medicine section -->
     <section class="medicine-search-section" style="background: url(images/main-bg.png);">
         <div class="container">

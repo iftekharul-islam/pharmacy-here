@@ -57,7 +57,7 @@
                                             <tr>
                                                 <td scope="row">{{ $details['product']['name'] }}</td>
                                                 <td>৳ {{ $details['product']['purchase_price'] }}</td>
-                                                <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}"></td>
+                                                <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}" min="{{ $details['product']['min_order_qty'] }}"></td>
                                                 <td data-th="Subtotal" class="text-center">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>
                                                 <td>
                                                     <div class="actions" data-th="">

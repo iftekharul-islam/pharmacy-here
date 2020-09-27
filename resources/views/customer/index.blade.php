@@ -27,6 +27,7 @@
                             <h2 class="my-dashboard-title">My Profile</h2>
                             <form method="post" action="{{ route('customer.update', $data->id) }}">
                             @csrf
+                                <input type="hidden" name="addressId" value="{{ $data->customerAddress[0]->id }}">
                                 <div class="my-order-list my-profile">
                                     <div class="table-responsive">
                                         <table>
@@ -49,7 +50,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>Alter Contact:</b></td>
-                                                <td class="save-value">{{ $data->phone_number }}</td>
+                                                <td class="save-value">{{ $data->alternative_phone_number }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="alternative_phone_number" value="{{ $data->alternative_phone_number }}"></td>
                                             </tr>
                                             <tr>
@@ -122,8 +123,8 @@
                                                 @csrf
                                             <div class="modal-body">
                                                     <div class="form-group">
-                                                        <label for="recipient-name" class="col-form-label">Customer name:</label>
-                                                        <input type="text" name="patient_name" class="form-control" id="recipient-name" required>
+                                                        <label class="col-form-label">Patient name:</label>
+                                                        <input type="text" name="patient_name" class="form-control">
                                                         @if ($errors->has('patient_name'))
                                                             <span class="text-danger">
                                                                 <strong>{{ $errors->first('patient_name') }}</strong>
