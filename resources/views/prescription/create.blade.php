@@ -33,12 +33,12 @@
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-group">
-                                                <label for="recipient-name" class="col-form-label">Customer name:</label>
-                                                <input type="text" name="patient_name" class="form-control" id="recipient-name" required>
+                                                <label for="patient_name" class="col-form-label">Patient name:</label>
+                                                <input type="text" name="patient_name" class="form-control">
                                                 @if ($errors->has('patient_name'))
                                                     <span class="text-danger">
-                                                                <strong>{{ $errors->first('patient_name') }}</strong>
-                                                            </span>
+                                                        <strong>{{ $errors->first('patient_name') }}</strong>
+                                                    </span>
                                                 @endif
                                             </div>
                                             <div class="form-group">

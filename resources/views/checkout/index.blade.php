@@ -1,4 +1,19 @@
 @extends('layouts.app')
+<style>
+    /* Style the active class (and buttons on mouse-over) */
+    .active, .selectedAddress:hover {
+        background-color: #00CE5E;
+        color: white;
+    }
+    .form-row {
+        background-color: #fff;
+        color: black;
+    }
+    .delivery-option {
+        background-color: #fff;
+        color: black;
+    }
+</style>
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -26,17 +41,17 @@
                             <input type="hidden" class="normal_delivery_time" name="normal_delivery_time" value="">
                             <input type="hidden" class="express_delivery_time" name="express_delivery_time" value="">
                             <input type="hidden" class="express_delivery_date" name="express_delivery_date" value="">
-                            <input type="hidden" name="order_items[]" value="{{$data}}">
+                            <input type="hidden" name="order_items" value="{{ $data }}">
                             <input type="hidden" name="delivery_charge_amount" value="">
                             <input type="hidden" name="status" value="1">
                             <ul class="payment-step">
                                 <li>
                                     <p>Delivery Address</p>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="address">
+                                        <div class="col-md-5">
+                                            <div class="address" id="myAddress">
                                                 @foreach($addresses as $item)
-                                                <div class="address-box mr-2" onclick="getAddressId({{ $item['id'] }})">
+                                                <div class="address-box mr-2 selectedAddress" onclick="getAddressId({{ $item['id'] }})">
                                                     <address>
                                                         {{ $item['address'] . ', ' . $item['area']['name'] . ', ' . $item['area']['thana']['name'] . ', ' . $item['area']['thana']['district']['name'] }}
                                                     </address>
@@ -168,8 +183,8 @@
                                                 <tbody>
                                                 <?php $total = 0 ?>
                                                 @if($data)
-                                                    @foreach($data as $id => $details)
-
+                                                    @foreach ($data as $id => $details)
+                                                        <input type="hidden" name="cart_ids[]" value="{{ $details->id }}">
                                                         <?php $total +=  $details['product']['purchase_price']  * $details['quantity'] ?>
                                                         <tr>
                                                             <td scope="row">{{ $details['product']['name'] }}</td>
@@ -241,9 +256,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div class="modal-body">
                 <form method="post" action="{{ route('customer.address.store') }}">
                     @csrf
-                <div class="modal-body">
+
                         <div class="form-group">
                             <label for="district" class="col-form-label">District</label>
 {{--                            <input type="text" name="patient_name" class="form-control" id="recipient-name" required>--}}
@@ -295,19 +311,37 @@
 @endsection
 @section ('js')
     <script>
-        let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>");
-        let ecashInNormalDelivery =parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>");
-        let cashInExpressDelivery =parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>");
-        let ecashInExpressDelivery =parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>");
-        let cashInCollectFromPharmacy =parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");
-        let ecashInCollectFromPharmacy =parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");
+        $('#submit').on('click', function () {
+            $('#submit').addClass('d-none');
+        })
+        // Get the container element
+        var btnContainer = document.getElementById("myAddress");
 
-        var total = parseFloat(  "<?php echo $total ?>");
+        // Get all buttons with class="btn" inside the container
+        var btns = btnContainer.getElementsByClassName("selectedAddress");
+
+        // Loop through the buttons and add the active class to the current/clicked button
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+
+        let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>");
+        let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>");
+        let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>");
+        let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>");
+        let cashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");
+        let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");
+
+        var total = parseFloat("<?php echo $total ?>");
 
         var deliveryType = 1;
 
         (function() {
-            var payTypeValue =parseInt( $('input[name="payType"]:checked').val() );
+            var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
             var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
             $('input[name="delivery_type"]').val(deliveryType);
 
@@ -323,8 +357,8 @@
         }
 
         function getDeliveryType(deliveryType) {
-            var payTypeValue =parseInt( $('input[name="payType"]:checked').val() );
-            var deliveryCharge =parseInt( $('input[name="delivery_charge"]:checked').val() );
+            var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
+            var deliveryCharge =parseInt( $('input[name="delivery_charge_amount"]:checked').val() );
 
             $('input[name="delivery_type"]').val(deliveryType);
 
@@ -333,7 +367,9 @@
 
         function getDeliveryChargeValue(deliveryCharge) {
             console.log('delivery charge function');
-            var payTypeValue =parseInt( $('input[name="payType"]:checked').val() );
+            var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
+
+            addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
 
             if (deliveryCharge === 1) {
                 <!-- Normal delivery date calculation -->
@@ -411,8 +447,6 @@
                 $('.express-content').removeClass('d-none');
                 $('.normal-content').addClass('d-none');
             }
-
-            addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
         }
 
         $('#expressTime').on('change', function () {
@@ -472,6 +506,7 @@
             }
 
             var grandTotalView = 'Grand Total : ' + grandTotal;
+            $('input[name="amount"]').val(grandTotal);
 
             console.log(typeof( cashInNormalDelivery ));
             console.log(cashInNormalDelivery);
@@ -486,7 +521,7 @@
 
 
         function getPayTypeValue(payTypeValue) {
-            var deliveryCharge =parseInt( $('input[name="delivery_charge"]:checked').val() );
+            var deliveryCharge =parseInt( $('input[name="delivery_charge_amount"]:checked').val() );
             var deliveryType =parseInt( $('input[name="delivery_type"]').val() );
 
             if (payTypeValue === 2) {

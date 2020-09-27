@@ -58,6 +58,7 @@ class PrescriptionController extends Controller
     public function store(CreatePrescriptionRequest $request)
     {
         $data = $request->only(['patient_name', 'doctor_name', 'prescription_date', 'url', 'user_id']);
+        $data['patient_name'] = $request->patient_name ? $request->patient_name : Auth::user()->name;
         $data['user_id'] = Auth::user()->id;
         $data['url'] = Storage::disk('public')->put('prescription', $request->file('url'));
         Prescription::create($data);

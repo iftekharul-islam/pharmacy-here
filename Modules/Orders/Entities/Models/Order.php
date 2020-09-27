@@ -28,6 +28,7 @@ class Order extends Model
         'shipping_address_id',
         'delivery_method',
         'delivery_date',
+        'delivery_time',
         'order_no'
     ];
 

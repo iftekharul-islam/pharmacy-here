@@ -49,7 +49,7 @@ class OrderRepository
 
     public function orderListByUser($id)
     {
-        return Order::where('id', $id)->get();
+        return Order::where('customer_id', $id)->get();
     }
 
     public function get($id)
