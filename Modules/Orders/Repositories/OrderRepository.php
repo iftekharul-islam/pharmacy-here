@@ -190,9 +190,10 @@ class OrderRepository
 
         $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
         $title = 'New Order Available';
+        $message = 'You have a new order from Subidha. Please check.';
 
         foreach ($deviceIds as $deviceId){
-            sendPushNotification($deviceId->device_id, $title, $request->order_items, $id="");
+            sendPushNotification($deviceId->device_id, $title, $message, $id="");
         }
 
         return $order;

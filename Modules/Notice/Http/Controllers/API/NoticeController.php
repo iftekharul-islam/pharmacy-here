@@ -90,8 +90,8 @@ class NoticeController extends BaseController
 
     public function latestPharmacyNotice()
     {
-        $status = 1;
-        $item = $this->repository->getLatestNotice($status);
+        $type = 1;
+        $item = $this->repository->getLatestNotice($type);
 
 //        return $this->response->item($item, new NoticeTransformer());
         if ($item) {

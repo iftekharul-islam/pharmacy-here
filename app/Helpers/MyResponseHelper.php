@@ -34,12 +34,13 @@ if (!function_exists('sendPushNotification')) {
         $url = "https://fcm.googleapis.com/fcm/send";
 
         logger('device id: ' .$fcm_token);
+        logger('Message: ' .$message);
 
         $body = '{
             "to": "'. $fcm_token .'",
             "notification": {
                 "title": "' . $title . '",
-                "text": "Test message"
+                "text": "'. $message .'"
             },
             "data": {
                 "id": 123,
