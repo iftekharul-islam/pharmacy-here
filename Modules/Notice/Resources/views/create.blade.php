@@ -69,8 +69,20 @@
                             @endif
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label for="type" class="col-sm-4 col-form-label">Send Now</label>
+                        <div class="col-sm-8" id="">
+                            <select class="form-control" name="sendNow" id="sendNow">
+                                <option value="0" selected >No</option>
+                                <option value="1">Yes</option>
+                            </select>
+
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-body -->
+
 
                 <div class="card-footer">
                     <a href="{{ route('notice.index') }}" class="btn btn-danger">Back</a>
