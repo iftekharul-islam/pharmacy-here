@@ -205,12 +205,12 @@
     {{--                                                bKash/Nogod/Rocket--}}
     {{--                                            </label>--}}
                                                 <label class="custom-radio" onclick="getPayTypeValue(1)">
-                                                    <input type="radio" checked="checked" name="payType" value="1">
+                                                    <input type="radio" checked="checked" name="payment_type" value="1">
                                                     <span class="checkmark"></span>
                                                     Cash on Delivery
                                                 </label>
                                                 <label class="custom-radio" onclick="getPayTypeValue(2)">
-                                                    <input type="radio" name="payType" value="2">
+                                                    <input type="radio" name="payment_type" value="2">
                                                     <span class="checkmark"></span>
                                                     E - Payment
                                                 </label>
@@ -441,11 +441,13 @@
 
 
         function addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge) {
-            let grandTotal = 0;
+            let grandTotal = total;
+            $('input[name="delivery_charge_amount"]').prop('disabled', false);
 
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
                 grandTotal = total + cashInNormalDelivery;
                 $('input[name="delivery_charge_amount"]').val(cashInNormalDelivery);
+
             }
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 2) {
                 grandTotal = total + cashInExpressDelivery;
@@ -462,9 +464,11 @@
 
             if (deliveryType === 2 && payTypeValue === 1 ) {
                 grandTotal = total - cashInCollectFromPharmacy;
+                $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
             if (deliveryType === 2 && payTypeValue === 2 ) {
                 grandTotal = total;
+                $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
 
             var grandTotalView = 'Grand Total : ' + grandTotal;
