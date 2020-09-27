@@ -84,11 +84,16 @@ class CheckoutController extends Controller
             'shipping_address_id',
             'prescriptions',
             'order_items',
-            'deliveryMethod',
-            'deliveryMethod',
+            'delivery_method',
             'delivery_date',
             'delivery_time',
         ]);
+        if ($request->delivery_type === 1) {
+            $data['delivery_method'] = 'normal';
+        } else {
+            $data['delivery_method'] = 'express';
+        }
+
         if ($request->delivery_charge_amount == 1) {
             $data['delivery_date'] = $request->normal_delivery_date;
             $data['delivery_time'] = $request->normal_delivery_time;

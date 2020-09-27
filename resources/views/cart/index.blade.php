@@ -74,9 +74,13 @@
                                         <td></td>
                                         <td></td>
                                         <td>Total ৳{{ $total }}</td>
-                                        <td>
-                                            <a id="submit" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
-                                        </td>
+                                        @guest
+                                                <td><p class="badge btn-primary">Please login first to checkout</p></td>
+                                            @else
+                                                <td>
+                                                    <a id="submit" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
+                                                </td>
+                                        @endguest
                                     </tr>
                                 </tbody>
                             </table>
