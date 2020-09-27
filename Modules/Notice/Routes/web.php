@@ -17,5 +17,5 @@ Route::prefix('notice')->group(function() {
     Route::post('store', 'NoticeController@store')->name('notice.store');
     Route::get('{id}/edit', 'NoticeController@edit')->name('notice.edit');
     Route::put('{id}', 'NoticeController@update')->name('notice.update');
-    Route::delete('{id}', 'NoticeController@destroy')->name('notice.destroy');
+    Route::delete('{id}/destroy', 'NoticeController@destroy')->name('notice.destroy');
 });

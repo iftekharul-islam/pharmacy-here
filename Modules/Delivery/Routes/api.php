@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/delivery', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/delivery', function (Request $request) {
+//    return $request->user();
+//});
+
+$namespace = 'Modules\Delivery\Http\Controllers\API';
+
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) use ($namespace) {
+    $api->get('delivery/times', $namespace . '\DeliveryTimeController@index');
 });

@@ -13,13 +13,13 @@ class CreateDeliveryTimeTable extends Migration
      */
     public function up()
     {
-        Schema::create('delivery_time', function (Blueprint $table) {
+        Schema::create('delivery_times', function (Blueprint $table) {
             $table->id();
-            $table->date('start_month');
-            $table->date('end_month');
+            $table->integer('start_month');
+            $table->integer('end_month');
             $table->time('start_time');
             $table->time('end_time');
-            $table->integer('type');
+            $table->integer('delivery_method');
             $table->boolean('status')->default(true);
             $table->softDeletes();
 
@@ -34,6 +34,6 @@ class CreateDeliveryTimeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('delivery_time');
+        Schema::dropIfExists('delivery_times');
     }
 }

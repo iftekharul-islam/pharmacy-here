@@ -359,12 +359,12 @@ return [
                 [
                     'text' => 'Normal Delivery',
                     'icon_color' => 'cyan',
-                    'url'  => 'locations/divisions',
+                    'url'  => 'delivery/normal-delivery',
                 ],
                 [
                     'text' => 'Express Delivery',
                     'icon_color' => 'cyan',
-                    'url'  => 'locations/districts',
+                    'url'  => 'delivery/express-delivery',
                 ],
             ],
         ],

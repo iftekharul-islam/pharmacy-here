@@ -1,14 +1,15 @@
 <?php
 
-namespace Modules\Delivery\Http\Controllers;
+namespace Modules\Delivery\Http\Controllers\API;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Delivery\Repositories\DeliveryTimeRepository;
-use Modules\Orders\Repositories\DeliveryChargeRepository;
 
-class DeliveryController extends Controller
+class DeliveryTimeController extends Controller
 {
     private $repository;
 
@@ -16,14 +17,20 @@ class DeliveryController extends Controller
     {
         $this->repository = $repository;
     }
-
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @return JsonResponse
      */
     public function index()
     {
-//        return view('delivery::index');
+        $month = Carbon::now()->month;
+
+        $data = [
+            'normal_delivery_time'  => $this->repository->getTimeList($month, 1),
+            'express_delivery_time' => $this->repository->getTimeList($month, 2)
+        ];
+
+        return responsePreparedData($data);
     }
 
     /**
@@ -85,6 +92,4 @@ class DeliveryController extends Controller
     {
         //
     }
-
-
 }

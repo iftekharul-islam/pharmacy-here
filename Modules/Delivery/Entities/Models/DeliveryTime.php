@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DeliveryTime extends Model
 {
     use SoftDeletes;
-    protected $fillable = [];
+    protected $fillable = ['start_month', 'end_month', 'start_time', 'end_time', 'delivery_method'];
 }
