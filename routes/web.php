@@ -34,8 +34,8 @@ Route::post('store/prescription','PrescriptionController@store')->name('prescrip
 Route::post('prescription-id/store', 'PrescriptionController@selectedId')->name('prescriptions.id');
 Route::delete('prescription/{id}', 'PrescriptionController@destroy')->name('prescription.destroy');
 
-//Route::get('customer/name','LoginController@registerForm')->name('customer.name');
-//Route::post('customer/name/update','LoginController@customerNameUpdate')->name('customer.nameUpdate');
+Route::get('customer/name','LoginController@registerForm')->name('customer.name');
+Route::post('customer/name/update','LoginController@customerNameUpdate')->name('customer.nameUpdate');
 
 // Product routes
 Route::get('/medicine',  'ProductsController@index')->name('product-list');
