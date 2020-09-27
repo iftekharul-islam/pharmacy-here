@@ -38,6 +38,7 @@
                 <tr>
                     <th>SL</th>
                     <th>Notice</th>
+                    <th>User Type</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -48,6 +49,7 @@
                         <tr>
                             <td>{{ $data->firstItem() + $index }}</td>
                             <td>{{ $item['notice'] }}</td>
+                            <td>{{ $item['type'] == 1 ? 'Pharmacy' : 'Customer' }}</td>
                             <td>@include('notice::status', ['status' => $item->status])</td>
                             <td>
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
@@ -57,6 +59,7 @@
                                     <i class="fa fa-edit"></i> </a>
                                 <form id="delete-form-{{ $loop->index }}" action="{{ route('notice.destroy', $item['id']) }}"
                                       method="post" class="form-horizontal d-inline">
+                                    @method('DELETE')
                                     {{ csrf_field() }}
                                     <input type="hidden" name="_method" value="DELETE">
                                     <div class="btn-group">

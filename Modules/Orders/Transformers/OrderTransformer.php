@@ -23,6 +23,7 @@ class OrderTransformer extends TransformerAbstract
             'id'                        => $item->id,
             'customer_name'             => $item->customer->name,
             'amount'                    => $item->amount,
+            'subidha_comission'         => $item->subidha_comission,
             "shipping_address"          => $item->address,
             "delivery_charge"           => $item->delivery_charge,
             "delivery_type"             => $item->delivery_type,

@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Modules\Orders\Http\Requests\CreateTransactionHistoryRequest;
 use Modules\Orders\Repositories\TransactionHistoryRepository;
+use Modules\Orders\Transformers\OrderTransformer;
 use Modules\Orders\Transformers\TransactionHistoryTransformer;
 
 class TransactionHistoryController extends BaseController
@@ -32,13 +33,35 @@ class TransactionHistoryController extends BaseController
 
     }
 
+    public function pharmacySalesHistory()
+    {
+        $user = Auth::user();
+
+        $data = $this->repository->pharmacySalesHistory($user->id);
+
+        return $this->response->paginator($data, new OrderTransformer());
+    }
+
     public function pharmacyTotalSale()
     {
         $user = Auth::user();
 
-        $data = $this->repository->pharmacyTotalSale($user->id);
 
-        return $this->response->paginator($data, new TransactionHistoryTransformer());
+        $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
+
+        $saleInfo = [];
+        $totalSale = 0;
+
+        foreach($pharmacySales as $item) {
+            $totalSale = $totalSale + ($item['amount'] - $item['subidha_comission']);
+        }
+
+        return [
+            'total_sale' => $totalSale,
+            'sale_count' => count($pharmacySales)
+        ];
+
+//        return $this->response->paginator($data, new OrderTransformer());
 
     }
 

@@ -68,9 +68,15 @@ class TransactionHistoryRepository
         return TransactionHistory::where('pharmacy_id', $pharmacy_id)->paginate(10);
     }
 
+    public function pharmacySalesHistory($pharmacy_id)
+    {
+        return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->orderBy('id','desc')->paginate(20);
+    }
+
     public function pharmacyTotalSale($pharmacy_id)
     {
-        return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->orderBy('id','desc')->paginate(5);
+//        return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->orderBy('id','desc')->paginate(5);
+        return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->get();
     }
 
     public function storePharmacyTransaction($request, $pharmacy_id)

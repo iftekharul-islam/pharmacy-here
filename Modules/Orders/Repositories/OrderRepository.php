@@ -44,6 +44,7 @@ class OrderRepository
     {
         return Order::with(['orderItems.product', 'address.area.thana.district', 'pharmacy'])
             ->where('customer_id', $customer_id)
+            ->orderBy('id', 'desc')
             ->paginate(20);
     }
 
@@ -206,7 +207,8 @@ class OrderRepository
         if ($latestOrder) {
             $lastNumber = explode('-', $latestOrder->order_no);
             $lastNumber = preg_replace("/[^0-9]/", "", end($lastNumber) );
-            $orderNo =  date('Y').'-'.date('m').'-'.str_pad( (int) $lastNumber + 1 , 4, '0', STR_PAD_LEFT);
+//            $orderNo =  date('Y').'-'.date('m').'-'.str_pad( (int) $lastNumber + 1 , 4, '0', STR_PAD_LEFT);
+            $orderNo =  'SBD-'.str_pad( (int) $lastNumber + 1 , 6, '0', STR_PAD_LEFT);
             if (Order::where('order_no', $orderNo)->count() > 0) {
                 $this->generateOrderNo();
             }

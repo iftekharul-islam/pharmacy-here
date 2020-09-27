@@ -52,6 +52,9 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     $api->get('pharmacy/transaction-history', $namespace . '\TransactionHistoryController@getPharmacyTransaction');
     $api->post('pharmacy/transaction', $namespace . '\TransactionHistoryController@storePharmacyTransaction');
 
+    // Pharmacy Sales history
+    $api->get('pharmacy/sales-history', $namespace . '\TransactionHistoryController@pharmacySalesHistory');
+
     // Pharmacy total sale
     $api->get('pharmacy/total-sale', $namespace . '\TransactionHistoryController@pharmacyTotalSale');
 

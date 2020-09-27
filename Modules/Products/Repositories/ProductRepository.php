@@ -274,7 +274,7 @@ class ProductRepository
     {
         $product = Product::find($id)->first();
 
-        return Product::where('generic_id', $product->generic_id)->get();
+        return Product::where('generic_id', $product->generic_id)->where('id', '!=', $id)->get();
 
     }
 
