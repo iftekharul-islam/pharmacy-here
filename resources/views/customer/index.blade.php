@@ -17,6 +17,10 @@
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
+    @elseif (session('failed'))
+        <div class="alert alert-danger">
+            {{ session('failed') }}
+        </div>
     @endif
     <div class="order-section">
         <div class="container">
@@ -243,7 +247,7 @@
                                         <tbody>
                                         @foreach($prescriptions as $prescription )
                                             <tr>
-                                                <td><img width="55px" height="60px" src="{{ asset('storage/'. $prescription->url) }}" alt=""></td>
+                                                <td><img width="55px" height="60px" src="{{ $prescription->url }}" alt=""></td>
                                                 <td>{{ $prescription->patient_name }}</td>
                                                 <td>{{ $prescription->doctor_name }}</td>
                                                 <td>{{ $prescription->prescription_date }}</td>
@@ -263,7 +267,7 @@
                                                                 <div class="modal-body">
                                                                     <div class="row">
                                                                         <div class="col-6">
-                                                                            <img width="200px" height="300px" src="{{ asset('storage/'. $prescription->url) }}" alt="">
+                                                                            <img width="200px" height="300px" src="{{ $prescription->url }}" alt="">
                                                                         </div>
                                                                         <div class="col-6 My-modal">
                                                                             <strong>Patient </strong>
