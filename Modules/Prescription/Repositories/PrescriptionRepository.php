@@ -4,6 +4,8 @@
 namespace Modules\Prescription\Repositories;
 
 use Dingo\Api\Exception\ValidationHttpException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Prescription\Entities\Models\Prescription;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -38,6 +40,20 @@ class PrescriptionRepository
             'user_id' => $user_id
         ]);
 
+    }
+
+    public function createWeb($request)
+    {
+        $data = $request->only(['patient_name', 'doctor_name', 'prescription_date', 'url', 'user_id']);
+        $data['user_id'] = Auth::user()->id;
+
+        $image = $request->file('url');
+        $link = Storage::disk('gcs');
+        $disk = $link->put('images/customer/prescription', $image );
+        $data['url'] = $link->url($disk);
+
+//        $data['url']= Storage::disk('gcs')->put('images/customer/prescription', $request->file('url'));
+        return Prescription::create($data);
     }
 
     public function findBySlug($slug)
