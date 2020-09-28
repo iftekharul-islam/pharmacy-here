@@ -271,9 +271,9 @@ class AuthRepository
     {
         $user = new User();
 
-
         if ($request->has('phone_number')) {
             $user->phone_number = $request->phone_number;
+            session()->put('phone_number', $user->phone_number);
         }
 
         $user->save();
