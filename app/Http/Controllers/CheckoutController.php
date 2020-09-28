@@ -47,7 +47,9 @@ class CheckoutController extends Controller
     public function index()
     {
         $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
-//        return $data;
+        if (count($data) == 0 ) {
+            return redirect()->back();
+        }
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);

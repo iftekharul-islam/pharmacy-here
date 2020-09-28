@@ -13,6 +13,9 @@
         background-color: #fff;
         color: black;
     }
+    .save-profile-btn {
+        border: 1px solid #00ce5e;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -193,7 +196,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>Total ৳{{ $total }}</td>
+                                                    <td><h5 class="text-bold">Total ৳ {{ $total }}</h5></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -225,7 +228,7 @@
                             </ul>
                             <div class="row">
                                 <div class="col-md-8 p-0">
-                                    <button type="submit" class="w-100 text-center btn--primary d-block checkout-btn">Proceed to Checkout</button>
+                                    <button type="submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block">Proceed to Checkout</button>
                                 </div>
                             </div>
                         </form>
