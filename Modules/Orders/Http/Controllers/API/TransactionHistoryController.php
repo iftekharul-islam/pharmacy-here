@@ -56,10 +56,12 @@ class TransactionHistoryController extends BaseController
             $totalSale = $totalSale + ($item['amount'] - $item['subidha_comission']);
         }
 
-        return [
+        $data = [
             'total_sale' => $totalSale,
             'sale_count' => count($pharmacySales)
         ];
+
+        return responsePreparedData($data);
 
 //        return $this->response->paginator($data, new OrderTransformer());
 
