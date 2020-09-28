@@ -1,7 +1,15 @@
 @extends('layouts.app')
 <style>
-    .My-modal{
+    .My-modal {
         text-align: left;
+    }
+    .my-address {
+        width: fit-content;
+        margin-left: auto;
+    }
+    .save-profile-btn {
+        border: 1px solid #00ce5e;
+
     }
 </style>
 @section('content')
@@ -22,12 +30,70 @@
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content my-dashboard-content" id="v-pills-tabContent">
-
                         <div class="tab-pane show fade active my-account" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account-tab">
                             <h2 class="my-dashboard-title">My Profile</h2>
+                            <a href="#" class="btn btn--primary mb-2 my-address d-block" data-toggle="modal" data-target="#addressModal">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Address</span>
+                            </a>
+                            <!-- Modal -->
+                            <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addressModalLabel">New Address</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ route('customer.address.store') }}">
+                                                @csrf
+
+                                                <div class="form-group">
+                                                    <label for="district" class="col-form-label">District</label>
+                                                    <select class="form-control" id="selectDistrict" onchange="getThanas(value)">
+                                                        <option value="" disabled selected>Please select a district name</option>
+                                                        @foreach($allLocations as $district)
+                                                            <option value="{{ $district->id }}" >{{ $district->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="thana" class="col-form-label">Thana</label>
+                                                    <select class="form-control" id="selectThana" onchange="getAreas()">
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="area" class="col-form-label">Area</label>
+                                                    <select class="form-control" id="selectArea" name="area_id" disabled="">
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="address" class="col-form-label">Address</label>
+                                                    <input type="text" name="address" class="form-control" id="address" disabled="" required>
+                                                    @if ($errors->has('address'))
+                                                        <span class="text-danger">
+                                                            <strong>{{ $errors->first('address') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" id="submit" disabled="">Save address</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                             <form method="post" action="{{ route('customer.update', $data->id) }}">
                             @csrf
-                                <input type="hidden" name="addressId" value="{{ $data->customerAddress[0]->id }}">
+                                <input type="hidden" name="addressId" value="{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->id : null }}">
                                 <div class="my-order-list my-profile">
                                     <div class="table-responsive">
                                         <table>
@@ -55,14 +121,14 @@
                                             </tr>
                                             <tr>
                                                 <td><b>Address:</b></td>
-                                                <td class="save-value">{{ $data->customerAddress[0]->address }}</td>
-                                                <td class="edit-value d-none"><textarea type="text" name="address" value="{{ $data->customerAddress[0]->address }}">{{ $data->customerAddress[0]->address }}</textarea></td>
+                                                <td class="save-value">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</td>
+                                                <td class="edit-value d-none"><textarea type="text" name="address" value="{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</textarea></td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="profile-btn">
-                                    <button type="submit" class="btn--primary">Save Profile</button>
+                                    <button type="submit" class="btn--primary save-profile-btn">Save Profile</button>
                                     <a class="btn--edit" onclick="input()">Edit Profile</a>
                                 </div>
                             </form>
@@ -262,8 +328,8 @@
     <script src="js/main.js"></script>
 
     <script type="text/javascript">
+
         function input(){
-            console.log('hello!!!')
             $(".save-value").addClass('d-none');
             $(".edit-value").removeClass('d-none');
         };
@@ -289,6 +355,53 @@
                     )
                 }
             })
+        }
+
+        var addresses = {!! json_encode($allLocations) !!};
+        var thanas = [];
+        var areas = [];
+
+        function getThanas() {
+            var districtId = $('#selectDistrict option:selected').val();
+
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+
+            thanas = selectedDistrict.thanas;
+
+            $('#selectThana').html('');
+            $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+            $.map(thanas, function(value) {
+                $('#selectThana')
+                    .append($("<option></option>")
+                        .attr("value",value.id)
+                        .text(value.name));
+            });
+
+        }
+
+        function getAreas() {
+            var areaId = $('#selectThana option:selected').val();
+            var selectedThana = thanas.find(thana => thana.id == areaId);
+            areas = selectedThana.areas;
+
+            if ( areas.length === 0 ) {
+                $('#selectArea').attr('disabled', 'disabled');
+                $('#address').attr('disabled', 'disabled');
+                $('#submit').attr('disabled', 'disabled');
+            }
+
+            $('#selectArea').html('');
+            $.map(areas, function(value) {
+                $('#selectArea').removeAttr('disabled');
+                $('#address').removeAttr('disabled');
+                $('#submit').removeAttr('disabled');
+
+                $('#selectArea')
+                    .append($("<option></option>")
+                        .attr("value",value.id)
+                        .text(value.name));
+            });
         }
     </script>
 @endsection

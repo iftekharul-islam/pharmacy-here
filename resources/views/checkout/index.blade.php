@@ -57,11 +57,20 @@
                                                     </address>
                                                 </div>
                                                 @endforeach
-                                                <a href="#" class="add-address" data-toggle="modal" data-target="#exampleModal">
+                                                <a href="#" class="add-address" data-toggle="modal" data-target="#addressModal">
                                                     <i class="fas fa-plus-circle"></i>
                                                     <span>Add Address</span>
                                                 </a>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mt-2">
+                                            @if ($errors->has('shipping_address_id'))
+                                                <span class="text-danger">
+                                                    <strong>{{ $errors->first('shipping_address_id') }}</strong>
+                                                </span>
+                                            @endif
                                         </div>
                                     </div>
                                 </li>
@@ -72,6 +81,15 @@
                                             <div class="address">
                                                 <input type="text" name="phone_number" class="form-control" value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}" required>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mt-2">
+                                            @if ($errors->has('phone_number'))
+                                                <span class="text-danger">
+                                                    <strong>{{ $errors->first('phone_number') }}</strong>
+                                                </span>
+                                            @endif
                                         </div>
                                     </div>
                                 </li>
@@ -89,7 +107,6 @@
                                     <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade home-delivery show active" id="pills-delivery" role="tabpanel" aria-labelledby="pills-delivery-tab">
                                             <div class="delivery-option">
-
                                                  <label class="custom-radio" id="tab1" name="tab" onclick="getDeliveryChargeValue(1)">
                                                     <input type="radio" checked="checked" name="delivery_charge" value="1">
                                                     <span id="normal_delivery_charge" class="checkmark"></span>
@@ -98,28 +115,6 @@
                                                     <input type="radio" name="delivery_charge" value="2">
                                                     <span id="express_delivery_charge" class="checkmark"></span>
                                                   </label>
-
-
-{{--                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">--}}
-{{--                                                    <li class="nav-item" role="presentation">--}}
-{{--                                                        <a class="nav-link active" id="pills-normaldelivery-tab" data-toggle="pill" href="#pills-normaldelivery" role="tab" aria-controls="pills-normaldelivery" aria-selected="true">--}}
-{{--                                                            <label class="custom-radio" id="tab1" name="tab" onclick="getDeliveryChargeValue(1)">--}}
-{{--                                                                <input type="radio" name="delivery_charge_amount" value="1">--}}
-{{--                                                                <span id="normal_delivery_charge" class="checkmark"></span>--}}
-{{--                                                            </label>--}}
-{{--                                                        </a>--}}
-{{--                                                        <a class="nav-link active" id="pills-normaldelivery-tab" data-toggle="pill" href="#pills-normaldelivery" role="tab" aria-controls="pills-normaldelivery" aria-selected="true">Normal Delivery (Charge: TK 0.00)</a>--}}
-{{--                                                    </li>--}}
-{{--                                                    <li class="nav-item" role="presentation">--}}
-{{--                                                        <a class="nav-link" id="pills-expressdelivery-tab" data-toggle="pill" href="#pills-expressdelivery" role="tab" aria-controls="pills-expressdelivery" aria-selected="false">--}}
-{{--                                                            <input type="radio" name="delivery_charge_amount" value="2">--}}
-{{--                                                            <label class="custom-radio" id="tab2" name="tab" onclick="getDeliveryChargeValue(2)">--}}
-{{--                                                                <input type="radio" name="delivery_charge_amount" value="2">--}}
-{{--                                                                <span id="express_delivery_charge" class="checkmark"></span>--}}
-{{--                                                            </label>--}}
-{{--                                                        </a>--}}
-{{--                                                    </li>--}}
-{{--                                                </ul>--}}
                                                 @if ( $isPreOrderMedicine )
                                                     <div class="order-summary">
                                                         You have a pre-order medicine in cart. It will take 3-5 days to deliver
@@ -207,18 +202,12 @@
                                 </li>
                                 <li>
                                     <p id="grandTotal"></p>
-
                                 </li>
                                 <li>
                                     <p>Payment Details</p>
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="d-flex align-items-center justify-content-between payment-method">
-    {{--                                            <label class="custom-radio">--}}
-    {{--                                                <input type="radio" checked="checked" name="payType" value="1">--}}
-    {{--                                                <span class="checkmark"></span>--}}
-    {{--                                                bKash/Nogod/Rocket--}}
-    {{--                                            </label>--}}
                                                 <label class="custom-radio" onclick="getPayTypeValue(1)">
                                                     <input type="radio" checked="checked" name="payment_type" value="1">
                                                     <span class="checkmark"></span>
@@ -247,11 +236,11 @@
     </section>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New Address</h5>
+                    <h5 class="modal-title" id="addressModalLabel">New Address</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -262,12 +251,6 @@
 
                         <div class="form-group">
                             <label for="district" class="col-form-label">District</label>
-{{--                            <input type="text" name="patient_name" class="form-control" id="recipient-name" required>--}}
-{{--                            @if ($errors->has('patient_name'))--}}
-{{--                                <span class="text-danger">--}}
-{{--                                    <strong>{{ $errors->first('patient_name') }}</strong>--}}
-{{--                                </span>--}}
-{{--                            @endif--}}
                             <select class="form-control" id="selectDistrict" onchange="getThanas(value)">
                                     <option value="" disabled selected>Please select a district name</option>
                                 @foreach($allLocations as $district)

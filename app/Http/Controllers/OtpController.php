@@ -26,7 +26,6 @@ class OtpController extends Controller
 
         if (!$verifyNumber) {
             $data = $this->repository->createCustomerWeb($request);
-
         }
         else {
             $otp = $this->repository->createOtpWeb($request);

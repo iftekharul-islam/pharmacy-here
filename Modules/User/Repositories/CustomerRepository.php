@@ -134,6 +134,8 @@ class CustomerRepository
                 $address->address = $request->address;
             }
             $address->save();
+        } else {
+            $data = $request->only(['']);
         }
     }
 

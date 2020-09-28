@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckoutCreateRequest;
 use App\Models\Cart;
 use App\Repositories\CartRepository;
 use Carbon\Carbon;
@@ -73,93 +74,91 @@ class CheckoutController extends Controller
         return false;
     }
 
-    public function check(Request $request)
+    public function check(CheckoutCreateRequest $request)
     {
 //        return $request->cart_id;
 
-        $data = $request->only([
-            'phone_number',
-            'payment_type',
-            'delivery_type',
-            'delivery_charge',
-            'delivery_method',
-            'status',
-            'amount',
-            'order_date',
-            'pharmacy_id',
-            'shipping_address_id',
-            'prescriptions',
-            'delivery_method',
-            'delivery_date',
-            'customer_id',
-            'delivery_time',
-            'note'
-        ]);
+        if ($request->payment_type == 1){
+            $data = $request->only([
+                'phone_number',
+                'payment_type',
+                'delivery_type',
+                'delivery_charge',
+                'delivery_method',
+                'status',
+                'amount',
+                'order_date',
+                'pharmacy_id',
+                'shipping_address_id',
+                'prescriptions',
+                'delivery_method',
+                'delivery_date',
+                'customer_id',
+                'delivery_time',
+                'note'
+            ]);
 
-        $data['order_no'] = $this->generateOrderNo();
-        $data['pharmacy_id'] = 1;
-        $data['order_date'] = Carbon::today();
-        $data['customer_id'] = Auth::user()->id;
-        $data['notes'] = "Its a sample" ;
+            $data['order_no'] = $this->generateOrderNo();
+            $data['pharmacy_id'] = 1;
+            $data['order_date'] = Carbon::today();
+            $data['customer_id'] = Auth::user()->id;
+            $data['notes'] = "Its a sample" ;
 
-        if ($request->delivery_charge === 1) {
-            $data['delivery_method'] = 'normal';
-        } else {
-            $data['delivery_method'] = 'express';
-        }
-
-        if ($request->delivery_charge == 1) {
-            $data['delivery_date'] = $request->normal_delivery_date;
-            $data['delivery_time'] = $request->normal_delivery_time;
-        }else {
-            $data['delivery_date'] = $request->express_delivery_date;
-            $data['delivery_time'] = $request->express_delivery_time;
-        }
-
-        if (isset($data['delivery_date'])){
-            $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
-        }
-//        return $data;
-        $order = Order::create($data);
-
-
-        if ($request->order_items) {
-            $items = json_decode($request->order_items, true);
-            foreach($items as $item) {
-                OrderItems::create([
-                    'product_id' => $item['product_id'],
-                    'rate' => $item['product']['purchase_price'],
-                    'quantity' => $item['quantity'],
-                    'order_id' => $order->id,
-                ]);
+            if ($request->delivery_charge === 1) {
+                $data['delivery_method'] = 'normal';
+            } else {
+                $data['delivery_method'] = 'express';
             }
-        }
 
-        if (session()->has('prescriptions')) {
-            $prescriptions = session()->get('prescriptions');
-            foreach($prescriptions as $item) {
-                OrderPrescription::create([
-                    'prescription_id' => $item,
-                    'order_id' => $order->id,
-                ]);
+            if ($request->delivery_charge == 1) {
+                $data['delivery_date'] = $request->normal_delivery_date;
+                $data['delivery_time'] = $request->normal_delivery_time;
+            }else {
+                $data['delivery_date'] = $request->express_delivery_date;
+                $data['delivery_time'] = $request->express_delivery_time;
+            }
+
+            if (isset($data['delivery_date'])){
+                $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
+            }
+//        return $data;
+            $order = Order::create($data);
+
+
+            if ($request->order_items) {
+                $items = json_decode($request->order_items, true);
+                foreach($items as $item) {
+                    OrderItems::create([
+                        'product_id' => $item['product_id'],
+                        'rate' => $item['product']['purchase_price'],
+                        'quantity' => $item['quantity'],
+                        'order_id' => $order->id,
+                    ]);
+                }
+            }
+
+            if (session()->has('prescriptions')) {
+                $prescriptions = session()->get('prescriptions');
+                foreach($prescriptions as $item) {
+                    OrderPrescription::create([
+                        'prescription_id' => $item,
+                        'order_id' => $order->id,
+                    ]);
+                }
+                session()->forget('prescriptions');
+            }
+
+            foreach ($request->cart_ids as $id) {
+                $item = Cart::find($id);
+                $item->delete();
             }
             session()->forget('prescriptions');
-        }
+            session()->forget('cartCount');
 
-        foreach ($request->cart_ids as $id) {
-            $item = Cart::find($id);
-            $item->delete();
+            return redirect()->route('home')->with('success', 'Order successfully placed');
+        } else {
+            return 'its E payment';
         }
-        session()->forget('prescriptions');
-        session()->forget('cartCount');
-
-        return redirect()->route('home')->with('success', 'Order successfully placed');
-        if ($request->payment_type == 2){
-//            return 'its COD';
-            $this->payment($request);
-        }
-
-//        $this->orderRepository->create($data, Auth::guard('web')->user()->id);
 
     }
 
