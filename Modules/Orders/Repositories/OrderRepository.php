@@ -301,7 +301,7 @@ class OrderRepository
 
         if ($request->has('search') && $request->get('search')) {
             $search = $request->get('search');
-            $order->where('order_no', 'LIKE', "%$search%");
+            $order->where('order_no', $search);
         }
 
         if ($status_id == 2) {
