@@ -4,6 +4,7 @@
 namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderCancelReason;
@@ -34,6 +35,10 @@ class OrderRepository
         }
         return $order->with(['orderItems.product', 'address.area.thana.district', 'pharmacy'])
             ->where('pharmacy_id', $pharmacy_id)->paginate(10);
+    }
+
+    public function orderWeb($id) {
+        return Order::with('address', 'orderItems', 'orderItems.product')->where('customer_id', Auth::user()->id)->where('id', $id)->first();
     }
 
     /**

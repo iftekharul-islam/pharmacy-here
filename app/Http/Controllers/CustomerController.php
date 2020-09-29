@@ -44,6 +44,7 @@ class CustomerController extends Controller
         $data = $this->repository->userDetails(Auth::user()->id);
         $prescriptions = $this->prescriptionRepository->getCustomerPrescription(Auth::user()->id);
         $orders = $this->orderRepository->orderListByUser(Auth::user()->id);
+//        return $orders;
         $allLocations = $this->locationRepository->getLocation();
 
         return view('customer.index', compact('data', 'prescriptions', 'orders', 'allLocations'));

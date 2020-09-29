@@ -28,6 +28,9 @@ Route::get('dashboard','CustomerController@index')->name('customer.details');
 Route::post('update/customer/{id}','CustomerController@update')->name('customer.update');
 Route::post('address-store', 'CustomerController@addressStore')->name('customer.address.store');
 
+//order route
+Route::get('customer-order/{id}','OrderController@show')->name('order.details');
+
 //Prescription
 Route::get('prescription/create', 'PrescriptionController@create');
 Route::post('store/prescription','PrescriptionController@store')->name('prescription.store');
