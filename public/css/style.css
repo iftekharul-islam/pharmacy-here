@@ -60,7 +60,7 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
+  color: #000000;
   text-align: left;
   background-color: #fff;
 }
@@ -15821,12 +15821,9 @@ html {
 .medicine-search-section {
   position: relative;
   overflow: hidden;
-  background: url(../img/main-bg.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   height: 800px;
   padding-top: 200px;
+
 }
 
 .medicine-search-section h2 {
@@ -16260,6 +16257,8 @@ html {
 }
 
 .address-box {
+    cursor: pointer;
+    min-width: 175px;
   border: 1px solid #00A34A;
   -webkit-box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.1);
           box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.1);
@@ -16283,11 +16282,11 @@ html {
 }
 
 .add-address {
+    min-width: 105px;
   background: #F5F5F5;
   display: block;
   border-radius: 5px;
   color: #7B7B7B;
-  width: 30%;
   margin: auto;
   margin-top: 20px;
 }

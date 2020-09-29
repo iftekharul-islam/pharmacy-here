@@ -30,14 +30,14 @@
                                         @else
                                         <span class="mb-3"></span>
                                     @endif
-                                    <p><strong>{{ $item->name }}</strong></p>
+                                    <p><h5>{{ $item->name }}</h5></p>
                                     <p><strong>{{ $item->company->name }}</strong></p>
                                 </div>
                                 <div class="package d-flex justify-content-between">
-                                    <p>৳{{ $item->purchase_price }}</p>
+                                    <p>৳ {{ $item->purchase_price }}</p>
                                     <p>Min quantity ({{ $item->min_order_qty }})</p>
                                 </div>
-                                <p><Strong>Packaging Type - <a class="badge-primary badge text-white">{{ $item->type }}</a></Strong></p>
+                                <p><strong>Packaging Type - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>
                                 <div class="medicine-details--footer d-flex justify-content-between align-items-center">
                                     <a href="{{ route('cart.addToCart', $item->id) }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
                                     <a href="{{ route('single-product', $item->id) }}" class="eyes"><i class="fas fa-eye"></i></a>

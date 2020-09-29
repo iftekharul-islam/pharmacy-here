@@ -6,7 +6,7 @@
         </div>
     @endif
     <!-- Medicine section -->
-    <section class="medicine-search-section" style="background: url(images/main-bg.png);">
+    <section class="medicine-search-section" style="background: url(images/main-bg.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto text-center">
