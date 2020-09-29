@@ -11,7 +11,7 @@
                 <div class="col-md-6">
                     <form method="POST" id="form" action="{{ route('customer.createOTP') }}">
                         @csrf
-                        <div class="text-center mb-5"><img src="{{ asset('images/logo.svg') }}" alt="logo"></div>
+                        <div class="text-center mb-5"><img src="{{ asset('images/logo.png') }}" alt="logo"></div>
                         <div class="form-group">
                             <label for="phone_number">{{ __('Phone Number') }}</label>
                             <input id="phone_number" type="number" class="form-control @error('phone_number') is-invalid @enderror mb-2" name="phone_number" value="{{ old('phone_number') }}" autocomplete="phone_number">

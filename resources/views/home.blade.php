@@ -1,4 +1,29 @@
 @extends('layouts.app')
+<style>
+    #searchResult {
+        margin-top: -5px;
+        background: white;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+
+    }
+    #searchResult li {
+        padding-left: 2rem;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: left;
+        cursor: pointer;
+
+    }
+    #searchResult li:last-child {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    #searchResult li:hover {
+        background: #ddd;
+    }
+
+</style>
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -20,7 +45,8 @@
 {{--                        <input type="search" id="medicine_search" class="form-control" placeholder="Search your medicine here">--}}
 {{--                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>--}}
                     </label>
-                    <ul id="searchResult"></ul>
+                    <ul id="searchResult">
+                    </ul>
                 </div>
             </div>
         </div>
