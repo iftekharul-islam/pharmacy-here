@@ -21,7 +21,8 @@ class TransactionHistoryTransformer extends TransformerAbstract
             'id'                        => $item->id,
             "date"                      => Carbon::parse($item->date)->format('d-m-Y'),
             "transaction_id"            => $item->transaction_id,
-            "amount"                    => $item->amount
+            "amount"                    => $item->amount,
+            "payment_method"            => $item->payment_method
         ];
     }
 

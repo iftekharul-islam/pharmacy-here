@@ -45,20 +45,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if($data->isNotEmpty())
-                    @foreach($data as $index => $item)
+                @if(! empty($orders))
+                    @foreach($orders as $index => $item)
+                        <?php $i = 1?>
                         <tr>
-                            <td>{{ $data->firstItem() + $index }}</td>
-                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>
+                            <td>{{ $i + $index }}</td>
+                            <td>{{ $transactionHistories[$index]->pharmacy_name }}</td>
+{{--                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>--}}
                             <td>{{ $item->total_amount }}</td>
-                            <td>{{ $item->amount }}</td>
-                            <td>{{ $item->total_amount - $item->amount }}</td>
+{{--                            <td>{{ $item->total_amount }}</td>--}}
+                            <td>{{ $transactionHistories[$index]->amount }}</td>
+{{--                            <td>{{ $item->amount }}</td>--}}
+                            <td>{{ $due[$index]->due }}</td>
+{{--                            <td>{{ $item->total_amount - $item->amount }}</td>--}}
 
                             <td>
-                                <a href="{{ route('transactionHistory.show', $item->pharmacy['id']) }}" type="button"  class="btn btn-sm btn-success" >
+                                <a href="{{ route('transactionHistory.show', $item->pharmacy_id) }}" type="button"  class="btn btn-sm btn-success" >
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{ route('transactionHistory.create', $item->id) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('transactionHistory.create', $item->pharmacy_id) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i> </a>
 
                             </td>
@@ -67,7 +72,7 @@
                 @endif
                 </tbody>
             </table>
-            {{ $data->links() }}
+{{--            {{ $orders->links() }}--}}
         </div>
         <!-- /.card-body -->
     </div>
