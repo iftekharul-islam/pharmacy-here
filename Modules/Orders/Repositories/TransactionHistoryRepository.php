@@ -4,6 +4,7 @@
 namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\TransactionHistory;
@@ -12,11 +13,25 @@ class TransactionHistoryRepository
 {
     public function all()
     {
-        return TransactionHistory::with('pharmacy.pharmacyBusiness')
-            ->selectRaw(DB::raw( '(SELECT SUM(amount) - SUM(subidha_comission) FROM orders WHERE status=9 GROUP BY pharmacy_id) as total_amount'))
+
+    }
+
+    public function getAllOrders()
+    {
+        return DB::table('orders')
+            ->select(DB::raw('(SUM(amount) - SUM(subidha_comission)) as total_amount,pharmacy_id'))
+            ->where('status',3)
             ->groupBy('pharmacy_id')
-            ->selectRaw('id,SUM(amount) as amount, pharmacy_id')
-            ->paginate(10);
+            ->get();
+    }
+
+    public function getAllTransactionHistories()
+    {
+        return DB::table('transaction_history')
+            ->select(DB::raw('SUM(amount) as amount, pharmacy_id, pharmacy_businesses.pharmacy_name'))
+            ->join('pharmacy_businesses', 'transaction_history.pharmacy_id', '=', 'pharmacy_businesses.user_id')
+            ->groupBy('pharmacy_id')
+            ->get();
     }
 
     public function get($id)
@@ -68,6 +83,26 @@ class TransactionHistoryRepository
         return TransactionHistory::where('pharmacy_id', $pharmacy_id)->paginate(10);
     }
 
+    public function getPharmacyTransactionAmount($pharmacy_id)
+    {
+        $order = DB::table('orders')
+            ->select(DB::raw('(SUM(amount) - SUM(subidha_comission)) as total_amount,pharmacy_id'))
+            ->where('status',3)
+            ->where('pharmacy_id', $pharmacy_id)
+            ->first();
+
+        $transactionHistory = DB::table('transaction_history')
+            ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
+            ->where('pharmacy_id', $pharmacy_id)
+            ->first();
+
+        return [
+            'order' => $order,
+            'transactionHistory' => $transactionHistory,
+            'due' => $order->total_amount - $transactionHistory->amount,
+        ];
+    }
+
     public function pharmacySalesHistory($pharmacy_id)
     {
         return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->orderBy('id','desc')->paginate(20);
@@ -117,9 +152,10 @@ class TransactionHistoryRepository
     public function getPharmacyInfo($id)
     {
         return TransactionHistory::with('pharmacy.pharmacyBusiness')
-            ->selectRaw(DB::raw( '(SELECT SUM(amount) - SUM(subidha_comission) FROM orders WHERE status=9 GROUP BY pharmacy_id) as total_amount'))
+            ->selectRaw(DB::raw( '(SELECT SUM(amount) - SUM(subidha_comission) FROM orders WHERE status=3 GROUP BY pharmacy_id) as total_amount'))
             ->selectRaw('id,(SELECT SUM(amount) FROM transaction_history GROUP BY pharmacy_id) as amount, pharmacy_id')
-            ->where('id',$id)->first();
+            ->where('pharmacy_id',$id)->first();
+//            ->where('id',$id)->first();
     }
 
 

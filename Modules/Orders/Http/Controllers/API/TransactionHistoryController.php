@@ -33,6 +33,15 @@ class TransactionHistoryController extends BaseController
 
     }
 
+    public function getPharmacyTransactionAmount()
+    {
+        $user = Auth::user();
+
+        $data = $this->repository->getPharmacyTransactionAmount($user->id);
+
+        return responsePreparedData( $data );
+    }
+
     public function pharmacySalesHistory()
     {
         $user = Auth::user();
