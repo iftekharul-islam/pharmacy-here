@@ -181,7 +181,7 @@
                         isPrescribedMedicineAlert(newData);
                         return;
                     }
-                    // window.location = "/checkout/preview"
+                    window.location = "/checkout/preview"
                 }
                 if (result.isDismissed) {
 

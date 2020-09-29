@@ -12,7 +12,7 @@
                 <div class="col-md-6">
                     <form method="POST" action="{{ route('customer.verifyOTP') }}">
                         @csrf
-                        <div class="text-center mb-5"><img src="{{ asset('images/logo.svg') }}" alt="logo"></div>
+                        <div class="text-center mb-5"><img src="{{ asset('images/logo.png') }}" alt="logo"></div>
                         @if(session('failed'))
                             <div class="alert alert-danger text-center">
                                 {{ session('failed') }}
