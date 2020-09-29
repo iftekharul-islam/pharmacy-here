@@ -132,8 +132,8 @@
                                     </div>
                                 </div>
                                 <div class="profile-btn">
-                                    <button type="submit" class="btn--primary save-profile-btn">Save Profile</button>
                                     <a class="btn--edit" onclick="input()">Edit Profile</a>
+                                    <button type="submit" class="btn--primary save-profile-btn">Save Profile</button>
                                 </div>
                             </form>
                         </div>
@@ -156,11 +156,23 @@
                                         <tbody>
                                             @foreach ($orders as $order)
                                                 <tr>
-                                                    <td scope="row">#{{ $order->order_no}}</td>
+                                                    <td scope="row">#{{ $order->order_no }}</td>
                                                     <td>{{ $order->order_date}}</td>
                                                     <td>৳ {{ $order->amount}}</td>
-                                                    <td>{{ $order->status}}</td>
-                                                    <td><a href="#">View Order</a></td>
+                                                    <td>
+                                                        @if ($order->status == 1)
+                                                            <span class="badge badge-primary">Accepted</span>
+                                                        @elseif ($order->status == 0)
+                                                            <span class="badge badge-danger">Pending</span>
+                                                        @elseif ($order->status == 3)
+                                                            <span class="badge badge-info">Processing</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-secondary" href="{{ route('order.details', $order->id)}}">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

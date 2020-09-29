@@ -29,7 +29,7 @@
                     <div class="form-group row">
                         <label for="payment_method" class="col-sm-4 col-form-label">Payment Method</label>
                         <div class="col-sm-8  " id="name">
-                            <input type="text" name="payment_method" value="bank" class="form-control" id="payment_method" placeholder="Payment Method">
+                            <input type="text" name="payment_method" value="Bank" class="form-control" id="payment_method" placeholder="Payment Method">
                             @if ($errors->has('payment_method'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('payment_method') }}</strong>

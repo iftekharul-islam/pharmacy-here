@@ -13,7 +13,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" id="form" action="{{ route('category.store') }}" method="POST">
+            <form role="form" id="form" action="{{ route('form.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">

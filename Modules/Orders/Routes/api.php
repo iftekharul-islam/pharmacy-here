@@ -49,6 +49,7 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
     $api->post('orders/cancel-reason', $namespace . '\OrderController@pharmacyOrderCancelReason');
 
     // Pharmacy Transaction history
+    $api->get('pharmacy/transaction-amount', $namespace . '\TransactionHistoryController@getPharmacyTransactionAmount');
     $api->get('pharmacy/transaction-history', $namespace . '\TransactionHistoryController@getPharmacyTransaction');
     $api->post('pharmacy/transaction', $namespace . '\TransactionHistoryController@storePharmacyTransaction');
 

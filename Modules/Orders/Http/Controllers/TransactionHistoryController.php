@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Modules\Orders\Http\Requests\CreateTransactionHistoryRequest;
 use Modules\Orders\Repositories\TransactionHistoryRepository;
@@ -25,11 +26,25 @@ class TransactionHistoryController extends Controller
      */
     public function index()
     {
-        $data = $this->repository->all();
+//        $data = $this->repository->all();
+        $orders = $this->repository->getAllOrders();
+        $transactionHistories = $this->repository->getAllTransactionHistories();
 
 //        return $data;
+//        return $data['order'][0]->total_amount;
 
-        return view('orders::transactionHistory.index', compact('data'));
+        $due = new Collection();
+
+        foreach ($orders as $key => $value) {
+            if ($value->pharmacy_id == $transactionHistories[$key]->pharmacy_id) {
+                $due->push((object) [
+                    'due' => $value->total_amount - $transactionHistories[$key]->amount,
+                    'pharmacy_id' => $value->pharmacy_id
+                ]);
+            }
+        }
+
+        return view('orders::transactionHistory.index', compact('orders', 'transactionHistories', 'due'));
     }
 
     /**
