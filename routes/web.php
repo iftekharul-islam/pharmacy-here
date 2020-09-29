@@ -43,13 +43,21 @@ Route::get('/medicine/{medicine_id}',  'ProductsController@show')->name('single-
 Route::get('/search/medicine-name',  'ProductsController@getProductName');
 
 Route::group(['middleware' => ['customerAuth']], function () {
-
     Route::group(['prefix' => 'checkout'], function () {
         Route::get('preview', 'CheckoutController@index')->name('checkout.preview');
         Route::post('check-preview', 'CheckoutController@check')->name('checkout.check');
-        Route::post('store', 'CheckoutController@store')->name('checkout.store');
+//        Route::post('store', 'CheckoutController@store')->name('checkout.store');
+//        Route::post('pay', 'CheckoutController@sslPayment')->name('ssl.payment');
+//        Route::post('success', 'CheckoutController@success')->name('ssl.success');
+//        Route::post('fail', 'CheckoutController@fail')->name('ssl.fail');
+//        Route::post('cancel', 'CheckoutController@cancel')->name('ssl.cancel');
     });
 });
+Route::post('store', 'CheckoutController@store')->name('checkout.store');
+Route::post('pay', 'CheckoutController@sslPayment')->name('ssl.payment');
+Route::post('success', 'CheckoutController@success')->name('ssl.success');
+Route::post('fail', 'CheckoutController@fail')->name('ssl.fail');
+Route::post('cancel', 'CheckoutController@cancel')->name('ssl.cancel');
 
 // Cart
 Route::group(['prefix' => 'cart'], function () {
@@ -58,5 +66,19 @@ Route::group(['prefix' => 'cart'], function () {
     Route::patch('update-cart', 'CartController@update');
     Route::delete('remove-from-cart', 'CartController@remove');
 });
+
+// SSLCOMMERZ Start
+Route::get('/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
+Route::get('/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
+
+//Route::post('/pay', 'SslCommerzPaymentController@index');
+//Route::post('/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
+
+//Route::post('/success', 'SslCommerzPaymentController@success');
+//Route::post('/fail', 'SslCommerzPaymentController@fail');
+//Route::post('/cancel', 'SslCommerzPaymentController@cancel');
+
+//Route::post('/ipn', 'SslCommerzPaymentController@ipn');
+//SSLCOMMERZ END
 
 
