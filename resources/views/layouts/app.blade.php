@@ -27,7 +27,6 @@
     <style>
         html, body {
             background-color: #fff;
-            color: #636b6f;
             font-family: 'Nunito', sans-serif;
             font-weight: 200;
             height: 100vh;
@@ -74,6 +73,15 @@
 
         .m-b-md {
             margin-bottom: 30px;
+        }
+
+        .join {
+            background: #00BD95;
+            border-radius: 5px;
+        }
+
+        .footer {
+            background: #F0F0F0;
         }
     </style>
 </head>
@@ -142,7 +150,7 @@
             @yield('content')
         </main>
         <!-- footer -->
-        <footer class="footer">
+        <footer class="footer mt-5">
             <div class="container">
                 <div class="row">
                     <div class="col-10 mx-auto">
@@ -196,6 +204,7 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- moment time -->
     <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+
     <!-- owl -->
 {{--    <script src="js/owl.carousel.min.js"></script>--}}
     <!-- custom jquery -->

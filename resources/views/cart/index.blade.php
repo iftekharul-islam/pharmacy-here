@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-12 text-center">
+                        <div class="col-12">
                             <h2>Cart list</h2>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                                                 <td scope="row">{{ $details['product']['name'] }}</td>
                                                 <td>৳ {{ $details['product']['purchase_price'] }}</td>
                                                 <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}" min="{{ $details['product']['min_order_qty'] }}"></td>
-                                                <td data-th="Subtotal" class="text-center">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>
+                                                <td>৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>
                                                 <td>
                                                     <div class="actions" data-th="">
                                                         <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>
@@ -73,12 +73,12 @@
                                         <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">Continue Shopping</a></td>
                                         <td></td>
                                         <td></td>
-                                        <td>Total ৳{{ $total }}</td>
+                                        <td><h5>Total ৳ {{ $total }}</h5></td>
                                         @guest
                                                 <td><p class="badge btn-primary">Please login first to checkout</p></td>
                                             @else
                                                 <td>
-                                                    <a id="submit" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
+                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
                                                 </td>
                                         @endguest
                                     </tr>

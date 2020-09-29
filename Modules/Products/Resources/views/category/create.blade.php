@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="name" class="col-sm-4 col-form-label">Name</label>
-                        <div class="col-sm-8  " id="name">
+                        <div class="col-sm-8" id="name">
                             <input type="text" name="name" class="form-control" id="name" placeholder="Name">
                             @if ($errors->has('name'))
                                 <span class="text-danger">
