@@ -2058,8 +2058,8 @@ pre code {
 }
 
 .table .thead-light th {
-  color: #495057;
-  background-color: #e9ecef;
+  color: #fff !important;
+  background-color: #00AE4D !important;
   border-color: #dee2e6;
 }
 
