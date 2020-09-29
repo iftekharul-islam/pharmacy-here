@@ -15921,6 +15921,20 @@ html {
   margin-bottom: 2.5rem;
   display: block;
 }
+.medicine-details--content span {
+    background: #ffffff;
+    padding: 2px 20px;
+    border-radius: 5px;
+    margin-bottom: 40px!important;
+    color: #000;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    font-weight: normal;
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+    display: block;
+}
 
 .medicine-details--content p {
   margin-bottom: 10px;

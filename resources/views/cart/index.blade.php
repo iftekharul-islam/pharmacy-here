@@ -38,7 +38,7 @@
                                         <tr>
                                             <td scope="row">{{ $details['product_name'] }}</td>
                                             <td>৳ {{ $details['amount'] }}</td>
-                                            <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}"></td>
+                                            <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}" min="{{ $details['minQuantity'] }}"></td>
                                             <td data-th="Subtotal" class="text-center">৳ {{ $details['amount'] * $details['quantity'] }}</td>
                                             <td>
                                                 <div class="actions" data-th="">
@@ -130,9 +130,10 @@
         });
 
 
-
+            var newData = '';
         function checkMedicine(data){
             let medicineData = data;
+            newData = data;
 
             var preOrderMedicine = isPreOrderMedicine(medicineData);
             if (preOrderMedicine) {
@@ -140,11 +141,11 @@
                 return;
             }
 
-            var prescribedMedicine = isPrescribedMedicine(medicineData);
-            if (prescribedMedicine) {
-                isPrescribedMedicineAlert(medicineData);
-                return;
-            }
+            // var prescribedMedicine = isPrescribedMedicine(medicineData);
+            // if (prescribedMedicine) {
+            //     isPrescribedMedicineAlert(medicineData);
+            //     return;
+            // }
             window.location = "/checkout/preview";
         }
 
@@ -175,7 +176,12 @@
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    window.location = "/checkout/preview"
+                    var prescribedMedicine = isPrescribedMedicine(newData);
+                    if (prescribedMedicine) {
+                        isPrescribedMedicineAlert(newData);
+                        return;
+                    }
+                    // window.location = "/checkout/preview"
                 }
                 if (result.isDismissed) {
 
