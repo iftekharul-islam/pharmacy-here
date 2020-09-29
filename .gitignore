@@ -15,3 +15,5 @@ yarn-error.log
 .idea
 package-lock.json
 composer.lock
+gcs/
+

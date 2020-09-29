@@ -44,6 +44,10 @@ class OtpController extends Controller
     {
         $otpResponse = $this->repository->verifyOtpWeb($request);
 
+        if ($otpResponse == false) {
+            return redirect()->back()->with('failed', 'Wrong OTP, please insert correct one');
+        }
+
         if ($otpResponse == true) {
             $user = User::where('phone_number', session()->get('phone_number'))->first();
 

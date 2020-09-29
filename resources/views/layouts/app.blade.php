@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Subidha') }}</title>
 
     <!-- Scripts -->
 {{--    <script src="{{ asset('js/app.js') }}" ></script>--}}
@@ -27,7 +27,6 @@
     <style>
         html, body {
             background-color: #fff;
-            color: #636b6f;
             font-family: 'Nunito', sans-serif;
             font-weight: 200;
             height: 100vh;
@@ -75,6 +74,15 @@
         .m-b-md {
             margin-bottom: 30px;
         }
+
+        .join {
+            background: #00BD95;
+            border-radius: 5px;
+        }
+
+        .footer {
+            background: #F0F0F0;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +91,7 @@
             <div class="container">
                 <!-- logo -->
                 <a class="navbar-brand subidha--logo" href="{{ route('home') }}">
-                    <img src="{{ asset('images/logo.svg') }}" class="img-fluid" alt="Subidha logo"><span class="">Subidha</span>
+                    <img src="{{ asset('images/logo.png') }}" class="img-fluid" alt="Subidha logo"><span class="">Subidha</span>
                 </a>
 
                 <!-- Toggle button for small device -->
@@ -106,11 +114,10 @@
                         <li class="language">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle language-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{{ asset('images/usa.svg') }}" alt=""> English
+                                    <img src="{{ asset('images/usa.svg') }}" alt=""> EN
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="#"><img src="{{ asset('images/bd.png') }}" alt="bangladesh-flag">BD</a>
-
                                 </div>
                             </div>
                         </li>
@@ -124,10 +131,9 @@
                         @else
                             <li><a href="#" class="btn--primary join dropdown-toggle" id="dropdownprofile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ \Illuminate\Support\Facades\Auth::user()->name }}</a>
                                 <div class="dropdown-menu dropdown-menu-profile" aria-labelledby="dropdownprofile">
-                                    <a class="dropdown-item" href="{{ route('customer.details') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                                    <a class="dropdown-item" href="{{ route('customer.details') }}"></i> Dashboard</a>
                                     <a class="dropdown-item" href="#" onclick="event.preventDefault();
-                                                            document.getElementById('logout-form').submit();">
-                                        <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}</a>
+                                                            document.getElementById('logout-form').submit();"></i> {{ __('Logout') }}</a>
                                     <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
@@ -142,13 +148,15 @@
             @yield('content')
         </main>
         <!-- footer -->
-        <footer class="footer">
+        <footer class="footer mt-5">
             <div class="container">
                 <div class="row">
                     <div class="col-10 mx-auto">
                         <div class="footer-menu">
                             <div class="footer-menu-list">
-                                <a href="#"><img src="{{ asset('images/logo.svg') }}" alt="subidha logo" class="img-fluid"></a>
+                                <a href="#" class="subidha--logo">
+                                    <img src="{{ asset('images/logo.png') }}" alt="subidha logo" class="img-fluid"><span class="">Subidha</span>
+                                </a>
                                 <p>Lorem ipsum dolor sit amet, consectetur
                                     adipiscing elit ut aliquam, purus
                                     sit amet luctus venenatis</p>
@@ -196,6 +204,7 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- moment time -->
     <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+
     <!-- owl -->
 {{--    <script src="js/owl.carousel.min.js"></script>--}}
     <!-- custom jquery -->

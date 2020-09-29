@@ -13,6 +13,9 @@
         background-color: #fff;
         color: black;
     }
+    .save-profile-btn {
+        border: 1px solid #00ce5e;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -24,9 +27,7 @@
     <section class="checkout-section">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <h6><strong>You’re almost there...</strong></h6>
-                </div>
+                <h6><strong>You’re almost there...</strong></h6>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -59,7 +60,7 @@
                                                 @endforeach
                                                 <a href="#" class="add-address" data-toggle="modal" data-target="#addressModal">
                                                     <i class="fas fa-plus-circle"></i>
-                                                    <span>Add Address</span>
+                                                    <span>Address</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -193,7 +194,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>Total ৳{{ $total }}</td>
+                                                    <td><h5>Total ৳ {{ $total }}</h5></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -225,7 +226,7 @@
                             </ul>
                             <div class="row">
                                 <div class="col-md-8 p-0">
-                                    <button type="submit" class="w-100 text-center btn--primary d-block checkout-btn">Proceed to Checkout</button>
+                                    <button type="submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block">Proceed to Checkout</button>
                                 </div>
                             </div>
                         </form>
@@ -327,6 +328,7 @@
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
             var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
             $('input[name="delivery_type"]').val(deliveryType);
+            console.log(deliveryCharge, 'On page load')
 
             getPayTypeValue(payTypeValue);
             getDeliveryChargeValue(deliveryCharge);
@@ -341,7 +343,8 @@
 
         function getDeliveryType(deliveryType) {
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
-            var deliveryCharge =parseInt( $('input[name="delivery_charge_amount"]:checked').val() );
+            var deliveryCharge =parseInt( $('input[name="delivery_charge"]:checked').val() );
+            console.log(deliveryCharge, 'hdjasdnj');
 
             $('input[name="delivery_type"]').val(deliveryType);
 
@@ -349,7 +352,7 @@
         }
 
         function getDeliveryChargeValue(deliveryCharge) {
-            console.log('delivery charge function');
+            // console.log('delivery charge function');
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
 
             addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
@@ -366,9 +369,6 @@
                 var date = dt.getDate() + "-" + dt.getMonth() + "-" + dt.getFullYear()
                 var next_date = dt.getDate() + 1 + "-" + dt.getMonth() + "-" + dt.getFullYear()
 
-                console.log(date);
-                console.log(date);
-
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
                 // document.write(next_date);
@@ -377,17 +377,13 @@
                     $(".normal_date").val("(" +normal_time_slot[0] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('10:00:00');
-                    console.log("First hour");
-                    console.log(normal_time_slot[1]);
                 }
                 if ( time > normal_start_time && time < normal_end_time) {
                     $(".normal_date").val("(" +normal_time_slot[1] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('19:00:00');
-                    console.log("second hour");
                 }
                 else {
-                    console.log("next day first hour");
                     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
                     $(".normal_delivery_time").val('10:00:00');
@@ -460,6 +456,11 @@
         function addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge) {
             let grandTotal = total;
             $('input[name="delivery_charge_amount"]').prop('disabled', false);
+            // console.log('hello 1');
+            console.log('Add delivery total');
+            console.log('Delivery type: ', deliveryType);
+            console.log('pay type: ', payTypeValue);
+            console.log('Delivery Charge: ', deliveryCharge);
 
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
                 grandTotal = total + cashInNormalDelivery;
@@ -471,6 +472,7 @@
                 $('input[name="delivery_charge_amount"]').val(cashInExpressDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
+                console.log(ecashInNormalDelivery, 'e cash');
                 grandTotal = total + ecashInNormalDelivery;
                 $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
@@ -491,6 +493,8 @@
             var grandTotalView = 'Grand Total : ' + grandTotal;
             $('input[name="amount"]').val(grandTotal);
 
+            // console.log('hello 2');
+
             console.log(typeof( cashInNormalDelivery ));
             console.log(cashInNormalDelivery);
             console.log(typeof( grandTotal));
@@ -504,8 +508,10 @@
 
 
         function getPayTypeValue(payTypeValue) {
-            var deliveryCharge =parseInt( $('input[name="delivery_charge_amount"]:checked').val() );
-            var deliveryType =parseInt( $('input[name="delivery_type"]').val() );
+            var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
+            var deliveryType = parseInt( $('input[name="delivery_type"]').val() );
+            console.log('paytype()');
+            console.log(deliveryCharge);
 
             if (payTypeValue === 2) {
                 $('#normal_delivery_charge').html(showNormalDeliveryChargeInEpay());

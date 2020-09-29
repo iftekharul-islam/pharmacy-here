@@ -47,5 +47,7 @@ return [
     'cod_payment_type' => 1,
     'ecash_payment_type' => 2,
 
-    'item_per_page' => 20
+    'item_per_page' => 20,
+
+    'free_delivery_limit' => 500,
 ];
