@@ -50,13 +50,13 @@
                         <?php $i = 1?>
                         <tr>
                             <td>{{ $i + $index }}</td>
-                            <td>{{ $transactionHistories[$index]->pharmacy_name }}</td>
+                            <td>{{ $item->pharmacy_name }}</td>
 {{--                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>--}}
                             <td>{{ $item->total_amount }}</td>
 {{--                            <td>{{ $item->total_amount }}</td>--}}
-                            <td>{{ $transactionHistories[$index]->amount }}</td>
+                            <td>{{ $transactionHistories[$index]->amount ?? 0 }}</td>
 {{--                            <td>{{ $item->amount }}</td>--}}
-                            <td>{{ $due[$index]->due }}</td>
+                            <td>{{ $due[$index]->due ?? 0 }}</td>
 {{--                            <td>{{ $item->total_amount - $item->amount }}</td>--}}
 
                             <td>

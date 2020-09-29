@@ -85,4 +85,9 @@ class Product extends Model
         return $this->hasOne(CartItem::class);
     }
 
+    public function orderItemsOrdering()
+    {
+        return $this->hasOne(OrderItems::class)->orderByDesc('is_pre_order');
+    }
+
 }

@@ -19,7 +19,8 @@ class TransactionHistoryRepository
     public function getAllOrders()
     {
         return DB::table('orders')
-            ->select(DB::raw('(SUM(amount) - SUM(subidha_comission)) as total_amount,pharmacy_id'))
+            ->select(DB::raw('(SUM(amount) - SUM(subidha_comission)) as total_amount,pharmacy_id, pharmacy_businesses.pharmacy_name'))
+            ->join('pharmacy_businesses', 'orders.pharmacy_id', '=', 'pharmacy_businesses.user_id')
             ->where('status',3)
             ->groupBy('pharmacy_id')
             ->get();
@@ -28,8 +29,7 @@ class TransactionHistoryRepository
     public function getAllTransactionHistories()
     {
         return DB::table('transaction_history')
-            ->select(DB::raw('SUM(amount) as amount, pharmacy_id, pharmacy_businesses.pharmacy_name'))
-            ->join('pharmacy_businesses', 'transaction_history.pharmacy_id', '=', 'pharmacy_businesses.user_id')
+            ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
             ->groupBy('pharmacy_id')
             ->get();
     }

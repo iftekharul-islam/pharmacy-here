@@ -4,6 +4,7 @@
 namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\Orders\Entities\Models\Order;
@@ -304,6 +305,7 @@ class OrderRepository
     {
         $order = Order::query();
 
+
         if ($request->has('search') && $request->get('search')) {
             $search = $request->get('search');
             $order->where('order_no', $search);
@@ -316,11 +318,23 @@ class OrderRepository
                 ->orderBy('id','desc')
                 ->paginate(5);
         }
-        return $order->with(['orderItems.product', 'address', 'pharmacy'])
+        return $order->with(['orderItems.product' => function($q) {
+            $q->orderBy('is_pre_order', 'desc');
+        }])
             ->where('pharmacy_id', $pharmacy_id)
             ->where('status', $status_id)
-            ->orderBy('id','desc')
-            ->paginate(5);
+            ->orderBy('delivery_method','ASC')
+            ->orderBy('updated_at', 'desc')
+//            ->orderBy('id','desc')
+            ->paginate(20);
+
+//        return $order->with(['address', 'pharmacy'])
+//            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+//            ->where('pharmacy_id', $pharmacy_id)
+//            ->where('status', $status_id)
+//            ->orderBy('delivery_method','ASC')
+//            ->orderBy('id','desc')
+//            ->paginate(20);
     }
 
     public function pharmacyOrderCancelReason($pharmacy_id, $request)
