@@ -19,4 +19,9 @@ class OrderItems extends Model
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
+//    public function productOrdering()
+//    {
+//        return $this->belongsTo(Product::class, 'product_id', 'id')->orderByDesc('is_pre_order');
+//    }
+
 }

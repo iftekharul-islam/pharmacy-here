@@ -26,21 +26,19 @@ class TransactionHistoryController extends Controller
      */
     public function index()
     {
-//        $data = $this->repository->all();
         $orders = $this->repository->getAllOrders();
         $transactionHistories = $this->repository->getAllTransactionHistories();
 
-//        return $data;
-//        return $data['order'][0]->total_amount;
-
         $due = new Collection();
 
-        foreach ($orders as $key => $value) {
-            if ($value->pharmacy_id == $transactionHistories[$key]->pharmacy_id) {
-                $due->push((object) [
-                    'due' => $value->total_amount - $transactionHistories[$key]->amount,
-                    'pharmacy_id' => $value->pharmacy_id
-                ]);
+        if (count($transactionHistories)) {
+            foreach ($orders as $key => $value) {
+                if ($value->pharmacy_id == $transactionHistories[$key]->pharmacy_id) {
+                    $due->push((object)[
+                        'due' => $value->total_amount - $transactionHistories[$key]->amount,
+                        'pharmacy_id' => $value->pharmacy_id
+                    ]);
+                }
             }
         }
 
