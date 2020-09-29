@@ -25,7 +25,11 @@
                                     <img src="{{ asset('images/pill.png') }}" class="pill" alt="medicine">
                                 </div>
                                 <div class="medicine-details--content">
-                                    <a href="#" class="mb-3">Tag</a>
+                                    @if ($item->is_pre_order == 1 )
+                                        <a href="#" class="mb-3">Pre-order</a>
+                                        @else
+                                        <span class="mb-3"></span>
+                                    @endif
                                     <p><strong>{{ $item->name }}</strong></p>
                                     <p><strong>{{ $item->company->name }}</strong></p>
                                 </div>
