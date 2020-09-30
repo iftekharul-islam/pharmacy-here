@@ -65,7 +65,7 @@ class OrderRepository
 
     public function get($id)
     {
-        return Order::with('prescriptions')->where('id', $id)->first();
+        return Order::with('prescriptions', 'address.area.thana.district')->where('id', $id)->first();
     }
 
     public function getNearestPharmacyId($address_id) {
