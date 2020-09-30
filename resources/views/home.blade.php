@@ -29,6 +29,10 @@
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
+        @else(session('failed'))
+            <div class="alert alert-danger">
+                {{ session('failed') }}
+            </div>
     @endif
     <!-- Medicine section -->
     <section class="medicine-search-section" style="background: url(images/main-bg.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
@@ -119,9 +123,6 @@
 @endsection
 
 @section('js')
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script type="text/javascript">
         var isNameSet = false;
         $(document).ready(function(){

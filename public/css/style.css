@@ -15628,6 +15628,9 @@ html {
   transition: all .3s ease-in;
   padding: 10px;
 }
+.my-language {
+    margin-left: 20px !important;
+}
 
 .language-dropdown::after {
   display: none;

@@ -58,6 +58,10 @@ class OrderRepository
     {
         return Order::where('customer_id', $id)->get();
     }
+    public function orderListByUserWeb($id)
+    {
+        return Order::where('customer_id', $id)->paginate(10);
+    }
 
     public function get($id)
     {
