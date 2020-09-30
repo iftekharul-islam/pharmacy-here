@@ -29,7 +29,7 @@
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
-        @else(session('failed'))
+    @elseif (session('failed'))
             <div class="alert alert-danger">
                 {{ session('failed') }}
             </div>
