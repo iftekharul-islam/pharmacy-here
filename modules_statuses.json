@@ -11,5 +11,6 @@
     "Address": true,
     "Notice": true,
     "Resources": true,
-    "Delivery": true
+    "Delivery": true,
+    "Feedback": true
 }

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Address\Entities\CustomerAddress;
+use Modules\Feedback\Entities\Models\Feedback;
 use Modules\Locations\Entities\Models\Address;
 use Modules\Prescription\Entities\Models\Prescription;
 use Modules\User\Entities\Models\User;
@@ -65,6 +66,11 @@ class Order extends Model
     public function getOrderAmountSum($pharmacy_id)
     {
         return Order::groupBy('pharmacy_id')->selectRaw('SUM(amount) as amount, pharmacy_id');
+    }
+
+    public function feedback()
+    {
+        return $this->belongsTo(Feedback::class, 'id', 'order_id');
     }
 
 }
