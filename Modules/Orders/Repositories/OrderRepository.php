@@ -304,10 +304,12 @@ class OrderRepository
         logger($previousPharmacyOrderHistory);
         logger('End of Previous Pharmacy Order History');
 
-        $previousPharmacyOrderHistory->update(['status' => $status_id]);
+        if (! $previousPharmacyOrderHistory) {
+            throw new NotFoundHttpException('Previous Pharmacy of this order not found');
+        }
 
-//        $previousPharmacyOrderHistory['status'] = $status_id;
-//        $previousPharmacyOrderHistory->save();
+        $previousPharmacyOrderHistory->status = $status_id;
+        $previousPharmacyOrderHistory->save();
 
         $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
         logger('Previous Pharmacies');
