@@ -103,6 +103,7 @@ class OrderRepository
         $order->shipping_address_id = $request->get('shipping_address_id');
         $order->delivery_method = $request->get('delivery_method');
         $order->delivery_date = $request->get('delivery_date');
+        $order->is_rated = "no";
         logger('Start of generate OrderNo()');
         $order->order_no = $this->generateOrderNo();
         logger('End of generate OrderNo()');
@@ -291,16 +292,26 @@ class OrderRepository
 
     public function forwardOrder($order_id, $status_id) {
         $order = Order::with('address')->find($order_id);
+        logger('Order');
+        logger($order);
 
         $previousPharmacyOrderHistory = OrderHistory::where('user_id',$order->pharmacy_id)->where('order_id', $order_id)->first();
+        logger('Previous Pharmacy Order History');
+        logger($previousPharmacyOrderHistory);
+
         $previousPharmacyOrderHistory->status = $status_id;
         $previousPharmacyOrderHistory->save();
 
         $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
+        logger('Previous Pharmacies');
+        logger($previousPharmacies);
         $previousPharmacies[] = $order->pharmacy_id;
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
             ->whereNotIn('user_id', $previousPharmacies)
             ->inRandomOrder()->first();
+
+        logger('Nearest Pharmacy');
+        logger($nearestPharmacy);
 
         if ($nearestPharmacy) {
             $orderHistory = new OrderHistory();

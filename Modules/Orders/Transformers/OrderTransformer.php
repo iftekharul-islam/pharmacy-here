@@ -32,6 +32,7 @@ class OrderTransformer extends TransformerAbstract
             "status"                    => $item->status,
             "order_date"                => Carbon::parse($item->created_at)->format('d-m-Y'),
             "delivery_method"           => $item->delivery_method,
+            "is_rated"                  => $item->is_rated,
             "delivery_date"             => isset($item->delivery_date) ? Carbon::parse($item->delivery_date)->format('d-m-Y') : '',
             "order_no"                  => $item->order_no,
             "updated_at"                => Carbon::parse($item->updated_at)->format('d-m-Y'),
