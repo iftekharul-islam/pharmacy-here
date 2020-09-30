@@ -338,13 +338,13 @@ class OrderRepository
         }
 
         if ($status_id == 2) {
-            return $order->with(['orderItems.product', 'address', 'pharmacy'])
+            return $order->with(['orderItems.product', 'address.area.thana.district', 'pharmacy'])
                 ->where('pharmacy_id', $pharmacy_id)
                 ->whereIn('status', [2,9])
                 ->orderBy('id','desc')
                 ->paginate(5);
         }
-        return $order->with(['orderItems.product' => function($q) {
+        return $order->with(['address.area.thana.district', 'orderItems.product' => function($q) {
             $q->orderBy('is_pre_order', 'desc');
         }])
             ->where('pharmacy_id', $pharmacy_id)
