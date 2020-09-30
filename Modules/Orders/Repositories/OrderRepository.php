@@ -304,6 +304,10 @@ class OrderRepository
         logger($previousPharmacyOrderHistory);
         logger('End of Previous Pharmacy Order History');
 
+        if (! $previousPharmacyOrderHistory) {
+            throw new NotFoundHttpException('Previous Pharmacy of this order not found');
+        }
+
         $previousPharmacyOrderHistory->status = $status_id;
         $previousPharmacyOrderHistory->save();
 
