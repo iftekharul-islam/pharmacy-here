@@ -296,7 +296,8 @@ class OrderRepository
         logger($order);
         logger('Status');
         logger($status_id);
-        logger('$order->pharmacy_id', $order->pharmacy_id);
+        logger('order->pharmacy_id');
+        logger($order->pharmacy_id);
 
         $previousPharmacyOrderHistory = OrderHistory::where('user_id',$order->pharmacy_id)->where('order_id', $order_id)->first();
         logger('Previous Pharmacy Order History');
