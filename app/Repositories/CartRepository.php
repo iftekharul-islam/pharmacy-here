@@ -42,6 +42,7 @@ class CartRepository
     public function update($request)
     {
         $item = Cart::find($request->id);
+//        logger($item);
 
         if (!$item) {
             abort(404);

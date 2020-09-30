@@ -98,7 +98,7 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
-        if($request->id and $request->quantity)
+        if($request->id && $request->quantity)
         {
             if (Auth::user()) {
                 $data = $this->repository->update($request);

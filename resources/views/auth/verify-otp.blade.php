@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label for="otp">{{ __('Verify OTP') }}</label>
-                            <input id="otp" type="number" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" autocomplete="phone_number" autofocus>
+                            <input id="otp" type="text" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" onkeypress="return isNumber(event)" autocomplete="phone_number" autofocus>
                             @error('otp')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -44,5 +44,19 @@
             </div>
         </div>
     </section>
+@endsection
+@section('js')
+    <script>
+        function isNumber(evt)
+        {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode == 13 || (charCode >= 48 && charCode <= 57))
+            {
+                return true;
+            }
+            return false;
+        }
+    </script>
 @endsection
 
