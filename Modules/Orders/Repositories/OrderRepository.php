@@ -182,6 +182,12 @@ class OrderRepository
         logger($order);
         $order->save();
 
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'user_id' => $pharmacy_id,
+            'status' => $order->status
+        ]);
+
         if ( $request->order_items ) {
             logger('Into the Order items');
             // $order->orderItems()->saveMany($request->order_items);
@@ -259,6 +265,17 @@ class OrderRepository
         }
 
         if ($status_id == 5 || $status_id == 6) {
+
+            $user = Auth::user();
+            $pharmacy_id = Order::where('pharmacy_id', $user->id)->where('id', $order_id)->first();
+
+            if (! $pharmacy_id) {
+                return responsePreparedData([
+                    'error' => true,
+                    'message' => 'This order is already forwarded'
+                ]);
+            }
+
            return $this->forwardOrder($order_id, $status_id);
         }
 
@@ -270,6 +287,11 @@ class OrderRepository
 
     public function forwardOrder($order_id, $status_id) {
         $order = Order::with('address')->find($order_id);
+
+        $previousPharmacyOrderHistory = OrderHistory::where('user_id',$order->pharmacy_id)->where('order_id', $order_id)->first();
+        $previousPharmacyOrderHistory->status = $status_id;
+        $previousPharmacyOrderHistory->save();
+
         $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
         $previousPharmacies[] = $order->pharmacy_id;
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
@@ -279,8 +301,8 @@ class OrderRepository
         if ($nearestPharmacy) {
             $orderHistory = new OrderHistory();
             $orderHistory->order_id = $order->id;
-            $orderHistory->user_id = $order->pharmacy_id;
-            $orderHistory->status = $status_id;
+            $orderHistory->user_id = $nearestPharmacy->user_id;
+            $orderHistory->status = 0;
             $orderHistory->save();
 
             $order->pharmacy_id = $nearestPharmacy->user_id;
