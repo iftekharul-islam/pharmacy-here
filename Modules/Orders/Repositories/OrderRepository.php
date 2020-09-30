@@ -294,10 +294,13 @@ class OrderRepository
         $order = Order::with('address')->find($order_id);
         logger('Order');
         logger($order);
+        logger('Status', $status_id);
+        logger('$order->pharmacy_id', $order->pharmacy_id);
 
         $previousPharmacyOrderHistory = OrderHistory::where('user_id',$order->pharmacy_id)->where('order_id', $order_id)->first();
         logger('Previous Pharmacy Order History');
         logger($previousPharmacyOrderHistory);
+        logger('End of Previous Pharmacy Order History');
 
         $previousPharmacyOrderHistory->status = $status_id;
         $previousPharmacyOrderHistory->save();
