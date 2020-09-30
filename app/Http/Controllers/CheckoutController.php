@@ -162,7 +162,8 @@ class CheckoutController extends Controller
             return redirect()->route('home')->with('success', 'Order successfully placed');
         } else {
 //            return 'its E payment';
-            $value = $this->sslPayment($request);
+            $user = Auth::user();
+            $value = $this->sslPayment($request, $user);
             return $value;
         }
 
@@ -251,7 +252,7 @@ class CheckoutController extends Controller
         //
     }
 
-    public function sslPayment($request)
+    public function sslPayment($request, $user)
     {
         $data = $request->only([
                 'phone_number',
@@ -281,7 +282,7 @@ class CheckoutController extends Controller
         if ($request->delivery_charge == 1) {
             $data['delivery_date'] = $request->normal_delivery_date;
             $data['delivery_time'] = $request->normal_delivery_time;
-        }else {
+        } else {
             $data['delivery_date'] = $request->express_delivery_date;
             $data['delivery_time'] = $request->express_delivery_time;
         }
@@ -290,7 +291,7 @@ class CheckoutController extends Controller
             $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
         }
 
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = Auth::user();
         logger($user);
 
         # Here you have to receive all the order data to initate the payment.
@@ -303,8 +304,8 @@ class CheckoutController extends Controller
         $post_data['tran_id'] = $this->generateOrderNo();
 
         # CUSTOMER INFORMATION
-        $post_data['cus_name'] = $user->name ;
-        $post_data['cus_email'] = $user->email ;
+        $post_data['cus_name'] = 'Customer' ;
+        $post_data['cus_email'] = 'email' ;
         $post_data['cus_add1'] = 'Customer Address';
         $post_data['cus_add2'] = "";
         $post_data['cus_city'] = "";
@@ -379,7 +380,7 @@ class CheckoutController extends Controller
 
     public function success(Request $request)
     {
-        return $request->all();
+//        return $request->all();
         echo "Transaction is Successful";
 
         $tran_id = $request->input('tran_id');
@@ -407,7 +408,17 @@ class CheckoutController extends Controller
                     ->where('order_no', $tran_id)
                     ->update(['status' => 3 ]);
 
-                echo "<br >Transaction is successfully Completed";
+                $userId = Auth::user()->id;
+                $items = Cart::where('customer_id', $userId)->get();
+                if ($items != null) {
+                    foreach ($items as $item) {
+                        $item->delete();
+                    }
+                }
+                session()->forget('cartCount');
+
+                return redirect()->route('home')->with('success', 'Payment successful');
+//                echo "<br >Transaction is successfully Completed";
             } else {
                 /*
                 That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
@@ -416,16 +427,21 @@ class CheckoutController extends Controller
                 $update_product = DB::table('orders')
                     ->where('order_no', $tran_id)
                     ->update(['status' => 4 ]);
-                echo "validation Fail";
+
+                return redirect()->route('home')->with('failed', 'validation Fail');
+
+//                echo "validation Fail";
             }
         } else if ($order_detials->status == 2 || $order_detials->status == 3) {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
-            echo "Transaction is successfully Completed";
+            return redirect()->route('home')->with('success', 'Transaction is successfully Completed');
+//            echo "Transaction is successfully Completed";
         } else {
             #That means something wrong happened. You can redirect customer to your product page.
-            echo "Invalid Transaction";
+            return redirect()->route('home')->with('failed', 'Invalid Transaction');
+//            echo "Invalid Transaction";
         }
 
 
@@ -441,13 +457,18 @@ class CheckoutController extends Controller
 
         if ($order_detials->status == 0 ) {
             $update_product = DB::table('orders')
-                ->where('transaction_id', $tran_id)
+                ->where('order_no', $tran_id)
                 ->update(['status' => 4 ]);
-            echo "Transaction is Failed";
+
+            return redirect()->route('home')->with('failed', 'Transaction is Failed');
+//            echo "Transaction is Failed";
         } else if ($order_detials->status == 2 || $order_detials->status == 3 ) {
-            echo "Transaction is already Successful";
+
+            return redirect()->route('home')->with('success', 'Transaction is already Successful');
+//            echo "Transaction is already Successful";
         } else {
-            echo "Transaction is Invalid";
+            return redirect()->route('home')->with('failed', 'Transaction is Invalid');
+//            echo "Transaction is Invalid";
         }
 
     }
@@ -462,13 +483,17 @@ class CheckoutController extends Controller
 
         if ($order_detials->status == 0) {
             $update_product = DB::table('orders')
-                ->where('transaction_id', $tran_id)
+                ->where('order_no', $tran_id)
                 ->update(['status' => 10 ]);
             echo "Transaction is Cancel";
         } else if ($order_detials->status == 2 || $order_detials->status == 3) {
-            echo "Transaction is already Successful";
+
+            return redirect()->route('home')->with('success', 'Transaction is already Successful');
+//            echo "Transaction is already Successful";
         } else {
-            echo "Transaction is Invalid";
+
+            return redirect()->route('home')->with('failed', 'Transaction is Invalid');
+//            echo "Transaction is Invalid";
         }
 
 
@@ -500,7 +525,8 @@ class CheckoutController extends Controller
                         ->where('order_no', $tran_id)
                         ->update(['status' =>  2 ]);
 
-                    echo "Transaction is successfully Completed";
+                    return redirect()->route('home')->with('failed', 'Transaction is successfully Completed');
+//                    echo "Transaction is successfully Completed";
                 } else {
                     /*
                     That means IPN worked, but Transation validation failed.
@@ -510,20 +536,25 @@ class CheckoutController extends Controller
                         ->where('order_no', $tran_id)
                         ->update(['status' => 4 ]);
 
-                    echo "validation Fail";
+                    return redirect()->route('home')->with('failed', 'validation Fail');
+//                    echo "validation Fail";
                 }
 
             } else if ($order_details->status == 2 || $order_details->status == 3 ) {
 
                 #That means Order status already updated. No need to udate database.
 
-                echo "Transaction is already successfully Completed";
+                return redirect()->route('home')->with('success', 'Transaction is already successfully Completed');
+//                echo "Transaction is already successfully Completed";
             } else {
                 #That means something wrong happened. You can redirect customer to your product page.
 
-                echo "Invalid Transaction";
+                return redirect()->route('home')->with('failed', 'Invalid Transaction');
+//                echo "Invalid Transaction";
             }
         } else {
+
+            return redirect()->route('home')->with('failed', 'Invalid Data');
             echo "Invalid Data";
         }
     }
