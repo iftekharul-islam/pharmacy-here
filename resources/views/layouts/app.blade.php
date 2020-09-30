@@ -116,7 +116,7 @@
                                 <button class="btn btn-secondary dropdown-toggle language-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src="{{ asset('images/usa.svg') }}" alt=""> EN
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu dropdown-menu-custom my-language" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="#"><img src="{{ asset('images/bd.png') }}" alt="bangladesh-flag">BD</a>
                                 </div>
                             </div>
@@ -195,20 +195,37 @@
         </footer>
     </div>
     <!-- font awesome -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>--}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('js/icon.js') }}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+{{--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>--}}
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- moment time -->
     <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
 
+{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>--}}
+
+{{--    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>--}}
+    <!-- font awesome -->
+{{--    <script src="{{ asset('js/icon.js') }}"></script>--}}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- owl -->
-{{--    <script src="js/owl.carousel.min.js"></script>--}}
+    <script src="js/owl.carousel.min.js"></script>
     <!-- custom jquery -->
-{{--    <script src="{{ asset('js/main.js') }}"></script>--}}
+    <script src="js/main.js"></script>
+
+    <!-- owl -->
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- custom jquery -->
+    <script src="{{ asset('js/main.js') }}"></script>
     @yield('js')
 </body>
 </html>

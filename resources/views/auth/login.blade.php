@@ -14,7 +14,7 @@
                         <div class="text-center mb-5"><img src="{{ asset('images/logo.png') }}" alt="logo"></div>
                         <div class="form-group">
                             <label for="phone_number">{{ __('Phone Number') }}</label>
-                            <input id="phone_number" type="number" class="form-control @error('phone_number') is-invalid @enderror mb-2" name="phone_number" value="{{ old('phone_number') }}" autocomplete="phone_number">
+                            <input id="phone_number" type="number" class="form-control @error('phone_number') is-invalid @enderror mb-2" name="phone_number"  value="{{ old('phone_number') }}" onkeypress="return isNumber(event)" autocomplete="phone_number">
                             <label class="check_first d-none"></label>
                             <label class="check_digit d-none"></label>
                             <label class="check_max_digit d-none"></label>
@@ -40,6 +40,17 @@
 @endsection
 @section('js')
     <script>
+        function isNumber(evt)
+        {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode == 13 || (charCode >= 48 && charCode <= 57))
+            {
+                return true;
+            }
+            return false;
+        }
+
         $('#phone_number').keyup(function () {
 
             var value = $(this).val();

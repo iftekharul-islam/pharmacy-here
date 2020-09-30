@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -90,13 +89,9 @@
             </div>
         </div>
     </div>
-
 @endsection
-
-
 @section('js')
     <script>
-
         $(".update-cart").click(function (e) {
             e.preventDefault();
 
