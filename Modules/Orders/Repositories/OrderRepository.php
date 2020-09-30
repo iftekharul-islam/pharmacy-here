@@ -48,7 +48,7 @@ class OrderRepository
      */
     public function byCustomerId($customer_id)
     {
-        return Order::with(['orderItems.product', 'address.area.thana.district', 'pharmacy'])
+        return Order::with(['orderItems.product', 'address.area.thana.district', 'pharmacy', 'feedback'])
             ->where('customer_id', $customer_id)
             ->orderBy('id', 'desc')
             ->paginate(20);
