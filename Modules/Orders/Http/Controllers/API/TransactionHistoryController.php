@@ -59,7 +59,7 @@ class TransactionHistoryController extends BaseController
 
 
         $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
-        return $pharmacySales;
+//        return $pharmacySales;
 
         $saleInfo = [];
         $totalSale = 0;
