@@ -10,68 +10,74 @@
     <div class="cart-section">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                        <div class="text-center">
-                            <h2>My Prescriptions</h2>
-                        </div>
-                    <div class="order-summary">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn--primary float-right mb-2" data-toggle="modal" data-target="#prescriptionModal">
-                            <i class="fas fa-plus"></i>  Prescription
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="prescriptionModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="prescriptionModalLabel">Add Prescription</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form method="post" action="{{ route('prescription.store') }}" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="patient_name" class="col-form-label">Patient name:</label>
-                                                <input type="text" name="patient_name" class="form-control">
-                                                @if ($errors->has('patient_name'))
-                                                    <span class="text-danger">
+                <div class="col-6 mb-2">
+                    <h2>Upload Prescriptions</h2>
+                    <p>Please upload images of valid prescription from your doctor.</p>
+                    <!-- Button trigger modal -->
+
+                    <button type="button" class="btn btn--primary" data-toggle="modal" data-target="#prescriptionModal">
+                        <i class="fas fa-plus"></i>  Prescription
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="prescriptionModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="prescriptionModalLabel">Add Prescription</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post" action="{{ route('prescription.store') }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="patient_name" class="col-form-label">Patient name:</label>
+                                            <input type="text" name="patient_name" class="form-control">
+                                            @if ($errors->has('patient_name'))
+                                                <span class="text-danger">
                                                         <strong>{{ $errors->first('patient_name') }}</strong>
                                                     </span>
-                                                @endif
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="message-text" class="col-form-label">Doctor name:</label>
-                                                <input type="text" class="form-control" name="doctor_name" id="message-text" required>
-                                                @if ($errors->has('doctor_name'))
-                                                    <span class="text-danger">
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Doctor name:</label>
+                                            <input type="text" class="form-control" name="doctor_name" id="message-text" required>
+                                            @if ($errors->has('doctor_name'))
+                                                <span class="text-danger">
                                                                 <strong>{{ $errors->first('doctor_name') }}</strong>
                                                             </span>
-                                                @endif
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="message-text" class="col-form-label">Prescription date:</label>
-                                                <input type="date" class="form-control" name="prescription_date" id="message-text" required>
-                                                @if ($errors->has('prescription_date'))
-                                                    <span class="text-danger">
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Prescription date:</label>
+                                            <input type="date" class="form-control" name="prescription_date" id="message-text" required>
+                                            @if ($errors->has('prescription_date'))
+                                                <span class="text-danger">
                                                                 <strong>{{ $errors->first('prescription_date') }}</strong>
                                                             </span>
-                                                @endif
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="message-text" class="col-form-label">Prescription Image:</label>
-                                                <input type="file" name="url" required>
-                                            </div>
+                                            @endif
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Prescription Image:</label>
+                                            <input type="file" name="url" required>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div>
+{{--                    <div class="order-summary">--}}
+{{--                        <h2>Upload Prescriptions</h2>--}}
+{{--                        <p>Please upload images of valid prescription from your doctor.</p>--}}
+{{--                    </div>--}}
+                    <div class="order-summary">
                         <div class="table-responsive">
                         @if (count($prescriptions) > 0)
                             <form method="post" action="{{ route('prescriptions.id') }}">
@@ -91,7 +97,7 @@
                                         @foreach($prescriptions as $prescription )
                                             <tr>
                                                 <td><input type="checkbox" name="prescription_id[]" value="{{ $prescription->id }}"></td>
-                                                <td><img width="55px" height="60px" src="{{ asset('storage/'. $prescription->url) }}" alt=""></td>
+                                                <td><img width="55px" height="60px" src="{{ $prescription->url }}" alt=""></td>
                                                 <td>{{ $prescription->patient_name }}</td>
                                                 <td>{{ $prescription->doctor_name }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</td>
@@ -111,11 +117,17 @@
                                                                 <div class="modal-body">
                                                                     <div class="row">
                                                                         <div class="col-6">
-                                                                            <img width="200px" height="300px" src="{{ asset('storage/'. $prescription->url) }}" alt="">
+                                                                            <img width="200px" height="300px" src="{{ $prescription->url }}" alt="">
                                                                         </div>
                                                                         <div class="col-6 My-modal">
                                                                             <strong>Patient </strong>
-                                                                            <label>{{ $prescription->patient_name }}</label><br>
+                                                                            <label>
+                                                                                @if (!empty($prescription->patient_name))
+                                                                                    {{$prescription->patient_name}}
+                                                                                @else
+                                                                                    {{ Auth::user()->name }}
+                                                                                @endif
+                                                                            </label><br>
                                                                             <strong>Doctor </strong>
                                                                             <label>{{ $prescription->doctor_name }}</label><br>
                                                                             <strong>Date</strong>
@@ -126,19 +138,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-{{--                                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('prescription.destroy', $prescription->id) }}"--}}
-{{--                                                          method="post"--}}
-{{--                                                          class="form-horizontal d-inline">--}}
-{{--                                                        @method('DELETE')--}}
-{{--                                                        {{ csrf_field() }}--}}
-{{--                                                        <input type="hidden" name="_method" value="DELETE">--}}
-{{--                                                        <div class="btn-group">--}}
-{{--                                                            <button onclick="removeItem({{ $loop->index }})" type="button"--}}
-{{--                                                                    class="badge btn-danger">--}}
-{{--                                                                <i class="fas fa-trash"></i>--}}
-{{--                                                            </button>--}}
-{{--                                                        </div>--}}
-{{--                                                    </form>--}}
                                                 </td>
                                             </tr>
                                         @endforeach

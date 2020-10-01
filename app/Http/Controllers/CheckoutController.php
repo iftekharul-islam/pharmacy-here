@@ -17,8 +17,8 @@ use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
 use Modules\Orders\Repositories\DeliveryChargeRepository;
 use Modules\Orders\Repositories\OrderRepository;
-use Modules\Products\Repositories\ProductRepository;
 use Modules\User\Entities\Models\User;
+use Modules\User\Entities\Models\UserDeviceId;
 
 class CheckoutController extends Controller
 {
@@ -50,7 +50,7 @@ class CheckoutController extends Controller
     {
         $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
         if (count($data) == 0 ) {
-            return redirect()->back();
+            return redirect()->back()->with('failed', 'please add product in cart');
         }
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
 //        return $delivery_charge;
@@ -58,15 +58,6 @@ class CheckoutController extends Controller
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
         $allLocations = $this->locationRepository->getLocation();
         $user = User::find(Auth::guard('web')->user()->id);
-
-//        $temp = [
-//            'data' => $data,
-//            'addresses' => $addresses,
-//            'delivery_charge' => $delivery_charge,
-//            'isPreOrderMedicine' => $isPreOrderMedicine,
-//            'allLocations' => $allLocations,
-//        ];
-//        return $temp;
 
         return view('checkout.index', compact('data', 'user', 'addresses', 'delivery_charge', 'isPreOrderMedicine', 'allLocations'));
     }
@@ -88,7 +79,7 @@ class CheckoutController extends Controller
                 'phone_number',
                 'payment_type',
                 'delivery_type',
-                'delivery_charge',
+                'delivery_charge_amount',
                 'delivery_method',
                 'status',
                 'amount',
@@ -103,6 +94,7 @@ class CheckoutController extends Controller
                 'note'
             ]);
 
+//            $data['pharmacy_id'] = $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
             $data['order_no'] = $this->generateOrderNo();
             $data['pharmacy_id'] = 1;
             $data['order_date'] = Carbon::today();
@@ -126,7 +118,7 @@ class CheckoutController extends Controller
             if (isset($data['delivery_date'])){
                 $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
             }
-//        return $data;
+        return $data;
             $order = Order::create($data);
 
 
@@ -160,9 +152,19 @@ class CheckoutController extends Controller
             session()->forget('prescriptions');
             session()->forget('cartCount');
 
+            $deviceIds = UserDeviceId::where('user_id',$data['pharmacy_id'])->get();
+            $title = 'New Order Available';
+            $message = 'You have a new order from Subidha. Please check.';
+
+            foreach ($deviceIds as $deviceId){
+                sendPushNotification($deviceId->device_id, $title, $message, $id="");
+            }
+
             return redirect()->route('home')->with('success', 'Order successfully placed');
+
         } else {
-//            return 'its E payment';
+
+            return $request->all();
             $user = Auth::user();
             $value = $this->sslPayment($request, $user);
             return $value;
@@ -176,7 +178,8 @@ class CheckoutController extends Controller
         if ($latestOrder) {
             $lastNumber = explode('-', $latestOrder->order_no);
             $lastNumber = preg_replace("/[^0-9]/", "", end($lastNumber) );
-            $orderNo =  date('Y').'-'.date('m').'-'.str_pad( (int) $lastNumber + 1 , 4, '0', STR_PAD_LEFT);
+//            $orderNo =  date('Y').'-'.date('m').'-'.str_pad( (int) $lastNumber + 1 , 4, '0', STR_PAD_LEFT);
+            $orderNo =  'SBD-'.str_pad( (int) $lastNumber + 1 , 6, '0', STR_PAD_LEFT);
             if (Order::where('order_no', $orderNo)->count() > 0) {
                 $this->generateOrderNo();
             }
@@ -186,7 +189,6 @@ class CheckoutController extends Controller
 
         return date('Y').'-'.date('m').'-001';
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -273,7 +275,9 @@ class CheckoutController extends Controller
                 'delivery_time',
                 'note'
         ]);
-
+//        $data['pharmacy_id'] = $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
+        $data['pharmacy_id'] = 1;
+        logger($data['pharmacy_id']);
         if ($request->delivery_charge === 1) {
             $data['delivery_method'] = 'normal';
         } else {
@@ -291,9 +295,9 @@ class CheckoutController extends Controller
         if (isset($data['delivery_date'])){
             $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
         }
-
-        $user = Auth::user();
-        logger($user);
+//
+//        $user = Auth::user();
+//        logger($user);
 
         # Here you have to receive all the order data to initate the payment.
         # Let's say, your oder transaction informations are saving in a table called "orders"
@@ -340,7 +344,7 @@ class CheckoutController extends Controller
         #Before  going to initiate the payment order status need to insert or update as Pending.
         $update_product = DB::table('orders')
             ->where('order_no', $post_data['tran_id'])
-            ->updateOrInsert([
+            ->updateOrInsert( $order =[
                 'customer_id' => Auth::user()->id,
                 'phone_number' => $data['phone_number'],
                 'delivery_type' => $data['delivery_type'] ,
@@ -350,9 +354,10 @@ class CheckoutController extends Controller
                 'order_date' => Carbon::today(),
                 'notes' => 'test',
                 'order_no' =>$post_data['tran_id'],
-                'pharmacy_id' => 1,
+                'pharmacy_id' => $data['pharmacy_id'],
                 'shipping_address_id' => $data['shipping_address_id'],
                 'delivery_date' => $data['delivery_date'],
+                'delivery_time' => $data['delivery_time']
 
 //                'name' => $post_data['cus_name'],
 //                'email' => $post_data['cus_email'],
@@ -363,13 +368,36 @@ class CheckoutController extends Controller
 //                'transaction_id' => $post_data['tran_id'],
 //                'currency' => $post_data['currency']
             ]);
+        $order = DB::table('orders')
+            ->where('customer_id', Auth::user()->id)
+            ->latest('id')->first();
 
-        logger($update_product);
+        if ($request->order_items) {
+            $items = json_decode($request->order_items, true);
+            foreach($items as $item) {
+                OrderItems::create([
+                    'product_id' => $item['product_id'],
+                    'rate' => $item['product']['purchase_price'],
+                    'quantity' => $item['quantity'],
+                    'order_id' => $order->id,
+                ]);
+            }
+        }
+
+        if (session()->has('prescriptions')) {
+            $prescriptions = session()->get('prescriptions');
+            foreach($prescriptions as $item) {
+                OrderPrescription::create([
+                    'prescription_id' => $item,
+                    'order_id' => $order->id,
+                ]);
+            }
+            session()->forget('prescriptions');
+        }
 
         $sslc = new SslCommerzNotification();
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
         $payment_options = $sslc->makePayment($post_data, 'hosted');
-//        logger($payment_options);
 
 
         if (!is_array($payment_options)) {
@@ -381,7 +409,6 @@ class CheckoutController extends Controller
 
     public function success(Request $request)
     {
-//        return $request->all();
         echo "Transaction is Successful";
 
         $tran_id = $request->input('tran_id');
@@ -408,6 +435,18 @@ class CheckoutController extends Controller
                 $update_product = DB::table('orders')
                     ->where('order_no', $tran_id)
                     ->update(['status' => 3 ]);
+
+                $order = DB::table('orders')
+                    ->where('customer_id', Auth::user()->id)
+                    ->latest('id')->first();
+
+//                $deviceIds = UserDeviceId::where('user_id',$order->pharmacy_id)->get();
+//                $title = 'New Order Available';
+//                $message = 'You have a new order from Subidha. Please check.';
+//
+//                foreach ($deviceIds as $deviceId){
+//                    sendPushNotification($deviceId->device_id, $title, $message, $id="");
+//                }
 
                 $userId = Auth::user()->id;
                 $items = Cart::where('customer_id', $userId)->get();
