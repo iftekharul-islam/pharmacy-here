@@ -72,7 +72,7 @@ class CheckoutController extends Controller
 
     public function check(CheckoutCreateRequest $request)
     {
-//        return $request->cart_id;
+//        return $request->all();
 
         if ($request->payment_type == 1){
             $data = $request->only([
@@ -118,7 +118,7 @@ class CheckoutController extends Controller
             if (isset($data['delivery_date'])){
                 $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
             }
-        return $data;
+//        return $data;
             $order = Order::create($data);
 
 
@@ -164,7 +164,7 @@ class CheckoutController extends Controller
 
         } else {
 
-            return $request->all();
+//            return $request->all();
             $user = Auth::user();
             $value = $this->sslPayment($request, $user);
             return $value;
@@ -257,11 +257,12 @@ class CheckoutController extends Controller
 
     public function sslPayment($request, $user)
     {
+//        return $request->all();
         $data = $request->only([
                 'phone_number',
                 'payment_type',
                 'delivery_type',
-                'delivery_charge',
+                'delivery_charge_amount',
                 'delivery_method',
                 'status',
                 'amount',
@@ -350,14 +351,16 @@ class CheckoutController extends Controller
                 'delivery_type' => $data['delivery_type'] ,
                 'status' => 0 ,
                 'amount' => $post_data['total_amount'],
-                'delivery_charge' => $data['delivery_charge'],
+                'delivery_charge' => $data['delivery_charge_amount'],
                 'order_date' => Carbon::today(),
                 'notes' => 'test',
                 'order_no' =>$post_data['tran_id'],
                 'pharmacy_id' => $data['pharmacy_id'],
                 'shipping_address_id' => $data['shipping_address_id'],
                 'delivery_date' => $data['delivery_date'],
-                'delivery_time' => $data['delivery_time']
+                'delivery_time' => $data['delivery_time'],
+                'created_at' => Carbon::today(),
+                'updated_at' => Carbon::today(),
 
 //                'name' => $post_data['cus_name'],
 //                'email' => $post_data['cus_email'],
@@ -436,9 +439,9 @@ class CheckoutController extends Controller
                     ->where('order_no', $tran_id)
                     ->update(['status' => 3 ]);
 
-                $order = DB::table('orders')
-                    ->where('customer_id', Auth::user()->id)
-                    ->latest('id')->first();
+//                $order = DB::table('orders')
+//                    ->where('customer_id', Auth::user()->id)
+//                    ->latest('id')->first();
 
 //                $deviceIds = UserDeviceId::where('user_id',$order->pharmacy_id)->get();
 //                $title = 'New Order Available';
