@@ -23,6 +23,10 @@ class FeedbackRepository
             $feedBack->pharmacy_id = $request->pharmacy_id;
         }
         if ($request->has('order_id')) {
+
+//            if (Feedback::where('order_id', $request->order_id)->first()) {
+//               return responsePreparedData('Feedback already available');
+//            }
             $feedBack->order_id = $request->order_id;
 
             $order = Order::find($request->order_id);
