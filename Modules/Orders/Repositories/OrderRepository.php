@@ -291,7 +291,6 @@ class OrderRepository
         }
 
 
-return $order;
         logger($order);
         $order->save();
 
