@@ -218,12 +218,12 @@
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- owl -->
-    <script src="js/owl.carousel.min.js"></script>
+{{--    <script src="js/owl.carousel.min.js"></script>--}}
     <!-- custom jquery -->
 {{--    <script src="js/main.js"></script>--}}
 
     <!-- owl -->
-    <script src="js/owl.carousel.min.js"></script>
+{{--    <script src="js/owl.carousel.min.js"></script>--}}
     <!-- custom jquery -->
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('js')

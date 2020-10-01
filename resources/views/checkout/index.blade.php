@@ -486,7 +486,8 @@
                 $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
             if (deliveryType === 2 && payTypeValue === 2 ) {
-                grandTotal = total;
+                console.log('deliveryType 2 and payTypeValue 2')
+                grandTotal = total ;
                 $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
 
