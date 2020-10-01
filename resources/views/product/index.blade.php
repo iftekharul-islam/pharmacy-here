@@ -121,18 +121,6 @@
                                             @break
                                         @endif
                                     @endforeach
-
-    {{--                                @if ($matchedItem)--}}
-    {{--                                    <div class="number-input" id="show-button-{{ $item->id }}">--}}
-    {{--                                        <button onclick="newItemdec(this, {{ $cart->id }}, {{ $item->min_order_qty }});" ></button>--}}
-    {{--                                        <input class="quantity new-input-{{ $cart->id }}" min="0" name="quantity" value="{{ $matchedItem->quantity }}" type="number">--}}
-    {{--                                        <button onclick="newItemIncrease(this, {{ $cart->id }}, {{ $item->min_order_qty }}, {{ $item->id }});" class="plus"></button>--}}
-    {{--                                    </div>--}}
-    {{--                                @else--}}
-    {{--                                    <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class=" btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>--}}
-    {{--                                @endif--}}
-
-    {{--                                    {{ dd($matchedItem) }}--}}
                                         <div class="number-input {{ $matchedItem ? 'block' : 'd-none'}}" id="show-button-{{ $item->id }}">
                                             <button onclick="newItemdec(this, {{ $matchedItem ?  $matchedItem->id : ''}}, {{ $item->min_order_qty }}, {{ $item->id }});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
                                             <input class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}" min="0" name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number">
