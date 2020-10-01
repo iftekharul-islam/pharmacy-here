@@ -31,4 +31,7 @@ $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namesp
 
     // Customer feedback store
     $api->post('feedback/store', $namespace . '\FeedbackController@store');
+
+    // Feedback skipped by customer
+    $api->put('feedback/{order_id}/skipped', $namespace . '\FeedbackController@feedbackSkipped');
 });
