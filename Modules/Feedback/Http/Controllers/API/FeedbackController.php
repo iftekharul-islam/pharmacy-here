@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Modules\Feedback\Entities\Models\Feedback;
 use Modules\Feedback\Http\Requests\CreateFeedbackRequest;
 use Modules\Feedback\Repositories\FeedbackRepository;
 
@@ -43,6 +44,9 @@ class FeedbackController extends Controller
      */
     public function store(CreateFeedbackRequest $request)
     {
+        if (Feedback::where('order_id', $request->order_id)->first()) {
+            return responsePreparedData('Feedback already available');
+        }
         $customer = Auth::user();
         $data = $this->repository->create($request, $customer->id);
 
