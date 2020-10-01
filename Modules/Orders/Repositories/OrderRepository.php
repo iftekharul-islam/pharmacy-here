@@ -471,15 +471,20 @@ class OrderRepository
                 ->orderBy('id','desc')
                 ->paginate(5);
         }
-        return $order->with(['address.area.thana.district', 'orderItems.product' => function($q) {
-            $q->orderBy('is_pre_order', 'desc');
-        }])
+
+        return $order->with('address.area.thana.district', 'orderItems.product')
             ->where('pharmacy_id', $pharmacy_id)
             ->where('status', $status_id)
             ->orderBy('delivery_method','ASC')
             ->orderBy('updated_at', 'desc')
-//            ->orderBy('id','desc')
+            ->orderBy('id','desc')
             ->paginate(20);
+
+//        return $order->with(['address.area.thana.district', 'orderItems.product' => function($q) {
+//            $q->orderBy('is_pre_order', 'desc');
+//        }])->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->orderBy('delivery_method','ASC')->orderBy('updated_at', 'desc')
+//            ->orderBy('id','desc')
+//            ->paginate(20);
 
 //        return $order->with(['address', 'pharmacy'])
 //            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
@@ -487,6 +492,19 @@ class OrderRepository
 //            ->where('status', $status_id)
 //            ->orderBy('delivery_method','ASC')
 //            ->orderBy('id','desc')
+//            ->paginate(20);
+//        return $status_id;
+
+//        return $order->with(['address.area.thana.district'])
+//            ->where('orders.pharmacy_id', $pharmacy_id)
+//            ->where('orders.status', $status_id)
+//            ->join('order_items','orders.id', '=', 'order_items.order_id' )
+//            ->join('products','order_items.product_id', '=', 'products.id' )
+//            ->select('orders.*','products.*')
+//            ->orderBy('products.is_pre_order', 'desc')
+////            ->orderBy('orders.delivery_method','ASC')
+////            ->orderBy('orders.updated_at', 'desc')
+////            ->orderBy('orders.id','desc')
 //            ->paginate(20);
     }
 
