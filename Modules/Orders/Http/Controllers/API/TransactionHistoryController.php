@@ -61,14 +61,13 @@ class TransactionHistoryController extends BaseController
         $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
 //        return $pharmacySales;
 
-        $saleInfo = [];
         $totalSale = 0;
 
         foreach($pharmacySales as $item) {
-            if($item['delivery_type'] == 2) {
-                $totalSale = $totalSale + ($item['amount'] - $item['subidha_comission']);
+            if($item['payment_type'] == 2) {
+                $totalSale = $totalSale + $item['pharmacy_amount'];
             } else {
-                $totalSale = $totalSale + $item['amount'];
+                $totalSale = $totalSale + $item['customer_amount'];
             }
         }
 
