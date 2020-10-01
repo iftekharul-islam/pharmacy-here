@@ -85,6 +85,9 @@
                     @foreach($data as $index=>$item)
                         <div class="col-sm-6 col-lg-3 mb-3">
                             <div href="#" class="medicine-details">
+                                @if ($item->is_pre_order == 1)
+                                    <div class="madicine-badge">RX</div>
+                                @endif
                                 <div class="text-right mb-2">
                                     <i class="fas fa-heart"></i>
                                 </div>
@@ -118,15 +121,27 @@
                                     @endif
                                 @endforeach
 
-                                @if ($matchedItem)
-                                    <div class="number-input">
-                                        <button onclick="newItemdec(this, {{ $cart->id }}, {{ $item->min_order_qty }});" ></button>
-                                        <input class="quantity new-input-{{ $cart->id }}" min="0" name="quantity" value="{{ $matchedItem->quantity }}" type="number">
-                                        <button onclick="newItemIncrease(this, {{ $cart->id }});" class="plus"></button>
+{{--                                @if ($matchedItem)--}}
+{{--                                    <div class="number-input" id="show-button-{{ $item->id }}">--}}
+{{--                                        <button onclick="newItemdec(this, {{ $cart->id }}, {{ $item->min_order_qty }});" ></button>--}}
+{{--                                        <input class="quantity new-input-{{ $cart->id }}" min="0" name="quantity" value="{{ $matchedItem->quantity }}" type="number">--}}
+{{--                                        <button onclick="newItemIncrease(this, {{ $cart->id }}, {{ $item->min_order_qty }}, {{ $item->id }});" class="plus"></button>--}}
+{{--                                    </div>--}}
+{{--                                @else--}}
+{{--                                    <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class=" btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>--}}
+{{--                                @endif--}}
+
+{{--                                    {{ dd($matchedItem) }}--}}
+                                    <div class="number-input {{ $matchedItem ? 'block' : 'd-none'}}" id="show-button-{{ $item->id }}">
+                                        <button onclick="newItemdec(this, {{ $matchedItem ?  $matchedItem->id : ''}}, {{ $item->min_order_qty }}, {{ $item->id }});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
+                                        <input class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}" min="0" name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number">
+                                        <button onclick="newItemIncrease(this, {{ $matchedItem ?  $matchedItem->id : '' }}, {{ $item->min_order_qty }}, {{ $item->id }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
                                     </div>
-                                @else
-                                    <a href="{{ route('cart.addToCart', $item->id) }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
-                                @endif
+
+                                    <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" onclick="addToCart({{ $item->id }})" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+
+
+
                                     <a href="{{ route('single-product', $item->id) }}" class="eyes"><i class="fas fa-eye"></i></a>
                                 </div>
                             </div>
@@ -141,57 +156,93 @@
 @endsection
 @section('js')
     <script>
-        function  newItemIncrease(item, id) {
+        function addToCart(id) {
+            $('#show-cart-' + id).addClass('d-none');
+            // $('#show-button-' + id).val('10');
+            $('#show-button-' + id).removeClass('d-none');
+        }
+
+
+        let cartIncrement, cartDecrement;
+        function  newItemIncrease(item, id, minValue) {
+
             console.log('up');
             item.parentNode.querySelector('input[type=number]').stepUp();
             let inputNumber = $('.new-input-' + id).val();
 
-            $.ajax({
-                url: "{{ route('update.cart') }}",
-                method: "put",
-                data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber },
 
-                success: function(result) {
-                    console.log(result);
-                },
-                error: function(result) {
-                    console.log(result);
-                }
-            });
-        }
 
-        function  newItemdec(item, id, minValue) {
-            console.log('up');
-            item.parentNode.querySelector('input[type=number]').stepDown();
-            let inputNumber = $('.new-input-' + id).val();
+            clearTimeout(cartIncrement);
+            clearTimeout(cartDecrement);
 
-            if (inputNumber >= minValue) {
+            cartIncrement = setTimeout(function () {
+                console.log(inputNumber);
+
                 $.ajax({
                     url: "{{ route('update.cart') }}",
                     method: "put",
                     data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber },
 
                     success: function(result) {
-                        console.log(result);
+                        console.log('cart updated');
                     },
                     error: function(result) {
                         console.log(result);
                     }
                 });
-            } else {
-                $.ajax({
-                    url: "{{ route('delete.cart') }}",
-                    method: "DELETE",
-                    data: {_token: "{{ csrf_token() }}", id: id},
+            }, 3000);
 
-                    success: function(result) {
-                        window.location.reload();
-                    },
-                    error: function(result) {
-                        console.log(result);
-                    }
-                });
+
+        }
+
+        function  newItemdec(item, id, minValue, itemId) {
+            console.log('down');
+            item.parentNode.querySelector('input[type=number]').stepDown();
+            let inputNumber = $('.new-input-' + id).val();
+
+            if ( inputNumber < minValue ) {
+                console.log('show-cart-' + itemId);
+                $('#show-cart-' + itemId).removeClass('d-none');
+                $('#show-button-' + itemId).addClass('d-none');
+                $('#show-button-' + itemId).removeClass('block');
             }
+
+            clearTimeout(cartDecrement);
+            clearTimeout(cartIncrement);
+
+            cartDecrement = setTimeout(function () {
+                console.log('decrement time');
+                console.log(inputNumber);
+                if (inputNumber >= minValue) {
+                    $.ajax({
+                        url: "{{ route('update.cart') }}",
+                        method: "put",
+                        data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber },
+
+                        success: function(result) {
+                            console.log('cart updated');
+                        },
+                        error: function(result) {
+                            console.log(result);
+                        }
+                    });
+                } else {
+                    console.log('delete : ',inputNumber);
+                    $.ajax({
+                        url: "{{ route('delete.cart') }}",
+                        method: "DELETE",
+                        data: {_token: "{{ csrf_token() }}", id: id},
+
+                        success: function(result) {
+                            console.log('cart deleted');
+                        },
+                        error: function(result) {
+                            console.log(result);
+                        }
+                    });
+                }
+
+            }, 2000);
         }
     </script>
 @endsection

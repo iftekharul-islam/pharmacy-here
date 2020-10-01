@@ -15823,6 +15823,35 @@ html {
   opacity: .7;
 }
 
+.medicine-details {
+    padding: 10px;
+    border: 2px solid #E5E5E5;
+    border-radius: 5px;
+    display: block;
+    color: initial;
+    -webkit-transition: all .3s ease-in;
+    transition: all .3s ease-in;
+    position: relative;
+}
+
+.medicine-details .madicine-badge {
+    width: 60px;
+    height: 60px;
+    background: #AD272E;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-clip-path: polygon(0 0, 0% 100%, 100% 0);
+    clip-path: polygon(0 0, 0% 100%, 100% 0);
+    padding-left: 10px;
+    padding-top: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+
 .medicine-search-section {
   position: relative;
   overflow: hidden;

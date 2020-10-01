@@ -14,7 +14,7 @@
                 <div class="col-md-6">
                     <form method="POST" action="{{ route('customer.nameUpdate') }}">
                         @csrf
-                        <div class="text-center mb-5"><img src="{{ asset('images/logo.svg') }}" alt="logo"></div>
+                        <div class="text-center mb-5"><img src="{{ asset('images/logo.png') }}" alt="logo"></div>
                         <div class="form-group">
                             <label for="name">{{ __('Customer Name') }}</label>
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="phone_number" autofocus>
