@@ -313,12 +313,30 @@
             });
         }
 
-        let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>");
-        let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>");
-        let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>");
-        let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>");
+        let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>" ) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
+        let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
+        let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         let cashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");
         let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");
+
+        let ecashNoramlCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let ecashExpressCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+
+
+
+        // console.log(cashInExpressDeliveryCharge, 'ecash In Express Delivery Charge')
+        // console.log(cashInNormalDeliveryCharge, 'ecash In NormalDelivery Charge')
+
+        // console.log(cashInNormalDelivery, 'cash In NormalDelivery')
+        // console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
+        // console.log(cashInExpressDelivery, 'cash In ExpressDelivery')
+        // console.log(ecashInExpressDelivery, 'ecash In ExpressDelivery')
+        // console.log(cashInCollectFromPharmacy, 'cash In CollectFromPharmacy')
+        // console.log(ecashInCollectFromPharmacy, 'ecash In CollectFromPharmacy')
+
 
         var total = parseFloat("<?php echo $total ?>");
 
@@ -472,13 +490,16 @@
                 $('input[name="delivery_charge_amount"]').val(cashInExpressDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
-                console.log(ecashInNormalDelivery, 'e cash');
-                grandTotal = total + ecashInNormalDelivery;
-                $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
+                console.log(ecashInNormalDelivery, 'e cash normal');
+                grandTotal = total + ecashInNormalDelivery ;
+                $('input[name="delivery_charge_amount"]').val(ecashNoramlCharge);
+                // $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
+                console.log(ecashInNormalDelivery, 'e cash express');
+                // console.log('hello');
                 grandTotal = total + ecashInExpressDelivery;
-                $('input[name="delivery_charge_amount"]').val(ecashInExpressDelivery);
+                $('input[name="delivery_charge_amount"]').val(ecashExpressCharge)
             }
 
             if (deliveryType === 2 && payTypeValue === 1 ) {
@@ -492,8 +513,29 @@
             }
 
             var grandTotalView = 'Grand Total : ' + grandTotal;
-            $('input[name="amount"]').val(grandTotal);
 
+        if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
+            var grandTotalNormalDB = grandTotal - cashInNormalDelivery ;
+            console.log(grandTotalNormalDB, 'normal grandTotalDB');
+            $('input[name="amount"]').val(grandTotalNormalDB);
+        }else if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 2) {
+            var grandTotalExpressDB = grandTotal - cashInExpressDelivery ;
+            console.log(grandTotalExpressDB, 'normal grandTotalDB');
+            $('input[name="amount"]').val(grandTotalExpressDB);
+        }
+        else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
+            var egrandTotalNormalDB = grandTotal - ecashInNormalDelivery ;
+            console.log(egrandTotalNormalDB, 'normal e grandTotalDB');
+            $('input[name="amount"]').val(egrandTotalNormalDB);
+
+        } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
+            var egrandTotalExpressDB = grandTotal - ecashInExpressDelivery ;
+            console.log(egrandTotalExpressDB, 'express e grandTotalDB');
+            $('input[name="amount"]').val(egrandTotalExpressDB);
+
+        } else {
+            $('input[name="amount"]').val(grandTotal);
+        }
             // console.log('hello 2');
 
             console.log(typeof( cashInNormalDelivery ));

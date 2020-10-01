@@ -128,9 +128,9 @@
                                         </div>
 
                                         <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" onclick="addToCart({{ $item->id }})" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
-                                @endauth
-
+                                @else
                                     <a href="{{ route('cart.addToCart', $item->id) }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                                @endauth
                                     <a href="{{ route('single-product', $item->id) }}" class="eyes"><i class="fas fa-eye"></i></a>
 
                                 </div>
