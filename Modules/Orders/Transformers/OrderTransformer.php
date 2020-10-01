@@ -26,6 +26,7 @@ class OrderTransformer extends TransformerAbstract
             'amount'                    => $item->amount,
             'subidha_comission'         => $item->subidha_comission,
             'pharmacy_amount'           => $item->pharmacy_amount,
+            'customer_amount'           => $item->customer_amount,
             "shipping_address"          => $item->address,
             "delivery_charge"           => $item->delivery_charge,
             "delivery_type"             => $item->delivery_type,
