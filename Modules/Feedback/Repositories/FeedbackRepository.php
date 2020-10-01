@@ -5,6 +5,8 @@ namespace Modules\Feedback\Repositories;
 
 
 use Modules\Feedback\Entities\Models\Feedback;
+use Modules\Orders\Entities\Models\Order;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FeedbackRepository
 {
@@ -22,6 +24,10 @@ class FeedbackRepository
         }
         if ($request->has('order_id')) {
             $feedBack->order_id = $request->order_id;
+
+            $order = Order::find($request->order_id);
+            $order->is_rated = "yes";
+            $order->save();
         }
         if ($request->has('rating')) {
             $feedBack->rating = $request->rating;
@@ -34,5 +40,17 @@ class FeedbackRepository
 
         return $feedBack->save();
 
+    }
+
+    public function feedbackSkipped($order_id)
+    {
+        $order = Order::find($order_id);
+
+        if (! $order) {
+            throw new NotFoundHttpException('Order not found');
+        }
+
+        $order->is_rated = "skipped";
+        return $order->save();
     }
 }

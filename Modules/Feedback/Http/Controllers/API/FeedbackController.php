@@ -98,4 +98,11 @@ class FeedbackController extends Controller
 
         return responsePreparedData(number_format($data, 1));
     }
+
+    public function feedbackSkipped($order_id)
+    {
+        $data = $this->repository->feedbackSkipped($order_id);
+
+        return responsePreparedData('Order Feedback Skipped');
+    }
 }
