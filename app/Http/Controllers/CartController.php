@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request, $id)
     {
+//        return response($request->all());
         if (Auth::user()) {
             $data = $this->repository->addToCart($id);
             $cartCount = $this->repository->getCartItemCount(Auth::user()->id);
@@ -115,12 +117,15 @@ class CartController extends Controller
 
     public function remove(Request $request)
     {
+//        return response($request->all());
 
         if($request->id || is_array($request->id)) {
 
+
             if (Auth::user()) {
 
-                return $this->repository->delete($request);
+                $data = $this->repository->delete($request);
+                return $data;
             }
             else {
 
@@ -137,5 +142,10 @@ class CartController extends Controller
                 session()->flash('success', 'Product removed successfully');
             }
         }
+    }
+
+    public function findCart(Request $request) {
+        $itemId = Cart::where('customer_id', Auth::user()->id)->where('product_id', $request->id)->first();
+        return response($itemId->id);
     }
 }

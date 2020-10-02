@@ -103,7 +103,7 @@
 
             $.ajax({
                 url: '{{ url('cart/update-cart') }}',
-                method: "patch",
+                method: "put",
                 data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), quantity: ele.parents("tr").find(".quantity").val()},
                 success: function (response) {
                     window.location.reload();

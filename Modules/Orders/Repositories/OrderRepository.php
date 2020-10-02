@@ -39,7 +39,7 @@ class OrderRepository
     }
 
     public function orderWeb($id) {
-        return Order::with('address', 'orderItems', 'orderItems.product')->where('customer_id', Auth::user()->id)->where('id', $id)->first();
+        return Order::with('address.area.thana.district', 'orderItems', 'orderItems.product')->where('customer_id', Auth::user()->id)->where('id', $id)->first();
     }
 
     /**
