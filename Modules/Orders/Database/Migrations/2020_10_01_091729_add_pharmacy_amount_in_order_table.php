@@ -14,7 +14,7 @@ class AddPharmacyAmountInOrderTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('pharmacy_amount')->nullable();
+            $table->double('pharmacy_amount')->nullable();
         });
     }
 
