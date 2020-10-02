@@ -30,7 +30,9 @@ class Order extends Model
         'delivery_method',
         'delivery_date',
         'delivery_time',
-        'order_no'
+        'order_no',
+        'pharmacy_amount',
+        'customer_amount'
     ];
 
     public function customer()

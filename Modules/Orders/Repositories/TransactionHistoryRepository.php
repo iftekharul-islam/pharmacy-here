@@ -13,15 +13,17 @@ class TransactionHistoryRepository
 {
     public function all()
     {
-        return TransactionHistory::with('pharmacy.pharmacyBusiness')
-            ->groupBy('pharmacy_id')
-            ->get();
+//        return TransactionHistory::with('pharmacy.pharmacyBusiness')
+//            ->groupBy('pharmacy_id')
+//            ->get();
+
+//        $phar
     }
 
     public function getAllOrders()
     {
         return DB::table('orders')
-            ->select(DB::raw('(SUM(pharmacy_amount) as total_amount,pharmacy_id, pharmacy_businesses.pharmacy_name'))
+            ->select(DB::raw('SUM(pharmacy_amount) as total_amount,pharmacy_id, pharmacy_businesses.pharmacy_name'))
             ->join('pharmacy_businesses', 'orders.pharmacy_id', '=', 'pharmacy_businesses.user_id')
             ->where('status',3)
             ->groupBy('pharmacy_id')
@@ -93,6 +95,20 @@ class TransactionHistoryRepository
             ->where('pharmacy_id', $pharmacy_id)
             ->first();
 
+        $pharmacy_epay_amount = DB::table('orders')
+            ->select(DB::raw('SUM(pharmacy_amount) as total_amount,pharmacy_id'))
+            ->where('status',3)
+            ->where('payment_type',2)
+            ->where('pharmacy_id', $pharmacy_id)
+            ->first();
+
+        $subidha_cod_amount = DB::table('orders')
+            ->select(DB::raw('SUM(subidha_comission) as total_amount,pharmacy_id'))
+            ->where('status',3)
+            ->where('payment_type',1)
+            ->where('pharmacy_id', $pharmacy_id)
+            ->first();
+
         $transactionHistory = DB::table('transaction_history')
             ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
             ->where('pharmacy_id', $pharmacy_id)
@@ -101,7 +117,7 @@ class TransactionHistoryRepository
         return [
             'order' => $order,
             'transactionHistory' => $transactionHistory,
-            'due' => $order->total_amount - $transactionHistory->amount,
+            'due' => ($pharmacy_epay_amount->total_amount - $subidha_cod_amount->total_amount) - $transactionHistory->amount,
         ];
     }
 
