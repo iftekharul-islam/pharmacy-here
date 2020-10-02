@@ -14,7 +14,7 @@ class AddCustomerAmountInOrderTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('customer_amount')->nullable();
+            $table->double('customer_amount')->nullable();
         });
     }
 
