@@ -14,9 +14,9 @@ class Prescription extends Model
 
     protected $fillable = ['patient_name','doctor_name', 'prescription_date', 'url', 'user_id'];
 
-    public function orderPrescription()
-    {
-        return $this->hasOne(OrderPrescription::class);
-    }
+//    public function orderPrescriptions()
+//    {
+//        return $this->hasOne(OrderPrescription::class);
+//    }
 
 }
