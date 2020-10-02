@@ -393,8 +393,9 @@
                 var normal_time_slot = ["10:00 am-12:00 am", "7:00 pm-9:00 pm"];
 
                 var dt = new Date();
-                var date = dt.getDate() + "-" + dt.getMonth() + "-" + dt.getFullYear()
-                var next_date = dt.getDate() + 1 + "-" + dt.getMonth() + "-" + dt.getFullYear()
+                var date = dt.getDate() + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear()
+                var next_date = (dt.getDate() + 1) + "-" + ( dt.getMonth() + 1 ) +  + "-" + dt.getFullYear()
+                console.log(next_date, 'today date');
 
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
@@ -459,18 +460,19 @@
             var time_slot = $('#expressTime option:selected').val()
 
             var dt = new Date();
-            var date = dt.getDate() + "-" + dt.getMonth() + "-" + dt.getFullYear()
-            var next_date = dt.getDate() + 1 + "-" + dt.getMonth() + "-" + dt.getFullYear()
+            var date = dt.getDate() + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear()
+            var next_date = dt.getDate() + 1 + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear()
 
             var tm = new Date();
             var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
 
             var check_time = moment.utc(time_slot, 'hh:mm:ss').add(-2, 'hour').format('HH:mm:ss');
+            var show_time = moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A');
 
             if (time > check_time) {
-                $('.express_date').val("10:00 AM" + ", " + next_date);
+                $('.express_date').val(show_time + ", " + next_date);
                 $(".express_delivery_date").val(next_date);
-                $(".express_delivery_time").val('10:00:00');
+                $(".express_delivery_time").val(time_slot);
             } else {
                 $('.express_date').val( moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A') + ", " + date);
                 $(".express_delivery_date").val(date);
