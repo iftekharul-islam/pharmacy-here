@@ -122,14 +122,15 @@
                                         @endif
                                     @endforeach
                                         <div class="number-input {{ $matchedItem ? 'block' : 'd-none'}}" id="show-button-{{ $item->id }}">
-                                            <button onclick="newItemdec(this, {{ $matchedItem ?  $matchedItem->id : ''}}, {{ $item->min_order_qty }}, {{ $item->id }});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
-                                            <input class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}" min="0" name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number">
-                                            <button onclick="newItemIncrease(this, {{ $matchedItem ?  $matchedItem->id : '' }}, {{ $item->min_order_qty }}, {{ $item->id }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
+                                            <button onclick="newItemdec(this, {{ $matchedItem ?  $matchedItem->id . ',' : ''}} {{ $item->min_order_qty }}, {{ $item->id }});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
+                                            <input class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}" min="9" name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number">
+                                            <button onclick="newItemIncrease(this, {{ $matchedItem ?  $matchedItem->id. ',' : '' }} {{ $item->min_order_qty }}, {{ $item->id }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
                                         </div>
 
-                                        <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" onclick="addToCart({{ $item->id }})" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                                        <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+{{--                                        <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }})" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>--}}
                                 @else
-                                    <a href="{{ route('cart.addToCart', $item->id) }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                                    <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart" onclick="addToCart({{ $item->id }})"><i class="fas fa-cart-plus"></i> Add to Cart</a>
                                 @endauth
                                     <a href="{{ route('single-product', $item->id) }}" class="eyes"><i class="fas fa-eye"></i></a>
 
@@ -146,27 +147,37 @@
 @endsection
 @section('js')
     <script>
-        function addToCart(id) {
-            $('#show-cart-' + id).addClass('d-none');
-            // $('#show-button-' + id).val('10');
-            $('#show-button-' + id).removeClass('d-none');
-        }
+        {{--function addToCart(item, id) {--}}
+        {{--    console.log(item, "this")--}}
+        {{--    $('#show-cart-' + id).addClass('d-none');--}}
+        {{--    $('#show-button-' + id).removeClass('d-none');--}}
+        {{--    $('.new-input-' + id).val(10);--}}
+        {{--    $.ajax({--}}
+        {{--        url: 'cart/add-to-cart/' + id,--}}
+        {{--        method: "get",--}}
+        {{--        data: {_token: "{{ csrf_token() }}" },--}}
 
+        {{--        success: function(result) {--}}
+        {{--            console.log('Add to cart');--}}
+        {{--        },--}}
+        {{--        error: function(result) {--}}
+        {{--            console.log(result);--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--}--}}
 
         let cartIncrement, cartDecrement;
+
         function  newItemIncrease(item, id, minValue) {
 
             console.log('up');
             item.parentNode.querySelector('input[type=number]').stepUp();
             let inputNumber = $('.new-input-' + id).val();
 
-
-
             clearTimeout(cartIncrement);
             clearTimeout(cartDecrement);
 
             cartIncrement = setTimeout(function () {
-                console.log(inputNumber);
 
                 $.ajax({
                     url: "{{ route('update.cart') }}",
@@ -186,23 +197,54 @@
         }
 
         function  newItemdec(item, id, minValue, itemId) {
+
+            {{--if (itemId === undefined) {--}}
+            {{--    $.ajax({--}}
+            {{--        url: "{{ route('find.cart') }}",--}}
+            {{--        method: "get",--}}
+            {{--        data: {_token: "{{ csrf_token() }}", id: minValue},--}}
+
+            {{--        success: function(result) {--}}
+            {{--            $('#show-cart-' + minValue).removeClass('d-none');--}}
+            {{--            $('.new-input-' + id).val(id);--}}
+            {{--            $('#show-button-' + minValue).addClass('d-none');--}}
+            {{--            $('#show-button-' + minValue).removeClass('block');--}}
+            {{--            id = result;--}}
+            {{--        },--}}
+            {{--        error: function(result) {--}}
+            {{--            console.log(result);--}}
+            {{--        }--}}
+            {{--    });--}}
+            {{--}--}}
+
             console.log('down');
+            console.log(item, 'item');
+            console.log(id, 'id');
+            console.log(minValue, 'minValue');
+            console.log(itemId, 'itemId');
+
             item.parentNode.querySelector('input[type=number]').stepDown();
             let inputNumber = $('.new-input-' + id).val();
 
-            if ( inputNumber < minValue ) {
-                console.log('show-cart-' + itemId);
-                $('#show-cart-' + itemId).removeClass('d-none');
-                $('#show-button-' + itemId).addClass('d-none');
-                $('#show-button-' + itemId).removeClass('block');
+            if (itemId === undefined){
+                $('#show-cart-' + minValue).removeClass('d-none');
+                $('.new-input-' + id).val(10);
+                $('#show-button-' + minValue).addClass('d-none');
+                $('#show-button-' + minValue).removeClass('block');
+            }
+            else {
+                if ( inputNumber < minValue )  {
+                    $('#show-cart-' + itemId).removeClass('d-none');
+                    $('.new-input-' + id).val(minValue);
+                    $('#show-button-' + itemId).addClass('d-none');
+                    $('#show-button-' + itemId).removeClass('block');
+                }
             }
 
             clearTimeout(cartDecrement);
             clearTimeout(cartIncrement);
 
             cartDecrement = setTimeout(function () {
-                console.log('decrement time');
-                console.log(inputNumber);
                 if (inputNumber >= minValue) {
                     $.ajax({
                         url: "{{ route('update.cart') }}",
@@ -217,14 +259,14 @@
                         }
                     });
                 } else {
-                    console.log('delete : ',inputNumber);
                     $.ajax({
                         url: "{{ route('delete.cart') }}",
                         method: "DELETE",
                         data: {_token: "{{ csrf_token() }}", id: id},
 
                         success: function(result) {
-                            console.log('cart deleted');
+                            console.log('delete from cart');
+                            // console.log(result);
                         },
                         error: function(result) {
                             console.log(result);

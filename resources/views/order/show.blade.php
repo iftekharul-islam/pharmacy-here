@@ -17,11 +17,41 @@
                 </div>
                 <div class="col-8">
                     <strong>Order no</strong>
-                    <label> #{{ $data->order_no }} </label><br>
-                    <strong>Order date</strong>
-                    <label> #{{ $data->order_date }} </label><br>
-                    <strong>Address</strong>
-{{--                    <label> #{{ $data->order_date }} </label><br>--}}
+                    <label> #{{ $data->order_no }} </label> &nbsp; &nbsp; &nbsp; &nbsp;
+                    <strong>Order date :</strong>
+                    <label>{{ date('d F Y', strtotime($data->order_date)) }} </label><br>
+                    <strong>Address :</strong>
+                    <label> {{ $data->address->address }}, {{ $data->address->area->name }}, {{ $data->address->area->thana->name }}, {{ $data->address->area->thana->district->name }}.</label><br>
+                    <strong>Payment method :</strong>
+                    <label>@if ($data->payment_type == 1)
+                               Home delivery
+                           @else
+                                Pharmacy Pickup
+                           @endif
+                    </label><br>
+                    <strong>Payment Type :</strong>
+                    <label>
+                        @if ($data->payment_type == 1)
+                            <a class="badge badge-primary text-white">Cash on delivery</a>
+                        @else
+                            <a class="badge badge-primary text-white">Online payment</a>
+                        @endif
+                    </label><br>
+                    @if ($data->payment_type != 2)
+                        <strong>Delivery Type :</strong>
+                        <label>@if ($data->delivery_method = 'express')
+                                   Express Delivery
+                               @elseif ($data->delivery_method = 'normal')
+                                   Normal Delivery
+                               @endif
+                        </label><br>
+                    @endif
+                    <strong>Delivery date :</strong>
+                    <label>{{ date('d F Y', strtotime($data->delivery_date)) }}</label><br>
+                    <strong>Delivery Time :</strong>
+                    <label>{{ $data->delivery_time }}</label><br>
+                    <strong>Charge Amount :</strong>
+                    <label>{{ $data->delivery_charge }}</label><br>
 
                 </div>
                 <div class="col-8">
@@ -52,7 +82,7 @@
 {{--                            <h4 class="text-center">No data available</h4>--}}
 {{--                        @endif--}}
                     </div>
-                    <p><strong>Grand Total:</strong> {{ $data->amount }}</p>
+                    <p><strong>Grand Total:</strong> {{ $data->amount + $data->delivery_charge }}</p>
 
                 </div>
                 </div>

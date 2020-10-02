@@ -226,10 +226,12 @@
                             </ul>
                             <div class="row">
                                 <div class="col-md-8 p-0">
-                                    <button type="submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block">Proceed to Checkout</button>
+{{--                                    <button type="submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block" onclick="checkPharmacy({{ $data }})">Proceed to Checkout</button>--}}
+                                    <button class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block" onclick="checkPharmacy({{ $data }})">Proceed to Checkout</button>
                                 </div>
                             </div>
                         </form>
+{{--                        <button class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block" onclick="checkPharmacy();">Proceed to Checkout</button>--}}
                     </div>
                 </div>
             </div>
@@ -295,6 +297,11 @@
 @endsection
 @section ('js')
     <script>
+        function checkPharmacy(){
+            var customerAddress = $(".shipping_address_id").val();
+            console.log(customerAddress);
+        }
+
         $('#submit').on('click', function () {
             $('#submit').addClass('d-none');
         })
@@ -318,7 +325,7 @@
         let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
-        let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);;
         let cashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");
         let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");
 
@@ -327,6 +334,8 @@
 
 
 
+
+        // console.log(ecashInExpressDelivery, 'ecashInExpressDelivery')
         // console.log(cashInExpressDeliveryCharge, 'ecash In Express Delivery Charge')
         // console.log(cashInNormalDeliveryCharge, 'ecash In NormalDelivery Charge')
 
@@ -473,6 +482,7 @@
 
         function addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge) {
             let grandTotal = total;
+            console.log(total, 'first total');
             $('input[name="delivery_charge_amount"]').prop('disabled', false);
             // console.log('hello 1');
             console.log('Add delivery total');
@@ -496,9 +506,8 @@
                 // $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
-                console.log(ecashInNormalDelivery, 'e cash express');
-                // console.log('hello');
-                grandTotal = total + ecashInExpressDelivery;
+                console.log(ecashInExpressDelivery, 'e cash express');
+                grandTotal = total + parseFloat(ecashInExpressDelivery);
                 $('input[name="delivery_charge_amount"]').val(ecashExpressCharge)
             }
 

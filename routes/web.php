@@ -68,6 +68,8 @@ Route::group(['prefix' => 'cart'], function () {
     Route::get('add-to-cart/{medicine_id}', 'CartController@addToCart')->name('cart.addToCart');
     Route::put('update-cart', 'CartController@update')->name('update.cart');
     Route::delete('remove-from-cart', 'CartController@remove')->name('delete.cart');
+//    Route::get('find-from-cart', 'CartController@findCart')->name('find.cart');
+
 });
 
 // SSLCOMMERZ Start
