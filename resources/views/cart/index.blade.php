@@ -116,16 +116,29 @@
 
             var ele = $(this);
 
-            if(confirm("Are you sure")) {
-                $.ajax({
-                    url: '{{ url('cart/remove-from-cart') }}',
-                    method: "DELETE",
-                    data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
-                    success: function (response) {
-                        window.location.reload();
-                    }
-                });
-            }
+            Swal.fire({
+                title: "Warning",
+                text: "Do you want to delete this Medicine from Cart ?",
+                icon: "warning",
+                // buttons: true,
+                // dangerMode: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed)  {
+                    $.ajax({
+                        url: '{{ url('cart/remove-from-cart') }}',
+                        method: "DELETE",
+                        data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
+                        success: function (response) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
         });
 
 
@@ -135,8 +148,13 @@
             newData = data;
 
             var preOrderMedicine = isPreOrderMedicine(medicineData);
+            var prescribedMedicine = isPrescribedMedicine(newData);
             if (preOrderMedicine) {
                 preOrderMedicineAlert();
+                return;
+            }
+            if (prescribedMedicine) {
+                isPrescribedMedicineAlert(newData);
                 return;
             }
 
@@ -216,7 +234,7 @@
                 if (result.isConfirmed) {
                     window.location = "/prescription/create";
                 }
-                if (result.isDismissed) {
+                if (result.dismiss === Swal.DismissReason.cancel) {
                     removePrescribedMedicine(medicines);
                 }
             });

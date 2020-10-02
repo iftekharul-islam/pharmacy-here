@@ -85,7 +85,7 @@
                     @foreach($data as $index=>$item)
                         <div class="col-sm-6 col-lg-3 mb-3">
                             <div href="#" class="medicine-details">
-                                @if ($item->is_pre_order == 1)
+                                @if ($item->is_prescripted == 1)
                                     <div class="madicine-badge">RX</div>
                                 @endif
                                 <div class="text-right mb-2">
@@ -140,7 +140,7 @@
                     @endforeach
                 </div>
             @else
-                <h4>No data found!</h4>
+                <h4 class="text-center">No Medicine Found!</h4>
             @endif
         </div>
     </section>
