@@ -206,7 +206,6 @@ class UserPharmacyController extends BaseController
      */
     public function updatePharmacyBankInfo(UpdatePharmacyBankInfoRequest $request)
     {
-
         $infoResponse = $this->repository->updatePharmacyBankInformation($request, Auth::id());
 
         if (! $infoResponse) {

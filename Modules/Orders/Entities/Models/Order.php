@@ -58,7 +58,14 @@ class Order extends Model
     public function prescriptions()
     {
         return $this->hasManyThrough(Prescription::class, OrderPrescription::class, 'order_id', 'id');
+//        return $this->belongsToMany(OrderPrescription::class)
     }
+
+//    public function orderPrescriptions()
+//    {
+//        return $this->hasMany(OrderPrescription::class, 'prescription_id', 'id');
+//    }
+
 
     public function getDeliveryTimeAttribute($value)
     {
