@@ -437,6 +437,15 @@ class OrderRepository
             $order->pharmacy_id = $nearestPharmacy->user_id;
             $order->status = 0;
             $order->save();
+
+            $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->get();
+            $title = 'New Order Available';
+            $message = 'You have a new order from Subidha. Please check.';
+
+            foreach ($deviceIds as $deviceId){
+                sendPushNotification($deviceId->device_id, $title, $message, $id="");
+            }
+
             return responseData('Order status updated');
         }
 
