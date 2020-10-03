@@ -19,6 +19,7 @@ use Modules\Orders\Repositories\DeliveryChargeRepository;
 use Modules\Orders\Repositories\OrderRepository;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
+use Modules\User\Repositories\PharmacyRepository;
 
 class CheckoutController extends Controller
 {
@@ -28,18 +29,21 @@ class CheckoutController extends Controller
     private $deliveryRepository;
     private $locationRepository;
     private $orderRepository;
+    private $pharmacyRepository;
 
     public function __construct(CartRepository $cartRepository,
                                 AddressRepository $addressRepository,
                                 DeliveryChargeRepository $deliveryRepository,
                                 LocationRepository $locationRepository,
-                                OrderRepository $orderRepository)
+                                OrderRepository $orderRepository,
+                                PharmacyRepository $pharmacyRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->addressRepository = $addressRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->locationRepository = $locationRepository;
         $this->orderRepository = $orderRepository;
+        $this->pharmacyRepository = $pharmacyRepository;
     }
     /**
      * Display a listing of the resource.
@@ -53,7 +57,6 @@ class CheckoutController extends Controller
             return redirect()->back()->with('failed', 'please add product in cart');
         }
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
-//        return $delivery_charge;
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
         $allLocations = $this->locationRepository->getLocation();
@@ -96,7 +99,7 @@ class CheckoutController extends Controller
 
 //            $data['pharmacy_id'] = $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
             $data['order_no'] = $this->generateOrderNo();
-            $data['pharmacy_id'] = 1;
+//            $data['pharmacy_id'] = 1;
             $data['order_date'] = Carbon::today();
             $data['customer_id'] = Auth::user()->id;
             $data['notes'] = "Its a sample" ;
@@ -118,7 +121,7 @@ class CheckoutController extends Controller
             if (isset($data['delivery_date'])){
                 $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
             }
-//        return $data;
+        return $data;
             $order = Order::create($data);
 
 
@@ -601,5 +604,19 @@ class CheckoutController extends Controller
             echo "Invalid Data";
         }
     }
+
+    public function findPharmacy (Request $request) {
+
+        $area_id = $request->id;
+        $isAvailable = $this->pharmacyRepository->checkPharmacyByArea($area_id);
+        return response()->json($isAvailable);
+    }
+
+    public function availablePharmacyList (Request $request) {
+        $thana_id = $request->id;
+        $availablePharmacyList = $this->pharmacyRepository->getAvailablePharmacyList($thana_id);
+        return response()->json($availablePharmacyList);
+    }
+
 
 }

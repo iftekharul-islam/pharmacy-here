@@ -226,6 +226,22 @@
 {{--    <script src="js/owl.carousel.min.js"></script>--}}
     <!-- custom jquery -->
     <script src="{{ asset('js/main.js') }}"></script>
+    <!-- jquery validation -->
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script>
+        function isNumber(evt)
+        {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode == 13 || (charCode >= 48 && charCode <= 57))
+            {
+                return true;
+            }
+            return false;
+        }
+    </script>
+
     @yield('js')
 </body>
 </html>
