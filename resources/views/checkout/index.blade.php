@@ -428,7 +428,6 @@
                                         Swal.fire({
                                             icon: 'success',
                                             showConfirmButton: false,
-                                            // html: 'You selected: ' + result.value,
                                             timer: 1000
                                         });
                                     }

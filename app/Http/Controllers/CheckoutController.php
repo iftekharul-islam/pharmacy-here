@@ -121,7 +121,7 @@ class CheckoutController extends Controller
             if (isset($data['delivery_date'])){
                 $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
             }
-        return $data;
+//        return $data;
             $order = Order::create($data);
 
 
