@@ -81,7 +81,7 @@
                                     <p>Phone Number</p>
                                     <div class="row">
                                         <div class="col-md-4">
-                                                <input type="text" name="phone_number" class="form-control" onkeypress="return isNumber(event)" value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}" required>
+                                                <input type="text" name="phone_number" class="form-control mb-2" onkeypress="return isNumber(event)" value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}" required>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -385,12 +385,12 @@
                     console.log(response);
 
                     if (response === true) {
-                        console.log(id, 'hello koushik :) its true')
+                        console.log(id, 'hello :) its true')
                         $('input[name="pharmacy_id"]').val(id);
 
                     } else {
                         console.log(response, 'response')
-                        console.log('hello koushik :) its false')
+                        console.log('hello :) its false')
                         console.log(thanaId, 'thana')
 
                         $.ajax({
@@ -403,7 +403,7 @@
                                 var options = {};
                                 $.map(values,
                                     function(o) {
-                                        options[o.id] = o.pharmacy_name + ', ' + o.area.name + ', ' + o.area.thana.name ;
+                                        options[o.id] = o.pharmacy_name + ', ' + o.area.name ;
                                     });
                                 Swal.fire({
                                     // html : 'You need to Select a pharmacy',
