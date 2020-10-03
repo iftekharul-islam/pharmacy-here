@@ -1,6 +1,8 @@
 <?php
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Mail;
+use Modules\Orders\Emails\SendOrderStatusEmail;
 
 if (!function_exists('responseData')) {
     function responseData($message, $code = 200)
@@ -24,6 +26,14 @@ if (!function_exists('responsePreparedData')) {
         ];
 
         return response()->json($response, $code); // Status code here
+    }
+}
+
+if (!function_exists('sendOrderStatusEmail')) {
+    function sendOrderStatusEmail($message)
+    {
+        $toMailAddress = 'rasel@rasel.com';
+        Mail::to($toMailAddress)->send( new SendOrderStatusEmail($message));
     }
 }
 
