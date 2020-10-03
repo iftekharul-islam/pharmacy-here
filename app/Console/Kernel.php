@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\PurchaseReminder;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \Modules\Locations\Console\ImportLocationsCommand::class
+        \Modules\Locations\Console\ImportLocationsCommand::class,
+        Commands\PurchaseReminder::class,
+
+
     ];
 
     /**
@@ -24,7 +28,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+
         // $schedule->command('inspire')->hourly();
+        $schedule->command('sent:reminder')->dailyAt('11:00');
+
         $schedule->command('backup:clean')->quarterly();
         $schedule->command('backup:run')->dailyAt('00:00');
     }
