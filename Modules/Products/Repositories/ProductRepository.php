@@ -25,7 +25,7 @@ class ProductRepository
 
         if ($request->has('medicine') && $request->get('medicine')) {
             $medicine = $request->get('medicine');
-            $products->where('name', 'LIKE', "%$medicine%");
+            $products->where('name', 'LIKE', "%$medicine%")->orderBy('name', 'ASC');
         }
 
         if ($request->has('brand') && $request->get('brand')) {

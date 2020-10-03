@@ -37,7 +37,6 @@
                             <input type="text" class="d-none" name="phone_number" value="{{ $user->phone_number }}">
                             <input type="hidden" name="delivery_type" value="">
                             <input type="hidden" name="amount" value="">
-{{--                            <input type="hidden" name="shipping_address_id" value="">--}}
                             <input type="hidden" name="pharmacy_id" value="">
                             <input type="hidden" class="normal_delivery_date" name="normal_delivery_date" value="">
                             <input type="hidden" class="normal_delivery_time" name="normal_delivery_time" value="">

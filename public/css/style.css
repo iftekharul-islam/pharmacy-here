@@ -17017,7 +17017,7 @@ html {
   padding-top: 3rem;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1000px) {
   .footer {
     padding-top: 5rem;
   }
@@ -17056,27 +17056,46 @@ html {
     margin-bottom: 0;
   }
 }
+.footer-menu-list:nth-child(1) {
+    /*text-align: left;*/
+    -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+    margin-right: 30px;
+}
 
 .footer-menu-list:nth-child(2) {
   text-align: left;
-  -ms-flex-preferred-size: 20%;
-      flex-basis: 20%;
+  -ms-flex-preferred-size: 25%;
+      flex-basis: 25%;
 }
 
 @media (min-width: 992px) {
   .footer-menu-list:nth-child(2) {
-    text-align: right;
+    text-align: left;
   }
 }
 
 .footer-menu-list:nth-child(3) {
-  text-align: left;
+  text-align: right;
 }
 
 @media (min-width: 992px) {
   .footer-menu-list:nth-child(3) {
-    text-align: right;
+    text-align: left;
+      margin-right: 20px;
   }
+}
+
+.footer-menu-list:nth-child(4) {
+    text-align: right;
+}
+
+@media (min-width: 992px) {
+    .footer-menu-list:nth-child(4) {
+        text-align: left;
+        -ms-flex-preferred-size: 18%;
+            flex-basis: 18%;
+    }
 }
 
 .footer-menu-list a {
@@ -17084,6 +17103,12 @@ html {
   display: inline-block;
   margin-bottom: 30px;
   font-weight: 500;
+}
+
+.footer-menu-list ul li a {
+    color: #000;
+    display: inline-block;
+    font-weight: 100 !important;
 }
 
 .footer-menu-list ul li {
@@ -17095,7 +17120,6 @@ html {
 }
 
 .footer-menu-list address {
-  font-weight: 500;
   font-size: 16px;
 }
 
@@ -17108,27 +17132,27 @@ html {
   margin-bottom: 20px;
 }
 
-.social-icon {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
+/*.social-icon {*/
+/*  display: -webkit-box;*/
+/*  display: -ms-flexbox;*/
+/*  display: flex;*/
+/*}*/
 
-@media (min-width: 992px) {
-  .social-icon {
-    -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
-  }
-}
+/*@media (min-width: 992px) {*/
+/*  .social-icon {*/
+/*    -webkit-box-pack: end;*/
+/*        -ms-flex-pack: end;*/
+/*            justify-content: flex-end;*/
+/*  }*/
+/*}*/
 
-.social-icon a {
-  margin-right: 20px;
-}
+/*.social-icon a {*/
+/*  margin-right: 20px;*/
+/*}*/
 
-.social-icon a:last-child {
-  margin-right: 0;
-}
+/*.social-icon a:last-child {*/
+/*  margin-right: 0;*/
+/*}*/
 
 * {
   margin: 0;
