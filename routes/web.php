@@ -69,8 +69,11 @@ Route::group(['prefix' => 'cart'], function () {
     Route::put('update-cart', 'CartController@update')->name('update.cart');
     Route::delete('remove-from-cart', 'CartController@remove')->name('delete.cart');
 //    Route::get('find-from-cart', 'CartController@findCart')->name('find.cart');
-
 });
+Route::get('find-pharmacy', 'CheckoutController@findPharmacy')->name('find.pharmacy');
+Route::get('find-pharmacy-list', 'CheckoutController@availablePharmacyList')->name('find.pharmacy.list');
+
+
 
 // SSLCOMMERZ Start
 Route::get('/example1', 'SslCommerzPaymentController@exampleEasyCheckout');

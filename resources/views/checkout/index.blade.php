@@ -32,12 +32,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="checkout-section--left">
-                        <form method="post" action="{{ route('checkout.check')  }}">
+                        <form id="main-form" method="post" action="{{ route('checkout.check')  }}">
                             @csrf
                             <input type="text" class="d-none" name="phone_number" value="{{ $user->phone_number }}">
                             <input type="hidden" name="delivery_type" value="">
                             <input type="hidden" name="amount" value="">
-                            <input type="hidden" name="shipping_address_id" value="">
+{{--                            <input type="hidden" name="shipping_address_id" value="">--}}
+                            <input type="hidden" name="pharmacy_id" value="">
                             <input type="hidden" class="normal_delivery_date" name="normal_delivery_date" value="">
                             <input type="hidden" class="normal_delivery_time" name="normal_delivery_time" value="">
                             <input type="hidden" class="express_delivery_time" name="express_delivery_time" value="">
@@ -52,7 +53,7 @@
                                         <div class="col-md-5">
                                             <div class="address" id="myAddress">
                                                 @foreach($addresses as $item)
-                                                <div class="address-box mr-2 selectedAddress" onclick="getAddressId({{ $item['id'] }})">
+                                                <div class="address-box mr-2 selectedAddress" onclick="getAddressId({{ $item['id'] }}, {{ $item['area_id'] }}, {{ $item['area']['thana_id'] }})">
                                                     <address>
                                                         {{ $item['address'] . ', ' . $item['area']['name'] . ', ' . $item['area']['thana']['name'] . ', ' . $item['area']['thana']['district']['name'] }}
                                                     </address>
@@ -67,6 +68,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
+                                            <input type="text" class="d-none" name="shipping_address_id" value="">
                                             @if ($errors->has('shipping_address_id'))
                                                 <span class="text-danger">
                                                     <strong>{{ $errors->first('shipping_address_id') }}</strong>
@@ -79,9 +81,7 @@
                                     <p>Phone Number</p>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="address">
-                                                <input type="text" name="phone_number" class="form-control" value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}" required>
-                                            </div>
+                                                <input type="text" name="phone_number" class="form-control" onkeypress="return isNumber(event)" value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}" required>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -226,12 +226,10 @@
                             </ul>
                             <div class="row">
                                 <div class="col-md-8 p-0">
-{{--                                    <button type="submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block" onclick="checkPharmacy({{ $data }})">Proceed to Checkout</button>--}}
-                                    <button class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block" onclick="checkPharmacy({{ $data }})">Proceed to Checkout</button>
+                                    <button type="submit" id="final-submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block">Proceed to Checkout</button>
                                 </div>
                             </div>
                         </form>
-{{--                        <button class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block" onclick="checkPharmacy();">Proceed to Checkout</button>--}}
                     </div>
                 </div>
             </div>
@@ -297,10 +295,19 @@
 @endsection
 @section ('js')
     <script>
-        function checkPharmacy(){
-            var customerAddress = $(".shipping_address_id").val();
-            console.log(customerAddress);
-        }
+        $('#final-submit').on('click', function () {
+            window.scrollTo(0, 0);
+        });
+
+        $('#main-form').validate({ // initialize the plugin
+            ignore: [],
+            errorClass: "text-danger",
+            rules: {
+                shipping_address_id: {
+                    required: true
+                },
+            },
+        });
 
         $('#submit').on('click', function () {
             $('#submit').addClass('d-none');
@@ -364,8 +371,77 @@
             addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
         })();
 
-        function getAddressId(id) {
+        function getAddressId(id, areaId, thanaId) {
+
             $('input[name="shipping_address_id"]').val(id);
+
+            $.ajax({
+                url: '{{ url('find-pharmacy') }}',
+                method: "get",
+                data: {_token: '{{ csrf_token() }}', id: areaId},
+
+                success: function (response) {
+
+                    console.log(response);
+
+                    if (response === true) {
+                        console.log(id, 'hello koushik :) its true')
+                        $('input[name="pharmacy_id"]').val(id);
+
+                    } else {
+                        console.log(response, 'response')
+                        console.log('hello koushik :) its false')
+                        console.log(thanaId, 'thana')
+
+                        $.ajax({
+                            url: '{{ url('find-pharmacy-list') }}',
+                            method: "get",
+                            data: {_token: '{{ csrf_token() }}', id: thanaId},
+                            success: function (response) {
+                                var values = response;
+                                console.log(values)
+                                var options = {};
+                                $.map(values,
+                                    function(o) {
+                                        options[o.id] = o.pharmacy_name + ', ' + o.area.name + ', ' + o.area.thana.name ;
+                                    });
+                                Swal.fire({
+                                    // html : 'You need to Select a pharmacy',
+                                    icon: 'warning',
+                                    title: 'Pharmacy not available at your location !!!',
+                                    input: 'select',
+                                    inputOptions:options,
+                                    inputPlaceholder: 'Please select a pharmacy',
+                                    showCancelButton: true,
+                                    inputValidator: function (value) {
+                                        return new Promise(function (resolve, reject) {
+                                            if (value !== '') {
+                                                resolve();
+                                            } else {
+                                                resolve('You need to select a Pharmacy');
+                                            }
+                                        });
+                                    }
+                                }).then(function (result) {
+                                    $('input[name="pharmacy_id"]').val(result.value);
+                                    if (result.value) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            showConfirmButton: false,
+                                            timer: 1000
+                                        });
+                                    }
+                                });
+
+
+                            },
+                        });
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
         }
 
         function getDeliveryType(deliveryType) {
@@ -379,7 +455,6 @@
         }
 
         function getDeliveryChargeValue(deliveryCharge) {
-            // console.log('delivery charge function');
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
 
             addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
@@ -393,9 +468,11 @@
                 var normal_time_slot = ["10:00 am-12:00 am", "7:00 pm-9:00 pm"];
 
                 var dt = new Date();
-                var date = dt.getDate() + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear()
-                var next_date = (dt.getDate() + 1) + "-" + ( dt.getMonth() + 1 ) +  + "-" + dt.getFullYear()
-                console.log(next_date, 'today date');
+                var month = dt.getMonth()+ 1;
+                var date = dt.getDate() + "-" + month  + "-" + dt.getFullYear()
+                var next_date = (dt.getDate() + 1) + "-" + month + "-" + dt.getFullYear()
+                console.log(date, 'today date');
+                console.log(next_date, 'next date');
 
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
@@ -425,7 +502,7 @@
                 $('.express_slot').html('');
 
                 <!-- Express delivery date calculation -->
-                var express_time = ['8:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '14:00', '16:00', '17:00', '18:00'];
+                // var express_time = ['8:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '14:00', '16:00', '17:00', '18:00'];
                 var express_time_slot = [
                                         '10:00 am - 11:00 am',
                                         '11:01 am - 12:00 am',
@@ -460,8 +537,10 @@
             var time_slot = $('#expressTime option:selected').val()
 
             var dt = new Date();
-            var date = dt.getDate() + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear()
-            var next_date = dt.getDate() + 1 + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear()
+            var month = dt.getMonth()+ 1;
+
+            var date = dt.getDate() + "-" + month + "-" + dt.getFullYear()
+            var next_date = dt.getDate() + 1 + "-" + month + "-" + dt.getFullYear()
 
             var tm = new Date();
             var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
