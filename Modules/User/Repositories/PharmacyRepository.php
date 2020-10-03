@@ -91,6 +91,14 @@ class PharmacyRepository
             $pharmacyInfo->break_end_time = $request->break_end_time;
         }
 
+        if (isset($request->is_full_open)) {
+            $pharmacyInfo->is_full_open = $request->is_full_open;
+        }
+
+        if (isset($request->has_break_time)) {
+            $pharmacyInfo->has_break_time = $request->has_break_time;
+        }
+
         $pharmacyInfo->save();
 
         return $pharmacyInfo;
@@ -127,6 +135,15 @@ class PharmacyRepository
         if (isset($request->break_end_time)) {
             $pharmacyInfo->break_end_time = $request->break_end_time;
         }
+
+        if (isset($request->is_full_open)) {
+            $pharmacyInfo->is_full_open = $request->is_full_open;
+        }
+
+        if (isset($request->has_break_time)) {
+            $pharmacyInfo->has_break_time = $request->has_break_time;
+        }
+
         $pharmacyInfo->save();
 
         return $pharmacyInfo;
