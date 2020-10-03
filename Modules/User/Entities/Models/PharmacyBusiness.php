@@ -20,7 +20,9 @@ class PharmacyBusiness extends Model
         "break_start_time",
         "break_end_time",
         'area_id',
-        'bank_routing_number'
+        'bank_routing_number',
+        'is_full_open',
+        'has_break_time'
     ];
 
     public function user()
