@@ -104,7 +104,7 @@ class CheckoutController extends Controller
             $data['customer_id'] = Auth::user()->id;
             $data['notes'] = "Its a sample" ;
 
-            if ($request->delivery_charge === 1) {
+            if ($request->delivery_type == 1) {
                 $data['delivery_method'] = 'normal';
             } else {
                 $data['delivery_method'] = 'express';
@@ -124,7 +124,7 @@ class CheckoutController extends Controller
 //        return $data;
             $order = Order::create($data);
 
-
+//            return $data['pharmacy_id'];
             if ($request->order_items) {
                 $items = json_decode($request->order_items, true);
                 foreach($items as $item) {
@@ -155,11 +155,16 @@ class CheckoutController extends Controller
             session()->forget('prescriptions');
             session()->forget('cartCount');
 
-            $deviceIds = UserDeviceId::where('user_id',$data['pharmacy_id'])->get();
+//            return $data['pharmacy_id'];
+            logger($data['pharmacy_id']);
+            $deviceIds = UserDeviceId::where('user_id', $data['pharmacy_id'])->get();
+//            return $deviceIds;
+            logger($deviceIds) ;
             $title = 'New Order Available';
             $message = 'You have a new order from Subidha. Please check.';
 
             foreach ($deviceIds as $deviceId){
+                logger('sendPushNotification foreach in');
                 sendPushNotification($deviceId->device_id, $title, $message, $id="");
             }
 

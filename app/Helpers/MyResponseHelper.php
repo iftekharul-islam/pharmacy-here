@@ -30,6 +30,7 @@ if (!function_exists('responsePreparedData')) {
 
 if (!function_exists('sendPushNotification')) {
     function sendPushNotification($fcm_token, $title, $message, $id="") {
+        logger('sendPushNotification function in');
         $push_notification_key = "AAAAPzxd2Vc:APA91bGFaHMD4U3MIj0_m1tayV_mVdlct1oBU3QgGcwr1m-eogh1gCyXVvbkdkcAmMRZcKRKAYqlWgXq-BQAE2-xtZ1w59wc8fcVotPPfFpaUaKJV9M6ZK82Lc9Y6QQiPBu0WXtLuuuU";
         $url = "https://fcm.googleapis.com/fcm/send";
 

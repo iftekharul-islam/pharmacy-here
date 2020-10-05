@@ -70,6 +70,8 @@ Route::group(['prefix' => 'cart'], function () {
     Route::delete('remove-from-cart', 'CartController@remove')->name('delete.cart');
 //    Route::get('find-from-cart', 'CartController@findCart')->name('find.cart');
 });
+
+//Find pharmacy for checkout
 Route::get('find-pharmacy', 'CheckoutController@findPharmacy')->name('find.pharmacy');
 Route::get('find-pharmacy-list', 'CheckoutController@availablePharmacyList')->name('find.pharmacy.list');
 

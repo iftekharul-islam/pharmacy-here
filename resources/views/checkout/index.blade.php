@@ -37,7 +37,6 @@
                             <input type="text" class="d-none" name="phone_number" value="{{ $user->phone_number }}">
                             <input type="hidden" name="delivery_type" value="">
                             <input type="hidden" name="amount" value="">
-{{--                            <input type="hidden" name="shipping_address_id" value="">--}}
                             <input type="hidden" name="pharmacy_id" value="">
                             <input type="hidden" class="normal_delivery_date" name="normal_delivery_date" value="">
                             <input type="hidden" class="normal_delivery_time" name="normal_delivery_time" value="">
@@ -91,6 +90,26 @@
                                                     <strong>{{ $errors->first('phone_number') }}</strong>
                                                 </span>
                                             @endif
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- Payment method -->
+                                <li>
+                                    <p>Payment Details</p>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="d-flex align-items-center justify-content-between payment-method">
+                                                <label class="custom-radio" onclick="getPayTypeValue(1)">
+                                                    <input type="radio" checked="checked" name="payment_type" value="1">
+                                                    <span class="checkmark"></span>
+                                                    Cash on Delivery
+                                                </label>
+                                                <label class="custom-radio" onclick="getPayTypeValue(2)">
+                                                    <input type="radio" name="payment_type" value="2">
+                                                    <span class="checkmark"></span>
+                                                    E - Payment
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -203,25 +222,6 @@
                                 </li>
                                 <li>
                                     <p id="grandTotal"></p>
-                                </li>
-                                <li>
-                                    <p>Payment Details</p>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="d-flex align-items-center justify-content-between payment-method">
-                                                <label class="custom-radio" onclick="getPayTypeValue(1)">
-                                                    <input type="radio" checked="checked" name="payment_type" value="1">
-                                                    <span class="checkmark"></span>
-                                                    Cash on Delivery
-                                                </label>
-                                                <label class="custom-radio" onclick="getPayTypeValue(2)">
-                                                    <input type="radio" name="payment_type" value="2">
-                                                    <span class="checkmark"></span>
-                                                    E - Payment
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </li>
                             </ul>
                             <div class="row">
@@ -403,7 +403,7 @@
                                 var options = {};
                                 $.map(values,
                                     function(o) {
-                                        options[o.id] = o.pharmacy_name + ', ' + o.area.name ;
+                                        options[o.user_id] = o.pharmacy_name + ', ' + o.area.name ;
                                     });
                                 Swal.fire({
                                     // html : 'You need to Select a pharmacy',

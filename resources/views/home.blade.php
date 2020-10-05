@@ -1,29 +1,31 @@
 @extends('layouts.app')
-<style>
-    #searchResult {
-        margin-top: -5px;
-        background: white;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
+@section('style')
+    <style>
+        #searchResult {
+            /*padding-top: 8px;*/
+            margin-top: -11px;
+            background: white;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
 
-    }
-    #searchResult li {
-        padding-left: 2rem;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        text-align: left;
-        cursor: pointer;
+        }
+        #searchResult li {
+            padding-left: 2rem;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: left;
+            cursor: pointer;
 
-    }
-    #searchResult li:last-child {
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-    }
-    #searchResult li:hover {
-        background: #ddd;
-    }
-
-</style>
+        }
+        #searchResult li:last-child {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        #searchResult li:hover {
+            background: #ddd;
+        }
+    </style>
+@endsection
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -46,8 +48,6 @@
                             <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="Search your medicine here">
                             <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
                         </form>
-{{--                        <input type="search" id="medicine_search" class="form-control" placeholder="Search your medicine here">--}}
-{{--                        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>--}}
                     </label>
                     <ul id="searchResult">
                     </ul>
@@ -150,7 +150,6 @@
                                     if (search != name) {
                                         $("#searchResult").append("<li value='" + id + "'>" + name + "</li>");
                                     }
-
 
                                 }
                                 // binding click event to li

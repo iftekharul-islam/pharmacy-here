@@ -70,7 +70,6 @@
             text-decoration: none;
             text-transform: uppercase;
         }
-
         .m-b-md {
             margin-bottom: 30px;
         }
@@ -84,115 +83,15 @@
             background: #F0F0F0;
         }
     </style>
+    @yield('style')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-lg subidha-menu">
-            <div class="container">
-                <!-- logo -->
-                <a class="navbar-brand subidha--logo" href="{{ route('home') }}">
-                    <img src="{{ asset('images/logo.png') }}" class="img-fluid" alt="Subidha logo"><span class="">Subidha</span>
-                </a>
-
-                <!-- Toggle button for small device -->
-                <div class="toggler-position">
-                    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse custom-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-list ml-auto">
-                        <li>
-                            <a href="#">Offer</a>
-                        </li>
-                        <li>
-                            <a href="#">Need Help?</a>
-                        </li>
-                        <li class="language">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle language-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{{ asset('images/usa.svg') }}" alt=""> EN
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-custom my-language" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#"><img src="{{ asset('images/bd.png') }}" alt="bangladesh-flag">BD</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="{{ route('cart.index') }}">{{ __('Cart') }} <span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>
-                        </li>
-                        @guest
-                            <li>
-                                <a class="btn--primary join" href="{{ route('customer.login') }}">{{ __('Login') }}</a>
-                            </li>
-                        @else
-                            <li><a href="#" class="btn--primary join dropdown-toggle" id="dropdownprofile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ \Illuminate\Support\Facades\Auth::user()->name }}</a>
-                                <div class="dropdown-menu dropdown-menu-profile" aria-labelledby="dropdownprofile">
-                                    <a class="dropdown-item" href="{{ route('customer.details') }}"></i> Dashboard</a>
-                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();
-                                                            document.getElementById('logout-form').submit();"></i> {{ __('Logout') }}</a>
-                                    <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @include('layouts.navbar')
         <main>
             @yield('content')
         </main>
-        <!-- footer -->
-        <footer class="footer mt-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-10 mx-auto">
-                        <div class="footer-menu">
-                            <div class="footer-menu-list">
-                                <a href="#" class="subidha--logo">
-                                    <img src="{{ asset('images/logo.png') }}" alt="subidha logo" class="img-fluid"><span class="">Subidha</span>
-                                </a>
-                                <p>Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit ut aliquam, purus
-                                    sit amet luctus venenatis</p>
-                            </div>
-
-                            <div class="footer-menu-list">
-                                <a href="#">COMPANY</a>
-                                <ul>
-                                    <li><a href="#">Home</a></li>
-                                    <li><a href="#">Services</a></li>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">FAQs</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="footer-menu-list">
-                                <a href="#">CONTACT US</a>
-                                <address>
-                                    House 5/4/B (2nd Floor), Block A,<br> Lalmatia, Dhaka-1207<br>
-                                    <a href="#">info@subidha.com</a>
-                                    <p>+880 1234 567890</p>
-                                </address>
-                                <div class="social-icon">
-                                    <a href="#"><i class="fab fa-facebook-square"></i></a>
-                                    <a href="#"><i class="fab fa-twitter"></i></a>
-                                    <a href="#"><i class="fab fa-instagram"></i></a>
-                                    <a href="#"><i class="fab fa-youtube"></i></a>
-                                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </footer>
+        @include('layouts.footer')
     </div>
     <!-- font awesome -->
 {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
