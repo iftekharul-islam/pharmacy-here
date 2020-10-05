@@ -6,7 +6,9 @@ namespace Modules\Orders\Repositories;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Modules\Address\Entities\CustomerAddress;
+use Modules\Orders\Emails\SendOrderStatusEmail;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderCancelReason;
 use Modules\Orders\Entities\Models\OrderHistory;
@@ -371,6 +373,7 @@ class OrderRepository
         $order = Order::with('address')->find($order_id);
 
         if ($order->status == 8 ) {
+
             return responseData('Orphan order');
         }
 
@@ -388,6 +391,12 @@ class OrderRepository
 
            return $this->forwardOrder($order_id, $status_id);
         }
+
+        if ($status_id == 3) {
+            $emailMessage = $order->order_no . ' order is canceled by '. $order->pharmacy->name .', please take action immediately.';
+            sendOrderStatusEmail($emailMessage);
+        }
+
 
         $order->status = $status_id;
         $order->save();
@@ -457,6 +466,9 @@ class OrderRepository
         $orderHistory->user_id = $order->pharmacy_id;
         $orderHistory->status = $status_id;
         $orderHistory->save();
+
+        $emailMessage = $order->order_no . ' Order status is orphan, please take action immediately.';
+        sendOrderStatusEmail($emailMessage);
 
         return responseData('Order status updated');
     }
