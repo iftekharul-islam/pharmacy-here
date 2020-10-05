@@ -212,7 +212,7 @@ class SslCommerzNotification extends AbstractSslCommerz
 
         // Set the authentication information
         $this->setAuthenticationInfo();
-        logger($this->setAuthenticationInfo());
+//        logger($this->setAuthenticationInfo());
 
         // Now, call the Gateway API
         $response = $this->callToApi($this->data, $header, $this->config['connect_from_localhost']);
@@ -275,10 +275,10 @@ class SslCommerzNotification extends AbstractSslCommerz
         $this->setCustomerInfo($requestData);
 
         ##  Shipment Information
-        $this->setShipmentInfo($requestData);
+//        $this->setShipmentInfo($requestData);
 
         ##  Product Information
-        $this->setProductInfo($requestData);
+//        $this->setProductInfo($requestData);
 
         ##  Customized or Additional Parameters
         $this->setAdditionalInfo($requestData);

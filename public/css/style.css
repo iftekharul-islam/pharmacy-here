@@ -10539,8 +10539,16 @@ button.bg-dark:focus {
 }
 
 .text-center {
-  text-align: center !important;
+     text-align: center !important;
+ }
+
+.total-amount-alignment {
+    vertical-align: middle!important;
+    font-weight: 500;
 }
+/*.text-right p {*/
+/*    text-align: left !important;*/
+/*}*/
 
 @media (min-width: 576px) {
   .text-sm-left {

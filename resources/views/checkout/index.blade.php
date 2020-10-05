@@ -93,6 +93,26 @@
                                         </div>
                                     </div>
                                 </li>
+                                <!-- Payment method -->
+                                <li>
+                                    <p>Payment Details</p>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="d-flex align-items-center justify-content-between payment-method">
+                                                <label class="custom-radio" onclick="getPayTypeValue(1)">
+                                                    <input type="radio" checked="checked" name="payment_type" value="1">
+                                                    <span class="checkmark"></span>
+                                                    Cash on Delivery
+                                                </label>
+                                                <label class="custom-radio" onclick="getPayTypeValue(2)">
+                                                    <input type="radio" name="payment_type" value="2">
+                                                    <span class="checkmark"></span>
+                                                    E - Payment
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                                 <!-- Delivery option -->
                                 <li>
                                     <p>Delivery Option </p>
@@ -202,25 +222,6 @@
                                 </li>
                                 <li>
                                     <p id="grandTotal"></p>
-                                </li>
-                                <li>
-                                    <p>Payment Details</p>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="d-flex align-items-center justify-content-between payment-method">
-                                                <label class="custom-radio" onclick="getPayTypeValue(1)">
-                                                    <input type="radio" checked="checked" name="payment_type" value="1">
-                                                    <span class="checkmark"></span>
-                                                    Cash on Delivery
-                                                </label>
-                                                <label class="custom-radio" onclick="getPayTypeValue(2)">
-                                                    <input type="radio" name="payment_type" value="2">
-                                                    <span class="checkmark"></span>
-                                                    E - Payment
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </li>
                             </ul>
                             <div class="row">
@@ -402,7 +403,7 @@
                                 var options = {};
                                 $.map(values,
                                     function(o) {
-                                        options[o.id] = o.pharmacy_name + ', ' + o.area.name ;
+                                        options[o.user_id] = o.pharmacy_name + ', ' + o.area.name ;
                                     });
                                 Swal.fire({
                                     // html : 'You need to Select a pharmacy',
