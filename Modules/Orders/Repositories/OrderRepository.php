@@ -120,7 +120,7 @@ class OrderRepository
                         $amount_value = round(($request->get('amount')) *
                             config('subidha.subidha_comission_cash_percentage') / 100 , 2);
 
-                        $total_value = round( (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100));
+                        $total_value = round( (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100), 2);
 
                         $order->subidha_comission =  ($amount_value + $delivery_value + $total_value);
 
@@ -159,7 +159,7 @@ class OrderRepository
                         $amount_value = round(($request->get('amount')) *
                             config('subidha.subidha_comission_cash_percentage') / 100 , 2);
 
-                        $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100);
+                        $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
                         logger('Assigning subidha comission in cod payment');
                         $order->subidha_comission = round( ($amount_value + $delivery_value + $total_value), 2);
@@ -228,7 +228,7 @@ class OrderRepository
                         $amount_value = round(($request->get('amount')) *
                             config('subidha.subidha_comission_cash_percentage') / 100 , 2);
 
-                        $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100);
+                        $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
                         logger('Assigning subidha comission in cod payment');
                         $order->subidha_comission = round( ($amount_value + $delivery_value + $total_value), 2);

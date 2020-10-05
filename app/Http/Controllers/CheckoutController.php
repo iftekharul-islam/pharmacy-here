@@ -103,7 +103,12 @@ class CheckoutController extends Controller
                 'delivery_date',
                 'customer_id',
                 'delivery_time',
-                'note'
+                'is_rated',
+                'note',
+                'subidha_comission',
+                'pharmacy_amount',
+                'customer_amount'
+
             ]);
 
 //            $data['pharmacy_id'] = $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
@@ -112,8 +117,9 @@ class CheckoutController extends Controller
             $data['order_date'] = Carbon::today();
             $data['customer_id'] = Auth::user()->id;
             $data['notes'] = "Its a sample" ;
+            $data['is_rated'] = "no";
 
-            if ($request->delivery_type == 1) {
+            if ($request->delivery_charge == 1) {
                 $data['delivery_method'] = 'normal';
             } else {
                 $data['delivery_method'] = 'express';
@@ -130,6 +136,197 @@ class CheckoutController extends Controller
             if (isset($data['delivery_date'])){
                 $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
             }
+
+            if ($request->delivery_type == config('subidha.home_delivery')) {
+
+                if ($request->amount <= config('subidha.free_delivery_limit')){
+                    if ($request->delivery_charge == config('subidha.normal_delivery')) {
+
+                        if ($request->payment_type == config('subidha.cod_payment_type')) {
+                            logger('1 in');
+
+                            $delivery_value = config('subidha.normal_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
+
+                            $amount_value = round(($request->get('amount')) *
+                                config('subidha.subidha_comission_cash_percentage') / 100 , 2);
+
+                            $total_value = round( (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100), 2);
+
+                            $data['subidha_comission'] =  ($amount_value + $delivery_value + $total_value);
+
+                            $data['pharmacy_amount'] = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $data['subidha_comission'] );
+                            $data['customer_amount'] = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value );
+
+                        }
+                        if ($request->payment_type == config('subidha.ecash_payment_type')) {
+                            logger('2 in');
+
+                            $delivery_value = round( config('subidha.normal_delivery_charge') *
+                                config('subidha.subidha_delivery_percentage') / 100 , 2);
+
+                            $amount_value = round(($request->get('amount')) *
+                                config('subidha.subidha_comission_ecash_percentage') / 100 , 2);
+
+                            $ssl_value = round(( ($request->get('amount')) + config('subidha.normal_delivery_charge') ) *
+                                config('subidha.ecash_payment_charge_percentage') / 100 , 2);
+
+//                        print_r($amount_value);die();
+
+                            $data['subidha_comission'] = round( ($amount_value + $delivery_value), 2) ;
+                            $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.normal_delivery_charge') - $data['subidha_comission'] ), 2);
+                            $data['customer_amount'] = round( (($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
+
+
+                        }
+
+                    }
+
+                    if ($data['delivery_method'] == config('subidha.express_delivery')) {
+                        if ($request->payment_type == config('subidha.cod_payment_type')) {
+                            logger('3 in');
+                            logger('Into subidha cod payment');
+
+                            $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
+
+                            $amount_value = round(($request->get('amount')) *
+                                config('subidha.subidha_comission_cash_percentage') / 100 , 2);
+
+                            $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100,2);
+
+                            logger('Assigning subidha comission in cod payment');
+
+                            $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
+                            $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
+                            $data['customer_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
+
+                        }
+                        if ($request->payment_type == config('subidha.ecash_payment_type')) {
+                            logger('Into subidha ecash payment method');
+                            logger('4 in');
+
+                            $delivery_value = config('subidha.express_delivery_charge') *
+                                config('subidha.subidha_delivery_percentage') / 100;
+
+                            $amount_value = number_format(($request->get('amount')) *
+                                config('subidha.subidha_comission_ecash_percentage') / 100 , 2);
+
+                            $ssl_value = number_format(( ($request->get('amount')) + config('subidha.express_delivery_charge') ) *
+                                config('subidha.ecash_payment_charge_percentage') / 100 , 2);
+
+                            $data['subidha_comission'] = number_format( ($amount_value + $delivery_value), 2);
+                            $data['pharmacy_amount'] = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission'] ), 2);
+                            $data['customer_amount'] = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+
+                        }
+                    }
+
+                }
+                else {
+                    if ($data['delivery_method'] == config('subidha.normal_delivery')) {
+
+                        if ($request->payment_type == config('subidha.cod_payment_type')) {
+                            logger('5 in');
+
+                            $amount_value = round(($request->get('amount')) *
+                                config('subidha.subidha_comission_cash_percentage') / 100 , 2);
+
+                            $total_value = round( (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100), 2);
+
+                            $data['subidha_comission'] = $amount_value + $total_value;
+                            $data['pharmacy_amount'] = round( (($request->get('amount')) + $amount_value - $data['subidha_comission'] ), 2);
+                            $data['customer_amount'] = round( (($request->get('amount')) + $amount_value), 2);
+
+                        }
+                        if ($request->payment_type == config('subidha.ecash_payment_type')) {
+                            logger('6 in');
+
+                            $amount_value = ($request->get('amount')) *
+                                config('subidha.subidha_comission_ecash_percentage') / 100;
+
+                            $ssl_value = round(($request->get('amount')) *
+                                config('subidha.ecash_payment_charge_percentage') / 100 , 2);
+
+
+                            $data['subidha_comission'] = round( $amount_value, 2);
+                            $data['pharmacy_amount'] = round( (($request->get('amount')) - $data['subidha_comission'] ), 2);
+                            $data['customer_amount'] = round( (($request->get('amount')) + $ssl_value), 2);
+
+                        }
+
+                    }
+
+                    if ($request->delivery_method == config('subidha.express_delivery')) {
+                        if ($request->payment_type == config('subidha.cod_payment_type')) {
+                            logger('Into subidha cod payment');
+                            logger('7 in');
+
+                            $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
+
+                            $amount_value = round(($request->get('amount')) *
+                                config('subidha.subidha_comission_cash_percentage') / 100 , 2);
+
+                            $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
+
+                            logger('Assigning subidha comission in cod payment');
+
+                            $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
+                            $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
+                            $data['customer_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
+
+                            logger('Subidha comission in cod payment: ' . $data['subidha_comission']);
+
+                        }
+                        if ($request->payment_type == config('subidha.ecash_payment_type')) {
+                            logger('Into subidha ecash payment method');
+                            logger('8 in');
+
+                            $delivery_value = config('subidha.express_delivery_charge') *
+                                config('subidha.subidha_delivery_percentage') / 100;
+
+                            $amount_value = number_format(($request->get('amount')) *
+                                config('subidha.subidha_comission_ecash_percentage') / 100 , 2);
+
+                            $ssl_value = number_format(( ($request->get('amount')) + config('subidha.express_delivery_charge') )*
+                                config('subidha.ecash_payment_charge_percentage') / 100 , 2);
+
+                            $data['subidha_comission'] = number_format( ($amount_value + $delivery_value), 2);
+                            $data['pharmacy_amount'] = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission'] ), 2);
+                            $data['customer_amount'] = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+
+                        }
+                    }
+                }
+
+
+            }
+            if ($request->delivery_type == config('subidha.pickup_from_pharmacy')) {
+
+                if ($request->payment_type == config('subidha.cod_payment_type')) {
+
+                    $amount_value = round(($request->get('amount')) *
+                        config('subidha.subidha_comission_collect_from_pharmacy_cash_percentage') / 100 , 2);
+
+                    $orderAmount = $request->get('amount') - $amount_value;
+
+                    $data['subidha_comission'] = round( $amount_value, 2);
+                    $data['pharmacy_amount'] = round( ($orderAmount - $data['subidha_comission']), 2);
+                    $data['customer_amount'] = round( $orderAmount, 2);
+
+                }
+                if ($request->payment_type == config('subidha.ecash_payment_type')) {
+
+                    $amount_value = round(($request->get('amount')) *
+                        config('subidha.subidha_comission_collect_from_pharmacy_ecash_percentage') / 100 , 2);
+
+                    $ssl_value = round( ($request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100, 2);
+
+                    $data['subidha_comission'] = round( $amount_value, 2);
+                    $data['pharmacy_amount'] = round( ($request->get('amount') - ($ssl_value + $data['subidha_comission'] )), 2);
+                    $data['customer_amount'] = round( ($request->get('amount') ), 2);
+
+                }
+            }
+            $data['amount'] = round($request->amount,2);
 //        return $data;
             $order = Order::create($data);
 
