@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Address\Repositories\AddressRepository;
 use Modules\Locations\Repositories\LocationRepository;
 use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
 use Modules\Orders\Repositories\DeliveryChargeRepository;
@@ -75,6 +76,14 @@ class CheckoutController extends Controller
 
     public function check(CheckoutCreateRequest $request)
     {
+//        if ($request->payment_type == 1){
+//        logger('Into the Order controller create method');
+//        $order = $this->orderRepository->create($request, Auth::user()->id);
+//        logger('End of Order controller create method');
+//
+//        return redirect()->route('home')->with('success', 'Order successfully placed');
+
+
 //        return $request->all();
 
         if ($request->payment_type == 1){
@@ -123,6 +132,12 @@ class CheckoutController extends Controller
             }
 //        return $data;
             $order = Order::create($data);
+
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'user_id' => $data['pharmacy_id'],
+                'status' => $order->status
+            ]);
 
 //            return $data['pharmacy_id'];
             if ($request->order_items) {

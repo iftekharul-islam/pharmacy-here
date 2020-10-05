@@ -44,7 +44,7 @@
                             <input type="hidden" class="express_delivery_date" name="express_delivery_date" value="">
                             <input type="hidden" name="order_items" value="{{ $data }}">
                             <input type="hidden" name="delivery_charge_amount" value="">
-                            <input type="hidden" name="status" value="1">
+                            <input type="hidden" name="status" value="0">
                             <ul class="payment-step">
                                 <li>
                                     <p>Delivery Address</p>
