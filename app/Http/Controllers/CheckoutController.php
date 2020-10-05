@@ -57,6 +57,11 @@ class CheckoutController extends Controller
         if (count($data) == 0 ) {
             return redirect()->back()->with('failed', 'please add product in cart');
         }
+        $amount = $this->cartRepository->getCartAmount(Auth::user()->id);
+        if ($amount < config('subidha.minimum_order_amount') ) {
+            return redirect()->route('cart.index')->with('failed', 'Minimum order should be ৳' . config('subidha.minimum_order_amount') );
+        }
+
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
@@ -76,14 +81,6 @@ class CheckoutController extends Controller
 
     public function check(CheckoutCreateRequest $request)
     {
-//        if ($request->payment_type == 1){
-//        logger('Into the Order controller create method');
-//        $order = $this->orderRepository->create($request, Auth::user()->id);
-//        logger('End of Order controller create method');
-//
-//        return redirect()->route('home')->with('success', 'Order successfully placed');
-
-
 //        return $request->all();
 
         if ($request->payment_type == 1){

@@ -96,6 +96,16 @@ class CartRepository
         return Cart::with('product')->where('customer_id', $customer_id)->get();
     }
 
+    public function getCartAmount($customer_id)
+    {
+        $items =  Cart::with('product')->where('customer_id', $customer_id)->get();
+        return $sum_amount =  Cart::with('product')->where('customer_id', $customer_id)->sum('amount');
+//
+//        foreach ($items as $item) {
+//            $amount = $item->amount;
+//        }
+    }
+
     public function getCartItemCount($customer_id)
     {
         return Cart::where('customer_id', $customer_id)->count();
