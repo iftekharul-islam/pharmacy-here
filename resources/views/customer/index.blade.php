@@ -157,7 +157,7 @@
                                                 <tr>
                                                     <td scope="row">#{{ $order->order_no }}</td>
                                                     <td>{{ $order->order_date}}</td>
-                                                    <td>৳ {{ $order->amount}}</td>
+                                                    <td>৳ {{ $order->amount + $order->delivery_charge }}</td>
                                                     <td>
                                                         @if ($order->status == 1)
                                                             <span class="badge badge-primary">Accepted</span>

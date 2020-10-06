@@ -128,7 +128,6 @@
                                         </div>
 
                                         <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
-{{--                                        <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }})" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>--}}
                                 @else
                                     <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart" onclick="addToCart({{ $item->id }})"><i class="fas fa-cart-plus"></i> Add to Cart</a>
                                 @endauth
