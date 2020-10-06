@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pharmacies</h1>
+                    <h1>Customers</h1>
                 </div>
                 <!-- <div class="col-sm-6">
                     <a href="{{ route('generic.create') }}" class="btn btn-sm btn-success float-right">
