@@ -11,7 +11,7 @@
         }
         #searchResult li {
             padding-left: 2rem;
-            padding-top: 10px;
+            padding-top: 2px;
             padding-bottom: 10px;
             text-align: left;
             cursor: pointer;
@@ -105,7 +105,7 @@
     <section class="download-section">
         <div class="container">
             <div class="row">
-                <div class="col-md-11 mx-auto">
+                <div class="col-md-12 mx-auto">
                     <div class="download">
                         <div class="left">
                             <h2>Download the app now!</h2>
@@ -142,13 +142,32 @@
                             success: function (response) {
                                 var len = response.length;
                                 $("#searchResult").empty();
+                                $("#searchResult").append(`<li value=""></li>`);
                                 for (var i = 0; i < len; i++) {
                                     console.log(response[i]);
                                     var id = response[i]['id'];
                                     var name = response[i]['name'];
+                                    var image = response[i]['form_id'];
+                                    if(image == 1 || image == 2){
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image == 3) {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/syrup.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image == 4) {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/injection.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image == 5) {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/suppositories.png') }}" class="pill mr-2" alt="pill">`;
+                                    }else {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
 
                                     if (search != name) {
-                                        $("#searchResult").append("<li value='" + id + "'>" + name + "</li>");
+                                        $("#searchResult")
+                                            .append(`<li value='" + id + "'>` +
+                                                 pill + name +
+                                                `</li> ` );
                                     }
 
                                 }

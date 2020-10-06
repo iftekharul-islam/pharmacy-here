@@ -92,7 +92,15 @@
                                     <i class="fas fa-heart"></i>
                                 </div>
                                 <div class="text-center mb-4">
-                                    <img src="{{ asset('images/pill.png') }}" class="pill" alt="medicine">
+                                @if ($item->form_id == 1 || $item->form_id == 2)
+                                    <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                                @elseif ($item->form_id == 3)
+                                    <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
+                                @elseif ($item->form_id == 4)
+                                    <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
+                                @elseif ($item->form_id == 5)
+                                    <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
+                                @endif
                                 </div>
                                 <div class="medicine-details--content">
                                     @if ($item->is_pre_order == 1 )
