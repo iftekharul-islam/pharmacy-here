@@ -44,7 +44,7 @@
                     <h2>We Deliver Your Medication</h2>
                     <p>Say goodbye to all your healthcare worries with us</p>
                     <label class="w-100 label-search">
-                        <form action="{{ route('product-list') }}" method="GET">
+                        <form id="form" action="{{ route('product-list') }}" method="GET">
                             <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="Search your medicine here">
                             <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
                         </form>
@@ -157,7 +157,9 @@
                                     console.log(this);
                                     setText(this);
                                     isNameSet = true;
+
                                     console.log(isNameSet);
+                                    $('#form').submit();
                                 });
                             }
                         });

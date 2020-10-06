@@ -275,10 +275,10 @@ class SslCommerzNotification extends AbstractSslCommerz
         $this->setCustomerInfo($requestData);
 
         ##  Shipment Information
-//        $this->setShipmentInfo($requestData);
-
+        $this->setShipmentInfo($requestData);
+//
         ##  Product Information
-//        $this->setProductInfo($requestData);
+        $this->setProductInfo($requestData);
 
         ##  Customized or Additional Parameters
         $this->setAdditionalInfo($requestData);

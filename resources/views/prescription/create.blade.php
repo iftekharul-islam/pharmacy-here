@@ -98,7 +98,7 @@
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-6">
-                                                                <img width="200px" height="300px" src="{{ $prescription->url }}" alt="">
+                                                                <img width="250px" height="300px" src="{{ $prescription->url }}" alt="">
                                                             </div>
                                                             <div class="col-6 My-modal">
                                                                 <strong>Patient </strong>
@@ -122,7 +122,7 @@
                                     </div>
 
                                     <div class="col-2">
-                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}">
+                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -136,11 +136,6 @@
             </div>
             </form>
         </div>
-
     </div>
-
 @endsection
 
-
-@section('js')
-@endsection
