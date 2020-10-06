@@ -30,8 +30,9 @@ class Order extends Model
         'delivery_method',
         'delivery_date',
         'delivery_time',
-        'subidha_comission',
         'order_no',
+        'subidha_comission',
+        'is_rated',
         'pharmacy_amount',
         'customer_amount'
     ];

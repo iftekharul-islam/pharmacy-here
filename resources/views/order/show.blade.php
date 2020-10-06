@@ -37,7 +37,7 @@
                             <a class="badge badge-primary text-white">Online payment</a>
                         @endif
                     </label><br>
-                    @if ($data->payment_type != 2)
+                    @if ($data->delivery_type != 2)
                         <strong>Delivery Type :</strong>
                         <label>@if ($data->delivery_method = 'express')
                                    Express Delivery

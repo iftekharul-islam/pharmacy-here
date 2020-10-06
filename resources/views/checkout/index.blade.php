@@ -329,7 +329,7 @@
 
         let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>" ) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
-        let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);
         let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
         let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);;
@@ -347,7 +347,8 @@
         // console.log(cashInNormalDeliveryCharge, 'ecash In NormalDelivery Charge')
 
         // console.log(cashInNormalDelivery, 'cash In NormalDelivery')
-        // console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
+        console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
+        console.log(typeof (ecashInNormalDelivery), 'ecash In NormalDelivery')
         // console.log(cashInExpressDelivery, 'cash In ExpressDelivery')
         // console.log(ecashInExpressDelivery, 'ecash In ExpressDelivery')
         // console.log(cashInCollectFromPharmacy, 'cash In CollectFromPharmacy')
@@ -582,7 +583,7 @@
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
                 console.log(ecashInNormalDelivery, 'e cash normal');
-                grandTotal = total + ecashInNormalDelivery ;
+                grandTotal = total + parseFloat(ecashInNormalDelivery) ;
                 $('input[name="delivery_charge_amount"]').val(ecashNoramlCharge);
                 // $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
@@ -615,6 +616,8 @@
         }
         else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
             var egrandTotalNormalDB = grandTotal - ecashInNormalDelivery ;
+            console.log(grandTotal, 'normal e grandTotal');
+            console.log(ecashInNormalDelivery, 'normal e ecashInNormalDelivery');
             console.log(egrandTotalNormalDB, 'normal e grandTotalDB');
             $('input[name="amount"]').val(egrandTotalNormalDB);
 
