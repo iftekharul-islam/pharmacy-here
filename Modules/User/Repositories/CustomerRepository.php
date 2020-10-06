@@ -22,11 +22,16 @@ class CustomerRepository
     {
         $user = User::find($id);
 
+        if (!$user) {
+            throw new NotFoundHttpException('Customer not found');
+        }
+
         $address = CustomerAddress::where('user_id',$id)->first();
 
-//        if (!$address) {
+        if (!$address) {
 //            throw new NotFoundHttpException('Address not found');
-//        }
+            $address = new CustomerAddress();
+        }
 
         if (isset($request->address)) {
             $address->address = $request->address;
@@ -37,6 +42,7 @@ class CustomerRepository
         }
         logger('Customer update address');
 
+        $address->user_id = $id;
         $address->save();
         logger('Customer update address end');
 
