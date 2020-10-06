@@ -12,6 +12,11 @@
                 <h1>Products</h1>
             </div>
             <div class="col-sm-6">
+                <form action="{{ route('import-csv') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="file" class="form-control">
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </form>
                 <a href="{{ route('create') }}" class="btn btn-sm btn-success float-right">Create Product</a>
             </div>
         </div>
