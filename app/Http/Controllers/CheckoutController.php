@@ -88,7 +88,7 @@ class CheckoutController extends Controller
                 'phone_number',
                 'payment_type',
                 'delivery_type',
-                'delivery_charge_amount',
+                'delivery_charge',
                 'delivery_method',
                 'status',
                 'amount',
@@ -108,13 +108,12 @@ class CheckoutController extends Controller
 
             ]);
 
-//            $data['pharmacy_id'] = $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
             $data['order_no'] = $this->generateOrderNo();
-//            $data['pharmacy_id'] = 1;
             $data['order_date'] = Carbon::today();
             $data['customer_id'] = Auth::user()->id;
             $data['notes'] = "Its a sample" ;
             $data['is_rated'] = "no";
+            $data['delivery_charge'] = $request->delivery_charge_amount;
 
             if ($request->delivery_charge == 1) {
                 $data['delivery_method'] = 'normal';
@@ -134,11 +133,13 @@ class CheckoutController extends Controller
                 $data['delivery_date'] = Carbon::createFromFormat('d-m-Y', $data['delivery_date'])->format('Y-m-d');
             }
 
+
             if ($request->delivery_type == config('subidha.home_delivery')) {
-
+                logger('1 st in');
                 if ($request->amount <= config('subidha.free_delivery_limit')){
-                    if ($request->delivery_charge == config('subidha.normal_delivery')) {
-
+                    logger('1 st in 1 st');
+                    if ($data['delivery_method'] == config('subidha.normal_delivery')) {
+                        logger('1 st in 1 st in 1st');
                         if ($request->payment_type == config('subidha.cod_payment_type')) {
                             logger('1 in');
 
@@ -166,8 +167,6 @@ class CheckoutController extends Controller
 
                             $ssl_value = round(( ($request->get('amount')) + config('subidha.normal_delivery_charge') ) *
                                 config('subidha.ecash_payment_charge_percentage') / 100 , 2);
-
-//                        print_r($amount_value);die();
 
                             $data['subidha_comission'] = round( ($amount_value + $delivery_value), 2) ;
                             $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.normal_delivery_charge') - $data['subidha_comission'] ), 2);
@@ -324,6 +323,10 @@ class CheckoutController extends Controller
                 }
             }
             $data['amount'] = round($request->amount,2);
+            $data['subidha_comission'] = round($data['subidha_comission'],2);
+            $data['pharmacy_amount'] =  round($data['pharmacy_amount'],2);
+            $data['customer_amount'] = round( $data['customer_amount'],2);
+
 //        return $data;
             $order = Order::create($data);
 
@@ -333,7 +336,6 @@ class CheckoutController extends Controller
                 'status' => $order->status
             ]);
 
-//            return $data['pharmacy_id'];
             if ($request->order_items) {
                 $items = json_decode($request->order_items, true);
                 foreach($items as $item) {
@@ -364,7 +366,6 @@ class CheckoutController extends Controller
             session()->forget('prescriptions');
             session()->forget('cartCount');
 
-//            return $data['pharmacy_id'];
             logger($data['pharmacy_id']);
             $deviceIds = UserDeviceId::where('user_id', $data['pharmacy_id'])->get();
 //            return $deviceIds;
