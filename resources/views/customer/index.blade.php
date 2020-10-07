@@ -159,12 +159,28 @@
                                                     <td>{{ $order->order_date}}</td>
                                                     <td>৳ {{ $order->amount + $order->delivery_charge }}</td>
                                                     <td>
-                                                        @if ($order->status == 1)
-                                                            <span class="badge badge-primary">Accepted</span>
-                                                        @elseif ($order->status == 0)
+                                                        @if ($order->status == 0)
                                                             <span class="badge badge-danger">Pending</span>
+                                                        @elseif ($order->status == 1)
+                                                            <span class="badge badge-warning">Accepted</span>
                                                         @elseif ($order->status == 3)
-                                                            <span class="badge badge-info">Processing</span>
+                                                            <span class="badge" style="background: #FFFF00">Processing</span>
+                                                        @elseif ($order->status == 3)
+                                                            <span class="badge badge-success">Completed</span>
+                                                        @elseif ($order->status == 4)
+                                                            <span class="badge badge-info">Failed</span>
+                                                        @elseif ($order->status == 5)
+                                                            <span class="badge badge-info">Rejected By Pharmacy</span>
+                                                        @elseif ($order->status == 6)
+                                                            <span class="badge badge-info">Forwarded</span>
+                                                        @elseif ($order->status == 7)
+                                                            <span class="badge badge-info">Expired</span>
+                                                        @elseif ($order->status == 8)
+                                                            <span class="badge badge-info">Orphan</span>
+                                                        @elseif ($order->status == 9)
+                                                            <span class="badge badge-info">On The Way</span>
+                                                        @elseif ($order->status == 10)
+                                                            <span class="badge badge-danger">Cancel</span>
                                                         @endif
                                                     </td>
                                                     <td>

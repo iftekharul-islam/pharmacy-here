@@ -1,4 +1,85 @@
 @extends('layouts.app')
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        opacity: 1;
+    }
+
+    /**   **************  */
+    input[type="number"] {
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
+
+    .number-input {
+        border: 1px solid #ddd;
+        display: inline-flex;
+    }
+
+    .number-input,
+    .number-input * {
+        box-sizing: border-box;
+    }
+
+    .number-input button {
+        outline:none;
+        -webkit-appearance: none;
+        background-color: transparent;
+        border: none;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        cursor: pointer;
+        margin: 0;
+        position: relative;
+    }
+
+    .number-input button:before,
+    .number-input button:after {
+        display: inline-block;
+        position: absolute;
+        content: '';
+        width: 1rem;
+        height: 2px;
+        background-color: #212121;
+        transform: translate(-50%, -50%);
+    }
+    .number-input button.plus:after {
+        transform: translate(-50%, -50%) rotate(90deg);
+    }
+
+    .number-input input[type=number] {
+        width: 60px;
+        font-family: sans-serif;
+        max-width: 4.25rem;
+        padding: .5rem;
+        border: solid #ddd;
+        border-width: 0 5px;
+        font-size: 1.6rem;
+        height: 2rem;
+        font-weight: bold;
+        text-align: center;
+    }
+    .count-style {
+        border: none;
+        height: 25px;
+        width: 64px;
+    }
+    .count-style:focus {
+        outline: none!important;
+    }
+
+    .order-summary table tbody tr td input {
+        border: none!important;
+    }
+</style>
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -60,8 +141,17 @@
                                             <tr>
                                                 <td scope="row">{{ $details['product']['name'] }}</td>
                                                 <td class="text-left">৳ {{ $details['product']['purchase_price'] }}</td>
-                                                <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}" min="{{ $details['product']['min_order_qty'] }}"></td>
-                                                <td class="text-left">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>
+                                                <td data-th="Quantity">
+                                                    <div class="number-input" id="show-button-{{ $details->id }}">
+                                                        <button id="decrease-{{$details->id }}" onclick="newItemdec(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }})"></button>
+                                                        <input id="input-{{ $details->id }}" class="quantity new-input-{{ $details->id }}" min="{{ $details['product']['min_order_qty'] }}"  name="quantity" value="{{ $details->quantity}}" type="number">
+                                                        <button id="increase-{{$details->id }}" onclick="newItemIncrease(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }})" class="plus"></button>
+                                                    </div>
+                                                </td>
+{{--                                                <td class="text-left">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>--}}
+                                                <td class="text-left">৳
+                                                    <input class="countAmount-{{$details->id}} count-style" value="{{ $details->amount }}" readonly>
+                                                </td>
                                                 <td>
                                                     <div class="actions" data-th="">
                                                         <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>
@@ -75,8 +165,10 @@
                                     <tr>
                                         <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">Continue Shopping</a></td>
                                         <td></td>
-                                        <td></td>
-                                        <td class="text-left total-amount-alignment">Total ৳ {{ $total }}</td>
+                                        <td class="text-right total-amount-alignment">Total</td>
+                                        <td class="text-left total-amount-alignment">৳
+                                            <input type="number" class="grand-total count-style" value="{{ $total }}" readonly>
+                                        </td>
                                         @guest
                                                 <td><p class="badge btn-primary">Please login first to checkout</p></td>
                                             @else
@@ -96,6 +188,81 @@
 @endsection
 @section('js')
     <script>
+        let cartIncrement, cartDecrement;
+        function  newItemIncrease(item, price, productId) {
+
+            console.log(item, 'this');
+            console.log(productId, 'productId');
+
+            item.parentNode.querySelector('input[type=number]').stepUp();
+
+            let inputNumber = $('#' + item.id).parent().find('input').val();
+            let total = inputNumber * price;
+            let initTotal = parseInt($(".grand-total").val());
+            let grandTotal = initTotal + total;
+
+            console.log(total, 'total')
+            console.log(initTotal, 'initTotal')
+            console.log(grandTotal, 'grandTotal')
+
+            $(".countAmount-"+productId).val(total);
+            $(".grand-total").val(grandTotal);
+
+            $(".countAmount-"+productId).val(total);
+
+
+                clearTimeout(cartIncrement);
+                clearTimeout(cartDecrement);
+
+                cartIncrement = setTimeout(function () {
+                    $.ajax({
+                        url: "{{ route('update.cart') }}",
+                        method: "put",
+                        data: {_token: "{{ csrf_token() }}", id: productId, quantity: inputNumber },
+
+                        success: function (result) {
+                            console.log('cart updated');
+                        },
+                        error: function (result) {
+                            console.log(result);
+                        }
+                    });
+                }, 500);
+
+        }
+
+        function  newItemdec(item, price, productId) {
+
+            item.parentNode.querySelector('input[type=number]').stepDown();
+
+            let inputNumber = $('#' + item.id).parent().find('input').val();
+            let total = inputNumber * price;
+            let initTotal = parseInt($(".grand-total").val());
+            let grandTotal = initTotal - total;
+
+            $(".countAmount-"+productId).val(total);
+            $(".grand-total").val(grandTotal);
+
+                clearTimeout(cartDecrement);
+                clearTimeout(cartIncrement);
+
+                cartDecrement = setTimeout(function () {
+
+                        $.ajax({
+                            url: "{{ route('update.cart') }}",
+                            method: "put",
+                            data: {_token: "{{ csrf_token() }}", id: productId, quantity: inputNumber},
+
+                            success: function (result) {
+                                console.log('cart updated');
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+                        });
+
+                }, 500);
+        }
         $(".update-cart").click(function (e) {
             e.preventDefault();
 
@@ -120,8 +287,6 @@
                 title: "Warning",
                 text: "Do you want to delete this Medicine from Cart ?",
                 icon: "warning",
-                // buttons: true,
-                // dangerMode: true,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -157,12 +322,6 @@
                 isPrescribedMedicineAlert(newData);
                 return;
             }
-
-            // var prescribedMedicine = isPrescribedMedicine(medicineData);
-            // if (prescribedMedicine) {
-            //     isPrescribedMedicineAlert(medicineData);
-            //     return;
-            // }
             window.location = "/checkout/preview";
         }
 
@@ -173,9 +332,7 @@
                     count++;
                 }
             });
-
             return !!count;
-
         }
 
         function preOrderMedicineAlert() {
@@ -183,8 +340,6 @@
                 title: "Pre-order Medicine",
                 text: "You have a pre-order medicine in cart. It will take 3-5 days to deliver, do you want to continue?",
                 icon: "warning",
-                // buttons: true,
-                // dangerMode: true,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -254,7 +409,6 @@
                 data: {_token: '{{ csrf_token() }}', id: medicineIds},
                 success: function (response) {
                     console.log(response);
-                    // window.location.reload();
                     window.location = "/checkout/preview";
                 }
             });

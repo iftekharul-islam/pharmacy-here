@@ -16,10 +16,10 @@
                     <div class="footer-menu-list">
                         <a href="#">COMPANY</a>
                         <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Services</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
+                            <li><a href="{{ route('terms') }}">Terms of use</a></li>
                             <li><a href="#">About Us</a></li>
-                            <li><a href="#">FAQs</a></li>
+                            <li><a href="{{ route('faq') }}">FAQs</a></li>
                         </ul>
                     </div>
 
@@ -34,10 +34,10 @@
                     <div class="footer-menu-list">
                         <a href="#">SOCIAL</a>
                         <ul>
-                            <li><a href="#"><i class="fab fa-facebook-square mr-2"></i>Facebook</a></li>
-                            <li><a href="#"><i class="fab fa-twitter mr-2"></i>Twitter</a></li>
-                            <li><a href="#"><i class="fab fa-instagram mr-2"></i>Instagram</a></li>
-                            <li><a href="#"><i class="fab fa-youtube mr-2"></i>Youtube</a></li>
+                            <li><a href="https://www.facebook.com" target="tab"><i class="fab fa-facebook-square mr-2"></i>Facebook</a></li>
+                            <li><a href="https://twitter.com" target="tab"><i class="fab fa-twitter mr-2"></i>Twitter</a></li>
+                            <li><a href="https://www.instagram.com/?hl=en" target="tab"><i class="fab fa-instagram mr-2"></i>Instagram</a></li>
+                            <li><a href="https://www.youtube.com" target="tab"><i class="fab fa-youtube mr-2"></i>Youtube</a></li>
                         </ul>
                     </div>
                 </div>

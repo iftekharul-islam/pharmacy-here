@@ -6,7 +6,6 @@ use App\Models\Cart;
 use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Modules\Address\Entities\CustomerAddress;
 use Modules\Products\Entities\Model\Product;
 
 class CartController extends Controller
@@ -36,6 +35,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request, $id)
     {
+//        return \response()->json($request->all());
 //        return response($request->all());
         if (Auth::user()) {
             $data = $this->repository->addToCart($id);
@@ -100,11 +100,12 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
+        logger($request->all);
         if($request->id && $request->quantity)
         {
             if (Auth::user()) {
                 $data = $this->repository->update($request);
-                session()->flash('success', 'Cart updated successfully');
+                return response()->json($data);
             }
             $cart = session()->get('cart');
             $cart[$request->id]["quantity"] = $request->quantity;
@@ -146,6 +147,6 @@ class CartController extends Controller
 
     public function findCart(Request $request) {
         $itemId = Cart::where('customer_id', Auth::user()->id)->where('product_id', $request->id)->first();
-        return response($itemId->id);
+        return response($itemId);
     }
 }

@@ -41,14 +41,15 @@ class CartRepository
 
     public function update($request)
     {
-        if ($request->id !== null) {
-            $item = Cart::find($request->id);
-            $product = Product::find($item->product_id);
+        $item = Cart::find($request->id);
+        if ($item === null) {
+            $item = Cart::where('customer_id', Auth::user()->id)->where('product_id', $request->productId)->first();
         }
+        $product = Product::find($item->product_id);
 
-        if (!$item) {
-            abort(404);
-        }
+//        if ($item === null) {
+//            abort(404);
+//        }
 
         if($request->id && $request->quantity)
         {
@@ -71,15 +72,27 @@ class CartRepository
             logger('in');
             foreach ($request->id as $id) {
                 $item = Cart::find($id);
-
                 $item->delete();
             }
             return true;
         } elseif (!empty($request->id)) {
             $item = Cart::find($request->id);
+                logger($item);
+                logger('out product id');
+                if (!$item) {
+                    logger('in product id');
+                    $item = Cart::where('customer_id', Auth::user()->id)->where('product_id', $request->productId)->first();
+                    logger($item);
+                    if (!$item){
+                        return false;
+                    }
+                    $item->delete();
+                    return true;
+                }
 
             if ($item != null) {
                 $item->delete();
+                return true;
             }
             return false;
         }

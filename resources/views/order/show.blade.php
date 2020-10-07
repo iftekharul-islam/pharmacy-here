@@ -1,4 +1,10 @@
 @extends('layouts.app')
+<style>
+    .my-table {
+        margin-left: -12px!important;
+        width: 20px;
+    }
+</style>
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -12,52 +18,72 @@
     <div class="order-section">
         <div class="container">
             <div class="row">
-                <div class="col-6">
-                    <h2 class="my-dashboard-title">My Orders details</h2>
+                <div class="col-12">
+                    <h2 class="my-dashboard-title">My Orders Details</h2>
                 </div>
-                <div class="col-8">
-                    <strong>Order no</strong>
-                    <label> #{{ $data->order_no }} </label> &nbsp; &nbsp; &nbsp; &nbsp;
-                    <strong>Order date :</strong>
-                    <label>{{ date('d F Y', strtotime($data->order_date)) }} </label><br>
-                    <strong>Address :</strong>
-                    <label> {{ $data->address->address }}, {{ $data->address->area->name }}, {{ $data->address->area->thana->name }}, {{ $data->address->area->thana->district->name }}.</label><br>
-                    <strong>Payment method :</strong>
-                    <label>@if ($data->payment_type == 1)
-                               Home delivery
-                           @else
-                                Pharmacy Pickup
-                           @endif
-                    </label><br>
-                    <strong>Payment Type :</strong>
-                    <label>
-                        @if ($data->payment_type == 1)
-                            <a class="badge badge-primary text-white">Cash on delivery</a>
-                        @else
-                            <a class="badge badge-primary text-white">Online payment</a>
+                <div class="col-5">
+                    <table class="my-table table table-borderless">
+                        <tr>
+                            <th>Order no</th>
+                            <td>#{{ $data->order_no }}</td>
+                        </tr>
+                        <tr>
+                            <th>Order date:</th>
+                            <td>{{ date('d F Y', strtotime($data->order_date)) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <td>{{ $data->address->address }}, {{ $data->address->area->name }}, {{ $data->address->area->thana->name }}, {{ $data->address->area->thana->district->name }}.</td>
+                        </tr>
+                        <tr>
+                            <th>Payment Type:</th>
+                            <td>
+                                @if ($data->payment_type == 1)
+                                    Cash on Delivery
+                                @else
+                                    Online Payment
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Delivery Type:</th>
+                            <td>{{ $data->delivery_type == 1 ? 'Home Delivery' : 'Pharmacy Pickup' }}</td>
+                        </tr>
+                        @if ($data->delivery_type != 2)
+                            <tr>
+                                <th>Delivery Method:</th>
+                                <td>
+                                    @if ($data->delivery_method = 'express')
+                                        Express Delivery
+                                    @elseif ($data->delivery_method = 'normal')
+                                        Normal Delivery
+                                    @endif
+                                </td>
+                            </tr>
                         @endif
-                    </label><br>
-                    @if ($data->delivery_type != 2)
-                        <strong>Delivery Type :</strong>
-                        <label>@if ($data->delivery_method = 'express')
-                                   Express Delivery
-                               @elseif ($data->delivery_method = 'normal')
-                                   Normal Delivery
-                               @endif
-                        </label><br>
-                    @endif
-                    <strong>Delivery date :</strong>
-                    <label>{{ date('d F Y', strtotime($data->delivery_date)) }}</label><br>
-                    <strong>Delivery Time :</strong>
-                    <label>{{ $data->delivery_time }}</label><br>
-                    <strong>Charge Amount :</strong>
-                    <label>{{ $data->delivery_charge }}</label><br>
-
+                        <tr>
+                            <th>Delivery date:</th>
+                            <td>
+                                {{ date('d F Y', strtotime($data->delivery_date)) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Delivery Time:</th>
+                            <td>
+                                {{ $data->delivery_time }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Charge Amount:</th>
+                            <td>
+                                {{ $data->delivery_charge }}
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="col-8">
+                <div class="col-10">
                 <div class="my-order-list">
                     <div class="table-responsive">
-{{--                        @if (count($orders) > 0)--}}
                             <table class="table table-borderless">
                                 <thead class="thead-light">
                                     <tr>
@@ -77,13 +103,16 @@
                                     </tr>
                                 @endforeach
                                 </tbody>
+                                <tfooter>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><strong>Grand Total : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
+                                    </tr>
+                                </tfooter>
                             </table>
-{{--                        @else--}}
-{{--                            <h4 class="text-center">No data available</h4>--}}
-{{--                        @endif--}}
                     </div>
-                    <p><strong>Grand Total:</strong> {{ $data->amount + $data->delivery_charge }}</p>
-
                 </div>
                 </div>
             </div>
