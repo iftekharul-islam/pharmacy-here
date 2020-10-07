@@ -140,16 +140,9 @@ class ProductsController extends Controller
 
     public function importCsv(Request $request)
     {
-//        $name = "25% Insulin Lispro + 75% Insulin Lispro Protamine";
-//        return Generic::create([
-//            'name' => $name,
-//            'slug' => Str::slug($name),
-//            'status' => true,
-//        ]);
-//        $data = Generic::get();
-//        return $data;
-//        return $request->file('file');
+
         Excel::import(new ProductImport, $request->file('file'));
-//        return back();
+
+        return redirect()->back()->with('success', 'Product Import Successful');
     }
 }

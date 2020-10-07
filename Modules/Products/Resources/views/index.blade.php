@@ -4,6 +4,15 @@
 @section('title', 'Products')
 
 @section('content_header')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @elseif(session('failed'))
+        <div class="alert alert-danger">
+            {{ session('failed') }}
+        </div>
+    @endif
 {{--    <h1>Dashboard</h1>--}}
 <section class="content-header">
     <div class="container-fluid">
@@ -35,7 +44,7 @@
             <table id="example1" class="table data-table">
                 <thead>
                 <tr>
-                    <th>Type</th>
+{{--                    <th>Type</th>--}}
                     <th>Name</th>
                     <th>Company</th>
                     <th>Purchase Price</th>
@@ -47,7 +56,7 @@
                 <tbody>
                 @foreach($productList as $item)
                 <tr>
-                    <td>{{ $item['type'] }}</td>
+{{--                    <td>{{ $item['type'] }}</td>--}}
                     <td>{{ $item['name'] }}</td>
                     <td>{{ $item['category']['name'] }}</td>
                     <td>{{ $item['purchase_price'] }}</td>
