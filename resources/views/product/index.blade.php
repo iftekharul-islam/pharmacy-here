@@ -317,6 +317,9 @@
             $('#show-button-' + id).removeClass('d-none');
             $('#input-' + id).val(minValue);
 
+            var zoektermen = '{{session()->put('cartCount', count()+1 ?? '') }}';
+            {!! session()->!!}
+
             $.ajax({
                 url: 'cart/add-to-cart/' + id,
                 method: "get",
@@ -431,6 +434,16 @@
 
             if (id === undefined) {
 
+                if (inputNumber < minValue) {
+                    $('#show-cart-' + productId).removeClass('d-none');
+                    $('.new-input-' + id).val(minValue);
+                    $('#show-button-' + productId).addClass('d-none');
+                    $('#show-button-' + productId).removeClass('block');
+
+                    $('#item-price-show-'+productId).removeClass('d-none');
+                    $('#cart-price-show-'+productId).addClass('d-none');
+                }
+
                 clearTimeout(cartDecrement);
                 clearTimeout(cartIncrement);
 
@@ -488,8 +501,6 @@
                                     }
                                 });
                             } else {
-                                console.log('delete function')
-                                console.log(productId, 'productId')
                                 $.ajax({
                                     url: "{{ route('delete.cart') }}",
                                     method: "DELETE",

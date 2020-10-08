@@ -26,12 +26,10 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         $data = $this->repository->all($request);
-//        return $data;
         if (Auth::user()) {
             $cartItems = Cart::with('product')->where('customer_id', Auth::user()->id)->get();
             return view('product.index', compact('data', 'cartItems'));
         }
-
         return view('product.index', compact('data'));
     }
 
