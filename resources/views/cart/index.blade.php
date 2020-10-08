@@ -199,7 +199,7 @@
             let inputNumber = $('#' + item.id).parent().find('input').val();
             let total = inputNumber * price;
             let initTotal = parseInt($(".grand-total").val());
-            let grandTotal = initTotal + total;
+            let grandTotal = price + initTotal;
 
             console.log(total, 'total')
             console.log(initTotal, 'initTotal')
@@ -238,7 +238,7 @@
             let inputNumber = $('#' + item.id).parent().find('input').val();
             let total = inputNumber * price;
             let initTotal = parseInt($(".grand-total").val());
-            let grandTotal = initTotal - total;
+            let grandTotal = initTotal - price;
 
             $(".countAmount-"+productId).val(total);
             $(".grand-total").val(grandTotal);

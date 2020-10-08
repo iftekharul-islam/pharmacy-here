@@ -105,7 +105,7 @@
                                                 <td class="save-value">{{ $data->name }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="name" value="{{ $data->name }}"></td>
                                                 <td><b>Date of Birth:</b></td>
-                                                <td class="save-value">{{ $data->dob != null ? $data->dob : "Null" }}</td>
+                                                <td class="save-value">{{ $data->dob != null ? $data->dob : '' }}</td>
                                                 <td class="edit-value d-none"><input type="date" name="dob"  value="{{ $data->dob }}"></td>
 
                                             </tr>
@@ -114,7 +114,7 @@
                                                 <td class="save-value">{{ $data->phone_number }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
                                                 <td><b>Gender:</b></td>
-                                                <td class="save-value">{{ $data->gender != null ? $data->gender : "Null" }}</td>
+                                                <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>
                                             </tr>
                                             <tr>
@@ -273,10 +273,10 @@
                                                                 <strong>Patient: {{ $prescription->patient_name }}</strong><br>
                                                                 <small>Doctor: {{ $prescription->doctor_name }}</small>
                                                                 <br>
-                                                                <button type="button" class="btn btn--primary px-5 w-89 mt-3" data-toggle="modal" data-target="#prescriptionDetailsModal">
+                                                                <button type="button" class="btn btn--primary px-5 w-89 mt-3" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
                                                                     View
                                                                 </button>
-                                                                <div class="modal fade" id="prescriptionDetailsModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
+                                                                <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
