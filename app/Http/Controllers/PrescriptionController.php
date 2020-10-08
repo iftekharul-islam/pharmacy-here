@@ -57,12 +57,6 @@ class PrescriptionController extends Controller
      */
     public function store(CreatePrescriptionRequest $request)
     {
-
-//        $image = $request->file('url');
-//        $link = Storage::disk('gcs');
-//        $disk = $link->put('images/customer/prescription', $image );
-//        $data['utl'] = $link->url($disk);
-
         $data = $this->prescriptionRepository->createWeb($request);
         if ($data) {
             return redirect()->back()->with('success', 'Prescription successfully Added');

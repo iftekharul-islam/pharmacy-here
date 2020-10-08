@@ -52,6 +52,15 @@
         //     $('#submit').prop('disabled', false);
         // }
 
+        $('#form').validate({ // initialize the plugin
+            ignore: [],
+            errorClass: "text-danger",
+            rules: {
+                phone_number: {
+                    required: true
+                },
+            },
+        });
 
         $('#phone_number').keyup(function () {
 

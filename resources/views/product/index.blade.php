@@ -203,6 +203,11 @@
             $(".countAmount-"+productId).val('৳ ' +total);
 
             if (id === undefined) {
+
+                clearTimeout(cartIncrement);
+                clearTimeout(cartDecrement);
+                cartIncrement = setTimeout(function () {
+
                 $.ajax({
                     url: "{{ route('find.cart') }}",
                     method: "get",
@@ -217,10 +222,6 @@
                         let inputNumber = $('#' + item.id).parent().find('input').val();
                         console.log(inputNumber, 'from inputNumber');
 
-                        clearTimeout(cartIncrement);
-                        clearTimeout(cartDecrement);
-
-                        cartIncrement = setTimeout(function () {
                             console.log(inputNumber, 'inputNumber from update ajax')
                             console.log(productId, 'productId from update ajax')
                             $.ajax({
@@ -235,13 +236,13 @@
                                     console.log(result);
                                 }
                             });
-                        }, 500);
 
                     },
                     error: function(result) {
                         console.log(result);
                     }
                 });
+                }, 100);
 
             } else {
 
@@ -286,6 +287,12 @@
             $(".countAmount-"+productId).val('৳ ' + total);
 
             if (id === undefined) {
+
+                clearTimeout(cartDecrement);
+                clearTimeout(cartIncrement);
+
+                cartDecrement = setTimeout(function () {
+
                 $.ajax({
                     url: "{{ route('find.cart') }}",
                     method: "get",
@@ -314,11 +321,6 @@
                                 $('#cart-price-show-'+productId).addClass('d-none');
                             }
                         }
-
-                        clearTimeout(cartDecrement);
-                        clearTimeout(cartIncrement);
-
-                        cartDecrement = setTimeout(function () {
                             console.log(inputNumber, 'inputNumber');
                             console.log(minValue, 'minValue');
 
@@ -360,13 +362,12 @@
                                 });
                             }
 
-                        }, 500);
-
                     },
                     error: function (result) {
                         console.log(result);
                     }
                 });
+            }, 100);
             } else {
 
                 console.log('down');
