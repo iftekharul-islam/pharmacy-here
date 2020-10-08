@@ -73,6 +73,7 @@ class OrderController extends BaseController
      */
     public function show($id)
     {
+//        return 'hello from show';
         $orderDetails = $this->repository->get($id);
 //            return $orderDetails;
         return $this->response->item($orderDetails, new OrderTransformer());
@@ -121,6 +122,7 @@ class OrderController extends BaseController
 
     public function ordersStatusUpdate($order_id, $status_id)
     {
+//        return 'hello';
         $order = $this->repository->updateStatus($order_id, $status_id);
         // return $this->response->item($order, new OrderTransformer);
         return $order;
@@ -128,6 +130,7 @@ class OrderController extends BaseController
 
     public function pharmacyOrdersByStatus( Request $request, $status_id)
     {
+        return 'hello 2';
         $orderList = $this->repository->pharmacyOrdersByStatus($request, Auth::guard('api')->user()->id, $status_id);
 //        return $orderList;
 
