@@ -28,13 +28,13 @@
 @endsection
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @elseif (session('failed'))
-            <div class="alert alert-danger">
-                {{ session('failed') }}
-            </div>
+        <div id="successMessage" class="alert alert-danger">
+            {{ session('failed') }}
+        </div>
     @endif
     <!-- Medicine section -->
     <section class="medicine-search-section" style="background: url(images/main-bg.png); background-repeat: no-repeat; background-position: center; background-size: cover;">

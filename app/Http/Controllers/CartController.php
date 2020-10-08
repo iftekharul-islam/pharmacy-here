@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Products\Entities\Model\Product;
 
 class CartController extends Controller
@@ -21,7 +22,6 @@ class CartController extends Controller
     {
         if (Auth::user()) {
             $data = $this->repository->getCartByCustomer(Auth::user()->id);
-//            return $data;
 
             session()->put('cartCount', count($data) ?? '');
         }
@@ -35,8 +35,6 @@ class CartController extends Controller
 
     public function addToCart(Request $request, $id)
     {
-//        return \response()->json($request->all());
-//        return response($request->all());
         if (Auth::user()) {
             $data = $this->repository->addToCart($id);
             $cartCount = $this->repository->getCartItemCount(Auth::user()->id);
@@ -118,7 +116,6 @@ class CartController extends Controller
 
     public function remove(Request $request)
     {
-//        return response($request->all());
 
         if($request->id || is_array($request->id)) {
 
@@ -145,8 +142,37 @@ class CartController extends Controller
         }
     }
 
-    public function findCart(Request $request) {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function findCart (Request $request) {
         $itemId = Cart::where('customer_id', Auth::user()->id)->where('product_id', $request->id)->first();
         return response($itemId);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function orderToCart (Request $request) {
+        $values =  OrderItems::where('order_id', $request->itemId)->get();
+
+        foreach ($values as $item) {
+            $cartData = Cart::where('product_id', $item->product_id)->where('customer_id', Auth::user()->id)->first();
+
+            if ($cartData) {
+                $cartData->quantity = $item->quantity + $cartData->quantity ;
+                $cartData->amount = $cartData->quantity * $item->rate ;
+                $cartData->save();
+            } else {
+                 Cart::create([
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'amount' => $item->quantity * $item->rate,
+                    'customer_id' => Auth::user()->id,
+                ]);
+            }
+        }
+        return redirect()->back()->with('success', 'Products added to cart');
     }
 }

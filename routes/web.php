@@ -71,6 +71,7 @@ Route::group(['prefix' => 'cart'], function () {
     Route::put('update-cart', 'CartController@update')->name('update.cart');
     Route::delete('remove-from-cart', 'CartController@remove')->name('delete.cart');
     Route::get('find-from-cart', 'CartController@findCart')->name('find.cart');
+    Route::post('order-to-cart', 'CartController@orderToCart')->name('order.to.cart');
 });
 
 //Find pharmacy for checkout

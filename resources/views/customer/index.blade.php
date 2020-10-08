@@ -13,11 +13,11 @@
 </style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @elseif (session('failed'))
-        <div class="alert alert-danger">
+        <div id="successMessage" class="alert alert-danger">
             {{ session('failed') }}
         </div>
     @endif
@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary" id="submit" disabled="">Save address</button>
+                                            <button type="submit" class="btn btn-success" id="submit" disabled="">Save address</button>
                                         </div>
                                         </form>
                                     </div>
@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="profile-btn">
-                                    <a class="btn--edit" onclick="input()">Edit Profile</a>
+                                    <a href="javascript:void(0)" class="btn--edit" onclick="input()">Edit Profile</a>
                                     <button type="submit" class="btn--primary save-profile-btn">Save Profile</button>
                                 </div>
                             </form>
@@ -156,7 +156,7 @@
                                             @foreach ($orders as $order)
                                                 <tr>
                                                     <td scope="row">#{{ $order->order_no }}</td>
-                                                    <td>{{ $order->order_date}}</td>
+                                                    <td>{{ date('d F Y', strtotime($order->order_date)) }}</td>
                                                     <td>৳ {{ $order->amount + $order->delivery_charge }}</td>
                                                     <td>
                                                         @if ($order->status == 0)
@@ -184,8 +184,8 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-secondary" href="{{ route('order.details', $order->id)}}">
-                                                            <i class="fas fa-eye"></i>
+                                                        <a href="{{ route('order.details', $order->id)}}">
+                                                            View
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -332,7 +332,7 @@
             if (activeTab) {
                 $('.nav-pills a[href="' + activeTab + '"]').tab('show');
             }
-        }),
+        });
 
         function input(){
             $(".save-value").addClass('d-none');

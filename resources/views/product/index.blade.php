@@ -124,8 +124,12 @@
 @section('content')
     <section class="medicine-section">
         @if(session('success'))
-            <div class="alert alert-success">
+            <div id="successMessage" class="alert alert-success">
                 {{ session('success') }}
+            </div>
+        @elseif (session('failed'))
+            <div id="successMessage" class="alert alert-danger">
+                {{ session('failed') }}
             </div>
         @endif
         <div class="container">

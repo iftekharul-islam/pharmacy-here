@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PrescriptionSubmitRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -42,8 +43,11 @@ class PrescriptionController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function selectedId(Request $request)
+    public function selectedId(PrescriptionSubmitRequest $request)
     {
+//        $request->validate([
+//            'prescription_id' => 'required',
+//        ]);
         session()->put('prescriptions', $request->prescription_id);
 
         return redirect()->route('checkout.preview');
