@@ -123,7 +123,7 @@
                                         </div>
                                     </div>
                                     <div class="col-2">
-                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}" required>
+                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}">
                                     </div>
                                 </div>
                             </div>

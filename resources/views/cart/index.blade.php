@@ -143,9 +143,9 @@
                                                 <td class="text-left">৳ {{ $details['product']['purchase_price'] }}</td>
                                                 <td data-th="Quantity">
                                                     <div class="number-input" id="show-button-{{ $details->id }}">
-                                                        <button id="decrease-{{$details->id }}" onclick="newItemdec(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }})"></button>
-                                                        <input id="input-{{ $details->id }}" class="quantity new-input-{{ $details->id }}" min="{{ $details['product']['min_order_qty'] }}"  name="quantity" value="{{ $details->quantity}}" type="number">
-                                                        <button id="increase-{{$details->id }}" onclick="newItemIncrease(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }})" class="plus"></button>
+                                                        <button id="decrease-{{$details->id }}" onclick="newItemdec(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})"></button>
+                                                        <input id="input-{{ $details->id }}" class="quantity new-input-{{ $details->id }}" min="{{ $details['product']['min_order_qty'] }}"  name="quantity" value="{{ $details->quantity }}" type="number">
+                                                        <button id="increase-{{$details->id }}" onclick="newItemIncrease(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})" class="plus"></button>
                                                     </div>
                                                 </td>
 {{--                                                <td class="text-left">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>--}}
@@ -189,7 +189,7 @@
 @section('js')
     <script>
         let cartIncrement, cartDecrement;
-        function  newItemIncrease(item, price, productId) {
+        function  newItemIncrease(item, price, productId, minValue) {
 
             console.log(item, 'this');
             console.log(productId, 'productId');
@@ -201,14 +201,8 @@
             let initTotal = parseInt($(".grand-total").val());
             let grandTotal = price + initTotal;
 
-            console.log(total, 'total')
-            console.log(initTotal, 'initTotal')
-            console.log(grandTotal, 'grandTotal')
-
             $(".countAmount-"+productId).val(total);
             $(".grand-total").val(grandTotal);
-
-            $(".countAmount-"+productId).val(total);
 
 
                 clearTimeout(cartIncrement);
@@ -231,18 +225,22 @@
 
         }
 
-        function  newItemdec(item, price, productId) {
+        function  newItemdec(item, price, productId, minValue) {
 
             item.parentNode.querySelector('input[type=number]').stepDown();
 
             let inputNumber = $('#' + item.id).parent().find('input').val();
-            let total = inputNumber * price;
-            let initTotal = parseInt($(".grand-total").val());
-            let grandTotal = initTotal - price;
 
-            $(".countAmount-"+productId).val(total);
-            $(".grand-total").val(grandTotal);
+            if (inputNumber > minValue) {
 
+                let total = inputNumber * price;
+                let initTotal = parseInt($(".grand-total").val());
+                let grandTotal = initTotal - price;
+
+                $(".countAmount-"+productId).val(total);
+                $(".grand-total").val(grandTotal);
+
+            }
                 clearTimeout(cartDecrement);
                 clearTimeout(cartIncrement);
 
