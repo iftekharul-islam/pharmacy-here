@@ -130,7 +130,6 @@ class OrderController extends BaseController
 
     public function pharmacyOrdersByStatus( Request $request, $status_id)
     {
-        return 'hello 2';
         $orderList = $this->repository->pharmacyOrdersByStatus($request, Auth::guard('api')->user()->id, $status_id);
 //        return $orderList;
 
