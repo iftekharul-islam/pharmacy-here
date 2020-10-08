@@ -91,10 +91,10 @@
                                     <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
                                     <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
                                     <p>Doctor: {{ $prescription->doctor_name }}</p>
-                                    <button type="button" class="btn btn--primary px-5 w-89" data-toggle="modal" data-target="#prescriptionDetailsModal">
+                                    <button type="button" class="btn btn--primary px-5 w-89" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
                                         View
                                     </button>
-                                        <div class="modal fade" id="prescriptionDetailsModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">

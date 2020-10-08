@@ -19,6 +19,11 @@ class PrescriptionRepository
 
     public function getCustomerPrescription($id)
     {
+        $prescription = Prescription::where('user_id', $id)->orderBy('created_at', 'desc')->get();;
+        return $prescription;
+    }
+    public function getCustomerPrescriptionWeb($id)
+    {
         $prescription = Prescription::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(6);
         return $prescription;
     }

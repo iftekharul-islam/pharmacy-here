@@ -34,7 +34,7 @@ class PrescriptionController extends Controller
      */
     public function create()
     {
-        $prescriptions = $this->prescriptionRepository->getCustomerPrescription(Auth::user()->id);
+        $prescriptions = $this->prescriptionRepository->getCustomerPrescriptionWeb(Auth::user()->id);
         return view('prescription.create', compact('prescriptions'));
     }
 
