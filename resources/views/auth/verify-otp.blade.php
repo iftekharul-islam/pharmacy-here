@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <form method="POST" action="{{ route('customer.verifyOTP') }}">
+                    <form id="form" method="POST" action="{{ route('customer.verifyOTP') }}">
                         @csrf
                         <div class="text-center mb-5"><img src="{{ asset('images/logo.png') }}" alt="logo"></div>
                         @if(session('failed'))
@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label for="otp">{{ __('Verify OTP') }}</label>
-                            <input id="otp" type="text" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" onkeypress="return isNumber(event)" autocomplete="phone_number" autofocus>
+                            <input id="otp" type="text" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" onkeypress="return isNumber(event)" autocomplete="phone_number" autofocus required>
                             @error('otp')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -47,6 +47,16 @@
 @endsection
 @section('js')
     <script>
+        $('#form').validate({ // initialize the plugin
+            ignore: [],
+            errorClass: "text-danger",
+            rules: {
+                otp: {
+                    required: true
+                },
+            },
+        });
+
         function isNumber(evt)
         {
             evt = (evt) ? evt : window.event;

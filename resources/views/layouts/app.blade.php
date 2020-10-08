@@ -80,7 +80,8 @@
         }
 
         .footer {
-            background: #F0F0F0;
+            background: #25282B;
+            color: #fff!important;
         }
     </style>
     @yield('style')

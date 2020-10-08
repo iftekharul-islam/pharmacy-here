@@ -66,6 +66,14 @@
         font-weight: bold;
         text-align: center;
     }
+    .count-style {
+        border: none;
+        height: 25px;
+        width: 64px;
+    }
+    .count-style:focus {
+        outline: none!important;
+    }
 </style>
 @section('content')
     <section class="medicine-section">
@@ -111,31 +119,31 @@
                                     <p><h5>{{ $item->name }}</h5></p>
                                     <p><strong>{{ $item->company->name }}</strong></p>
                                 </div>
-                                <div class="package d-flex justify-content-between">
-                                    <p>৳ {{ $item->purchase_price }}</p>
-                                    <p>Min quantity ({{ $item->min_order_qty }})</p>
-                                </div>
-                                <p><strong>Packaging Type - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>
-                                <div class="medicine-details--footer d-flex justify-content-between align-items-center">
-                                @auth
                                     @php
                                         $matchedItem = null;
                                     @endphp
                                     @foreach ($cartItems as $cart)
                                         @if ($cart->product_id === $item->id)
-                                                @php
-                                                    $matchedItem = $cart;
-                                                @endphp
+                                            @php
+                                                $matchedItem = $cart;
+                                            @endphp
                                             @break
                                         @endif
                                     @endforeach
+                                <div class="package d-flex justify-content-between">
+                                    <p id="item-price-show-{{ $item->id }}" class="{{$matchedItem ? 'd-none' : ''}}">৳ {{ $item->purchase_price }}</p>
+                                    <input id="cart-price-show-{{ $item->id }}" class="countAmount-{{$item->id}} count-style {{$matchedItem ? '' : 'd-none'}}" style="color: #00CE5E;" value="৳ {{ $matchedItem ? $matchedItem->amount : '' }}" readonly>
+                                    <p>Min quantity ({{ $item->min_order_qty }})</p>
+                                </div>
+                                <p><strong>Packaging Type - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>
+                                <div class="medicine-details--footer d-flex justify-content-between align-items-center">
+                                @auth
                                         <div class="number-input {{ $matchedItem ? 'block' : 'd-none'}}" id="show-button-{{ $item->id }}">
-                                            <button onclick="newItemdec(this, {{ $matchedItem ?  $matchedItem->id . ',' : ''}} {{ $item->min_order_qty }}, {{ $item->id }});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
-                                            <input class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}" min="9" name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number">
-                                            <button onclick="newItemIncrease(this, {{ $matchedItem ?  $matchedItem->id. ',' : '' }} {{ $item->min_order_qty }}, {{ $item->id }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
+                                            <button id="decrease-{{$item->id }}" onclick="newItemdec(this, {{ $item->min_order_qty }}, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : ''}});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
+                                            <input id="input-{{$item->id }}" class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}"  name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number">
+                                            <button id="increase-{{$item->id }}" onclick="newItemIncrease(this, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : '' }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
                                         </div>
-
-                                        <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                                        <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }}, {{ $item->min_order_qty }}, {{ $item->purchase_price }});" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
                                 @else
                                     <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart" onclick="addToCart({{ $item->id }})"><i class="fas fa-cart-plus"></i> Add to Cart</a>
                                 @endauth
@@ -154,134 +162,277 @@
 @endsection
 @section('js')
     <script>
-        {{--function addToCart(item, id) {--}}
-        {{--    console.log(item, "this")--}}
-        {{--    $('#show-cart-' + id).addClass('d-none');--}}
-        {{--    $('#show-button-' + id).removeClass('d-none');--}}
-        {{--    $('.new-input-' + id).val(10);--}}
-        {{--    $.ajax({--}}
-        {{--        url: 'cart/add-to-cart/' + id,--}}
-        {{--        method: "get",--}}
-        {{--        data: {_token: "{{ csrf_token() }}" },--}}
+        function addToCart(item, id, minValue, price) {
+            console.log(item, "this")
+            console.log(id, "id")
+            $('#item-price-show-' + id).addClass('d-none');
+            $('#cart-price-show-' + id).removeClass('d-none');
+            let total = minValue * price;
+            $('#cart-price-show-' + id).val('৳ ' +total);
 
-        {{--        success: function(result) {--}}
-        {{--            console.log('Add to cart');--}}
-        {{--        },--}}
-        {{--        error: function(result) {--}}
-        {{--            console.log(result);--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--}--}}
+            $('#show-cart-' + id).addClass('d-none');
+            $('#show-button-' + id).removeClass('d-none');
+            $('#input-' + id).val(minValue);
+
+            $.ajax({
+                url: 'cart/add-to-cart/' + id,
+                method: "get",
+                data: {_token: "{{ csrf_token() }}" },
+
+                success: function(result) {
+                    console.log('Add to cart');
+                },
+                error: function(result) {
+                    console.log(result);
+                }
+            });
+        }
 
         let cartIncrement, cartDecrement;
 
-        function  newItemIncrease(item, id, minValue) {
+        function  newItemIncrease(item, price, productId, id) {
 
-            console.log('up');
+            console.log(item, 'this');
+            console.log(productId, 'productId');
+
             item.parentNode.querySelector('input[type=number]').stepUp();
-            let inputNumber = $('.new-input-' + id).val();
 
-            clearTimeout(cartIncrement);
-            clearTimeout(cartDecrement);
+            let inputNumber = $('#' + item.id).parent().find('input').val();
+            let total = inputNumber * price;
 
-            cartIncrement = setTimeout(function () {
+            $(".countAmount-"+productId).val('৳ ' +total);
+
+            if (id === undefined) {
+
+                clearTimeout(cartIncrement);
+                clearTimeout(cartDecrement);
+                cartIncrement = setTimeout(function () {
 
                 $.ajax({
-                    url: "{{ route('update.cart') }}",
-                    method: "put",
-                    data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber },
+                    url: "{{ route('find.cart') }}",
+                    method: "get",
+                    data: {_token: "{{ csrf_token() }}", id: productId},
 
                     success: function(result) {
-                        console.log('cart updated');
+                        console.log(result)
+                        id = result.id;
+                        console.log(id, 'id form ajax')
+                        console.log(productId, 'productId form ajax')
+
+                        let inputNumber = $('#' + item.id).parent().find('input').val();
+                        console.log(inputNumber, 'from inputNumber');
+
+                            console.log(inputNumber, 'inputNumber from update ajax')
+                            console.log(productId, 'productId from update ajax')
+                            $.ajax({
+                                url: "{{ route('update.cart') }}",
+                                method: "put",
+                                data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber, productId: productId },
+
+                                success: function(result) {
+                                    console.log('cart updated');
+                                },
+                                error: function(result) {
+                                    console.log(result);
+                                }
+                            });
+
                     },
                     error: function(result) {
                         console.log(result);
                     }
                 });
-            }, 500);
+                }, 100);
+
+            } else {
+
+                console.log(productId, 'up productId');
+                console.log('up');
+                console.log(item.id);
+
+                let inputNumber = $('#' + item.id).parent().find('input').val();
+                console.log(inputNumber, 'from inputNumber');
 
 
-        }
+                clearTimeout(cartIncrement);
+                clearTimeout(cartDecrement);
 
-        function  newItemdec(item, id, minValue, itemId) {
-
-            {{--if (itemId === undefined) {--}}
-            {{--    $.ajax({--}}
-            {{--        url: "{{ route('find.cart') }}",--}}
-            {{--        method: "get",--}}
-            {{--        data: {_token: "{{ csrf_token() }}", id: minValue},--}}
-
-            {{--        success: function(result) {--}}
-            {{--            $('#show-cart-' + minValue).removeClass('d-none');--}}
-            {{--            $('.new-input-' + id).val(id);--}}
-            {{--            $('#show-button-' + minValue).addClass('d-none');--}}
-            {{--            $('#show-button-' + minValue).removeClass('block');--}}
-            {{--            id = result;--}}
-            {{--        },--}}
-            {{--        error: function(result) {--}}
-            {{--            console.log(result);--}}
-            {{--        }--}}
-            {{--    });--}}
-            {{--}--}}
-
-            console.log('down');
-            console.log(item, 'item');
-            console.log(id, 'id');
-            console.log(minValue, 'minValue');
-            console.log(itemId, 'itemId');
-
-            item.parentNode.querySelector('input[type=number]').stepDown();
-            let inputNumber = $('.new-input-' + id).val();
-
-            if (itemId === undefined){
-                $('#show-cart-' + minValue).removeClass('d-none');
-                $('.new-input-' + id).val(10);
-                $('#show-button-' + minValue).addClass('d-none');
-                $('#show-button-' + minValue).removeClass('block');
-            }
-            else {
-                if ( inputNumber < minValue )  {
-                    $('#show-cart-' + itemId).removeClass('d-none');
-                    $('.new-input-' + id).val(minValue);
-                    $('#show-button-' + itemId).addClass('d-none');
-                    $('#show-button-' + itemId).removeClass('block');
-                }
-            }
-
-            clearTimeout(cartDecrement);
-            clearTimeout(cartIncrement);
-
-            cartDecrement = setTimeout(function () {
-                if (inputNumber >= minValue) {
+                cartIncrement = setTimeout(function () {
+                    console.log(inputNumber, 'inputNumber from update ajax')
+                    console.log(productId, 'productId from update ajax')
                     $.ajax({
                         url: "{{ route('update.cart') }}",
                         method: "put",
-                        data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber },
+                        data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber, productId: productId},
 
-                        success: function(result) {
+                        success: function (result) {
                             console.log('cart updated');
                         },
-                        error: function(result) {
+                        error: function (result) {
                             console.log(result);
                         }
                     });
-                } else {
-                    $.ajax({
-                        url: "{{ route('delete.cart') }}",
-                        method: "DELETE",
-                        data: {_token: "{{ csrf_token() }}", id: id},
+                }, 500);
 
-                        success: function(result) {
-                            console.log('delete from cart');
-                            // console.log(result);
-                        },
-                        error: function(result) {
-                            console.log(result);
+            }
+        }
+
+        function  newItemdec(item, minValue, price, productId, id) {
+
+            item.parentNode.querySelector('input[type=number]').stepDown();
+
+            let inputNumber = $('#' + item.id).parent().find('input').val();
+            let total = inputNumber * price;
+
+            $(".countAmount-"+productId).val('৳ ' + total);
+
+            if (id === undefined) {
+
+                clearTimeout(cartDecrement);
+                clearTimeout(cartIncrement);
+
+                cartDecrement = setTimeout(function () {
+
+                $.ajax({
+                    url: "{{ route('find.cart') }}",
+                    method: "get",
+                    data: {_token: "{{ csrf_token() }}", id: productId},
+
+                    success: function (result) {
+                        id = result.id;
+                        productId =  result.product_id;
+
+                        var inputNumber = $('#' + item.id).parent().find('input').val();
+                        console.log(inputNumber, 'from inputNumber');
+
+                        if (productId === undefined || inputNumber === undefined) {
+                            $('#show-cart-' + minValue).removeClass('d-none');
+                            $('.new-input-' + id).val(minValue);
+                            $('#show-button-' + minValue).addClass('d-none');
+                            $('#show-button-' + minValue).removeClass('block');
+                        } else {
+                            if (inputNumber < minValue) {
+                                $('#show-cart-' + productId).removeClass('d-none');
+                                $('.new-input-' + id).val(minValue);
+                                $('#show-button-' + productId).addClass('d-none');
+                                $('#show-button-' + productId).removeClass('block');
+
+                                $('#item-price-show-'+productId).removeClass('d-none');
+                                $('#cart-price-show-'+productId).addClass('d-none');
+                            }
                         }
-                    });
-                }
+                            console.log(inputNumber, 'inputNumber');
+                            console.log(minValue, 'minValue');
 
-            }, 500);
+
+                            if (inputNumber >= minValue) {
+
+                                $.ajax({
+                                    url: "{{ route('update.cart') }}",
+                                    method: "put",
+                                    data: {
+                                        _token: "{{ csrf_token() }}",
+                                        id: id,
+                                        quantity: inputNumber,
+                                        productId: productId
+                                    },
+
+                                    success: function (result) {
+                                        console.log('cart updated');
+                                    },
+                                    error: function (result) {
+                                        console.log(result);
+                                    }
+                                });
+                            } else {
+                                console.log('delete function')
+                                console.log(productId, 'productId')
+                                $.ajax({
+                                    url: "{{ route('delete.cart') }}",
+                                    method: "DELETE",
+                                    data: {_token: "{{ csrf_token() }}", id: id, productId: productId},
+
+                                    success: function (result) {
+                                        console.log('delete from cart');
+                                        // console.log(result);
+                                    },
+                                    error: function (result) {
+                                        console.log(result);
+                                    }
+                                });
+                            }
+
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+            }, 100);
+            } else {
+
+                console.log('down');
+                console.log(item, 'item');
+                console.log(id, 'id');
+                console.log(minValue, 'minValue');
+                console.log(productId, 'productId');
+
+                console.log(inputNumber, 'from inputNumber');
+
+
+                    if (inputNumber < minValue) {
+                        $('#show-cart-' + productId).removeClass('d-none');
+                        $('.new-input-' + id).val(minValue);
+                        $('#show-button-' + productId).addClass('d-none');
+                        $('#show-button-' + productId).removeClass('block');
+
+                        $('#item-price-show-'+productId).removeClass('d-none');
+                        $('#cart-price-show-'+productId).addClass('d-none');
+                    }
+
+                clearTimeout(cartDecrement);
+                clearTimeout(cartIncrement);
+
+                cartDecrement = setTimeout(function () {
+                    console.log(inputNumber, 'inputNumber');
+                    console.log(minValue, 'minValue');
+
+                    // if (inputNumber === undefined) {
+                    //     return;
+                    // }
+                    if (inputNumber >= minValue) {
+
+                        $.ajax({
+                            url: "{{ route('update.cart') }}",
+                            method: "put",
+                            data: {_token: "{{ csrf_token() }}", id: id, quantity: inputNumber, productId: productId},
+
+                            success: function (result) {
+                                console.log('cart updated');
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+                        });
+                    } else {
+                        console.log('delete function')
+                        console.log(productId, 'productId')
+                        $.ajax({
+                            url: "{{ route('delete.cart') }}",
+                            method: "DELETE",
+                            data: {_token: "{{ csrf_token() }}", id: id, productId: productId},
+
+                            success: function (result) {
+                                console.log('delete from cart');
+                                // console.log(result);
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+                        });
+                    }
+
+                }, 500);
+            }
         }
     </script>
 @endsection

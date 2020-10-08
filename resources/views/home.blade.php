@@ -65,7 +65,7 @@
                             <h4>Home Delivery</h4>
                             <p>With extra care we deliver
                                 your products.</p>
-                            <a href="#" class="btn--shop-now">Shop Now</a>
+{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/card-image-1.svg') }}" alt="card 1">
@@ -78,7 +78,7 @@
                             <h4>Home Delivery</h4>
                             <p>With extra care we deliver
                                 your products.</p>
-                            <a href="#" class="btn--shop-now">Shop Now</a>
+{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/card-image-2.svg') }}" alt="card 1">
@@ -91,7 +91,7 @@
                             <h4>Home Delivery</h4>
                             <p>With extra care we deliver
                                 your products.</p>
-                            <a href="#" class="btn--shop-now">Shop Now</a>
+{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/card-image-3.svg') }}" alt="card 1">
@@ -112,7 +112,7 @@
                             <p>Download now and get all our services through the app.</p>
                         </div>
                         <div class="right">
-                            <a href="#"><img src="{{ asset('images/google-play.svg') }}" alt="play store"></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.subidha.customer" target="tab"><img src="{{ asset('images/google-play.svg') }}" alt="play store"></a>
                             <a href="#"><img src="{{ asset('images/apple.svg') }}" alt="apple store"></a>
                         </div>
                     </div>

@@ -1,254 +1,66 @@
 @extends('layouts.app')
-
+<style>
+    .save-profile-btn {
+        border: 1px solid #00ce5e;
+    }
+</style>
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
-    <div class="container mt-2">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Medicine Details</div>
-                    <div class="card-body">
-
-{{--                        <div class="form-group row">--}}
-{{--                            <label for="type" class="col-sm-4 col-form-label">Type</label>--}}
-{{--                            <div class="col-sm-8" id="">--}}
-{{--                                {{ $data->type }}--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-                        <div class="form-group row">
-                            <label for="name" class="col-sm-4 col-form-label">Name</label>
-                            <div class="col-sm-8  " id="name">
-                                {{ $data->name }}
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="category_id" class="col-sm-4 col-form-label">Category</label>
-                            <div class="col-sm-8" id="">
-                                {{ $data->category->name }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="generic_id" class="col-sm-4 col-form-label">Generic</label>
-                            <div class="col-sm-8" id="status">
-                                {{ $data->generic->name }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="form_id" class="col-sm-4 col-form-label">Form</label>
-                            <div class="col-sm-8" id="">
-                                {{ $data->form->name }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="manufacturing_company_id" class="col-sm-4 col-form-label">Company</label>
-                            <div class="col-sm-8" id="">
-                                {{ $data->company->name }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="conversion_factor" class="col-sm-4 col-form-label">Conversion Factor</label>
-                            <div class="col-sm-8  " id="">
-                                {{ $data->conversion_factor}}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="primary_unit_id" class="col-sm-4 col-form-label">Unit</label>
-                            <div class="col-sm-8" id="">
-                                {{ $data->primaryUnit->name }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="min_order_qty" class="col-sm-4 col-form-label">Min Order Qty</label>
-                            <div class="col-sm-8 " id="">
-                                {{$data->min_order_qty}}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="purchase_price" class="col-sm-4 col-form-label">Price</label>
-                            <div class="col-sm-8  " id="">
-                                {{ $data->purchase_price }}
-                            </div>
-                        </div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-7 mx-auto">
+                    <h2>Medicine Details</h2>
+                    <div class="product-summary mt-5">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ $data->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Category</th>
+                                <td>{{ $data->category->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Generic</th>
+                                <td> {{ $data->generic->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Form</th>
+                                <td>{{ $data->form->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Company</th>
+                                <td>{{ $data->company->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Conversation factor</th>
+                                <td>{{ $data->conversion_factor}}</td>
+                            </tr>
+                            <tr>
+                                <th>Unit</th>
+                                <td>{{ $data->primaryUnit->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Min Order Qty</th>
+                                <td>{{$data->min_order_qty}}</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>{{ $data->purchase_price }}</td>
+                            </tr>
+                        </table>
                     </div>
-
-                    <div class="card-footer">
-                        <a href="{{ url()->previous() }}" type=""  class="btn btn-primary">Back</a>
-                        <a href="{{ route('cart.addToCart', $data->id) }}" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                </div>
+                <div class="col-7 mx-auto">
+                    <div class="profile-btn">
+                        <a href="{{ url()->previous() }}" class="btn--edit">Back</a>
+                        <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 @endsection
-
-
-
-
-
-<div class="modal fade" id="modal-default">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Product Details</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Type</label>
-                            <div class="col-sm-8 pt-2" id="type">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Name</label>
-                            <div class="col-sm-8 pt-2" id="name">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Category</label>
-                            <div class="col-sm-8 pt-2" id="category">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Generic</label>
-                            <div class="col-sm-8 pt-2" id="generic">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Form</label>
-                            <div class="col-sm-8 pt-2" id="form">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Company</label>
-                            <div class="col-sm-8 pt-2" id="company">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Conversion Factor</label>
-                            <div class="col-sm-8 pt-2" id="conversion_factor">
-                            </div>
-                        </div>
-{{--                        <div class="form-group row">--}}
-{{--                            <label for="inputEmail3" class="col-sm-4 col-form-label">Unit</label>--}}
-{{--                            <div class="col-sm-8 pt-2" id="unit">--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Unit</label>
-                            <div class="col-sm-8 pt-2" id="primary_unit">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Min Order Qty</label>
-                            <div class="col-sm-8 pt-2" id="min_order_qty"></div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Trading Price</label>
-                            <div class="col-sm-8 pt-2" id="trading_price">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Purchase Price</label>
-                            <div class="col-sm-8 pt-2" id="purchase_price">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Administration</label>
-                            <div class="col-sm-8 pt-2" id="administration">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Precaution</label>
-                            <div class="col-sm-8 pt-2" id="precaution">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Indication</label>
-                            <div class="col-sm-8 pt-2" id="indication">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Contra Indication</label>
-                            <div class="col-sm-8 pt-2" id="contra_indication">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Side Effect</label>
-                            <div class="col-sm-8 pt-2" id="side_effect">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Mode Of Action</label>
-                            <div class="col-sm-8 pt-2" id="mode_of_action">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Interaction</label>
-                            <div class="col-sm-8 pt-2" id="interaction">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="strength" class="col-sm-4 col-form-label">Strength</label>
-                                <div class="col-sm-8 pt-2" id="strength"> </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Adult Dose</label>
-                            <div class="col-sm-8 pt-2" id="adult_dose">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Child Dose</label>
-                            <div class="col-sm-8 pt-2" id="child_dose">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Renal Dose</label>
-                            <div class="col-sm-8 pt-2" id="renal_dose">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Description</label>
-                            <div class="col-sm-8 pt-2" id="description">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Saleable</label>
-                            <div class="col-sm-8 pt-2" id="is_saleable">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Is Prescribed</label>
-                            <div class="col-sm-8 pt-2" id="is_prescripted"></div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Is Pre Order Allowed</label>
-                            <div class="col-sm-8 pt-2" id="is_pre_order"></div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Status</label>
-                            <div class="col-sm-8 pt-2" id="status">
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </form>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>

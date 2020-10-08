@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/terms-of-use', 'HomeController@terms')->name('terms');
+Route::get('/faq', 'HomeController@faq')->name('faq');
 
 
 Route::get('/login','LoginController@showCustomerLoginForm')->name('customer.login');
@@ -68,7 +70,7 @@ Route::group(['prefix' => 'cart'], function () {
     Route::get('add-to-cart/{medicine_id}', 'CartController@addToCart')->name('cart.addToCart');
     Route::put('update-cart', 'CartController@update')->name('update.cart');
     Route::delete('remove-from-cart', 'CartController@remove')->name('delete.cart');
-//    Route::get('find-from-cart', 'CartController@findCart')->name('find.cart');
+    Route::get('find-from-cart', 'CartController@findCart')->name('find.cart');
 });
 
 //Find pharmacy for checkout

@@ -19,7 +19,7 @@ class PrescriptionRepository
 
     public function getCustomerPrescription($id)
     {
-        $prescription = Prescription::where('user_id', $id)->get();
+        $prescription = Prescription::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(6);
         return $prescription;
     }
 
@@ -46,6 +46,7 @@ class PrescriptionRepository
     {
         $data = $request->only(['patient_name', 'doctor_name', 'prescription_date', 'url', 'user_id']);
         $data['user_id'] = Auth::user()->id;
+        $data['patient_name'] = $data['patient_name'] ? $data['patient_name'] :  Auth::user()->name;
 
         $image = $request->file('url');
         $link = Storage::disk('gcs');
