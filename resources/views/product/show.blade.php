@@ -75,7 +75,7 @@
                 </div>
                 <div class="col-7 mx-auto">
                     <div class="profile-btn">
-                        <a href="{{ url()->previous() }}" class="btn--edit">Back</a>
+                        <a href="{{ route('product-list') }}" class="btn--edit">Back</a>
                         <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                     </div>
                 </div>
@@ -92,7 +92,17 @@
                                 @if ($product->is_prescripted == 1)
                                     <div class="related-madicine-badge">RX</div>
                                 @endif
-                                <img src="{{ asset('images/pill.png') }}" class="pill mt-2" alt="pill">
+                                @if ($product->form->slug == 'tablet' || $product->form->name == 'capsul')
+                                    <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                                @elseif ($product->form->slug == 'syrup')
+                                    <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
+                                @elseif ($product->form->slug == 'injection')
+                                    <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
+                                @elseif ($product->form->slug == 'suppository')
+                                    <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
+                                @else
+                                    <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                                @endif
                             </div>
                             <div class="medicine-details--content">
                                 @if ($product->is_pre_order == 1 )

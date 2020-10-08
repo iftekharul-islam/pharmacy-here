@@ -140,6 +140,7 @@
                             data: {medicine: search},
                             dataType: 'json',
                             success: function (response) {
+                                console.log(response);
                                 var len = response.length;
                                 $("#searchResult").empty();
                                 $("#searchResult").append(`<li value=""></li>`);
@@ -147,17 +148,17 @@
                                     console.log(response[i]);
                                     var id = response[i]['id'];
                                     var name = response[i]['name'];
-                                    var image = response[i]['form_id'];
-                                    if(image == 1 || image == 2){
+                                    var image = response[i]['form']['slug'];
+                                    if(image === 'tablet' || image === 'capsul'){
                                         var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;
                                     }
-                                    else if (image == 3) {
+                                    else if (image === 'syrup') {
                                         var pill = `<img width="20px" height="20px" src="{{ asset('images/syrup.png') }}" class="pill mr-2" alt="pill">`;
                                     }
-                                    else if (image == 4) {
+                                    else if (image === 'injection') {
                                         var pill = `<img width="20px" height="20px" src="{{ asset('images/injection.png') }}" class="pill mr-2" alt="pill">`;
                                     }
-                                    else if (image == 5) {
+                                    else if (image === 'suppository') {
                                         var pill = `<img width="20px" height="20px" src="{{ asset('images/suppositories.png') }}" class="pill mr-2" alt="pill">`;
                                     }else {
                                         var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;

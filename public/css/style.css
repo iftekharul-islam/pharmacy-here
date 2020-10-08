@@ -16497,7 +16497,9 @@ html {
   border-radius: 5px;
   /*border: 1px solid;*/
 }
-
+.order-summary table tbody tr td:nth-child(4) {
+    text-align: center;
+}
 .order-summary table tbody tr td a {
   width: 30px;
   height: 30px;
@@ -17116,12 +17118,12 @@ html {
 
 @media (min-width: 992px) {
   .footer-menu-list:nth-child(2) {
-    text-align: left;
+    /*text-align: left;*/
   }
 }
 
 .footer-menu-list:nth-child(3) {
-  text-align: right;
+  /*text-align: right;*/
 }
 
 @media (min-width: 992px) {
@@ -17132,7 +17134,7 @@ html {
 }
 
 .footer-menu-list:nth-child(4) {
-    text-align: right;
+    /*text-align: right;*/
 }
 
 @media (min-width: 992px) {

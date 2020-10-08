@@ -12,7 +12,7 @@
     @endif
         <div class="container mt-5">
             <div class="row">
-                <div class="col-9 mx-auto">
+                <div class="col-md-9 mx-auto mb-5">
                     <h3 class="text-center">FAQs</h3>
                     <div class="bs-example mt-5">
                         <div class="accordion" id="accordionExample">
@@ -34,7 +34,7 @@
                                         <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"><i class="fa fa-plus"></i> What is Bootstrap?</button>
                                     </h2>
                                 </div>
-                                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                                     <div class="card-body">
                                         <p>Bootstrap is a sleek, intuitive, and powerful front-end framework for faster and easier web development. It is a collection of CSS and HTML conventions. <a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank">Learn more.</a></p>
                                     </div>
@@ -54,6 +54,40 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6 mx-auto mt-5">
+                    <h2 class="text-center mb-5">Got no answer for your desired questions?</h2>
+                    <form action="#">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="fname"><b>First Name :</b></label>
+                                    <input type="email" class="form-control" id="fname" aria-describedby="fnameHelp">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="lname"><b>Last Name :</b></label>
+                                    <input type="email" class="form-control" id="lname" aria-describedby="lnameHelp">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="phone-number"><b>Phone Number :</b></label>
+                                    <input type="email" class="form-control" id="phone-number" aria-describedby="phoneHelp">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="question"><b>Additional questions :</b></label>
+                                    <textarea type="email" class="form-control" rows="4" id="question" aria-describedby="addressHelp"></textarea>
+                                </div>
+                            </div>
+                            <div class="mx-auto mb-5">
+                                <button type="submit" class="btn btn--primary px-5">Sent</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
