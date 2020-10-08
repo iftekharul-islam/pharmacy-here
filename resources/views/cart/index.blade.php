@@ -18,7 +18,6 @@
     }
 
     .number-input {
-        border: 1px solid #ddd;
         display: inline-flex;
     }
 
@@ -31,7 +30,6 @@
         outline:none;
         -webkit-appearance: none;
         background-color: transparent;
-        border: none;
         align-items: center;
         justify-content: center;
         width: 2rem;
@@ -39,8 +37,12 @@
         cursor: pointer;
         margin: 0;
         position: relative;
+        border: 1px solid #00AE4D;
+        border-radius: 50%;
     }
-
+    .number-input button:focus {
+        outline: none !important;
+    }
     .number-input button:before,
     .number-input button:after {
         display: inline-block;
@@ -48,7 +50,7 @@
         content: '';
         width: 1rem;
         height: 2px;
-        background-color: #212121;
+        background-color: #00AE4D;
         transform: translate(-50%, -50%);
     }
     .number-input button.plus:after {
@@ -66,6 +68,9 @@
         height: 2rem;
         font-weight: bold;
         text-align: center;
+    }
+    .number-input input[type=number]:focus {
+        outline: none!important;
     }
     .count-style {
         border: none;
@@ -144,17 +149,15 @@
                                                 <td data-th="Quantity">
                                                     <div class="number-input" id="show-button-{{ $details->id }}">
                                                         <button id="decrease-{{$details->id }}" onclick="newItemdec(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})"></button>
-                                                        <input id="input-{{ $details->id }}" class="quantity new-input-{{ $details->id }}" min="{{ $details['product']['min_order_qty'] }}"  name="quantity" value="{{ $details->quantity }}" type="number">
+                                                        <input id="input-{{ $details->id }}" class="quantity new-input-{{ $details->id }}" min="{{ $details['product']['min_order_qty'] }}"  name="quantity" value="{{ $details->quantity }}" type="number" readonly>
                                                         <button id="increase-{{$details->id }}" onclick="newItemIncrease(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})" class="plus"></button>
                                                     </div>
                                                 </td>
-{{--                                                <td class="text-left">৳ {{ $details['product']['purchase_price'] * $details->quantity }}</td>--}}
                                                 <td class="text-left">৳
                                                     <input class="countAmount-{{$details->id}} count-style" value="{{ $details->amount }}" readonly>
                                                 </td>
                                                 <td>
                                                     <div class="actions" data-th="">
-                                                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $details->id  }}"><i class="fa fa-refresh"></i></button>
                                                         <button class="btn btn-danger btn-sm remove-from-cart ml-2" data-id="{{ $details->id  }}"><i class="fa fa-trash"></i></button>
                                                     </div>
                                                 </td>
@@ -173,7 +176,8 @@
                                                 <td><p class="badge btn-primary">Please login first to checkout</p></td>
                                             @else
                                                 <td>
-                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
+                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white" >Checkout</a>
+                                                    <strong class="alert-note text-danger d-none">Please add more than ৳100</strong>
                                                 </td>
                                         @endguest
                                     </tr>
@@ -188,6 +192,12 @@
 @endsection
 @section('js')
     <script>
+        // (function () {
+        //     let total = $('.grand-total').val();
+        //     if ( total < 100 ) {
+        //         $('#submit').addClass('disabled');
+        //     }
+        // })();
         let cartIncrement, cartDecrement;
         function  newItemIncrease(item, price, productId, minValue) {
 
@@ -227,21 +237,23 @@
 
         function  newItemdec(item, price, productId, minValue) {
 
+            let inputNumber = $('#' + item.id).parent().find('input').val();
+            let newValue = parseInt(inputNumber);
+
+            if (  newValue <= minValue ) {
+                return;
+            }
+
             item.parentNode.querySelector('input[type=number]').stepDown();
 
-            let inputNumber = $('#' + item.id).parent().find('input').val();
+            let total = newValue * price;
+            let initTotal = parseInt($(".grand-total").val());
+            let grandTotal = initTotal - price;
 
-            if (inputNumber > minValue) {
-
-                let total = inputNumber * price;
-                let initTotal = parseInt($(".grand-total").val());
-                let grandTotal = initTotal - price;
-
-                $(".countAmount-"+productId).val(total);
-                $(".grand-total").val(grandTotal);
-
-            }
-                clearTimeout(cartDecrement);
+            $(".countAmount-"+productId).val(total-price);
+            console.log(".countAmount-"+productId);
+            $(".grand-total").val(grandTotal);
+                // clearTimeout(cartDecrement);
                 clearTimeout(cartIncrement);
 
                 cartDecrement = setTimeout(function () {
@@ -249,7 +261,7 @@
                         $.ajax({
                             url: "{{ route('update.cart') }}",
                             method: "put",
-                            data: {_token: "{{ csrf_token() }}", id: productId, quantity: inputNumber},
+                            data: {_token: "{{ csrf_token() }}", id: productId, quantity: newValue - 1},
 
                             success: function (result) {
                                 console.log('cart updated');
@@ -307,6 +319,15 @@
 
             var newData = '';
         function checkMedicine(data){
+            let total = $('.grand-total').val();
+            console.log(total, 'total');
+            if ( total < 100 ) {
+                $('.alert-note').removeClass('d-none');
+                return;
+            }
+
+            $('.alert-note').addClass('d-none');
+
             let medicineData = data;
             newData = data;
 

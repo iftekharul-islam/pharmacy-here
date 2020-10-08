@@ -18,7 +18,6 @@
     }
 
     .number-input {
-        border: 1px solid #ddd;
         display: inline-flex;
     }
 
@@ -31,16 +30,19 @@
         outline:none;
         -webkit-appearance: none;
         background-color: transparent;
-        border: none;
         align-items: center;
         justify-content: center;
         width: 2rem;
         height: 2rem;
+        border-radius: 50%;
+        border: 1px solid #00AE4D;
         cursor: pointer;
         margin: 0;
         position: relative;
     }
-
+    .number-input button:focus {
+        outline: none !important;
+    }
     .number-input button:before,
     .number-input button:after {
         display: inline-block;
@@ -48,7 +50,7 @@
         content: '';
         width: 1rem;
         height: 2px;
-        background-color: #212121;
+        background-color: #00AE4D;
         transform: translate(-50%, -50%);
     }
     .number-input button.plus:after {
@@ -59,12 +61,15 @@
         font-family: sans-serif;
         max-width: 4.25rem;
         padding: .5rem;
-        border: solid #ddd;
+        border: none;
         border-width: 0 5px;
         font-size: 1.6rem;
         height: 2rem;
         font-weight: bold;
         text-align: center;
+    }
+    .number-input input[type=number]:focus {
+        outline: none!important;
     }
     .count-style {
         border: none;
@@ -79,15 +84,23 @@
     }
     .my-header-search {
         margin-bottom: 30px;
+        margin-right: 0px!important;
+        position: relative;
     }
     #searchResult {
         /*padding-top: 8px;*/
+        position: absolute;
+        width: 94.5%;
+        z-index: 99;
         border: 1px solid #ced4da;
         margin-top: -11px;
         background: white;
         border-bottom-left-radius: 15px;
         border-bottom-right-radius: 15px;
 
+    }
+    #searchResult ul{
+        overflow: hidden;
     }
     #searchResult li {
         padding-left: 2rem;
@@ -104,6 +117,9 @@
     #searchResult li:hover {
         background: #ddd;
     }
+    #medicine_search {
+        z-index: 100;
+    }
 </style>
 @section('content')
     <section class="medicine-section">
@@ -114,10 +130,10 @@
         @endif
         <div class="container">
             <div class="row mb-5">
-                <div class="col-12 text-center">
+                <div class="col-md-4 text-left">
                     <h2 class="my-header">Medicines</h2>
                 </div>
-                <div class="my-header-search col-6 mx-auto">
+                <div class="my-header-search col-md-6 ml-auto">
                     <label class="w-100 label-search">
                         <form id="form" action="{{ route('product-list') }}" method="GET">
                             <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="Search your medicine here">
@@ -140,14 +156,16 @@
                                     <i class="fas fa-heart"></i>
                                 </div>
                                 <div class="text-center mb-4">
-                                @if ($item->form_id == 1 || $item->form_id == 2)
+                                @if ($item->form->slug == 'tablet' || $item->form->name == 'capsul')
                                     <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
-                                @elseif ($item->form_id == 3)
+                                @elseif ($item->form->slug == 'syrup')
                                     <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
-                                @elseif ($item->form_id == 4)
+                                @elseif ($item->form->slug == 'injection')
                                     <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
-                                @elseif ($item->form_id == 5)
+                                @elseif ($item->form->slug == 'suppository')
                                     <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
+                                @else
+                                    <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
                                 @endif
                                 </div>
                                 <div class="medicine-details--content">
@@ -160,34 +178,42 @@
                                         <small>{{ $item->primaryUnit->name }}</small>
                                     <p><strong>{{ $item->company->name }}</strong></p>
                                 </div>
-                                    @php
-                                        $matchedItem = null;
-                                    @endphp
-                                    @foreach ($cartItems as $cart)
-                                        @if ($cart->product_id === $item->id)
-                                            @php
-                                                $matchedItem = $cart;
-                                            @endphp
-                                            @break
-                                        @endif
-                                    @endforeach
-                                <div class="package d-flex justify-content-between">
-                                    <p id="item-price-show-{{ $item->id }}" class="{{$matchedItem ? 'd-none' : ''}}">৳ {{ $item->purchase_price }}</p>
-                                    <input id="cart-price-show-{{ $item->id }}" class="countAmount-{{$item->id}} count-style {{$matchedItem ? '' : 'd-none'}}" style="color: #00CE5E;" value="৳ {{ $matchedItem ? $matchedItem->amount : '' }}" readonly>
-                                    <p>Min quantity ({{ $item->min_order_qty }})</p>
-                                </div>
+                                    @auth
+                                        @php
+                                            $matchedItem = null;
+                                        @endphp
+                                        @foreach ($cartItems as $cart)
+                                            @if ($cart->product_id === $item->id)
+                                                @php
+                                                    $matchedItem = $cart;
+                                                @endphp
+                                                @break
+                                            @endif
+                                        @endforeach
+                                        <div class="package d-flex justify-content-between">
+                                            <p id="item-price-show-{{ $item->id }}" class="{{$matchedItem ? 'd-none' : ''}}">৳ {{ $item->purchase_price }} / piece</p>
+                                            <input id="cart-price-show-{{ $item->id }}" class="countAmount-{{$item->id}} count-style {{$matchedItem ? '' : 'd-none'}}" style="color: #00CE5E;" value="৳ {{ $matchedItem ? $matchedItem->amount : '' }}" readonly>
+                                            <p>Min quantity ({{ $item->min_order_qty }})</p>
+                                        </div>
+                                        @else
+                                        <div class="package d-flex justify-content-between">
+                                            <p>৳ {{ $item->purchase_price }}</p>
+                                            <p>Min quantity ({{ $item->min_order_qty }})</p>
+                                        </div>
+                                    @endauth
                                 <p><strong>Packaging Type - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>
                                 <div class="medicine-details--footer d-flex justify-content-between align-items-center">
-                                @auth
+                                @guest
+                                        <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                                @else
                                         <div class="number-input {{ $matchedItem ? 'block' : 'd-none'}}" id="show-button-{{ $item->id }}">
                                             <button id="decrease-{{$item->id }}" onclick="newItemdec(this, {{ $item->min_order_qty }}, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : ''}});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
-                                            <input id="input-{{$item->id }}" class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}"  name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number">
+                                            <input id="input-{{$item->id }}" class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}"  name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number" readonly>
                                             <button id="increase-{{$item->id }}" onclick="newItemIncrease(this, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : '' }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
                                         </div>
                                         <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }}, {{ $item->min_order_qty }}, {{ $item->purchase_price }});" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
-                                @else
-                                    <a href="{{ route('cart.addToCart', $item->id) }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart" onclick="addToCart({{ $item->id }})"><i class="fas fa-cart-plus"></i> Add to Cart</a>
-                                @endauth
+
+                                @endguest
                                     <a href="{{ route('single-product', $item->id) }}" class="eyes"><i class="fas fa-eye"></i></a>
 
                                 </div>

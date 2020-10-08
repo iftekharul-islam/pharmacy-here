@@ -25,7 +25,7 @@
                             @enderror
                         </div>
                         <button type="submit" class="btn--sign-in">
-                            {{ __('Verify OTP') }}
+                            Register
                         </button>
                     </form>
                 </div>
