@@ -74,6 +74,36 @@
     .count-style:focus {
         outline: none!important;
     }
+    .my-header {
+        margin-bottom: 1px!important;
+    }
+    .my-header-search {
+        margin-bottom: 30px;
+    }
+    #searchResult {
+        /*padding-top: 8px;*/
+        border: 1px solid #ced4da;
+        margin-top: -11px;
+        background: white;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+
+    }
+    #searchResult li {
+        padding-left: 2rem;
+        padding-top: 2px;
+        padding-bottom: 10px;
+        text-align: left;
+        cursor: pointer;
+
+    }
+    #searchResult li:last-child {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    #searchResult li:hover {
+        background: #ddd;
+    }
 </style>
 @section('content')
     <section class="medicine-section">
@@ -83,9 +113,19 @@
             </div>
         @endif
         <div class="container">
-            <div class="row">
+            <div class="row mb-5">
                 <div class="col-12 text-center">
-                    <h2>Medicines</h2>
+                    <h2 class="my-header">Medicines</h2>
+                </div>
+                <div class="my-header-search col-6 mx-auto">
+                    <label class="w-100 label-search">
+                        <form id="form" action="{{ route('product-list') }}" method="GET">
+                            <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="Search your medicine here">
+                            <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                        </form>
+                    </label>
+                    <ul id="searchResult">
+                    </ul>
                 </div>
             </div>
             @if (count($data) > 0)
@@ -116,7 +156,8 @@
                                         @else
                                         <span class="mb-3"></span>
                                     @endif
-                                    <p><h5>{{ $item->name }}</h5></p>
+                                        <h4 style="margin: 0px">{{ $item->name }}</h4>
+                                        <small>{{ $item->primaryUnit->name }}</small>
                                     <p><strong>{{ $item->company->name }}</strong></p>
                                 </div>
                                     @php
@@ -162,6 +203,78 @@
 @endsection
 @section('js')
     <script>
+        var isNameSet = false;
+        $(document).ready(function(){
+
+            console.log(isNameSet);
+
+            if (!isNameSet) {
+                $("#medicine_search").keyup(function () {
+                    var search = $(this).val();
+                    console.log(search);
+                    if (search != "") {
+                        $.ajax({
+                            url: "search/medicine-name",
+                            type: 'get',
+                            data: {medicine: search},
+                            dataType: 'json',
+                            success: function (response) {
+                                var len = response.length;
+                                $("#searchResult").empty();
+                                $("#searchResult").append(`<li value=""></li>`);
+                                for (var i = 0; i < len; i++) {
+                                    console.log(response[i]);
+                                    var id = response[i]['id'];
+                                    var name = response[i]['name'];
+                                    var image = response[i]['form_id'];
+                                    if(image == 1 || image == 2){
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image == 3) {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/syrup.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image == 4) {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/injection.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image == 5) {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/suppositories.png') }}" class="pill mr-2" alt="pill">`;
+                                    }else {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+
+                                    if (search != name) {
+                                        $("#searchResult")
+                                            .append(`<li value='" + id + "'>` +
+                                                pill + name +
+                                                `</li> ` );
+                                    }
+
+                                }
+                                // binding click event to li
+                                $("#searchResult li").bind("click", function () {
+                                    console.log(this);
+                                    setText(this);
+                                    isNameSet = true;
+
+                                    console.log(isNameSet);
+                                    $('#form').submit();
+                                });
+                            }
+                        });
+                    } else {
+                        $("#searchResult").empty();
+                    }
+                });
+            }
+        });
+        // Set Text to search box and get details
+        function setText(element){
+            var value = $(element).text();
+            $("#medicine_search").val(value);
+            $("#searchResult").empty();
+        }
+
+
         function addToCart(item, id, minValue, price) {
             console.log(item, "this")
             console.log(id, "id")

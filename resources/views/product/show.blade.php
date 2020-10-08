@@ -3,6 +3,24 @@
     .save-profile-btn {
         border: 1px solid #00ce5e;
     }
+
+    .related-madicine-badge {
+        width: 60px;
+        height: 60px;
+        background: #AD272E;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-clip-path: polygon(0 0, 0% 100%, 100% 0);
+        clip-path: polygon(0 0, 0% 100%, 100% 0);
+        padding-left: 0px;
+        padding-top: 6px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: capitalize;
+        padding-right: 20px;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -61,6 +79,38 @@
                         <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                     </div>
                 </div>
+                @if (count($relatedProducts) > 0)
+                <div class="col-12 my-5">
+                    <h3>Similar Products</h3>
+                    <hr class="fancy4">
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        @foreach($relatedProducts as $product)
+                        <div class="medicine-details col-2 ml-3">
+                            <div class="text-center mb-4">
+                                @if ($product->is_prescripted == 1)
+                                    <div class="related-madicine-badge">RX</div>
+                                @endif
+                                <img src="{{ asset('images/pill.png') }}" class="pill mt-2" alt="pill">
+                            </div>
+                            <div class="medicine-details--content">
+                                @if ($product->is_pre_order == 1 )
+                                    <a href="#" class="mb-3">Pre-order</a>
+                                @else
+                                    <span class=" mb-4"></span>
+                                @endif
+                                <h6 style="margin: 0px">{{ $product->name }}</h6>
+                                <small>{{ $product->primaryUnit->name }}</small>
+                                <p><small>{{ $product->company->name }}</small></p>
+                            </div>
+                            <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">view</a>
+                        </div>
+                        @endforeach
+                    </div>
+
+                </div>
+                @endif
             </div>
         </div>
 @endsection
