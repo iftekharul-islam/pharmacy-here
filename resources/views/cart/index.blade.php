@@ -84,6 +84,10 @@
     .order-summary table tbody tr td input {
         border: none!important;
     }
+    .note-text {
+        position: absolute;
+        margin-left: -142px;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -176,8 +180,8 @@
                                                 <td><p class="badge btn-primary">Please login first to checkout</p></td>
                                             @else
                                                 <td>
-                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white" >Checkout</a>
-                                                    <strong class="alert-note text-danger d-none">Please add amount more than ৳100</strong>
+                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
+                                                    <strong class="note-text alert-note text-danger d-none">Please add amount more than ৳100</strong>
                                                 </td>
                                         @endguest
                                     </tr>
