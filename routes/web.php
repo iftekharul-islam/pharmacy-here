@@ -26,6 +26,8 @@ Route::post('logout','LoginController@logout')->name('customer.logout');
 
 //New customer add name
 Route::get('new-customer/name','LoginController@registerForm')->name('customer.name');
+// Cutomer Name update
+Route::post('customer/name/update','LoginController@customerNameUpdate')->name('customer.nameUpdate');
 
 Route::group(['middleware' => ['customerAuth']], function () {
     Route::group(['prefix' => 'checkout'], function () {
@@ -52,9 +54,6 @@ Route::group(['middleware' => ['customerAuth']], function () {
     Route::get('dashboard','CustomerController@index')->name('customer.details');
     Route::post('update/customer/{id}','CustomerController@update')->name('customer.update');
     Route::post('address-store', 'CustomerController@addressStore')->name('customer.address.store');
-
-    // Cutomer Name update
-    Route::post('customer/name/update','LoginController@customerNameUpdate')->name('customer.nameUpdate');
 
     Route::group(['prefix' => 'cart'], function () {
         Route::get('/', 'CartController@index')->name('cart.index');
