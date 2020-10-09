@@ -86,37 +86,39 @@
                 </div>
                 <div class="col-12">
                     <div class="row">
-                        @foreach($relatedProducts as $product)
-                        <div class="medicine-details col-2 ml-3">
-                            <div class="text-center mb-4">
-                                @if ($product->is_prescripted == 1)
-                                    <div class="related-madicine-badge">RX</div>
-                                @endif
-                                @if ($product->form->slug == 'tablet' || $product->form->name == 'capsul')
-                                    <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
-                                @elseif ($product->form->slug == 'syrup')
-                                    <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
-                                @elseif ($product->form->slug == 'injection')
-                                    <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
-                                @elseif ($product->form->slug == 'suppository')
-                                    <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
-                                @else
-                                    <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
-                                @endif
-                            </div>
-                            <div class="medicine-details--content">
-                                @if ($product->is_pre_order == 1 )
-                                    <a href="#" class="mb-3">Pre-order</a>
-                                @else
-                                    <span class=" mb-4"></span>
-                                @endif
-                                <h6 style="margin: 0px">{{ $product->name }}</h6>
-                                <small>{{ $product->primaryUnit->name }}</small>
-                                <p><small>{{ $product->company->name }}</small></p>
-                            </div>
-                            <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">view</a>
+                    @foreach($relatedProducts as $product)
+                    <div class="medicine-details col-2 ml-3">
+                        <div class="text-center mb-4">
+                            @if ($product->is_prescripted == 1)
+                                <div class="related-madicine-badge">RX</div>
+                            @endif
+                            @if ($product->form->slug == 'tablet' || $product->form->name == 'capsul')
+                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                            @elseif ($product->form->slug == 'syrup')
+                                <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
+                            @elseif ($product->form->slug == 'injection')
+                                <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
+                            @elseif ($product->form->slug == 'suppository')
+                                <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
+                            @else
+                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                            @endif
                         </div>
-                        @endforeach
+                        <div class="medicine-details--content">
+                            @if ($product->is_pre_order == 1 )
+                                <a href="#" class="mb-3">Pre-order</a>
+                            @else
+                                <span class=" mb-4"></span>
+                            @endif
+                            <h6 style="margin: 0px">{{ $product->name }}</h6>
+                            <small>{{ $product->primaryUnit->name }}</small>
+                            <br>
+                            <small>{{ $product->generic->name }}</small>
+                            <p><small>{{ $product->company->name }}</small></p>
+                        </div>
+                        <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">view</a>
+                    </div>
+                    @endforeach
                     </div>
 
                 </div>

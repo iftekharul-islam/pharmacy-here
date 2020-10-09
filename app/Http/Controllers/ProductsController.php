@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Modules\Products\Entities\Model\Product;
 use Modules\Products\Repositories\ProductRepository;
 
 class ProductsController extends Controller
@@ -41,8 +42,7 @@ class ProductsController extends Controller
     public function show($id)
     {
         $data = $this->repository->get($id);
-        $relatedProducts = $this->repository->getRelatedProductByProductId($id);
-
+        $relatedProducts = $this->repository->getRelatedProductByProductIdWeb($id);
         return view('product.show', compact('data', 'relatedProducts'));
     }
 

@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                             <div class="mx-auto mb-5">
-                                <button type="submit" class="btn btn--primary px-5">Sent</button>
+                                <button type="submit" class="btn btn--primary px-5" disabled>Sent</button>
                             </div>
                         </div>
                     </form>

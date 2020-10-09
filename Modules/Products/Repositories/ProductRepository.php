@@ -11,6 +11,7 @@ use Modules\Products\Entities\Model\Generic;
 use Modules\Products\Entities\Model\Product;
 use Modules\Products\Entities\Model\ProductAdditionalInfo;
 use Modules\Products\Entities\Model\Unit;
+use function PHPSTORM_META\type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductRepository
@@ -276,6 +277,15 @@ class ProductRepository
 
         return Product::where('generic_id', $product->generic_id)->where('id', '!=', $id)->get();
 
+    }
+
+    public function getRelatedProductByProductIdWeb($id)
+    {
+        $product = Product::find($id);
+
+        $similar_product = Product::with('generic')->where('generic_id',  $product->generic_id)->get()->except($product->id);
+
+        return $similar_product;
     }
 
     public function getProductName($request)

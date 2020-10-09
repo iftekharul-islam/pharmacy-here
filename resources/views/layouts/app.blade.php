@@ -132,7 +132,7 @@
     <script>
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
-        }, 500);
+        }, 1000);
 
         function isNumber(evt)
         {

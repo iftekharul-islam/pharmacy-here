@@ -173,6 +173,9 @@ class CartController extends Controller
                 ]);
             }
         }
+        $count = Cart::where('customer_id', Auth::user()->id)->get();
+        session()->forget('cartCount');
+        session()->put('cartCount', count($count));
         return redirect()->back()->with('success', 'Products added to cart');
     }
 

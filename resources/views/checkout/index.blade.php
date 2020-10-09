@@ -16,6 +16,9 @@
     .save-profile-btn {
         border: 1px solid #00ce5e;
     }
+    .add-address {
+        padding: 41px!important;
+    }
 </style>
 @section('content')
     @if(session('success'))
