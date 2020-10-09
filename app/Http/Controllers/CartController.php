@@ -175,4 +175,9 @@ class CartController extends Controller
         }
         return redirect()->back()->with('success', 'Products added to cart');
     }
+
+    public function cartCount() {
+        $count = Cart::where('customer_id', Auth::user()->id)->get();
+        return response()->json($count);
+    }
 }

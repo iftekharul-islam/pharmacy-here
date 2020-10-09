@@ -113,7 +113,7 @@
                                     <th scope="col">Product</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">Quantity</th>
-                                    <th class="text-left">Sub total</th>
+                                    <th class="text-center">Sub total</th>
                                     <th scope="col"></th>
                                 </tr>
                                 </thead>
@@ -128,7 +128,7 @@
                                             <td scope="row">{{ $details['product_name'] }}</td>
                                             <td class="float-left">৳ {{ $details['amount'] }}</td>
                                             <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}" min="{{ $details['minQuantity'] }}"></td>
-                                            <td data-th="Subtotal" class="text-left"><p>৳</p> {{ $details['amount'] * $details['quantity'] }}</td>
+                                            <td data-th="Subtotal" class="text-center"><p>৳</p> {{ $details['amount'] * $details['quantity'] }}</td>
                                             <td>
                                                 <div class="actions" data-th="">
                                                     <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button>
@@ -145,7 +145,7 @@
                                             <?php $total += $details['product']['purchase_price'] * $details['quantity'] ?>
                                             <tr>
                                                 <td scope="row">{{ $details['product']['name'] }}</td>
-                                                <td class="text-left">৳ {{ $details['product']['purchase_price'] }}</td>
+                                                <td class="text-center">৳ {{ $details['product']['purchase_price'] }}</td>
                                                 <td data-th="Quantity">
                                                     <div class="number-input" id="show-button-{{ $details->id }}">
                                                         <button id="decrease-{{$details->id }}" onclick="newItemdec(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})"></button>
@@ -153,7 +153,7 @@
                                                         <button id="increase-{{$details->id }}" onclick="newItemIncrease(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})" class="plus"></button>
                                                     </div>
                                                 </td>
-                                                <td class="text-left">৳
+                                                <td class="text-center">৳
                                                     <input class="countAmount-{{$details->id}} count-style" value="{{ $details->amount }}" readonly>
                                                 </td>
                                                 <td>
@@ -168,8 +168,8 @@
                                     <tr>
                                         <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">Continue Shopping</a></td>
                                         <td></td>
-                                        <td class="text-right total-amount-alignment">Total</td>
-                                        <td class="text-left total-amount-alignment">৳
+                                        <td class="text-right total-amount-alignment"><b>Grand total</b></td>
+                                        <td class="text-center total-amount-alignment">৳
                                             <input type="number" class="grand-total count-style" value="{{ $total }}" readonly>
                                         </td>
                                         @guest
@@ -177,7 +177,7 @@
                                             @else
                                                 <td>
                                                     <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white" >Checkout</a>
-                                                    <strong class="alert-note text-danger d-none">Please add more than ৳100</strong>
+                                                    <strong class="alert-note text-danger d-none">Please add amount more than ৳100</strong>
                                                 </td>
                                         @endguest
                                     </tr>
