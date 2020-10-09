@@ -79,8 +79,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    @if ($errors->has('prescription_id'))
+                        <span class="mt-5 text-danger">
+                        <strong>{{ $errors->first('prescription_id') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
-            <form method="post" action="{{ route('prescriptions.id') }}">
+            <form id="form" method="post" action="{{ route('prescriptions.id') }}">
                 @csrf
             <div class="my-row row mb-5">
                     @foreach($prescriptions as $prescription )
@@ -88,7 +95,7 @@
                             <div class="order-summary">
                                 <div class="row">
                                     <div class="col-10">
-                                    <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
+                                    <img height="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
                                     <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
                                     <p>Doctor: {{ $prescription->doctor_name }}</p>
                                     <button type="button" class="btn btn--primary px-5 w-89" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
@@ -109,11 +116,11 @@
                                                                 <img width="200px" height="250px" src="{{ $prescription->url }}" alt="">
                                                             </div>
                                                             <div class="col-6 My-modal">
-                                                                <strong>Patient </strong>
+                                                                <strong>Patient : </strong>
                                                                 <label>{{$prescription->patient_name}}</label><br>
-                                                                <strong>Doctor </strong>
+                                                                <strong>Doctor : </strong>
                                                                 <label>{{ $prescription->doctor_name }}</label><br>
-                                                                <strong>Date</strong>
+                                                                <strong>Date : </strong>
                                                                 <label>{{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</label>
                                                             </div>
                                                         </div>
@@ -141,6 +148,16 @@
 @endsection
 @section('js')
     <script>
+        $('#form').validate({ // initialize the plugin
+            ignore: [],
+            errorClass: "text-danger",
+            rules: {
+                prescription_id: {
+                    required: true
+                },
+            },
+        });
+
         $(document).ready(function() {
             $('.my-box').click(function(event) {
                 if (event.target.type !== 'checkbox') {
@@ -148,7 +165,6 @@
                 }
             });
         });
-
     </script>
 @endsection
 

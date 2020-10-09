@@ -19,8 +19,12 @@
 </style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
+        </div>
+    @elseif (session('failed'))
+        <div id="successMessage" class="alert alert-danger">
+            {{ session('failed') }}
         </div>
     @endif
     <!-- checkout -->
@@ -224,10 +228,8 @@
                                     <p id="grandTotal"></p>
                                 </li>
                             </ul>
-                            <div class="row">
-                                <div class="col-md-8 p-0">
-                                    <button type="submit" id="final-submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block">Proceed to Checkout</button>
-                                </div>
+                            <div class="col-md-3 mx-auto">
+                                <button type="submit" id="final-submit" class="btn--primary checkout-btn save-profile-btn d-block px-5">Proceed to Checkout</button>
                             </div>
                         </form>
                     </div>
@@ -285,7 +287,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="submit" disabled="">Save address</button>
+                    <button type="submit" class="btn btn--primary" id="submit" disabled="">Save address</button>
                 </div>
                 </form>
             </div>
@@ -401,38 +403,38 @@
                             success: function (response) {
                                 var values = response;
                                 console.log(values)
-                                var options = {};
-                                $.map(values,
-                                    function(o) {
-                                        options[o.user_id] = o.pharmacy_name + ', ' + o.area.name ;
-                                    });
-                                Swal.fire({
-                                    // html : 'You need to Select a pharmacy',
-                                    icon: 'warning',
-                                    title: 'Pharmacy not available at your location !!!',
-                                    input: 'select',
-                                    inputOptions:options,
-                                    inputPlaceholder: 'Please select a pharmacy',
-                                    showCancelButton: true,
-                                    inputValidator: function (value) {
-                                        return new Promise(function (resolve, reject) {
-                                            if (value !== '') {
-                                                resolve();
-                                            } else {
-                                                resolve('You need to select a Pharmacy');
-                                            }
-                                        });
-                                    }
-                                }).then(function (result) {
-                                    $('input[name="pharmacy_id"]').val(result.value);
-                                    if (result.value) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            showConfirmButton: false,
-                                            timer: 1000
-                                        });
-                                    }
-                                });
+                                // var options = {};
+                                // $.map(values,
+                                //     function(o) {
+                                //         options[o.user_id] = o.pharmacy_name + ', ' + o.area.name ;
+                                //     });
+                                // Swal.fire({
+                                //     // html : 'You need to Select a pharmacy',
+                                //     icon: 'warning',
+                                //     title: 'Pharmacy not available at your location !!!',
+                                //     input: 'select',
+                                //     inputOptions:options,
+                                //     inputPlaceholder: 'Please select a pharmacy',
+                                //     showCancelButton: true,
+                                //     inputValidator: function (value) {
+                                //         return new Promise(function (resolve, reject) {
+                                //             if (value !== '') {
+                                //                 resolve();
+                                //             } else {
+                                //                 resolve('You need to select a Pharmacy');
+                                //             }
+                                //         });
+                                //     }
+                                // }).then(function (result) {
+                                //     $('input[name="pharmacy_id"]').val(result.value);
+                                //     if (result.value) {
+                                //         Swal.fire({
+                                //             icon: 'success',
+                                //             showConfirmButton: false,
+                                //             timer: 1000
+                                //         });
+                                //     }
+                                // });
 
 
                             },

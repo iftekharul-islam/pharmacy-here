@@ -4,24 +4,26 @@
         margin-left: -12px!important;
         width: 20px;
     }
+    .my-table tr th {
+        min-width: 157px!important;
+    }
 </style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @elseif (session('failed'))
-        <div class="alert alert-danger">
+        <div id="successMessage" class="alert alert-danger">
             {{ session('failed') }}
         </div>
     @endif
     <div class="order-section">
         <div class="container">
             <div class="row">
-                <div class="col-12">
+                <div class="col-md-5">
                     <h2 class="my-dashboard-title">My Orders Details</h2>
-                </div>
-                <div class="col-5">
+{{--                <div class="col-5">--}}
                     <table class="my-table table table-borderless">
                         <tr>
                             <th>Order no</th>
@@ -81,39 +83,46 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-10">
+                <div class="col-md-7">
                 <div class="my-order-list">
                     <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Sub total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($data['orderItems'] as $product)
-                                    <tr>
-                                        <td>{{ $product->product->name }}</td>
-                                        <td>{{ $product->product->purchase_price }}</td>
-                                        <td>{{ $product->quantity }}</td>
-                                        <td>{{ $product->quantity * $product->product->purchase_price }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                                <tfooter>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><strong>Grand Total : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
-                                    </tr>
-                                </tfooter>
-                            </table>
+                        <table class="table table-borderless">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Sub total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($data['orderItems'] as $product)
+                                <tr>
+                                    <td>{{ $product->product->name }}</td>
+                                    <td>৳ {{ $product->product->purchase_price }}</td>
+                                    <td>{{ $product->quantity }}</td>
+                                    <td>৳ {{ $product->quantity * $product->product->purchase_price }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Grand Total : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
+                                </tr>
+                            </tfooter>
+                        </table>
                     </div>
                 </div>
+                    <form method="post" action="{{route('order.to.cart')}}">
+                        <input type="hidden" name="itemId" value="{{ $data->id }}">
+                        @csrf
+                    <div class="mt-5 text-center">
+                        <button type="submit" class="button btn--primary mt-5">Add items to Cart</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
