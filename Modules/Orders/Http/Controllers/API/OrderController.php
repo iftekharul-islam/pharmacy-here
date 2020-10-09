@@ -122,7 +122,6 @@ class OrderController extends BaseController
 
     public function ordersStatusUpdate($order_id, $status_id)
     {
-//        return 'hello';
         $order = $this->repository->updateStatus($order_id, $status_id);
         // return $this->response->item($order, new OrderTransformer);
         return $order;
