@@ -35,7 +35,8 @@
                     </div>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>
+{{--                    <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>--}}
+                    <a  class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span id="cartCount" class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>
                 </li>
                 @guest
                     <li>

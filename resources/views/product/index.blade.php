@@ -327,6 +327,8 @@
 
                 success: function(result) {
                     console.log('Add to cart');
+
+                    getCartCount();
                 },
                 error: function(result) {
                     console.log(result);
@@ -509,6 +511,7 @@
                                     success: function (result) {
                                         console.log('delete from cart');
                                         // console.log(result);
+                                        getCartCount();
                                     },
                                     error: function (result) {
                                         console.log(result);
@@ -577,6 +580,7 @@
 
                             success: function (result) {
                                 console.log('delete from cart');
+                                getCartCount();
                                 // console.log(result);
                             },
                             error: function (result) {
@@ -587,6 +591,19 @@
 
                 }, 500);
             }
+        }
+
+
+        function getCartCount() {
+            $.ajax({
+                url: 'cart-count',
+                method: "get",
+                data: {_token: "{{ csrf_token() }}"},
+                success: function (respones) {
+                    console.log(respones.length, 'cart response' );
+                    $('#cartCount').html(respones.length);
+                }
+            });
         }
     </script>
 @endsection

@@ -71,6 +71,8 @@ Route::group(['prefix' => 'cart'], function () {
     Route::get('find-from-cart', 'CartController@findCart')->name('find.cart');
 });
 
+Route::get('cart-count', 'CartController@cartCount')->name('cart.count');
+
 Route::post('store', 'CheckoutController@store')->name('checkout.store');
 Route::post('pay', 'CheckoutController@sslPayment')->name('ssl.payment');
 Route::post('success', 'CheckoutController@success')->name('ssl.success');
