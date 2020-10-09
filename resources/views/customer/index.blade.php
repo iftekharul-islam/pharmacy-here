@@ -163,7 +163,7 @@
                                                             <span class="badge badge-danger">Pending</span>
                                                         @elseif ($order->status == 1)
                                                             <span class="badge badge-warning">Accepted</span>
-                                                        @elseif ($order->status == 3)
+                                                        @elseif ($order->status == 2)
                                                             <span class="badge" style="background: #FFFF00">Processing</span>
                                                         @elseif ($order->status == 3)
                                                             <span class="badge badge-success">Completed</span>
