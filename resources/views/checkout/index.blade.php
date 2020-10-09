@@ -343,7 +343,7 @@
 @section ('js')
     <script>
         $("#pharmacy-submit").on('click', function () {
-            let pharmacy = $('#selectPharmacy').val();
+            var pharmacy = $('#selectPharmacy').val();
             $('#insert_pharmacy_id').val(pharmacy);
             $('#pharmacy_search').val(pharmacy);
             console.log(pharmacy, 'pharmacy');
@@ -438,10 +438,9 @@
             addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
         })();
 
-        function getAddressId(id, areaId, thanaId) {
+        function getAddressId(id, areaId) {
 
             $('input[name="shipping_address_id"]').val(id);
-            $('input[name="pharmacy_search_id"]').val(id);
 
             $.ajax({
                 url: '{{ url('find-pharmacy') }}',
@@ -449,10 +448,11 @@
                 data: {_token: '{{ csrf_token() }}', id: areaId},
 
                 success: function (response) {
-
                     console.log(response);
-
                     if (response === true) {
+
+                        $('#pharmacy_search').val('1');
+                        $('#insert_pharmacy_id').val('');
                         console.log(id, 'hello :) its true')
 
                     } else {
@@ -461,6 +461,8 @@
                         // console.log(thanaId, 'thana')
 
                         $('#pharmacy_search').val('');
+                        $('#insert_pharmacy_id').val('');
+
                         $('#pharmacyModal').modal('toggle');
                         $('#pharmacyModal').modal('show');
                     }
@@ -765,7 +767,6 @@
             });
         }
         function getPharmacy() {
-            console.log('hello');
             var thanaId = $('#selectPharmacyThana option:selected').val();
             console.log(thanaId, 'thanaId');
             $.ajax({
