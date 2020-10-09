@@ -317,8 +317,8 @@
             $('#show-button-' + id).removeClass('d-none');
             $('#input-' + id).val(minValue);
 
-            var zoektermen = '{{session()->put('cartCount', count()+1 ?? '') }}';
-            {!! session()->!!}
+            {{--var zoektermen = '{{session()->put('cartCount', count()+1 ?? '') }}';--}}
+{{--            {!! session()->!!}--}}
 
             $.ajax({
                 url: 'cart/add-to-cart/' + id,

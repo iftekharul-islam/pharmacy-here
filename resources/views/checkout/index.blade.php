@@ -41,7 +41,7 @@
                             <input type="text" class="d-none" name="phone_number" value="{{ $user->phone_number }}">
                             <input type="hidden" name="delivery_type" value="">
                             <input type="hidden" name="amount" value="">
-                            <input type="hidden" name="pharmacy_id" value="">
+                            <input type="hidden" id="insert_pharmacy_id" name="pharmacy_id" value="">
                             <input type="hidden" class="normal_delivery_date" name="normal_delivery_date" value="">
                             <input type="hidden" class="normal_delivery_time" name="normal_delivery_time" value="">
                             <input type="hidden" class="express_delivery_time" name="express_delivery_time" value="">
@@ -71,7 +71,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
-                                            <input type="text" class="d-none" name="shipping_address_id" value="">
+                                            <input type="text" class="d-none" name="shipping_address_id" value=""><br>
+                                            <input type="text" class="d-none" id="pharmacy_search" name="pharmacy_search_id" value="">
                                             @if ($errors->has('shipping_address_id'))
                                                 <span class="text-danger">
                                                     <strong>{{ $errors->first('shipping_address_id') }}</strong>
@@ -239,6 +240,47 @@
     </section>
 
     <!-- Modal -->
+    <div class="modal fade" id="pharmacyModal" tabindex="-1" role="dialog" aria-labelledby="pharmacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pharmacyModalLabel">Select Address for Pharmacy</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="district" class="col-form-label">District</label>
+                            <select class="form-control" id="selectPharmacyDistrict" onchange="getPharmacyThanas(value)">
+                                <option value="" disabled selected>Please select a district name</option>
+                                @foreach($allLocations as $district)
+                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" >{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thana" class="col-form-label">Thana</label>
+                            <select class="form-control" id="selectPharmacyThana" onchange="getPharmacy()">
+
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="area" class="col-form-label">Pharamacy</label>
+                            <select class="form-control" id="selectPharmacy" name="select_pharamcy" disabled="">
+                            </select>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="pharmacy-submit" disabled="">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
     <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -297,6 +339,14 @@
 @endsection
 @section ('js')
     <script>
+        $("#pharmacy-submit").on('click', function () {
+            let pharmacy = $('#selectPharmacy').val();
+            $('#insert_pharmacy_id').val(pharmacy);
+            $('#pharmacy_search').val(pharmacy);
+            console.log(pharmacy, 'pharmacy');
+            $('#pharmacyModal').modal('hide');
+        });
+
         $('#final-submit').on('click', function () {
             window.scrollTo(0, 0);
         });
@@ -308,11 +358,22 @@
                 shipping_address_id: {
                     required: true
                 },
+                pharmacy_search_id: {
+                    required: true
+                },
             },
+            messages: {
+                shipping_address_id: {
+                    required: "Please Select a Address",
+                },
+                pharmacy_search_id: {
+                    required: "No pharmacy selected. Please select one",
+                },
+            }
         });
 
         $('#submit').on('click', function () {
-            $('#submit').addClass('d-none');
+            $('#addressModal').modal('hide');
         })
         // Get the container element
         var btnContainer = document.getElementById("myAddress");
@@ -377,6 +438,7 @@
         function getAddressId(id, areaId, thanaId) {
 
             $('input[name="shipping_address_id"]').val(id);
+            $('input[name="pharmacy_search_id"]').val(id);
 
             $.ajax({
                 url: '{{ url('find-pharmacy') }}',
@@ -389,56 +451,15 @@
 
                     if (response === true) {
                         console.log(id, 'hello :) its true')
-                        $('input[name="pharmacy_id"]').val(id);
 
                     } else {
                         console.log(response, 'response')
                         console.log('hello :) its false')
                         console.log(thanaId, 'thana')
 
-                        $.ajax({
-                            url: '{{ url('find-pharmacy-list') }}',
-                            method: "get",
-                            data: {_token: '{{ csrf_token() }}', id: thanaId},
-                            success: function (response) {
-                                var values = response;
-                                console.log(values)
-                                // var options = {};
-                                // $.map(values,
-                                //     function(o) {
-                                //         options[o.user_id] = o.pharmacy_name + ', ' + o.area.name ;
-                                //     });
-                                // Swal.fire({
-                                //     // html : 'You need to Select a pharmacy',
-                                //     icon: 'warning',
-                                //     title: 'Pharmacy not available at your location !!!',
-                                //     input: 'select',
-                                //     inputOptions:options,
-                                //     inputPlaceholder: 'Please select a pharmacy',
-                                //     showCancelButton: true,
-                                //     inputValidator: function (value) {
-                                //         return new Promise(function (resolve, reject) {
-                                //             if (value !== '') {
-                                //                 resolve();
-                                //             } else {
-                                //                 resolve('You need to select a Pharmacy');
-                                //             }
-                                //         });
-                                //     }
-                                // }).then(function (result) {
-                                //     $('input[name="pharmacy_id"]').val(result.value);
-                                //     if (result.value) {
-                                //         Swal.fire({
-                                //             icon: 'success',
-                                //             showConfirmButton: false,
-                                //             timer: 1000
-                                //         });
-                                //     }
-                                // });
-
-
-                            },
-                        });
+                        $('#pharmacy_search').val('');
+                        $('#pharmacyModal').modal('toggle');
+                        $('#pharmacyModal').modal('show');
                     }
                 },
                 error: function (response) {
@@ -698,6 +719,25 @@
 
         }
 
+        function getPharmacyThanas() {
+            var districtId = $('#selectPharmacyDistrict option:selected').val();
+
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+
+            thanas = selectedDistrict.thanas;
+
+            $('#selectPharmacyThana').html('');
+            $('#selectPharmacyThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+            $.map(thanas, function(value) {
+                $('#selectPharmacyThana')
+                    .append($("<option></option>")
+                        .attr("value",value.id)
+                        .text(value.name));
+            });
+
+        }
+
         function getAreas() {
             var areaId = $('#selectThana option:selected').val();
             var selectedThana = thanas.find(thana => thana.id == areaId);
@@ -719,6 +759,32 @@
                         .append($("<option></option>")
                             .attr("value",value.id)
                             .text(value.name));
+            });
+        }
+        function getPharmacy() {
+            console.log('hello');
+            var thanaId = $('#selectPharmacyThana option:selected').val();
+            console.log(thanaId, 'thanaId');
+            $.ajax({
+                url: '{{ url('find-pharmacy-list') }}',
+                method: "get",
+                data: {_token: '{{ csrf_token() }}', id: thanaId},
+                success: function (response) {
+                    var values = response;
+                    console.log(values)
+                    $.map(values, function(value) {
+                        $('#selectPharmacy').removeAttr('disabled');
+                        $('#pharmacy-submit').removeAttr('disabled');
+
+                        $('#selectPharmacy')
+                            .append($("<option></option>")
+                                .attr("value",value.id)
+                                .text(value.pharmacy_name));
+                    });
+                },
+                error: function (response) {
+                    console.log(response)
+                }
             });
         }
     </script>
