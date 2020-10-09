@@ -7,6 +7,9 @@
     .my-table tr th {
         min-width: 157px!important;
     }
+    .btn--primary{
+        border: none!important;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -119,7 +122,7 @@
                     <form method="post" action="{{route('order.to.cart')}}">
                         <input type="hidden" name="itemId" value="{{ $data->id }}">
                         @csrf
-                    <div class="mt-5 text-center">
+                    <div class="text-center">
                         <button type="submit" class="button btn--primary mt-5">Add items to Cart</button>
                     </div>
                     </form>

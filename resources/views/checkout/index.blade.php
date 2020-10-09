@@ -455,7 +455,7 @@
                     } else {
                         console.log(response, 'response')
                         console.log('hello :) its false')
-                        console.log(thanaId, 'thana')
+                        // console.log(thanaId, 'thana')
 
                         $('#pharmacy_search').val('');
                         $('#pharmacyModal').modal('toggle');
@@ -772,6 +772,7 @@
                 success: function (response) {
                     var values = response;
                     console.log(values)
+                    $('#selectPharmacy').html('');
                     $.map(values, function(value) {
                         $('#selectPharmacy').removeAttr('disabled');
                         $('#pharmacy-submit').removeAttr('disabled');
