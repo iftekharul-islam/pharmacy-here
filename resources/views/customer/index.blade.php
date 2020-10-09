@@ -170,11 +170,11 @@
                                                         @elseif ($order->status == 4)
                                                             <span class="badge badge-info">Failed</span>
                                                         @elseif ($order->status == 5)
-                                                            <span class="badge badge-info">Rejected By Pharmacy</span>
+                                                            <span class="badge badge-danger">Rejected By Pharmacy</span>
                                                         @elseif ($order->status == 6)
                                                             <span class="badge badge-info">Forwarded</span>
                                                         @elseif ($order->status == 7)
-                                                            <span class="badge badge-info">Expired</span>
+                                                            <span class="badge badge-danger">Expired</span>
                                                         @elseif ($order->status == 8)
                                                             <span class="badge badge-info">Orphan</span>
                                                         @elseif ($order->status == 9)
