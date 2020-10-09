@@ -395,7 +395,7 @@ class OrderRepository
            return $this->forwardOrder($order_id, $status_id);
         }
 
-        if ($status_id == 3) {
+        if ($status_id == 10) {
             $subject ='An order ID: ' . $order->order_no . ' has been canceled from ' . $order->pharmacy->name;
             sendOrderStatusEmail($order, $subject, $isCancel = true);
             logger('Status id');
