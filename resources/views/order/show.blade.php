@@ -43,27 +43,27 @@
                         <tr>
                             <th>Status:</th>
                             <td>
-                                @if ($data->status == 0)
+                                @if ($order->status == 0)
                                     <span class="badge badge-danger">Pending</span>
-                                @elseif ($data->status == 1)
+                                @elseif ($order->status == 1)
                                     <span class="badge badge-warning">Accepted</span>
-                                @elseif ($data->status == 3)
+                                @elseif ($order->status == 2)
                                     <span class="badge" style="background: #FFFF00">Processing</span>
-                                @elseif ($data->status == 3)
+                                @elseif ($order->status == 3)
                                     <span class="badge badge-success">Completed</span>
-                                @elseif ($data->status == 4)
+                                @elseif ($order->status == 4)
                                     <span class="badge badge-info">Failed</span>
-                                @elseif ($data->status == 5)
-                                    <span class="badge badge-info">Rejected By Pharmacy</span>
-                                @elseif ($data->status == 6)
+                                @elseif ($order->status == 5)
+                                    <span class="badge badge-danger">Rejected By Pharmacy</span>
+                                @elseif ($order->status == 6)
                                     <span class="badge badge-info">Forwarded</span>
-                                @elseif ($data->status == 7)
-                                    <span class="badge badge-info">Expired</span>
-                                @elseif ($data->status == 8)
+                                @elseif ($order->status == 7)
+                                    <span class="badge badge-danger">Expired</span>
+                                @elseif ($order->status == 8)
                                     <span class="badge badge-info">Orphan</span>
-                                @elseif ($data->status == 9)
+                                @elseif ($order->status == 9)
                                     <span class="badge badge-info">On The Way</span>
-                                @elseif ($data->status == 10)
+                                @elseif ($order->status == 10)
                                     <span class="badge badge-danger">Cancel</span>
                                 @endif
                             </td>

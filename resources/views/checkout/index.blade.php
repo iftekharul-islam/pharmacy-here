@@ -783,7 +783,7 @@
 
                         $('#selectPharmacy')
                             .append($("<option></option>")
-                                .attr("value",value.id)
+                                .attr("value",value.user_id)
                                 .text(value.pharmacy_name));
                     });
                 },
