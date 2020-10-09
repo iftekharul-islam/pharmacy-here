@@ -67,8 +67,8 @@ return [
         'gcs' => [
             'driver' => 'gcs',
             'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
-            'key_file' => 'subidha-gcs.json', // optional: /path/to/service-account.json
-            'bucket' => public_path('subidha-images'),
+            'key_file' => public_path('subidha-gcs.json'), // optional: /path/to/service-account.json
+            'bucket' => 'subidha-images',
 //            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null), // optional: /default/path/to/apply/in/bucket
             'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI'), // see: Public URLs below
 //            'visibility' => 'public', // optional: public|private
