@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Modules\Address\Entities\CustomerAddress;
 use Modules\Address\Repositories\AddressRepository;
 use Modules\Locations\Repositories\LocationRepository;
 use Modules\Orders\Entities\Models\Order;
@@ -18,6 +19,7 @@ use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
 use Modules\Orders\Repositories\DeliveryChargeRepository;
 use Modules\Orders\Repositories\OrderRepository;
+use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
 use Modules\User\Repositories\PharmacyRepository;
@@ -81,7 +83,7 @@ class CheckoutController extends Controller
 
     public function check(CheckoutCreateRequest $request)
     {
-//        return $request->all();
+        return $request->all();
 
         if ($request->payment_type == 1){
             $data = $request->only([
@@ -111,6 +113,7 @@ class CheckoutController extends Controller
             $data['order_no'] = $this->generateOrderNo();
             $data['order_date'] = Carbon::today();
             $data['customer_id'] = Auth::user()->id;
+            $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
             $data['notes'] = "Its a sample" ;
             $data['is_rated'] = "no";
             $data['delivery_charge'] = $request->delivery_charge_amount;
@@ -831,6 +834,17 @@ class CheckoutController extends Controller
         $thana_id = $request->id;
         $availablePharmacyList = $this->pharmacyRepository->getAvailablePharmacyList($thana_id);
         return response()->json($availablePharmacyList);
+    }
+
+    /**
+     * @param $address_id
+     * @return string
+     */
+    public function getNearestPharmacyId($address_id) {
+        $address = CustomerAddress::find($address_id);
+        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
+
+        return  $pharmacy ? $pharmacy->user_id : '';
     }
 
 
