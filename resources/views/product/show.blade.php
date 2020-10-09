@@ -116,7 +116,11 @@
                             <small>{{ $product->generic->name }}</small>
                             <p><small>{{ $product->company->name }}</small></p>
                         </div>
-                        <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">view</a>
+                        @auth
+                            <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">view</a>
+                        @else
+                            <a href="{{ route('customer.login') }}" class="btn btn--primary w-100">view</a>
+                        @endauth
                     </div>
                     @endforeach
                     </div>
