@@ -476,7 +476,6 @@
         function getDeliveryType(deliveryType) {
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
             var deliveryCharge =parseInt( $('input[name="delivery_charge"]:checked').val() );
-            console.log(deliveryCharge, 'hdjasdnj');
 
             $('input[name="delivery_type"]').val(deliveryType);
 
@@ -500,24 +499,29 @@
                 var month = dt.getMonth()+ 1;
                 var date = dt.getDate() + "-" + month  + "-" + dt.getFullYear()
                 var next_date = (dt.getDate() + 1) + "-" + month + "-" + dt.getFullYear()
-                console.log(date, 'today date');
-                console.log(next_date, 'next date');
 
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
+                var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
                 // document.write(next_date);
 
-                if ( time < normal_start_time) {
+                console.log(date, 'date')
+                console.log(next_date, 'next_date')
+                console.log(time, 'time')
+                console.log(time_new, 'time_new')
+                console.log(normal_start_time, 'normal_start_time')
+
+                if ( time_new < normal_start_time) {
                     $(".normal_date").val("(" +normal_time_slot[0] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('10:00:00');
-                }
-                if ( time > normal_start_time && time < normal_end_time) {
+
+                } else if ( time_new > normal_start_time && time_new < normal_end_time) {
                     $(".normal_date").val("(" +normal_time_slot[1] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('19:00:00');
-                }
-                else {
+
+                } else {
                     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
                     $(".normal_delivery_time").val('10:00:00');
@@ -548,12 +552,38 @@
                                                 '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
 
                 $('.express_slot').append(`<option value="" selected disabled>Please Select a slot</option>`);
-                $.each(express_time_slot, function(key, value) {
-                    $('.express_slot')
-                        .append($("<option></option>")
-                            .attr("value", express_time_slot_insert[key])
-                            .text(value));
+
+                var today_date = new Date();
+                var time_now = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds();
+
+                var available_time = null ;
+
+                $.each(express_time_slot, function(key) {
+                    if (express_time_slot_insert[key] >= time_now) {
+                        available_time = key+2 ;
+                        return false; // breaks
+                    }
+
                 });
+                console.log(available_time, 'available_time for express delivery');
+
+                if ( available_time !== null) {
+                    $.each(express_time_slot, function(key, value) {
+                            if (key >= available_time) {
+                            $('.express_slot')
+                                .append($("<option></option>")
+                                    .attr("value", express_time_slot_insert[key])
+                                    .text(value));
+                        }
+                    });
+                } else {
+                    $.each(express_time_slot, function(key, value) {
+                        $('.express_slot')
+                            .append($("<option></option>")
+                                .attr("value", express_time_slot_insert[key])
+                                .text(value));
+                    });
+                }
 
                 <!--End express delivery date calculation -->
 
@@ -573,11 +603,13 @@
 
             var tm = new Date();
             var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
+            var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
 
             var check_time = moment.utc(time_slot, 'hh:mm:ss').add(-2, 'hour').format('HH:mm:ss');
             var show_time = moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A');
 
-            if (time > check_time) {
+
+            if ( time_new > check_time) {
                 $('.express_date').val(show_time + ", " + next_date);
                 $(".express_delivery_date").val(next_date);
                 $(".express_delivery_time").val(time_slot);
@@ -594,7 +626,6 @@
             let grandTotal = total;
             console.log(total, 'first total');
             $('input[name="delivery_charge_amount"]').prop('disabled', false);
-            // console.log('hello 1');
             console.log('Add delivery total');
             console.log('Delivery type: ', deliveryType);
             console.log('pay type: ', payTypeValue);
