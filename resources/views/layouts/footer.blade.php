@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="footer-menu-list">
-                        <a href="#">CONTACT US</a>
+                        <a href="#">{{ __('text.contact_us') }}</a>
                         <address>
                             House 5/4/B (2nd Floor), Block A,<br> Lalmatia, Dhaka-1207<br>
                             <br><p>info@subidha.com</p>
@@ -34,7 +34,7 @@
                         </address>
                     </div>
                     <div class="footer-menu-list">
-                        <a href="#">SOCIAL</a>
+                        <a href="#">{{ __('text.social') }}</a>
                         <ul>
                             <li><a href="https://www.facebook.com" target="tab"><i class="fab fa-facebook-square mr-2"></i>{{ __('text.facebook') }}</a></li>
                             <li><a href="https://twitter.com" target="tab"><i class="fab fa-twitter mr-2"></i>{{ __('text.twitter') }}</a></li>

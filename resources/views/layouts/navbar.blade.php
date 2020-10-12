@@ -21,7 +21,7 @@
 {{--                    <a>Upcomming</a>--}}
 {{--                </li>--}}
                 <li>
-                    <a href="{{ route('faq') }}">Need Help?</a>
+                    <a href="{{ route('faq') }}">{{ __('text.need_help') }}?</a>
 {{--                    <a>Upcomming</a>--}}
                 </li>
                 <li class="language">
