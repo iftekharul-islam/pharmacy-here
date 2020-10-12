@@ -2,7 +2,7 @@
     <div class="container">
         <!-- logo -->
         <a class="navbar-brand subidha--logo" href="{{ route('home') }}">
-            <img src="{{ asset('images/logo.png') }}" class="img-fluid" alt="Subidha logo"><span class="">Subidha</span>
+            <img src="{{ asset('images/logo.png') }}" class="img-fluid" alt="Subidha logo"><span class="">{{ __('text.subidha') }}</span>
         </a>
 
         <!-- Toggle button for small device -->
@@ -25,14 +25,15 @@
 {{--                    <a>Upcomming</a>--}}
                 </li>
                 <li class="language">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle language-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ asset('images/usa.svg') }}" alt=""> EN
+                    @if(app()->getLocale() == 'en')
+                        <button class="btn btn-secondary language-dropdown py-0" type="button">
+                        <a href=" {{ url('locale/bn') }}" ><img width="36px" src="{{ asset('images/bd.png') }}" alt="bangladesh-flag"> BD</a>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-custom my-language" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#"><img src="{{ asset('images/bd.png') }}" alt="bangladesh-flag">BD</a>
-                        </div>
-                    </div>
+                    @else
+                        <button class="btn btn-secondary language-dropdown" type="button">
+                                <a href=" {{ url('locale/en') }}"><img src="{{ asset('images/usa.svg') }}" alt="usa-flag"> EN </a>
+                        </button>
+                    @endif
                 </li>
                 <li>
 {{--                    <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>--}}

@@ -16138,6 +16138,12 @@ html {
     background-position: 7px 10px;
 }
 
+.payment-step > li:nth-child(6)::after {
+    content: "";
+    background: url(../images/payment2.png);
+    background-repeat: no-repeat;
+    background-position: 7px 10px;
+}
 
 
 .payment-step > li:last-child {
@@ -16146,7 +16152,7 @@ html {
 
 .payment-step > li:last-child::after {
   content: "";
-  background: url(../images/payment3.png);
+  background: url(../images/bag.png);
   background-repeat: no-repeat;
   background-position: 7px 10px;
 }
@@ -17113,7 +17119,7 @@ html {
 .footer-menu-list:nth-child(2) {
   text-align: left;
   -ms-flex-preferred-size: 25%;
-      flex-basis: 25%;
+      flex-basis: 31%;
 }
 
 @media (min-width: 992px) {
