@@ -63,7 +63,6 @@ Route::group(['middleware' => ['customerAuth']], function () {
 
 // Cart
 Route::group(['prefix' => 'cart'], function () {
-//    Route::get('/', 'CartController@index')->name('cart.index');
     Route::get('add-to-cart/{medicine_id}', 'CartController@addToCart')->name('cart.addToCart');
     Route::put('update-cart', 'CartController@update')->name('update.cart');
     Route::delete('remove-from-cart', 'CartController@remove')->name('delete.cart');
