@@ -16,11 +16,18 @@
     .save-profile-btn {
         border: 1px solid #00ce5e;
     }
+    .add-address {
+        padding: 41px!important;
+    }
 </style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
+        </div>
+    @elseif (session('failed'))
+        <div id="successMessage" class="alert alert-danger">
+            {{ session('failed') }}
         </div>
     @endif
     <!-- checkout -->
@@ -37,7 +44,7 @@
                             <input type="text" class="d-none" name="phone_number" value="{{ $user->phone_number }}">
                             <input type="hidden" name="delivery_type" value="">
                             <input type="hidden" name="amount" value="">
-                            <input type="hidden" name="pharmacy_id" value="">
+                            <input type="hidden" id="insert_pharmacy_id" name="pharmacy_id" value="">
                             <input type="hidden" class="normal_delivery_date" name="normal_delivery_date" value="">
                             <input type="hidden" class="normal_delivery_time" name="normal_delivery_time" value="">
                             <input type="hidden" class="express_delivery_time" name="express_delivery_time" value="">
@@ -67,7 +74,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
-                                            <input type="text" class="d-none" name="shipping_address_id" value="">
+                                            <input type="text" class="d-none" name="shipping_address_id" value=""><br>
+                                            <input type="text" class="d-none" id="pharmacy_search" name="pharmacy_search_id" value="">
                                             @if ($errors->has('shipping_address_id'))
                                                 <span class="text-danger">
                                                     <strong>{{ $errors->first('shipping_address_id') }}</strong>
@@ -224,10 +232,8 @@
                                     <p id="grandTotal"></p>
                                 </li>
                             </ul>
-                            <div class="row">
-                                <div class="col-md-8 p-0">
-                                    <button type="submit" id="final-submit" class="w-100 text-center btn--primary d-block checkout-btn save-profile-btn d-block">Proceed to Checkout</button>
-                                </div>
+                            <div class="col-md-3 mx-auto">
+                                <button type="submit" id="final-submit" class="btn--primary checkout-btn save-profile-btn d-block px-5">Proceed to Checkout</button>
                             </div>
                         </form>
                     </div>
@@ -236,6 +242,47 @@
         </div>
     </section>
 
+    <!-- Modal -->
+    <div class="modal fade" id="pharmacyModal" tabindex="-1" role="dialog" aria-labelledby="pharmacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pharmacyModalLabel">Select Address for Pharmacy</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="district" class="col-form-label">District</label>
+                            <select class="form-control" id="selectPharmacyDistrict" onchange="getPharmacyThanas(value)">
+                                <option value="" disabled selected>Please select a district name</option>
+                                @foreach($allLocations as $district)
+                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" >{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thana" class="col-form-label">Thana</label>
+                            <select class="form-control" id="selectPharmacyThana" onchange="getPharmacy()">
+
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="area" class="col-form-label">Pharamacy</label>
+                            <select class="form-control" id="selectPharmacy" name="select_pharamcy" disabled="">
+                            </select>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="pharmacy-submit" disabled="">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -285,7 +332,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="submit" disabled="">Save address</button>
+                    <button type="submit" class="btn btn--primary" id="submit" disabled="">Save address</button>
                 </div>
                 </form>
             </div>
@@ -295,6 +342,14 @@
 @endsection
 @section ('js')
     <script>
+        $("#pharmacy-submit").on('click', function () {
+            var pharmacy = $('#selectPharmacy').val();
+            $('#insert_pharmacy_id').val(pharmacy);
+            $('#pharmacy_search').val(pharmacy);
+            console.log(pharmacy, 'pharmacy');
+            $('#pharmacyModal').modal('hide');
+        });
+
         $('#final-submit').on('click', function () {
             window.scrollTo(0, 0);
         });
@@ -306,11 +361,22 @@
                 shipping_address_id: {
                     required: true
                 },
+                pharmacy_search_id: {
+                    required: true
+                },
             },
+            messages: {
+                shipping_address_id: {
+                    required: "Please Select a Address",
+                },
+                pharmacy_search_id: {
+                    required: "No pharmacy selected. Please select one",
+                },
+            }
         });
 
         $('#submit').on('click', function () {
-            $('#submit').addClass('d-none');
+            $('#addressModal').modal('hide');
         })
         // Get the container element
         var btnContainer = document.getElementById("myAddress");
@@ -372,7 +438,7 @@
             addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
         })();
 
-        function getAddressId(id, areaId, thanaId) {
+        function getAddressId(id, areaId) {
 
             $('input[name="shipping_address_id"]').val(id);
 
@@ -382,61 +448,23 @@
                 data: {_token: '{{ csrf_token() }}', id: areaId},
 
                 success: function (response) {
-
                     console.log(response);
-
                     if (response === true) {
+
+                        $('#pharmacy_search').val('1');
+                        $('#insert_pharmacy_id').val('');
                         console.log(id, 'hello :) its true')
-                        $('input[name="pharmacy_id"]').val(id);
 
                     } else {
                         console.log(response, 'response')
                         console.log('hello :) its false')
-                        console.log(thanaId, 'thana')
+                        // console.log(thanaId, 'thana')
 
-                        $.ajax({
-                            url: '{{ url('find-pharmacy-list') }}',
-                            method: "get",
-                            data: {_token: '{{ csrf_token() }}', id: thanaId},
-                            success: function (response) {
-                                var values = response;
-                                console.log(values)
-                                var options = {};
-                                $.map(values,
-                                    function(o) {
-                                        options[o.user_id] = o.pharmacy_name + ', ' + o.area.name ;
-                                    });
-                                Swal.fire({
-                                    // html : 'You need to Select a pharmacy',
-                                    icon: 'warning',
-                                    title: 'Pharmacy not available at your location !!!',
-                                    input: 'select',
-                                    inputOptions:options,
-                                    inputPlaceholder: 'Please select a pharmacy',
-                                    showCancelButton: true,
-                                    inputValidator: function (value) {
-                                        return new Promise(function (resolve, reject) {
-                                            if (value !== '') {
-                                                resolve();
-                                            } else {
-                                                resolve('You need to select a Pharmacy');
-                                            }
-                                        });
-                                    }
-                                }).then(function (result) {
-                                    $('input[name="pharmacy_id"]').val(result.value);
-                                    if (result.value) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            showConfirmButton: false,
-                                            timer: 1000
-                                        });
-                                    }
-                                });
+                        $('#pharmacy_search').val('');
+                        $('#insert_pharmacy_id').val('');
 
-
-                            },
-                        });
+                        $('#pharmacyModal').modal('toggle');
+                        $('#pharmacyModal').modal('show');
                     }
                 },
                 error: function (response) {
@@ -448,7 +476,6 @@
         function getDeliveryType(deliveryType) {
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
             var deliveryCharge =parseInt( $('input[name="delivery_charge"]:checked').val() );
-            console.log(deliveryCharge, 'hdjasdnj');
 
             $('input[name="delivery_type"]').val(deliveryType);
 
@@ -472,24 +499,29 @@
                 var month = dt.getMonth()+ 1;
                 var date = dt.getDate() + "-" + month  + "-" + dt.getFullYear()
                 var next_date = (dt.getDate() + 1) + "-" + month + "-" + dt.getFullYear()
-                console.log(date, 'today date');
-                console.log(next_date, 'next date');
 
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
+                var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
                 // document.write(next_date);
 
-                if ( time < normal_start_time) {
+                console.log(date, 'date')
+                console.log(next_date, 'next_date')
+                console.log(time, 'time')
+                console.log(time_new, 'time_new')
+                console.log(normal_start_time, 'normal_start_time')
+
+                if ( time_new < normal_start_time) {
                     $(".normal_date").val("(" +normal_time_slot[0] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('10:00:00');
-                }
-                if ( time > normal_start_time && time < normal_end_time) {
+
+                } else if ( time_new > normal_start_time && time_new < normal_end_time) {
                     $(".normal_date").val("(" +normal_time_slot[1] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('19:00:00');
-                }
-                else {
+
+                } else {
                     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
                     $(".normal_delivery_time").val('10:00:00');
@@ -520,12 +552,38 @@
                                                 '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
 
                 $('.express_slot').append(`<option value="" selected disabled>Please Select a slot</option>`);
-                $.each(express_time_slot, function(key, value) {
-                    $('.express_slot')
-                        .append($("<option></option>")
-                            .attr("value", express_time_slot_insert[key])
-                            .text(value));
+
+                var today_date = new Date();
+                var time_now = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds();
+
+                var available_time = null ;
+
+                $.each(express_time_slot, function(key) {
+                    if (express_time_slot_insert[key] >= time_now) {
+                        available_time = key+2 ;
+                        return false; // breaks
+                    }
+
                 });
+                console.log(available_time, 'available_time for express delivery');
+
+                if ( available_time !== null) {
+                    $.each(express_time_slot, function(key, value) {
+                            if (key >= available_time) {
+                            $('.express_slot')
+                                .append($("<option></option>")
+                                    .attr("value", express_time_slot_insert[key])
+                                    .text(value));
+                        }
+                    });
+                } else {
+                    $.each(express_time_slot, function(key, value) {
+                        $('.express_slot')
+                            .append($("<option></option>")
+                                .attr("value", express_time_slot_insert[key])
+                                .text(value));
+                    });
+                }
 
                 <!--End express delivery date calculation -->
 
@@ -545,11 +603,13 @@
 
             var tm = new Date();
             var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
+            var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
 
             var check_time = moment.utc(time_slot, 'hh:mm:ss').add(-2, 'hour').format('HH:mm:ss');
             var show_time = moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A');
 
-            if (time > check_time) {
+
+            if ( time_new > check_time) {
                 $('.express_date').val(show_time + ", " + next_date);
                 $(".express_delivery_date").val(next_date);
                 $(".express_delivery_time").val(time_slot);
@@ -566,7 +626,6 @@
             let grandTotal = total;
             console.log(total, 'first total');
             $('input[name="delivery_charge_amount"]').prop('disabled', false);
-            // console.log('hello 1');
             console.log('Add delivery total');
             console.log('Delivery type: ', deliveryType);
             console.log('pay type: ', payTypeValue);
@@ -696,6 +755,25 @@
 
         }
 
+        function getPharmacyThanas() {
+            var districtId = $('#selectPharmacyDistrict option:selected').val();
+
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+
+            thanas = selectedDistrict.thanas;
+
+            $('#selectPharmacyThana').html('');
+            $('#selectPharmacyThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+            $.map(thanas, function(value) {
+                $('#selectPharmacyThana')
+                    .append($("<option></option>")
+                        .attr("value",value.id)
+                        .text(value.name));
+            });
+
+        }
+
         function getAreas() {
             var areaId = $('#selectThana option:selected').val();
             var selectedThana = thanas.find(thana => thana.id == areaId);
@@ -717,6 +795,32 @@
                         .append($("<option></option>")
                             .attr("value",value.id)
                             .text(value.name));
+            });
+        }
+        function getPharmacy() {
+            var thanaId = $('#selectPharmacyThana option:selected').val();
+            console.log(thanaId, 'thanaId');
+            $.ajax({
+                url: '{{ url('find-pharmacy-list') }}',
+                method: "get",
+                data: {_token: '{{ csrf_token() }}', id: thanaId},
+                success: function (response) {
+                    var values = response;
+                    console.log(values)
+                    $('#selectPharmacy').html('');
+                    $.map(values, function(value) {
+                        $('#selectPharmacy').removeAttr('disabled');
+                        $('#pharmacy-submit').removeAttr('disabled');
+
+                        $('#selectPharmacy')
+                            .append($("<option></option>")
+                                .attr("value",value.user_id)
+                                .text(value.pharmacy_name));
+                    });
+                },
+                error: function (response) {
+                    console.log(response)
+                }
             });
         }
     </script>

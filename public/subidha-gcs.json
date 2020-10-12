@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "subidha-df724",
+  "private_key_id": "deb046a89f674c2cab2de9f65fe90307cdb70d4a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDuT8SPbGdGVtom\nMrXi+i/GQFOvyAfdNLmfQrSQYtq2/uA70vOMzFZb+RbGDLU5W8nnieABHS1hO+g7\n7Rn6Odg4mBNGO8Y5uTTT8qqrGlX71nv0G2ACxN5pfLFChgR0+AkMTT6teORN1+Wz\n1udrtXuD7SYQxWgk6YLQzKgFN4r4ZlWLmYxoU7UaCBXdkxseHAM3svMWjBzWYx5g\n4A8h+1Z6TJGtthZUQXzelEMw1qLBf2ZuKlR9Xv/6wl2NMlqBimT/+joAbPv82QpW\nDax6ZuWB1AGMyvdUkzst9kRllBeRrNdu2SJlwbU9HbG0MHNKPJ51ETuQPp4ea3Qe\n1muPzTnbAgMBAAECggEAJQBGnRwwNsgia97gxcKhq07uj3Ln4a0fiv5A6dAndFVD\nfJZm0Twixnn40rxDYQoC4cvS92lP0/KIvtE0ANl9XGAkUfnS78B1VtktLY7TvdvR\n+BdOA3AMtmUxYopLY9vlD79olWeZTwrP8+nQmbUeXd/y0pTL9Ds7X+7+wXybu7Bf\nKimjD3FwIMQ03TV7lHKxUDlsPwmzz/d/LnebzmYQgd6AEOliPLUuGpFax7F8lcDW\nF4WuE4SRsWCDZbjEQnyritwakkLRxCVpR6k7uJtKzm+sN75HUNVUPPDdNBYHtHGh\n/Vj9cIbAWEVblnPj3bkIAObKEXAhhWEA2JqF+gCjLQKBgQD93dzziZV/vtTyxE+I\nvSc2JNoiVDIA5LZRlfx/dlmRRCXXe9G+4K9euPdgpzhMtyn3vYzMe4FVr3AOKodl\nT0EnIfU2Wuen0pMKaiKMIPpoGwxI1/z4EW3LZcFKpIGN2mKawqOUyMg0MIO+8181\nRd0AoMQehbdNROF2i7142dbH9wKBgQDwUHEHMB48i+KzwxMsFg15lltdDm63u82N\ndP2X5aaNhmGmbCw9ovV18ZlHS8jsITei1ZqitUEzC2BHWpzrepfi5Lu0RmY+qwev\nHFkifec6Rd+X0E2PyETFDMYWBV8tCGeskMMGTEYnEcQuKDgeqrLfboPoyzmQicYD\nUhQkC8AMPQKBgDMEDMzcDzD2tnB6xsjhyil1SmivpsTLMWA/1df/foxUt44QEdxb\n5qIQZZYExKmV/VcNvmexQhJoCQqvvTm8rYkhp9deeUMea/Ih1gN29RtKpDNXRDzN\ns9S2BBvt5yMMidgz2Q+jMahbP352BeH8wibIJ+FCWc2rU+uwtUi97g2NAoGAWZ4m\nCIAxRnMEP/VnmPFAZS9lMvbG403uAeq3B4Zk7jJHCEEe3n1+/FT0zFm+vBBHJzpx\nSGw/vEFpzjJEgqxdKAgU183JI2W0n+D6fJpnOJwGHh9YTV5qBvIUjPHD5I9V2kzB\n7f9Tyg4eEvh8tTMDMb+NAauH9Bbs+SAK0sZvACECgYEAvciePzwhczKELOxZ/Auz\njhfGoN8qt40tnbM3rYzG3fianMyjuzQDRf1if+cBEyTFSC+EU4ynOKQyDQN+CYrH\nrA6z7xoaZg7v1lUDbLFh27b6kn6Xf+U948WGH7r+qnuijdJn6KtsQXqgiaNdI4W/\n2g40sp+2tanL3B9hI2XIi28=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bucket-controller@subidha-df724.iam.gserviceaccount.com",
+  "client_id": "109449496543329362914",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bucket-controller%40subidha-df724.iam.gserviceaccount.com"
+}

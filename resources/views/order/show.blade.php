@@ -1,110 +1,161 @@
 @extends('layouts.app')
+<style>
+    .my-table {
+        margin-left: -12px!important;
+        width: 20px;
+    }
+    .my-table tr th {
+        min-width: 157px!important;
+    }
+    .btn--primary{
+        border: none!important;
+    }
+</style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @elseif (session('failed'))
-        <div class="alert alert-danger">
+        <div id="successMessage" class="alert alert-danger">
             {{ session('failed') }}
         </div>
     @endif
     <div class="order-section">
         <div class="container">
             <div class="row">
-                <div class="col-6">
-                    <h2 class="my-dashboard-title">My Orders details</h2>
-                </div>
-                <div class="col-8">
-                    <strong>Order no</strong>
-                    <label> #{{ $data->order_no }} </label> &nbsp; &nbsp; &nbsp; &nbsp;
-                    <strong>Order date :</strong>
-                    <label>{{ date('d F Y', strtotime($data->order_date)) }} </label><br>
-                    <strong>Address :</strong>
-                    <label> {{ $data->address->address }}, {{ $data->address->area->name }}, {{ $data->address->area->thana->name }}, {{ $data->address->area->thana->district->name }}.</label><br>
-                    <strong>Payment method :</strong>
-                    <label>@if ($data->payment_type == 1)
-                               Home delivery
-                           @else
-                                Pharmacy Pickup
-                           @endif
-                    </label><br>
-                    <strong>Payment Type :</strong>
-                    <label>
-                        @if ($data->payment_type == 1)
-                            <a class="badge badge-primary text-white">Cash on delivery</a>
-                        @else
-                            <a class="badge badge-primary text-white">Online payment</a>
+                <div class="col-md-5">
+                    <h2 class="my-dashboard-title">My Orders Details</h2>
+{{--                <div class="col-5">--}}
+                    <table class="my-table table table-borderless">
+                        <tr>
+                            <th>Order no</th>
+                            <td>#{{ $data->order_no }}</td>
+                        </tr>
+                        <tr>
+                            <th>Order date:</th>
+                            <td>{{ date('d F Y', strtotime($data->order_date)) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <td>{{ $data->address->address }}, {{ $data->address->area->name }}, {{ $data->address->area->thana->name }}, {{ $data->address->area->thana->district->name }}.</td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td>
+                                @if ($order->status == 0)
+                                    <span class="badge badge-danger">Pending</span>
+                                @elseif ($order->status == 1)
+                                    <span class="badge badge-warning">Accepted</span>
+                                @elseif ($order->status == 2)
+                                    <span class="badge" style="background: #FFFF00">Processing</span>
+                                @elseif ($order->status == 3)
+                                    <span class="badge badge-success">Completed</span>
+                                @elseif ($order->status == 4)
+                                    <span class="badge badge-info">Failed</span>
+                                @elseif ($order->status == 5)
+                                    <span class="badge badge-danger">Rejected By Pharmacy</span>
+                                @elseif ($order->status == 6)
+                                    <span class="badge badge-info">Forwarded</span>
+                                @elseif ($order->status == 7)
+                                    <span class="badge badge-danger">Expired</span>
+                                @elseif ($order->status == 8)
+                                    <span class="badge badge-info">Orphan</span>
+                                @elseif ($order->status == 9)
+                                    <span class="badge badge-info">On The Way</span>
+                                @elseif ($order->status == 10)
+                                    <span class="badge badge-danger">Cancel</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Payment Type:</th>
+                            <td>
+                                @if ($data->payment_type == 1)
+                                    Cash on Delivery
+                                @else
+                                    Online Payment
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Delivery Type:</th>
+                            <td>{{ $data->delivery_type == 1 ? 'Home Delivery' : 'Pharmacy Pickup' }}</td>
+                        </tr>
+                        @if ($data->delivery_type !== 2)
+                            <tr>
+                                <th>Delivery Method:</th>
+                                <td>
+                                    @if ($data->delivery_method == 'express')
+                                        Express Delivery
+                                    @elseif ($data->delivery_method == 'normal')
+                                        Normal Delivery
+                                    @endif
+                                </td>
+                            </tr>
                         @endif
-                    </label><br>
-                    @if ($data->delivery_type != 2)
-                        <strong>Delivery Type :</strong>
-                        <label>@if ($data->delivery_method = 'express')
-                                   Express Delivery
-                               @elseif ($data->delivery_method = 'normal')
-                                   Normal Delivery
-                               @endif
-                        </label><br>
-                    @endif
-                    <strong>Delivery date :</strong>
-                    <label>{{ date('d F Y', strtotime($data->delivery_date)) }}</label><br>
-                    <strong>Delivery Time :</strong>
-                    <label>{{ $data->delivery_time }}</label><br>
-                    <strong>Charge Amount :</strong>
-                    <label>{{ $data->delivery_charge }}</label><br>
-
+                        <tr>
+                            <th>Delivery date:</th>
+                            <td>
+                                {{ date('d F Y', strtotime($data->delivery_date)) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Delivery Time:</th>
+                            <td>
+                                {{ $data->delivery_time }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Charge Amount:</th>
+                            <td>
+                                {{ $data->delivery_charge }}
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="col-8">
+                <div class="col-md-7">
                 <div class="my-order-list">
                     <div class="table-responsive">
-{{--                        @if (count($orders) > 0)--}}
-                            <table class="table table-borderless">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Sub total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($data['orderItems'] as $product)
-                                    <tr>
-                                        <td>{{ $product->product->name }}</td>
-                                        <td>{{ $product->product->purchase_price }}</td>
-                                        <td>{{ $product->quantity }}</td>
-                                        <td>{{ $product->quantity * $product->product->purchase_price }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-{{--                        @else--}}
-{{--                            <h4 class="text-center">No data available</h4>--}}
-{{--                        @endif--}}
+                        <table class="table table-borderless">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Sub total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($data['orderItems'] as $product)
+                                <tr>
+                                    <td>{{ $product->product->name }}</td>
+                                    <td>৳ {{ $product->product->purchase_price }}</td>
+                                    <td>{{ $product->quantity }}</td>
+                                    <td>৳ {{ $product->quantity * $product->product->purchase_price }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Grand Total : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
+                                </tr>
+                            </tfooter>
+                        </table>
                     </div>
-                    <p><strong>Grand Total:</strong> {{ $data->amount + $data->delivery_charge }}</p>
-
                 </div>
+                    <form method="post" action="{{route('order.to.cart')}}">
+                        <input type="hidden" name="itemId" value="{{ $data->id }}">
+                        @csrf
+                    <div class="text-center">
+                        <button type="submit" class="button btn--primary mt-5">Add items to Cart</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-
-@section('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <!-- font awesome -->
-    <script src="{{ asset('js/icon.js') }}"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <!-- font awesome -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <!-- owl -->
-    <script src="js/owl.carousel.min.js"></script>
-    <!-- custom jquery -->
-    <script src="js/main.js"></script>
-
 @endsection

@@ -13,11 +13,11 @@
 </style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @elseif (session('failed'))
-        <div class="alert alert-danger">
+        <div id="successMessage" class="alert alert-danger">
             {{ session('failed') }}
         </div>
     @endif
@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary" id="submit" disabled="">Save address</button>
+                                            <button type="submit" class="btn btn-success" id="submit" disabled="">Save address</button>
                                         </div>
                                         </form>
                                     </div>
@@ -105,7 +105,7 @@
                                                 <td class="save-value">{{ $data->name }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="name" value="{{ $data->name }}"></td>
                                                 <td><b>Date of Birth:</b></td>
-                                                <td class="save-value">{{ $data->dob != null ? $data->dob : "Null" }}</td>
+                                                <td class="save-value">{{ $data->dob != null ? $data->dob : '' }}</td>
                                                 <td class="edit-value d-none"><input type="date" name="dob"  value="{{ $data->dob }}"></td>
 
                                             </tr>
@@ -114,7 +114,7 @@
                                                 <td class="save-value">{{ $data->phone_number }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
                                                 <td><b>Gender:</b></td>
-                                                <td class="save-value">{{ $data->gender != null ? $data->gender : "Null" }}</td>
+                                                <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>
                                             </tr>
                                             <tr>
@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="profile-btn">
-                                    <a class="btn--edit" onclick="input()">Edit Profile</a>
+                                    <a href="javascript:void(0)" class="btn--edit" onclick="input()">Edit Profile</a>
                                     <button type="submit" class="btn--primary save-profile-btn">Save Profile</button>
                                 </div>
                             </form>
@@ -156,20 +156,36 @@
                                             @foreach ($orders as $order)
                                                 <tr>
                                                     <td scope="row">#{{ $order->order_no }}</td>
-                                                    <td>{{ $order->order_date}}</td>
-                                                    <td>৳ {{ $order->amount}}</td>
+                                                    <td>{{ date('d F Y', strtotime($order->order_date)) }}</td>
+                                                    <td>৳ {{ $order->amount + $order->delivery_charge }}</td>
                                                     <td>
-                                                        @if ($order->status == 1)
-                                                            <span class="badge badge-primary">Accepted</span>
-                                                        @elseif ($order->status == 0)
+                                                        @if ($order->status == 0)
                                                             <span class="badge badge-danger">Pending</span>
+                                                        @elseif ($order->status == 1)
+                                                            <span class="badge badge-warning">Accepted</span>
+                                                        @elseif ($order->status == 2)
+                                                            <span class="badge" style="background: #FFFF00">Processing</span>
                                                         @elseif ($order->status == 3)
-                                                            <span class="badge badge-info">Processing</span>
+                                                            <span class="badge badge-success">Completed</span>
+                                                        @elseif ($order->status == 4)
+                                                            <span class="badge badge-info">Failed</span>
+                                                        @elseif ($order->status == 5)
+                                                            <span class="badge badge-danger">Rejected By Pharmacy</span>
+                                                        @elseif ($order->status == 6)
+                                                            <span class="badge badge-info">Forwarded</span>
+                                                        @elseif ($order->status == 7)
+                                                            <span class="badge badge-danger">Expired</span>
+                                                        @elseif ($order->status == 8)
+                                                            <span class="badge badge-info">Orphan</span>
+                                                        @elseif ($order->status == 9)
+                                                            <span class="badge badge-info">On The Way</span>
+                                                        @elseif ($order->status == 10)
+                                                            <span class="badge badge-danger">Cancel</span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-secondary" href="{{ route('order.details', $order->id)}}">
-                                                            <i class="fas fa-eye"></i>
+                                                        <a href="{{ route('order.details', $order->id)}}">
+                                                            View
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -185,12 +201,13 @@
                         </div>
 
                         <div class="tab-pane fade my-wishlists" id="v-pills-wishlists" role="tabpanel" aria-labelledby="v-pills-wishlists-tab">
-                            <h2 class="my-dashboard-title">My Prescriptions</h2>
-                            <div class="my-order-list">
+                            <h2 class="my-dashboard-title">My Prescriptions
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn--primary float-right mb-2" data-toggle="modal" data-target="#prescriptionModal">
                                     <i class="fas fa-plus"></i>  Prescription
                                 </button>
+                            </h2>
+{{--                            <div class="my-order-list">--}}
                                 <!-- Modal -->
                                 <div class="modal fade" id="prescriptionModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -244,81 +261,59 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive">
+{{--                                <div class="container">--}}
                                     @if (count($prescriptions) > 0)
-                                    <table class="table table-borderless">
-                                        <thead class="thead-light">
-                                        <tr>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Patient Name</th>
-                                            <th scope="col">Doctor name</th>
-                                            <th scope="col">Prescription date</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($prescriptions as $prescription )
-                                            <tr>
-                                                <td><img width="55px" height="60px" src="{{ $prescription->url }}" alt=""></td>
-                                                <td>{{ $prescription->patient_name }}</td>
-                                                <td>{{ $prescription->doctor_name }}</td>
-                                                <td>{{ $prescription->prescription_date }}</td>
-                                                <td>
-                                                    <button type="button" class="badge btn-primary" data-toggle="modal" data-target="#prescriptionDetailsModal">
-                                                        <i class="fa fa-eye"></i>
-                                                    </button>
-                                                    <div class="modal fade" id="prescriptionDetailsModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="prescriptionDetailsModalLabel">Prescription Details</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row">
-                                                                        <div class="col-6">
-                                                                            <img width="200px" height="300px" src="{{ $prescription->url }}" alt="">
-                                                                        </div>
-                                                                        <div class="col-6 My-modal">
-                                                                            <strong>Patient </strong>
-                                                                            <label>{{ $prescription->patient_name }}</label><br>
-                                                                            <strong>Doctor </strong>
-                                                                            <label>{{ $prescription->doctor_name }}</label><br>
-                                                                            <strong>Date</strong>
-                                                                            <label>{{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</label>
+                                        <div class="my-row row mb-3">
+                                            @foreach($prescriptions as $prescription )
+                                                <div class="my-box col-4 mt-4">
+                                                    <div class="order-summary">
+                                                        <div class="row">
+                                                            <div class="col-10">
+                                                                <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
+                                                                <strong>Patient: {{ $prescription->patient_name }}</strong><br>
+                                                                <small>Doctor: {{ $prescription->doctor_name }}</small>
+                                                                <br>
+                                                                <button type="button" class="btn btn--primary px-5 w-89 mt-3" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
+                                                                    View
+                                                                </button>
+                                                                <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="prescriptionDetailsModalLabel">Prescription Details</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-6 mb-3">
+                                                                                        <img width="200px" height="250px" src="{{ $prescription->url }}" alt="">
+                                                                                    </div>
+                                                                                    <div class="col-6 My-modal">
+                                                                                        <strong>Patient </strong>
+                                                                                        <label> {{$prescription->patient_name}}</label><br>
+                                                                                        <strong>Doctor </strong>
+                                                                                        <label>{{ $prescription->doctor_name }}</label><br>
+                                                                                        <strong>Date</strong>
+                                                                                        <label>{{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <form id="delete-form-{{ $loop->index }}" action="{{ route('prescription.destroy', $prescription->id) }}"
-                                                          method="post"
-                                                          class="form-horizontal d-inline">
-                                                        @method('DELETE')
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <div class="btn-group">
-                                                            <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                                    class="badge btn-danger">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </form>
-{{--                                                    <button class="badge btn-danger"><i class="fas fa-trash"></i></button>--}}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     @else
                                         <h4 class="text-center">No data available</h4>
                                     @endif
-                                </div>
                             </div>
-                            </div>
+                            {{ $prescriptions->links() }}
                         </div>
                     </div>
                 </div>
@@ -328,6 +323,17 @@
 @endsection
 @section('js')
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('.nav-pills a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+
         function input(){
             $(".save-value").addClass('d-none');
             $(".edit-value").removeClass('d-none');

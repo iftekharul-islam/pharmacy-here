@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <form method="POST" action="{{ route('customer.nameUpdate') }}">
+                    <form method="POST" id="form" action="{{ route('customer.nameUpdate') }}">
                         @csrf
                         <div class="text-center mb-5"><img src="{{ asset('images/logo.png') }}" alt="logo"></div>
                         <div class="form-group">
@@ -25,7 +25,7 @@
                             @enderror
                         </div>
                         <button type="submit" class="btn--sign-in">
-                            {{ __('Verify OTP') }}
+                            Register
                         </button>
                     </form>
                 </div>
@@ -42,6 +42,16 @@
 
 @section('js')
     <script>
+        $('#form').validate({ // initialize the plugin
+            ignore: [],
+            errorClass: "text-danger",
+            rules: {
+                name: {
+                    required: true
+                },
+            },
+        });
+
         function savePhoneNumber() {
             var phone = document.getElementById('phone_number').value;
             // console.log(phone);

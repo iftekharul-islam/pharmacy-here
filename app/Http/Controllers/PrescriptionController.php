@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PrescriptionSubmitRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -34,7 +35,7 @@ class PrescriptionController extends Controller
      */
     public function create()
     {
-        $prescriptions = $this->prescriptionRepository->getCustomerPrescription(Auth::user()->id);
+        $prescriptions = $this->prescriptionRepository->getCustomerPrescriptionWeb(Auth::user()->id);
         return view('prescription.create', compact('prescriptions'));
     }
 
@@ -42,8 +43,11 @@ class PrescriptionController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function selectedId(Request $request)
+    public function selectedId(PrescriptionSubmitRequest $request)
     {
+//        $request->validate([
+//            'prescription_id' => 'required',
+//        ]);
         session()->put('prescriptions', $request->prescription_id);
 
         return redirect()->route('checkout.preview');
@@ -57,12 +61,6 @@ class PrescriptionController extends Controller
      */
     public function store(CreatePrescriptionRequest $request)
     {
-
-//        $image = $request->file('url');
-//        $link = Storage::disk('gcs');
-//        $disk = $link->put('images/customer/prescription', $image );
-//        $data['utl'] = $link->url($disk);
-
         $data = $this->prescriptionRepository->createWeb($request);
         if ($data) {
             return redirect()->back()->with('success', 'Prescription successfully Added');

@@ -26,6 +26,18 @@ class HomeController extends Controller
         return view('home');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function terms()
+    {
+        return view('terms-page');
+    }
+    public function faq()
+    {
+        return view('faq-page');
+    }
+
 
 
 }

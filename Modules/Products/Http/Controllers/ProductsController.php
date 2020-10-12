@@ -12,9 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\Products\Entities\Model\Generic;
 use Modules\Products\Http\Requests\CreateProductRequest;
 use Modules\Products\Http\Requests\UpdateProductRequest;
+use Modules\Products\Imports\ProductImport;
 use Modules\Products\Repositories\ProductRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -132,5 +136,13 @@ class ProductsController extends Controller
         }
 
         return redirect()->route('index');
+    }
+
+    public function importCsv(Request $request)
+    {
+
+        Excel::import(new ProductImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Product Import Successful');
     }
 }

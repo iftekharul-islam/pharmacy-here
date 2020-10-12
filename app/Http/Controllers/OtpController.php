@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Repositories\CartRepository;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +15,12 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 class OtpController extends Controller
 {
     private $repository;
+    private $cartRepository;
 
-    public function __construct(AuthRepository $repository)
+    public function __construct(AuthRepository $repository, CartRepository $cartRepository)
     {
         $this->repository = $repository;
+        $this->cartRepository = $cartRepository;
     }
 
     public function createOtp(PhoneValidationRequest $request)
@@ -78,6 +81,10 @@ class OtpController extends Controller
 
                     return redirect()->route('cart.index');
                 }
+
+                $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
+                session()->put('cartCount', count($data) ?? '');
+
                 return redirect()->route('home');
             }
             return redirect()->route('customer.name');

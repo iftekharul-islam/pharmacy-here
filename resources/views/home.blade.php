@@ -11,7 +11,7 @@
         }
         #searchResult li {
             padding-left: 2rem;
-            padding-top: 10px;
+            padding-top: 2px;
             padding-bottom: 10px;
             text-align: left;
             cursor: pointer;
@@ -28,13 +28,13 @@
 @endsection
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @elseif (session('failed'))
-            <div class="alert alert-danger">
-                {{ session('failed') }}
-            </div>
+        <div id="successMessage" class="alert alert-danger">
+            {{ session('failed') }}
+        </div>
     @endif
     <!-- Medicine section -->
     <section class="medicine-search-section" style="background: url(images/main-bg.png); background-repeat: no-repeat; background-position: center; background-size: cover;">
@@ -65,7 +65,7 @@
                             <h4>Home Delivery</h4>
                             <p>With extra care we deliver
                                 your products.</p>
-                            <a href="#" class="btn--shop-now">Shop Now</a>
+{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/card-image-1.svg') }}" alt="card 1">
@@ -78,7 +78,7 @@
                             <h4>Home Delivery</h4>
                             <p>With extra care we deliver
                                 your products.</p>
-                            <a href="#" class="btn--shop-now">Shop Now</a>
+{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/card-image-2.svg') }}" alt="card 1">
@@ -91,7 +91,7 @@
                             <h4>Home Delivery</h4>
                             <p>With extra care we deliver
                                 your products.</p>
-                            <a href="#" class="btn--shop-now">Shop Now</a>
+{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/card-image-3.svg') }}" alt="card 1">
@@ -105,14 +105,14 @@
     <section class="download-section">
         <div class="container">
             <div class="row">
-                <div class="col-md-11 mx-auto">
+                <div class="col-md-12 mx-auto">
                     <div class="download">
                         <div class="left">
                             <h2>Download the app now!</h2>
                             <p>Download now and get all our services through the app.</p>
                         </div>
                         <div class="right">
-                            <a href="#"><img src="{{ asset('images/google-play.svg') }}" alt="play store"></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.subidha.customer" target="tab"><img src="{{ asset('images/google-play.svg') }}" alt="play store"></a>
                             <a href="#"><img src="{{ asset('images/apple.svg') }}" alt="apple store"></a>
                         </div>
                     </div>
@@ -140,15 +140,35 @@
                             data: {medicine: search},
                             dataType: 'json',
                             success: function (response) {
+                                console.log(response);
                                 var len = response.length;
                                 $("#searchResult").empty();
+                                $("#searchResult").append(`<li value=""></li>`);
                                 for (var i = 0; i < len; i++) {
                                     console.log(response[i]);
                                     var id = response[i]['id'];
                                     var name = response[i]['name'];
+                                    var image = response[i]['form']['slug'];
+                                    if(image === 'tablet' || image === 'capsul'){
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image === 'syrup') {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/syrup.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image === 'injection') {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/injection.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
+                                    else if (image === 'suppository') {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/suppositories.png') }}" class="pill mr-2" alt="pill">`;
+                                    }else {
+                                        var pill = `<img width="20px" height="20px" src="{{ asset('images/pill.png') }}" class="pill mr-2" alt="pill">`;
+                                    }
 
                                     if (search != name) {
-                                        $("#searchResult").append("<li value='" + id + "'>" + name + "</li>");
+                                        $("#searchResult")
+                                            .append(`<li value='" + id + "'>` +
+                                                 pill + name +
+                                                `</li> ` );
                                     }
 
                                 }

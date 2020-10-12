@@ -21,7 +21,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4">
-                    <a href="{{ route('orders.index') .'?status=10'  }}">
+                    <a href="{{ route('orders.index') .'?status=3'  }}">
                     <div class="card">
                         <h2 class="card-body text-center">Completed</h2>
                     </div>

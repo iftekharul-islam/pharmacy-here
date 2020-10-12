@@ -16,11 +16,13 @@
         </div>
         <div class="collapse navbar-collapse custom-collapse" id="navbarSupportedContent">
             <ul class="navbar-list ml-auto">
+{{--                <li>--}}
+{{--                    <a href="#">Offer</a>--}}
+{{--                    <a>Upcomming</a>--}}
+{{--                </li>--}}
                 <li>
-                    <a href="#">Offer</a>
-                </li>
-                <li>
-                    <a href="#">Need Help?</a>
+                    <a href="{{ route('faq') }}">Need Help?</a>
+{{--                    <a>Upcomming</a>--}}
                 </li>
                 <li class="language">
                     <div class="dropdown">
@@ -33,7 +35,8 @@
                     </div>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ route('cart.index') }}">{{ __('Cart') }} <span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>
+{{--                    <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>--}}
+                    <a  class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span id="cartCount" class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>
                 </li>
                 @guest
                     <li>

@@ -62,7 +62,7 @@ class OrderRepository
     }
     public function orderListByUserWeb($id)
     {
-        return Order::where('customer_id', $id)->paginate(10);
+        return Order::where('customer_id', $id)->orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function get($id)
@@ -370,6 +370,9 @@ class OrderRepository
     }
 
     public function updateStatus($order_id, $status_id) {
+        logger('update status Status id');
+        logger($status_id);
+
         $order = Order::with('address')->find($order_id);
 
         if ($order->status == 8 ) {
@@ -392,11 +395,16 @@ class OrderRepository
            return $this->forwardOrder($order_id, $status_id);
         }
 
-        if ($status_id == 3) {
-            $emailMessage = $order->order_no . ' order is canceled by '. $order->pharmacy->name .', please take action immediately.';
-            sendOrderStatusEmail($emailMessage);
-        }
+        if ($status_id == 10) {
+            $subject ='An order ID: ' . $order->order_no . ' has been canceled from ' . $order->pharmacy->name;
+            sendOrderStatusEmail($order, $subject, $isCancel = true);
+            logger('Status id');
+            logger($status_id);
+            $order->status = $status_id;
+            $order->save();
 
+            return responseData('Order status canceled');
+        }
 
         $order->status = $status_id;
         $order->save();
@@ -458,6 +466,8 @@ class OrderRepository
             return responseData('Order status updated');
         }
 
+        $subject ='An order ID: ' . $order->order_no . ' has been Orphaned';
+        sendOrderStatusEmail($order, $subject, $isCancel = false);
         $order->status = 8;
         $order->save();
 
@@ -467,8 +477,8 @@ class OrderRepository
         $orderHistory->status = $status_id;
         $orderHistory->save();
 
-        $emailMessage = $order->order_no . ' Order status is orphan, please take action immediately.';
-        sendOrderStatusEmail($emailMessage);
+//        $emailMessage = $order->order_no . ' Order status is orphan, please take action immediately.';
+//        sendOrderStatusEmail($emailMessage);
 
         return responseData('Order status updated');
     }

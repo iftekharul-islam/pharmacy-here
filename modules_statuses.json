@@ -12,5 +12,6 @@
     "Notice": true,
     "Resources": true,
     "Delivery": true,
-    "Feedback": true
+    "Feedback": true,
+    "Points": true
 }

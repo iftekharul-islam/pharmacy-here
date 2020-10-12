@@ -1,5 +1,13 @@
 @extends('layouts.app')
+<style>
+    .my-next-button {
+        width: 206px;
+    }
 
+    .prescription-image {
+        border: 1px solid #00CE5E ;
+    }
+</style>
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -12,9 +20,9 @@
             <div class="row">
                 <div class="col-6 mb-3">
                     <h2>Upload Prescriptions</h2>
-                    <p>Please upload images of valid prescription from your doctor.</p>
+                    <p class="mb-5">Please upload images of valid prescription from your doctor.</p>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary px-5" data-toggle="modal" data-target="#prescriptionModal">
+                    <button type="button" class="btn btn--primary px-5" data-toggle="modal" data-target="#prescriptionModal">
                         <i class="fas fa-plus"></i>  Prescription
                     </button>
                     <!-- Modal -->
@@ -36,7 +44,7 @@
                                             @if ($errors->has('patient_name'))
                                                 <span class="text-danger">
                                                         <strong>{{ $errors->first('patient_name') }}</strong>
-                                                    </span>
+                                                </span>
                                             @endif
                                         </div>
                                         <div class="form-group">
@@ -71,22 +79,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    @if ($errors->has('prescription_id'))
+                        <span class="mt-5 text-danger">
+                        <strong>{{ $errors->first('prescription_id') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
-            <form method="post" action="{{ route('prescriptions.id') }}">
+            <form id="form" method="post" action="{{ route('prescriptions.id') }}">
                 @csrf
-            <div class="row mb-5">
+            <div class="my-row row mb-5">
                     @foreach($prescriptions as $prescription )
-                        <div class="col-3">
+                        <div class="my-box col-3 mt-3">
                             <div class="order-summary">
                                 <div class="row">
                                     <div class="col-10">
-                                    <img height="150px" width="120px"  src="{{ $prescription->url }}" alt="">
-                                    <h5>Patient: {{ $prescription->patient_name }}</h5>
-                                    <p>Doctor: {{ $prescription->doctor_name }}</p><br>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#prescriptionDetailsModal">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <div class="modal fade" id="prescriptionDetailsModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
+                                    <img height="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
+                                    <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
+                                    <p>Doctor: {{ $prescription->doctor_name }}</p>
+                                    <button type="button" class="btn btn--primary px-5 w-89" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
+                                        View
+                                    </button>
+                                        <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -98,20 +113,14 @@
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-6">
-                                                                <img width="250px" height="300px" src="{{ $prescription->url }}" alt="">
+                                                                <img width="200px" height="250px" src="{{ $prescription->url }}" alt="">
                                                             </div>
                                                             <div class="col-6 My-modal">
-                                                                <strong>Patient </strong>
-                                                                <label>
-                                                                    @if (!empty($prescription->patient_name))
-                                                                        {{$prescription->patient_name}}
-                                                                    @else
-                                                                        {{ Auth::user()->name }}
-                                                                    @endif
-                                                                </label><br>
-                                                                <strong>Doctor </strong>
+                                                                <strong>Patient : </strong>
+                                                                <label>{{$prescription->patient_name}}</label><br>
+                                                                <strong>Doctor : </strong>
                                                                 <label>{{ $prescription->doctor_name }}</label><br>
-                                                                <strong>Date</strong>
+                                                                <strong>Date : </strong>
                                                                 <label>{{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</label>
                                                             </div>
                                                         </div>
@@ -120,9 +129,8 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-2">
-                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}" required>
+                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}">
                                     </div>
                                 </div>
                             </div>
@@ -131,11 +139,32 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <button type="submit" class="btn btn--primary float-left px-5">Next</button>
+                    <button type="submit" class="btn btn--primary float-left my-next-button">Next</button>
                 </div>
             </div>
             </form>
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+        $('#form').validate({ // initialize the plugin
+            ignore: [],
+            errorClass: "text-danger",
+            rules: {
+                prescription_id: {
+                    required: true
+                },
+            },
+        });
+
+        $(document).ready(function() {
+            $('.my-box').click(function(event) {
+                if (event.target.type !== 'checkbox') {
+                    $(':checkbox', this).trigger('click');
+                }
+            });
+        });
+    </script>
 @endsection
 

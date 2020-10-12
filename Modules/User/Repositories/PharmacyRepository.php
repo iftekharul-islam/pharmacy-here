@@ -265,13 +265,11 @@ class PharmacyRepository
 
     public function getAvailablePharmacyList($thana_id)
     {
-        $pharmacyList = PharmacyBusiness::with(
-            ['area.thana'
-            => function ($query) use($thana_id) {
-                $query->where('id', $thana_id);
-            }
-            ]
-        )->get();
+
+        $pharmacyList = PharmacyBusiness::with('area.thana')
+            ->whereHas('area.thana', function($q) use ($thana_id){
+            $q->where('id', $thana_id);
+        })->get();
 
         return $pharmacyList;
     }

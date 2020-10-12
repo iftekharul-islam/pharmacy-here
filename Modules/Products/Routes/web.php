@@ -13,6 +13,8 @@
 
 Route::group(["middleware" => ["web", "role:admin"]], function() {
 
+    Route::post('products/import', 'ProductsController@importCsv')->name('import-csv');
+
     Route::get('products', 'ProductsController@index')->name('index');
     Route::get('products/create', 'ProductsController@create')->name('create');
     Route::post('products/store', 'ProductsController@store')->name('store');
@@ -68,5 +70,5 @@ Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('pharmacies/{id}/edit', 'PharmacyController@edit')->name('pharmacy.edit');
     Route::put('pharmacies/{id}', 'PharmacyController@update')->name('pharmacy.update');
     Route::delete('pharmacies/{id}', 'PharmacyController@destroy')->name('pharmacy.destroy');
-    
+
 });
