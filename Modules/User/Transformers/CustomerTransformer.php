@@ -25,6 +25,7 @@ class CustomerTransformer extends TransformerAbstract
             'alternative_phone_number'      => $item->alternative_phone_number,
             'dob'                           => $item->dob,
             'gender'                        => $item->gender,
+            'referral_code'                 => $item->referral_code,
         ];
     }
 
