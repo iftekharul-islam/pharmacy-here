@@ -200,10 +200,10 @@
                                             <table class="table">
                                                 <thead class="thead-light">
                                                 <tr>
-                                                    <th scope="col">Product</th>
-                                                    <th scope="col">Price</th>
-                                                    <th scope="col">Quantity</th>
-                                                    <th scope="col">Sub total</th>
+                                                    <th scope="col">{{ __('text.product') }}</th>
+                                                    <th scope="col">{{ __('text.price') }}</th>
+                                                    <th scope="col">{{ __('text.quantity') }}</th>
+                                                    <th scope="col">{{ __('text.sub_total') }}</th>
                                                     <th scope="col"></th>
                                                 </tr>
                                                 </thead>
@@ -225,7 +225,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td><h5>Total ৳ {{ $total }}</h5></td>
+                                                    <td><h5>{{ __('text.total') }} ৳ {{ $total }}</h5></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

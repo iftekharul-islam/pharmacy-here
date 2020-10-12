@@ -64,6 +64,37 @@ return [
     'order_summary' => 'অর্ডার সংক্ষিপ্তসার',
     'agreement' => 'আমাদের চুক্তির সাথে সম্মত হন',
     'proceed_to_checkout' => 'এগিয়ে যান',
+    'need_help' => 'সাহায্য দরকার',
+    'social' => 'সোশ্যাল',
+    'contact_us' => 'যোগাযোগের ঠিকানা',
+    'add_to_cart' => 'কার্টে যোগ করুন',
+    'packing_type' => 'প্যাকিং টাইপ',
+    'piece' => 'পিচ্',
+    'min_qty' => 'ন্যূনতম পরিমাণ',
+    'back' => 'পিছনে যান',
+    'similar_product' => 'অনুরূপ ওষুধ',
+    'medicine' => 'ওষুধ|ওষুধসমূহ',
+    'medicine_details' => 'ওষুধের বিবরণ',
+    'category' => 'ক্যাটাগরি',
+    'generic' => 'জেনেরিক',
+    'form' => 'ফর্ম',
+    'unit' => 'ইউনিট',
+    'min_order_qty' => 'মিনিমাম অর্ডার কোয়ান্টিটি',
+    'conversation_factor' => 'কনভার্সেশন ফ্যাক্টর',
+    'order_no' => 'অর্ডার নং',
+    'order_date' => 'অর্ডারের তারিখ',
+    'payment_type' => 'পেমেন্টের টাইপ',
+    'delivery_type' => 'প্রদানের ধরণ',
+    'delivery_method' => 'প্রদানের পদ্ধতি',
+    'delivery_date' => 'প্রদানের তারিখ',
+    'delivery_time' => 'প্রদানের সময়',
+    'charge_amount' => 'চার্জার পরিমান',
+    'add_item_to_cart' => 'পুনঃ কার্টে যোগ করুন',
+    'my_order_detials' => 'অর্ডার বিবরণ',
+
+
+
+
 
 
 
