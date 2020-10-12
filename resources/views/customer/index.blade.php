@@ -26,25 +26,25 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="nav flex-column nav-pills my-dashboard" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link active" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="true">My Account</a>
-                        <a class="nav-link" id="v-pills-orders-tab" data-toggle="pill" href="#v-pills-orders" role="tab" aria-controls="v-pills-orders" aria-selected="false">My Orders</a>
-                        <a class="nav-link" id="v-pills-wishlists-tab" data-toggle="pill" href="#v-pills-wishlists" role="tab" aria-controls="v-pills-wishlists" aria-selected="false">My Prescription</a>
+                        <a class="nav-link active" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="true">{{ __('text.my_profile') }}</a>
+                        <a class="nav-link" id="v-pills-orders-tab" data-toggle="pill" href="#v-pills-orders" role="tab" aria-controls="v-pills-orders" aria-selected="false">{{ __('text.my_order') }}</a>
+                        <a class="nav-link" id="v-pills-wishlists-tab" data-toggle="pill" href="#v-pills-wishlists" role="tab" aria-controls="v-pills-wishlists" aria-selected="false">{{ __('text.my_prescription') }}</a>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content my-dashboard-content" id="v-pills-tabContent">
                         <div class="tab-pane show fade active my-account" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account-tab">
-                            <h2 class="my-dashboard-title">My Profile</h2>
+                            <h2 class="my-dashboard-title">{{ __('text.my_profile') }}</h2>
                             <a href="#" class="btn btn--primary mb-2 my-address d-block" data-toggle="modal" data-target="#addressModal">
                                 <i class="fas fa-plus-circle"></i>
-                                <span>Address</span>
+                                <span>{{ __('text.address') }}</span>
                             </a>
                             <!-- Modal -->
                             <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="addressModalLabel">New Address</h5>
+                                            <h5 class="modal-title" id="addressModalLabel">{{ __('text.new_address') }}</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -54,9 +54,9 @@
                                                 @csrf
 
                                                 <div class="form-group">
-                                                    <label for="district" class="col-form-label">District</label>
+                                                    <label for="district" class="col-form-label">{{ __('text.district') }}</label>
                                                     <select class="form-control" id="selectDistrict" onchange="getThanas(value)">
-                                                        <option value="" disabled selected>Please select a district name</option>
+                                                        <option value="" disabled selected>{{ __('text.select_district') }}</option>
                                                         @foreach($allLocations as $district)
                                                             <option value="{{ $district->id }}" >{{ $district->name }}</option>
                                                         @endforeach
@@ -64,20 +64,20 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="thana" class="col-form-label">Thana</label>
+                                                    <label for="thana" class="col-form-label">{{ __('text.thana') }}</label>
                                                     <select class="form-control" id="selectThana" onchange="getAreas()">
 
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="area" class="col-form-label">Area</label>
+                                                    <label for="area" class="col-form-label">{{ __('text.area') }}</label>
                                                     <select class="form-control" id="selectArea" name="area_id" disabled="">
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="address" class="col-form-label">Address</label>
+                                                    <label for="address" class="col-form-label">{{ __('text.address') }}</label>
                                                     <input type="text" name="address" class="form-control" id="address" disabled="" required>
                                                     @if ($errors->has('address'))
                                                         <span class="text-danger">
@@ -87,8 +87,8 @@
                                                 </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-success" id="submit" disabled="">Save address</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
+                                            <button type="submit" class="btn btn-success" id="submit" disabled="">{{ __('text.save') }}</button>
                                         </div>
                                         </form>
                                     </div>
@@ -101,29 +101,29 @@
                                     <div class="table-responsive">
                                         <table>
                                             <tr>
-                                                <td><b>Name:</b></td>
+                                                <td><b>{{ __('text.name') }}:</b></td>
                                                 <td class="save-value">{{ $data->name }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="name" value="{{ $data->name }}"></td>
-                                                <td><b>Date of Birth:</b></td>
+                                                <td><b>{{ __('text.date_of_birth') }}:</b></td>
                                                 <td class="save-value">{{ $data->dob != null ? $data->dob : '' }}</td>
                                                 <td class="edit-value d-none"><input type="date" name="dob"  value="{{ $data->dob }}"></td>
 
                                             </tr>
                                             <tr>
-                                                <td><b>Phone Number:</b></td>
+                                                <td><b>{{ __('text.phone_number') }}:</b></td>
                                                 <td class="save-value">{{ $data->phone_number }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
-                                                <td><b>Gender:</b></td>
+                                                <td><b>{{ __('text.gender') }}:</b></td>
                                                 <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Alter Contact:</b></td>
+                                                <td><b>{{ __('text.alter_contact') }}:</b></td>
                                                 <td class="save-value">{{ $data->alternative_phone_number }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="alternative_phone_number" value="{{ $data->alternative_phone_number }}"></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Address:</b></td>
+                                                <td><b>{{ __('text.address') }}:</b></td>
                                                 <td class="save-value">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</td>
                                                 <td class="edit-value d-none"><textarea type="text" name="address" value="{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</textarea></td>
                                             </tr>
@@ -131,25 +131,25 @@
                                     </div>
                                 </div>
                                 <div class="profile-btn">
-                                    <a href="javascript:void(0)" class="btn--edit" onclick="input()">Edit Profile</a>
-                                    <button type="submit" class="btn--primary save-profile-btn">Save Profile</button>
+                                    <a href="javascript:void(0)" class="btn--edit" onclick="input()">{{ __('text.edit') }}</a>
+                                    <button type="submit" class="btn--primary save-profile-btn">{{ __('text.save') }}</button>
                                 </div>
                             </form>
                         </div>
 
                         <div class="tab-pane fade my-orders" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
-                            <h2 class="my-dashboard-title">My Orders</h2>
+                            <h2 class="my-dashboard-title">{{ __('text.my_order') }}</h2>
                             <div class="my-order-list">
                                 <div class="table-responsive">
                                     @if (count($orders) > 0)
                                     <table class="table table-borderless">
                                         <thead class="thead-light">
                                         <tr>
-                                            <th scope="col">Order #</th>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Order total</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col">{{ __('text.order') }} #</th>
+                                            <th scope="col">{{ __('text.date') }}</th>
+                                            <th scope="col">{{ __('text.total') }}</th>
+                                            <th scope="col">{{ __('text.status') }}</th>
+                                            <th scope="col">{{ __('text.action') }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -185,7 +185,7 @@
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('order.details', $order->id)}}">
-                                                            View
+                                                            {{ __('text.view') }}
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -193,7 +193,7 @@
                                         </tbody>
                                     </table>
                                     @else
-                                        <h4 class="text-center">No data available</h4>
+                                        <h4 class="text-center">{{ __('text.no_data') }}</h4>
                                     @endif
                                 </div>
                                 {{ $orders->links() }}
@@ -201,10 +201,10 @@
                         </div>
 
                         <div class="tab-pane fade my-wishlists" id="v-pills-wishlists" role="tabpanel" aria-labelledby="v-pills-wishlists-tab">
-                            <h2 class="my-dashboard-title">My Prescriptions
+                            <h2 class="my-dashboard-title">{{ __('text.my_prescription') }}
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn--primary float-right mb-2" data-toggle="modal" data-target="#prescriptionModal">
-                                    <i class="fas fa-plus"></i>  Prescription
+                                    <i class="fas fa-plus"></i>  {{ __('text.prescription') }}
                                 </button>
                             </h2>
 {{--                            <div class="my-order-list">--}}
@@ -213,7 +213,7 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="prescriptionModalLabel">Add Prescription</h5>
+                                                <h5 class="modal-title" id="prescriptionModalLabel">{{ __('text.add_prescription') }}</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -222,7 +222,7 @@
                                                 @csrf
                                             <div class="modal-body">
                                                     <div class="form-group">
-                                                        <label class="col-form-label">Patient name:</label>
+                                                        <label class="col-form-label">{{ __('text.patient_name') }}:</label>
                                                         <input type="text" name="patient_name" class="form-control">
                                                         @if ($errors->has('patient_name'))
                                                             <span class="text-danger">
@@ -231,7 +231,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="message-text" class="col-form-label">Doctor name:</label>
+                                                        <label for="message-text" class="col-form-label">{{ __('text.doctor_name') }}:</label>
                                                         <input type="text" class="form-control" name="doctor_name" id="message-text" required>
                                                         @if ($errors->has('doctor_name'))
                                                             <span class="text-danger">
@@ -240,7 +240,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="message-text" class="col-form-label">Prescription date:</label>
+                                                        <label for="message-text" class="col-form-label">{{ __('text.prescription_date') }}:</label>
                                                         <input type="date" class="form-control" name="prescription_date" id="message-text" required>
                                                         @if ($errors->has('prescription_date'))
                                                             <span class="text-danger">
@@ -249,13 +249,13 @@
                                                         @endif
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="message-text" class="col-form-label">Prescription Image:</label>
+                                                        <label for="message-text" class="col-form-label">{{ __('text.prescription_image') }}:</label>
                                                         <input type="file" name="url" required>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Add Prescription</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
+                                                <button type="submit" class="btn btn-primary">{{ __('text.save') }}</button>
                                             </div>
                                             </form>
                                         </div>
@@ -274,7 +274,7 @@
                                                                 <small>Doctor: {{ $prescription->doctor_name }}</small>
                                                                 <br>
                                                                 <button type="button" class="btn btn--primary px-5 w-89 mt-3" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
-                                                                    View
+                                                                    {{ __('text.view') }}
                                                                 </button>
                                                                 <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
@@ -310,7 +310,7 @@
                                             @endforeach
                                         </div>
                                     @else
-                                        <h4 class="text-center">No data available</h4>
+                                        <h4 class="text-center">{{ __('text.no_data') }}</h4>
                                     @endif
                             </div>
                             {{ $prescriptions->links() }}

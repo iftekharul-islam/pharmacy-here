@@ -45,7 +45,7 @@
                     <p>Say goodbye to all your healthcare worries with us</p>
                     <label class="w-100 label-search">
                         <form id="form" action="{{ route('product-list') }}" method="GET">
-                            <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="Search your medicine here">
+                            <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="{{ __('text.search_medicine') }}">
                             <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
                         </form>
                     </label>
@@ -108,8 +108,8 @@
                 <div class="col-md-12 mx-auto">
                     <div class="download">
                         <div class="left">
-                            <h2>Download the app now!</h2>
-                            <p>Download now and get all our services through the app.</p>
+                            <h2>{{ __('text.download_app') }}!</h2>
+                            <p>{{ __('text.download_app_description') }}</p>
                         </div>
                         <div class="right">
                             <a href="https://play.google.com/store/apps/details?id=com.subidha.customer" target="tab"><img src="{{ asset('images/google-play.svg') }}" alt="play store"></a>

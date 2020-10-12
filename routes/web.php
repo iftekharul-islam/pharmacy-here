@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,20 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//localization
+Route::get('/locale/{locale}', 'LocalizationController');
 
+// Basic pages
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/terms-of-use', 'HomeController@terms')->name('terms');
 Route::get('/faq', 'HomeController@faq')->name('faq');
+Route::get('/return-&-refund-page', 'HomeController@refundPage')->name('return.page');
+Route::get('/privacy-policy-page', 'HomeController@privacyPage')->name('privacy.page');
+Route::get('/about-page', 'HomeController@about')->name('about.page');
 
+// User login
 Route::get('/login','LoginController@showCustomerLoginForm')->name('customer.login');
 Route::post('create-otp/customer','OtpController@createOtp')->name('customer.createOTP');
 Route::get('login/verify-otp/customer','LoginController@customerOTPForm')->name('customer.OTPForm');
 Route::post('verified-otp/customer','OtpController@verifyOTP')->name('customer.verifyOTP');
 Route::post('logout','LoginController@logout')->name('customer.logout');
 
-//New customer add name
+//New customer
 Route::get('new-customer/name','LoginController@registerForm')->name('customer.name');
-// Cutomer Name update
 Route::post('customer/name/update','LoginController@customerNameUpdate')->name('customer.nameUpdate');
 
 //medicine
@@ -81,8 +88,4 @@ Route::post('cancel', 'CheckoutController@cancel')->name('ssl.cancel');
 //Find pharmacy for checkout
 Route::get('find-pharmacy', 'CheckoutController@findPharmacy')->name('find.pharmacy');
 Route::get('find-pharmacy-list', 'CheckoutController@availablePharmacyList')->name('find.pharmacy.list');
-
-// SSLCOMMERZ Start
-Route::get('/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
-Route::get('/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
 

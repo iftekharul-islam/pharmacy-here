@@ -65,6 +65,7 @@ class CheckoutController extends Controller
         }
 
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
+//        return $delivery_charge;
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
         $allLocations = $this->locationRepository->getLocation();
@@ -83,7 +84,7 @@ class CheckoutController extends Controller
 
     public function check(CheckoutCreateRequest $request)
     {
-//        return $request->all();
+        return $request->all();
 
         if ($request->payment_type == 1){
             $data = $request->only([
