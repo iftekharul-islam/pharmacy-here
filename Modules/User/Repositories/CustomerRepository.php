@@ -6,6 +6,7 @@ namespace Modules\User\Repositories;
 
 use Dingo\Api\Exception\DeleteResourceFailedException;
 // use Modules\Products\Entities\Pharmacy;
+use Illuminate\Support\Facades\DB;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
@@ -100,8 +101,11 @@ class CustomerRepository
 
     public function get($id)
     {
-        $data =  User::find($id);
-
+        $data = User::find($id);
+//        $data =  User::with(['points' => function($query) use ($id){
+//            $query->select(DB::raw('SUM(points) as points'))->where('user_id', $id)->get();
+//        }])->find($id);
+//dd($data);
         return $data;
     }
 
