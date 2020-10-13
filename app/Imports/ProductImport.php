@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Modules\Products\Imports;
+namespace App\Imports;
 
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -18,7 +19,7 @@ use Modules\Products\Entities\Model\Product;
 use Modules\Products\Entities\Model\ProductAdditionalInfo;
 use Modules\Products\Entities\Model\Unit;
 
-class ProductImport implements ToCollection, WithHeadingRow, WithChunkReading
+class ProductImport implements ToCollection, WithHeadingRow
 {
 
     use Importable;
@@ -49,6 +50,18 @@ class ProductImport implements ToCollection, WithHeadingRow, WithChunkReading
 //        dd($rows[0]);
 
 //        dd(count($rows));
+
+        echo "----Importing products----\n";
+
+//        DB::statement("SET foreign_key_checks=0");
+//        Generic::truncate();
+//        Form::truncate();
+//        Company::truncate();
+//        Unit::truncate();
+//        Category::truncate();
+//        Product::truncate();
+//        ProductAdditionalInfo::truncate();
+//        DB::statement("SET foreign_key_checks=1");
 
         foreach ($rows as $row) {
 //            dd('processing'. json_encode($row));
@@ -92,15 +105,21 @@ class ProductImport implements ToCollection, WithHeadingRow, WithChunkReading
                 ];
 
                 ProductAdditionalInfo::create($productInfo);
+
+
+                echo "Serial: " . $row['sl'] . "\n";
             }
+
         }
 
+        echo "----Done----\n";
+
     }
 
-    public function chunkSize(): int
-    {
-        return 10;
-    }
+//    public function chunkSize(): int
+//    {
+//        return 10;
+//    }
 
     private function getGenericId($name)
     {
@@ -265,3 +284,4 @@ class ProductImport implements ToCollection, WithHeadingRow, WithChunkReading
 
 
 }
+
