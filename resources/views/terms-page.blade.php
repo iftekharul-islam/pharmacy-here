@@ -279,7 +279,234 @@
                         </ol>
                     </ol>
                 </ol>
-
+                <h3 class="float-left">OTHER TERMS</h3>
+                <br>
+                <br>
+                <p>Your Profile, Collection, Use, Storage and Transfer of Personal Information:</p>
+                <ol class="list-group" type="1">
+                    <li>Any information obtained from use of the Services by You becomes part of Your Subidha record.
+                        You agree to provide accurate information to help Us serve You best to Our knowledge,
+                        to periodically review such information and to update such information as and when necessary.
+                        Subidha reserves the right to maintain, delete or destroy all communications and materials posted or
+                        uploaded to the Website according to its internal record retention and/or destruction policies.
+                    </li>
+                    <li>
+                        For additional information regarding use of information about You, please refer to the Privacy Policy.
+                    </li>
+                    <li>
+                        The terms “personal information” and “sensitive personal data or information” are defined under the Information Technology.
+                    </li>
+                    <ol class="list-group" type="1">
+                        <li>The Privacy Policy sets out:</li>
+                        <ol class="list-group" type="1">
+                            <li>the type of information collected from Users, including sensitive personal data or information;</li>
+                            <li>the purpose, means and modes of usage of such information; and</li>
+                            <li>how and to whom Subidha will disclose such information.</li>
+                        </ol>
+                        <li>The Users are expected to read and understand the Privacy Policy, so as to ensure that he or she has the knowledge of:</li>
+                        <ol class="list-group"  type="1">
+                            <li>the fact that the information is being collected;
+                            </li>
+                            <li>the purpose for which the information is being collected;</li>
+                            <li>the intended recipients of the information;</li>
+                            <li>the name and address of the agency that is collecting the information and the agency that will retain the information; and</li>
+                            <li>the various rights available to such Users in respect of such information.</li>
+                        </ol>
+                        <li>Subidha shall not be responsible in any manner for the authenticity of the personal information or sensitive personal data or information supplied by the Users to Subidha or any other person acting on behalf of Subidha.</li>
+                        <li>The use of the Website involves every Users’ registration information and browsing history being stored and submitted to the appropriate authorities. The consent and procedure for such collection and submission is provided in the Privacy Policy. The other information collected by Subidha from Users as part of the registration process is described in the Privacy Policy. The consent and revocation procedures in relation to the same are set out in the Privacy Policy.</li>
+                        <li>The Users are responsible for maintaining the confidentiality of the Users’ account access information and password. The Users shall be responsible for all uses of the Users’ account and password, whether or not authorized by the Users. The Users shall immediately notify Subidha of any actual or suspected unauthorized use of the Users’ account or password.</li>
+                        <li>If a User provides any information that is untrue, inaccurate, not current or incomplete (or becomes untrue, inaccurate, not current or incomplete), or Subidha has reasonable grounds to suspect that such information is untrue, inaccurate, not current or incomplete, Subidha shall have the right to suspend or terminate such account at its sole discretion.</li>
+                        <li>Subidha may disclose or transfer User Information (as defined in the Privacy Policy) to its affiliates in other countries, and You hereby consent to such transfer. The SPI Rules only permit Subidha to transfer sensitive personal data or information including any information, to any other body corporate or a person in Bangladesh, or located in any other country, that ensures the same level of data protection that is adhered to by Subidha as provided for under the SPI Rules, only if such transfer is necessary for the performance of the lawful contract between Subidha or any person on its behalf and the user or where the User has consented to data transfer.
+                        </li>
+                        <li>By accepting these Terms of Use and by registering on the Website, You consent to be contacted by Us and by the Third Party Service Providers and You further consent to receive emails and messages, (SMS) notifications and information at any time from Us and from Third Party Service Providers.</li>
+                    </ol>
+                </ol>
+                <p> Payment, Fees and Taxes:</p>
+                <ol class="list-group" type="1">
+                    <li>Registration on the Website and the access to the information provided on the Website is free. Subidha does not charge any fee for accessing, browsing and buying through the Website. For cash on delivery, You agree to make all payments directly to the respective Third Party Pharmacies for purchase of Pharmaceutical Goods, non-pharmaceutical products and Services from such Third Party Pharmacies. The Third Party Pharmacies may choose to either personally collect such payment from You or may use the services of collection agents duly appointed in this regard. Third Party Pharmacies will pay Subidha as per agreement. You agree and acknowledge that You shall not hold Subidha responsible for any loss or damage caused to You during the process, due to any acts or omission on the part of third parties viz. the Third Party Pharmacies or the collection agents or for any actions/ omissions which are beyond the control of Subidha.
+                    </li>
+                    <li>For online payment system, Subidha is using third party to disburse the electronic cash (E-cash). E-cash disbursement is as per Subidha agreement with other Third Parties. </li>
+                    <li>User have to pay</li>
+                    <li>Each User / Third Party Service Providers are solely responsible for payment of all taxes, legal compliances, statutory registrations and reporting. Subidha is in no way responsible for any of the taxes except for its own income tax or tax for e-commerce.</li>
+                    <li>The subscription fees for the Services, if any charged by Subidha, could be paid online through the facility made on the Website. Third parties support and services are required to process online fee payment. Subidha is not responsible for any loss or damage caused to User/ Third Party Service Providers during this process as these third parties are beyond the control of Subidha. The fees could also be paid offline and be either collected personally from the User/ Third Party Service Providers.</li>
+                    <li>All fees are exclusive of applicable taxes.</li>
+                    <li>Subidha reserves the right to modify the fee structure by providing on the Website which shall be considered as valid and agreed communication.</li>
+                    <li>In order to process the payments, Subidha might require details of User’s/ Third Party Service Providers’ bank account, credit card number etc. Please check Our Privacy Policy on how Subidha uses the confidential information provided by Users.</li>
+                    <li>Price of all types of products is not more than MRP. Error can happen. If price of any product is more than MRP, You and or Third party Pharmacy must notify Us. Products will be sold according to quoted price on the website. You agree to buy or sell products as per quoted price.</li>
+                    <ul class="my-ul">
+                        <li>If You order product(s) of more than 500 BDT, normal delivery, payment by cash on delivery, You have to pay = total product price+2% of total product price. After this, Third Party Pharmacy will get 98% of total product price & Subidha will get rest amount of the total pay. </li>
+                        <li>If You order product(s) of more than 500 BDT, normal delivery, payment by E-cash, You have to pay = total product price+payment gateway charge. After this, Third Party Payment gateway company will take their charge, Subidha will get 3% of total product price, Third Party Pharmacy will get 97% of total product price.</li>
+                        <li>If You order product(s) of any value, delivery at Your convenient time, payment by cash on delivery, You have to pay = total product price+2% of total product price+40 BDT. After this, Third Party Pharmacy will get 98% of total product price+30 BDT & Subidha will get the rest amount of the total pay. </li>
+                        <li>If You order product(s) of any value, delivery at Your convenient time, payment by E-cash, You have to pay = total product price+40 BDT+ payment gateway charge. After this, Third Party Payment gateway company will take their charge, Third Party Pharmacy will get 97% of total product price+30 BDT & Subidha will get the rest amount of the total pay.</li>
+                        <li>If You order product(s) of less than 500 BDT, normal delivery, payment by cash on delivery, You have to pay = total product price+2% of total product price+20 BDT. After this, Third Party Pharmacy will get 98% of total product price+15 BDT & Subidha will get the rest amount of the total pay. </li>
+                        <li>If You order product(s) of less than 500 BDT, normal delivery, payment by E-cash, You have to pay = total product price+20 BDT+payment gateway charge. After this, Third Party Payment gateway company will take their charge, Third Party Pharmacy will get 97% of total product price+15 BDT & Subidha will get the rest amount of the total pay..</li>
+                        <li>If You order product(s) of any value, collect/pick Your pack from the designated Third Party Pharmacy, payment by cash on delivery, You have to pay = total product price with 3% discount. After this, Third Party Pharmacy will pay 3% of total product price to Subidha. </li>
+                        <li>If You order product(s) of any value, collect/pick Your pack from the designated Third Party Pharmacy, payment by E-cash, You have to pay = total product price only. After this, Third Party Payment gateway company will take their charge, Subidha will get 3% of total product price, Third Party Pharmacy will get the rest amount of total product price.</li>
+                        <li>7th, 17th & 27th day of each month subidha will disburse the amount collected by e-cash to respective Third Party Pharmacy’s account after deducting the commission of subidha. Subidha may calculate the commission of cash on delivery too for this settlement. But if subidha still gets commission from any pharmacy, pharmacy owner will take responsible to credit the calculated amount to subidha’s account. However the date is not fixed. It can vary due to holidays, off days etc.</li>
+                        <p>Pre-order</p>
+                        <p>Sometimes Pharmacies do not stock the slow moving or very expensive products. So Subidha has created a system to pre-order the products which will be provided by assigned pharmacy to customer within 4 days.</p>
+                        <p>EMI</p>
+                        <p>You can avail EMI facility for the sake of E-cash payment if Your order value exceeds the limit set by subidha and if Your bank permits according to their agreement with You.</p>
+                        <p># Order value of more than 5000 taka will not have cash on delivery; only prepaid system (E-cash) will be available. It’s applicable for both home delivery and collect from pharmacy.</p>
+                        <p>* Normal delivery means if any customer’s order is accepted between 07.01 am and 06.00 pm, he/she will get the packet between 08.00 pm and 10.00 pm. And if it is accepted between 06.01 pm and 07.00 am, he/she will get the packet between 08.00 am and 10.00 am. This timing may vary, but it will be notified.
+                        </p>
+                        <p>* Delivery at my time means Third Party Pharmacy will arrange to send Your products on Your chosen time. </p>
+                        <p># If you order products of less than 1 strip. And for this Pharmacies have to cut or tear the strip to give you the exact amount. So you may get the medicine in a strip where Brand name, generic name, strength, expiry date may not be visible properly. In that case, subidha or third pharty pharmacy will not be responsible.</p>
+                    </ul>
+                    <li>If the patient is in emergency condition, do not depend on Subidha. The patient must be admitted to Hospital/Clinics as soon as possible. If you or your patient don’t get medicine timely, subidha or Third Party Pharmacy or delivery personnel will not be responsible.</li>
+                </ol>
+                <p>Return, Refund, Cancellation and Shipping charges:</p>
+                <p>We offer return and refund on the products and Services ordered by You on the Website which are subject to further terms and conditions as detailed in the return, refund, cancellation and shipping charges policy (“Return and Refund Policy”). The Return and Refund Policy forms an integral part of these Terms of Use and the Users are requested to carefully read the same.</p>
+                <ol type="1">
+                    <li>You are also prohibited from:</li>
+                    <ol class="list-group" type="1">
+                        <li>violating or attempting to violate the integrity or security of the Website or any Subidha Content;</li>
+                        <li>transmitting any information (including job posts, messages and hyperlinks) on or through the Website that is disruptive or competitive to the provision of Services by Subidha;</li>
+                        <li>intentionally submitting on the Website any incomplete, false or inaccurate information;</li>
+                        <li>making any unsolicited communications to other Covenanters;</li>
+                        <li>using any engine, software, tool, agent or other device or mechanism (such as spiders, robots, avatars or intelligent agents) to navigate or search the Website;</li>
+                        <li>using any engine, software, tool, agent or other device or mechanism (such as spiders, robots, avatars or intelligent agents) to navigate or search the Website;</li>
+                        <li>attempting to decipher, decompile, disassemble or reverse engineer any part of the Website;</li>
+                        <li>copying or duplicating in any manner any of the Subidha Content or other information available from the Website; and
+                        </li>
+                        <li>framing or hotlinking or deeplinking any Subidha Content.</li>
+                    </ol>
+                    <li>Subidha, upon obtaining knowledge by itself or been brought to actual knowledge by an affected person in writing or through email signed with electronic signature about any such information as mentioned, shall be entitled to disable such information that is in contravention of this Clause or any provisions of these Terms of Use. Subidha shall be entitled to preserve such information and associated records for at least 90 (ninety) days for production to governmental authorities for investigation purposes.
+                    </li>
+                    <h3>Return & Refund Policy</h3>
+                    <br>
+                    <br>
+                    <p>RETURN POLICY, REFUND, CANCELLATION AND SHIPPING CHARGES POLICY</p>
+                    <p>Subidha facilitates processing correct medicines as per order and prescription and strives to service the medicines and products in right conditions/ without any damage every time a consumer places an order. We also strongly recommend the items are checked at the time of delivery.</p>
+                    <ol class="list-group" type="1">
+                        <h3><li>DEFINITION</li></h3>
+                        <p>'Return' means an action of giving back the product ordered at subidha portal by the consumer. The following situations may arise which may cause the action of return of product:</p>
+                        <ol class="list-group" type="1">
+                            <li>Product(s) delivered do not match your order;</li>
+                            <li>Product(s) delivered are past or near to its expiry date (medicines with an expiry date of less than 02 months shall be considered as near expiry);</li>
+                            <li>Product(s) are physician sample which are not for sale; </li>
+                            <li>Product(s) delivered were damaged in transit (do not to accept any product which has a tampered seal):</li>
+                        </ol>
+                        <p><b>Note: If the product that you have received is damaged, then do not accept the delivery of that product. If after opening the package you discover that the product is damaged, the same may be returned for a refund. Please note that we cannot promise a replacement for all products as it will depend on the availability of the particular product, in such cases we will offer a refund. </b></p>
+                        <p><b>In the aforesaid unlikely situations, if there is something wrong with the order, we'd be happy to assist and resolve your concern. You may raise a Return request with our customer care within 03 (Three) days from the delivery of the product. Subidha reserves the right to cancel the Return request, if the customer reaches out to Subidha after 3 days of delivery. </b></p>
+                        <p><b>Upon receiving your Return/Refund request, Subidha shall verify the authenticity and the nature of the request. If Subidha finds that the request is genuine, it will initiate the Return and Refund process. Subidha shall process the refund only once it has received the confirmation from the vendor concerned in respect of the contents of the product relating to that refund. </b></p>
+                        <p><b>In the event of frivolous and unjustified complaints regarding the quality and content of the products, Subidha reserves the right to pursue necessary legal actions against you and you will be solely liable for all costs incurred by Subidha in this regard.
+                            </b></p>
+                        <p><b>The returns are subject to the below conditions:-
+                            </b></p>
+                        <ol class="list-group" type="1">
+                            <li>Any wrong ordering of product doesn’t qualify for Return;</li>
+                            <li>Return requests arising due to change in prescription do not qualify for Return;</li>
+                            <li>Product being returned should only be in their original manufacturer's packaging and </li>
+                            <li>Partially consumed strips or products do not qualify for Return, only fully unopened strips or products can be returned. </li>
+                            <br>
+                            <p><b>Category of Non-Returnable Product:Certain categories of products marked as non- returnable on product page, will not qualify for the Return as per Subidha Return policy. The details of the non- returnable products are mentioned below: </b></p>
+                            <hr>
+                            <table>
+                                <thead>
+                                <th>Categories</th>
+                                <th>Type of Products</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Baby Care</td>
+                                    <td>Bottle Nipples, Breast Nipple Care, Breast Pumps, Diapers, Ear Syringes, Diapers, Wipes and this type of items</td>
+                                </tr>
+                                <tr>
+                                    <td>Food and Nutrition</td>
+                                    <td>Health Drinks, Health Supplements</td>
+                                </tr>
+                                <tr>
+                                    <td>Healthcare Devices</td>
+                                    <td>Glucometer Lancet/Strip, Healthcare Devices and Kits, Surgical, Health Monitors</td>
+                                </tr>
+                                <tr>
+                                    <td>Sexual Wellness</td>
+                                    <td>Condoms, Fertility Kit/Supplement, Lubricants, Pregnancy Kits</td>
+                                </tr>
+                                <tr>
+                                    <td>Temperature Controlled and Speciality Medicines</td>
+                                    <td>Vials, Injections, Vaccines, Penfills and any other Product, requiring cold storage, or medicines that fall under the category of speciality medicines.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                        </ol>
+                        <h3><li>RETURN PROCESS:</li></h3>
+                        <ol class="list-group" type="1">
+                            <b><li>Subidha customer care team will verify the claim made by the customer within 72 (seventy-two) business hours from the time of receipt of complaint.
+                                </li></b>
+                            <b><li>Once the claim is verified as genuine and reasonable, Subidha will initiate the collection of product(s) to be returned or You may be advised to contact our Third Party Pharmacy.</li></b>
+                            <b><li>The customer will be required to pack the product(s) in original manufacturer’s packaging.</li></b>
+                            <b><li>Refund will be completed within 30 (thirty) days from date of reverse pick up (if required).</li></b>
+                        </ol>
+                        <h3><li>REFUND PROCESS:</li></h3>
+                        <p><b>In all the above cases, if the claim is found to be valid, Refund will be made as mentioned below:</b></p>
+                        <p><b>Order will be refunded through fund transfer to customer bank account or other applicable source.</b></p>
+                        <h3><li>CANCELLATION POLICY:</li></h3>
+                        <p><b>Customer cancellation:</b></p>
+                        <p><b>The customer can cancel the order for the product till Subidha ship it. Orders once shipped cannot be cancelled. </b></p>
+                        <p><b>Subidha cancellation:</b></p>
+                        <p><b>There may be certain orders that Subidha partners are unable to accept and service and these may need to be cancelled. Some situations that may result in your order being cancelled include, non-availability of the product or quantities ordered by you</b></p>
+                        <p><b>Subidha also reserves the right to cancel any orders that classify as ‘Bulk Order’ as determined by Subidha as per certain criteria. An order can be classified as ‘Bulk Order’ if it meets with the below mentioned criteria, which may not be exhaustive: </b></p>
+                        <ol class="list-group" type="i">
+                            <b><li>Products ordered are not for self-consumption but for commercial resale;</li></b>
+                            <b><li>Multiple orders placed for same product at the same address;</li></b>
+                            <b><li>Bulk quantity of the same product ordered;</li></b>
+                            <b><li>Invalid address given in order details;</li></b>
+                            <b><li>Any malpractice used to place the order.</li></b>
+                        </ol>
+                    </ol>
+                    <li>Intellectual property rights</li>
+                    <p>All the intellectual property used on the Website except those which have been identified as the intellectual properties of the Other Parties shall remain the exclusive property of the Company.</p>
+                    <p><b> Compliance of Applicable Law</b></p>
+                    <ol class="list-group" type="1">
+                        <li>While communicating/ transacting with each other through the Website, the Other Parties shall at all times ensure full compliance with the applicable provisions of the Contract rules, IT riles, Drug Rules by DGDA, BSTI rules, labor law, as well as all other laws for the time being in force, and ensure due payment of applicable taxes. They must specifically ensure that they are in no way purchasing Pharmaceutical Good and Services or Prescription Drugs without a valid prescription, which are prohibited under the Drugs Rules by DGDA as well as the other applicable laws for the time being in force.</li>
+                        <li>e Users must also ensure that the prescription uploaded on the Website or emailed to Subidha for processing the order for Prescription Drugs is a valid prescription duly obtained from a registered medical practitioner. The Users acknowledge and accept that they shall bear all costs/ liability/ damages, caused to the Third Party Service Providers or to Subidha, as a result of any dispensation of Prescription Drugs by the Third Party Service Providers owing to the non-compliance by the User in this regard.</li>
+                        <p>Termination (Parties for the Purpose of these Terms of Use shall collectively mean the Other Parties and Subidha)</p>
+                        <li>The provisions of these Terms of Use shall continue to apply until terminated by either of the Party as set for below:</li>
+                        <ol>
+                            <li>In case of Other Parties wanting to terminate these Terms of Use, Other Parties may do so by:
+                            </li>
+                            <ol class="list-group" type="1">
+                                <li>not accessing the Website; or</li>
+                                <li>Closing their accounts for all of the Services that they use.</li>
+                            </ol>
+                            <li>Subidha reserves the right to, at any time, and with or without notice, terminate these Terms of Use against each of the Users or the Third Party Service Providers or the Other Parties as a whole, if there is:</li>
+                            <ol class="list-group" type="1">
+                                <li>breach any of applicable law(s), including but not limited to the Captioned Laws or the provisions of these Terms of Use or the terms of the Privacy Policy or any other terms, conditions, or policies that may be applicable to the Other Parties from time to time (or have acted in a manner that clearly shows that Other Party(s) do not intend to, or are unable to, comply with the same); or
+                                </li>
+                                <li>Subidha is unable to verify or authenticate any information provided to Subidha by Other Party(s); or
+                                </li>
+                                <li>Subidha believes, in its sole discretion, that Other Party(s) actions may cause legal liability for Subidha (or any of its affiliates, independent contractors, service providers, consultants, licensors, agents, and representatives) or are contrary to the interests of the Website; or</li>
+                                <li>Subidha is required to do so by law; or</li>
+                                <li>if Other Party(s) fail to provide (or after providing such consent, later revoke) the consents necessary or desirable for Subidha to provide the Services to the Other Party(s); or</li>
+                                <li>The provision of the Services to the Other Party(s), or to the general public, is in Subidha’s opinion, no longer commercially viable; or</li>
+                                <li>Subidha has elected to discontinue, with or without reason, access to the Website or the Services (or any part thereof).</li>
+                            </ol>
+                            <li>Subidha may also terminate or suspend (temporarily or permanently) all or a portion of Other Party(s) account or access to the Services, with or without reason. Except as may be set forth in any of the terms applicable to a particular Service, termination of Other Party(s) account may include: (i) removal of access to all offerings within the Website or with respect to the Services; and (ii) barring Other Party(s) from further use or access of the Website or of any of the Services.</li>
+                            <li>Once terminated or suspended (temporarily or permanently), Other Party(s) may not continue to use the Website under the same account, a different account or re-register under a new account.</li>
+                            <li>Upon termination of these Terms of Use, Subidha shall have no obligation to maintain or provide any of Other Party(s) data and may thereafter, unless legally prohibited, delete all of Other Party(s) data in its systems or otherwise in its possession or under its control, including but not limited to Other Party(s) personal information, log-in ID and password, order details (including any prescriptions uploaded) and all related information, files and materials associated with or inside Other Party(s) account (or any part thereof).
+                            </li>
+                            <li>Subidha reserves the right, at its sole discretion, to pursue all of its legal remedies, including but not limited to deletion of the Other Party(s) content from the Website with or without ability to access the Website and the other Services, upon any breach by the Other Party(s) of these Terms of Use or if Subidha is unable to verify or authenticate any information the Other Party(s) submits to Subidha, or if the Other Party(s) fail to provide (or after providing such consent, later revokes) the consents necessary or desirable for Subidha to provide the Services to the Other Party(s).</li>
+                            <li>The right to terminate/ suspend the account is in addition to, and without prejudice to, Subidha’s right to initiate action against the Other Party(s), in accordance with applicable law.</li>
+                        </ol>
+                    </ol>
+                </ol>
+                <p><b>Uncontrolled or unintentional events</b></p>
+                <p>Other Parties accept and acknowledge that Subidha shall not be liable for any loss or damage caused to the User as a result of delay or default or deficiency or failure in the Services as a result of any natural disasters, fire, riots, civil disturbances, actions or decrees of governmental bodies, communication line failures (which are not caused due to the fault of Subidha or the Third Party Service Providers), or any other delay or default or deficiency or failure which arises from causes beyond Subidha’s reasonable control. In the event of any uncontrolled or unintentional event arising, Subidha, depending on whose performance has been impacted under the Terms of Use, shall immediately give notice to the Other Party(s) of the facts which constitute the uncontrolled or unintentional event.</p>
+                <p><b>Governing Law and Dispute Resolution</b></p>
+                <p>These Terms of Use and any contractual obligation between the Parties will be governed by the laws of Bangladesh, without reference to the conflict of laws principles.</p>
+                <p><b> Survival</b></p>
+                <p>Even after termination, certain obligations mentioned under Covenants, Liability, Indemnity, Intellectual Property, Dispute Resolution will continue and survive termination.</p>
+                <p><b>Severability</b></p>
+                <p>If any provision of these Terms of Use is deemed invalid, unlawful, void or for any other reason unenforceable, then that provision shall be deemed severable from these Terms of Use and shall not affect the validity and enforceability of any of the remaining provisions.</p>
+                <p><b>Waiver</b></p>
+                <p>No provision of these Terms of Use shall be deemed to be waived and no breach excused, unless such waiver or consent shall be in writing and signed by Subidha. Any consent by Subidha to, or a waiver by Subidha of any breach by Other Parties, whether expressed or implied, shall not constitute consent to, waiver of, or excuse for any other different or subsequent breach.</p>
+                <p><b>Headings</b></p>
+                <p>The headings and subheadings herein are included for convenience and identification only and are not intended to describe, interpret, define or limit the scope, extent or intent of these Terms of Use.</p>
+                <p><b>Contact Information</b></p>
+                <p>If any Other Party(s) has any grievance, comment, question or suggestion regarding any of our Services, please contact through our Website.</p>
             </div>
         </div>
     </div>
