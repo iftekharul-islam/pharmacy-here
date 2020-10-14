@@ -114,10 +114,10 @@
                             <table class="table">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
-                                    <th class="text-center">Sub total</th>
+                                    <th scope="col">{{ __('text.product') }}</th>
+                                    <th scope="col">{{ __('text.price') }}</th>
+                                    <th scope="col">{{ __('text.quantity') }}</th>
+                                    <th class="text-center">{{ __('text.sub_total') }}</th>
                                     <th scope="col"></th>
                                 </tr>
                                 </thead>
@@ -170,17 +170,17 @@
                                     @endif
                                 @endguest
                                     <tr>
-                                        <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">Continue Shopping</a></td>
+                                        <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">{{ __('text.continue_shopping') }}</a></td>
                                         <td></td>
-                                        <td class="text-right total-amount-alignment"><b>Grand total</b></td>
+                                        <td class="text-right total-amount-alignment"><b>{{ __('text.grand_total') }}</b></td>
                                         <td class="text-center total-amount-alignment">৳
                                             <input type="number" class="grand-total count-style" value="{{ $total }}" readonly>
                                         </td>
                                         @guest
-                                                <td><p class="badge btn-primary">Please login first to checkout</p></td>
+                                                <td><p class="badge btn-primary">{{ __('text.login_to_checkout') }}</p></td>
                                             @else
                                                 <td>
-                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">Checkout</a>
+                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">{{ __('text.checkout') }}</a>
                                                     <strong class="note-text alert-note text-danger d-none">Please add amount more than ৳100</strong>
                                                 </td>
                                         @endguest

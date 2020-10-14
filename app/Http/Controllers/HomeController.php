@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -38,6 +39,19 @@ class HomeController extends Controller
         return view('faq-page');
     }
 
+    public function refundPage()
+    {
+        return view('refund-page');
+    }
 
+    public function privacyPage()
+    {
+        return view('privacy-page');
+    }
+
+    public function about()
+    {
+        return view('about-page');
+    }
 
 }

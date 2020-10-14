@@ -10,6 +10,7 @@ use Modules\Address\Entities\CustomerAddress;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Request;
 
 class CustomerRepository
 {
@@ -86,6 +87,36 @@ class CustomerRepository
 
     public function findById($id)
     {
+        return User::find($id);
+    }
+
+    public function updateWeb($request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return false;
+        }
+//        $data = $request->only('name', 'email', 'phone_number');
+
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+
+//        if (isset($data->name)) {
+//            $user->name = $data->name;
+//        }
+
+//        if (isset($data['email'])) {
+//            $user->email = $data['email'];
+//        }
+//
+//        if (isset($data['phone_number'])) {
+//            $user->phone_number = $data['phone_number'];
+//        }
+        $user->save();
+
+        return true;
 
     }
 

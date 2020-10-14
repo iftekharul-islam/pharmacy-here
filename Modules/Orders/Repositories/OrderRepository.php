@@ -548,6 +548,18 @@ class OrderRepository
 
     public function ordersByStatus($request)
     {
+        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
+        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+
+        if ( $request->status !== null){
+            $orders = Order::whereBetween('order_date', [$startDate, $endDate])->where('status', $request->status)->paginate(10);
+            return $orders;
+        }
+        if ($startDate !== null || $endDate !== null) {
+            $orders = Order::whereBetween('order_date', [$startDate, $endDate])->paginate(10);
+            return $orders;
+        }
+
         $order = Order::query();
 
         if ($request->has('status')) {
@@ -572,7 +584,7 @@ class OrderRepository
 
     public function getOrderDetails($id)
     {
-        return Order::with(['orderItems.product', 'address.area.thana.district', 'pharmacy.pharmacyBusiness', 'customer'])
+        return Order::with(['cancelReason', 'orderItems.product', 'address.area.thana.district', 'pharmacy.pharmacyBusiness', 'customer'])
             ->where('id', $id)
             ->first();
 

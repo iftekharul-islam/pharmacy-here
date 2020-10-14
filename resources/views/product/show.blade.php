@@ -31,43 +31,43 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-7 mx-auto">
-                    <h2>Medicine Details</h2>
+                    <h2>{{ __('text.medicine_details') }}</h2>
                     <div class="product-summary mt-5">
                         <table class="table table-borderless">
                             <tr>
-                                <th>Name</th>
+                                <th>{{ __('text.name') }}</th>
                                 <td>{{ $data->name }}</td>
                             </tr>
                             <tr>
-                                <th>Category</th>
+                                <th>{{ __('text.category') }}</th>
                                 <td>{{ $data->category->name }}</td>
                             </tr>
                             <tr>
-                                <th>Generic</th>
+                                <th>{{ __('text.generic') }}</th>
                                 <td> {{ $data->generic->name }}</td>
                             </tr>
                             <tr>
-                                <th>Form</th>
+                                <th>{{ __('text.form') }}</th>
                                 <td>{{ $data->form->name }}</td>
                             </tr>
                             <tr>
-                                <th>Company</th>
+                                <th>{{ __('text.company') }}</th>
                                 <td>{{ $data->company->name }}</td>
                             </tr>
                             <tr>
-                                <th>Conversation factor</th>
+                                <th>{{ __('text.conversation_factor') }}</th>
                                 <td>{{ $data->conversion_factor}}</td>
                             </tr>
                             <tr>
-                                <th>Unit</th>
+                                <th>{{ __('text.unit') }}</th>
                                 <td>{{ $data->primaryUnit->name }}</td>
                             </tr>
                             <tr>
-                                <th>Min Order Qty</th>
+                                <th>{{ __('text.min_order_qty') }}</th>
                                 <td>{{$data->min_order_qty}}</td>
                             </tr>
                             <tr>
-                                <th>Price</th>
+                                <th>{{ __('text.price') }}</th>
                                 <td>{{ $data->purchase_price }}</td>
                             </tr>
                         </table>
@@ -75,13 +75,13 @@
                 </div>
                 <div class="col-7 mx-auto">
                     <div class="profile-btn">
-                        <a href="{{ route('product-list') }}" class="btn--edit">Back</a>
-                        <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                        <a href="{{ route('product-list') }}" class="btn--edit">{{ __('text.back') }}</a>
+                        <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
                     </div>
                 </div>
                 @if (count($relatedProducts) > 0)
                 <div class="col-12 my-5">
-                    <h3>Similar Products</h3>
+                    <h3>{{ __('text.similar_product') }}</h3>
                     <hr class="fancy4">
                 </div>
                 <div class="col-12">
@@ -117,9 +117,9 @@
                             <p><small>{{ $product->company->name }}</small></p>
                         </div>
                         @auth
-                            <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">view</a>
+                            <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
                         @else
-                            <a href="{{ route('customer.login') }}" class="btn btn--primary w-100">view</a>
+                            <a href="{{ route('customer.login') }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
                         @endauth
                     </div>
                     @endforeach

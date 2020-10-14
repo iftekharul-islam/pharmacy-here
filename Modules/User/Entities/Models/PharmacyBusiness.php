@@ -3,7 +3,9 @@
 namespace Modules\User\Entities\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Locations\Entities\Models\Address;
 use Modules\Locations\Entities\Models\Area;
+use Modules\Orders\Entities\Models\Order;
 
 class PharmacyBusiness extends Model
 {
@@ -44,5 +46,15 @@ class PharmacyBusiness extends Model
     {
         return $this->belongsTo(BankName::class, 'bank_id', 'id');
     }
+
+    public function pharmacyOrder()
+    {
+        return $this->hasMany(Order::class, 'pharmacy_id', 'user_id');
+    }
+
+//    public function pharmacyAddress()
+//    {
+//        return $this->belongsTo(Address::class, 'area_id', 'user_id');
+//    }
 
 }

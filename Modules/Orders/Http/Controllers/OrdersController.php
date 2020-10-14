@@ -21,14 +21,15 @@ class OrdersController extends Controller
      */
     public function index(Request $request)
     {
-//        return $request->status;
+        $display_Sdate = $request->start_date;
+        $display_Edate = $request->end_date;
+        $status = $request->status;
         $data = $this->repository->ordersByStatus($request);
-//        return $data;
-        return view('orders::index', compact('data'));
+        return view('orders::index', compact('data', 'display_Sdate','display_Edate', 'status'));
     }
 
     /**
-     * Show the form for creating a new resource.
+//     * Show the form for creating a new resource.
      * @return Response
      */
     public function create()
@@ -54,7 +55,7 @@ class OrdersController extends Controller
     public function show($id)
     {
         $data = $this->repository->getOrderDetails($id);
-//        return $data->address->area->thana->district;
+//        return $data;
         return view('orders::show', compact('data'));
     }
 

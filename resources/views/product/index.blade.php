@@ -135,12 +135,12 @@
         <div class="container">
             <div class="row mb-5">
                 <div class="col-md-4 text-left">
-                    <h2 class="my-header">Medicines</h2>
+                    <h2 class="my-header">{{ trans_choice('text.medicine', 10) }}</h2>
                 </div>
                 <div class="my-header-search col-md-6 ml-auto">
                     <label class="w-100 label-search">
                         <form id="form" action="{{ route('product-list') }}" method="GET">
-                            <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="Search your medicine here">
+                            <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="{{ __('text.search_medicine') }}">
                             <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
                         </form>
                     </label>
@@ -195,9 +195,9 @@
                                             @endif
                                         @endforeach
                                         <div class="package d-flex justify-content-between">
-                                            <p id="item-price-show-{{ $item->id }}" class="{{$matchedItem ? 'd-none' : ''}}">৳ {{ $item->purchase_price }} / piece</p>
+                                            <p id="item-price-show-{{ $item->id }}" class="{{$matchedItem ? 'd-none' : ''}}">৳ {{ $item->purchase_price }} / {{ __('text.piece') }}</p>
                                             <input id="cart-price-show-{{ $item->id }}" class="countAmount-{{$item->id}} count-style {{$matchedItem ? '' : 'd-none'}}" style="color: #00CE5E;" value="৳ {{ $matchedItem ? $matchedItem->amount : '' }}" readonly>
-                                            <p>Min quantity ({{ $item->min_order_qty }})</p>
+                                            <p>{{ __('text.min_qty') }} ({{ $item->min_order_qty }})</p>
                                         </div>
                                         @else
                                         <div class="package d-flex justify-content-between">
@@ -205,17 +205,17 @@
                                             <p>Min quantity ({{ $item->min_order_qty }})</p>
                                         </div>
                                     @endauth
-                                <p><strong>Packaging Type - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>
+                                <p><strong>{{ __('text.packing_type') }} - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>
                                 <div class="medicine-details--footer d-flex justify-content-between align-items-center">
                                 @guest
-                                        <a href="{{ route('customer.login') }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                                        <a href="{{ route('customer.login') }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> {{ __('text.add_to_cart') }}t</a>
                                 @else
                                         <div class="number-input {{ $matchedItem ? 'block' : 'd-none'}}" id="show-button-{{ $item->id }}">
                                             <button id="decrease-{{$item->id }}" onclick="newItemdec(this, {{ $item->min_order_qty }}, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : ''}});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
                                             <input id="input-{{$item->id }}" class="quantity new-input-{{ $matchedItem ?  $matchedItem->id : '' }} {{$matchedItem ? '' : 'disabled'}}"  name="quantity" value="{{ $matchedItem ? $matchedItem->quantity : '10'}}" type="number" readonly>
                                             <button id="increase-{{$item->id }}" onclick="newItemIncrease(this, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : '' }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
                                         </div>
-                                        <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }}, {{ $item->min_order_qty }}, {{ $item->purchase_price }});" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                                        <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }}, {{ $item->min_order_qty }}, {{ $item->purchase_price }});" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> {{ __('text.add_to_cart') }}</a>
 
                                 @endguest
                                     <a href="{{ route('single-product', $item->id) }}" class="eyes"><i class="fas fa-eye"></i></a>
