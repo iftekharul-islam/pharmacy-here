@@ -47,6 +47,8 @@ class ProductRepository
         }
 
         return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+            ->orderBy('name', 'ASC')
+            ->orderBy('purchase_price', 'DESC')
             ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
 
@@ -273,9 +275,9 @@ class ProductRepository
 
     public function getRelatedProductByProductId($id)
     {
-        $product = Product::find($id)->first();
+        $product = Product::find($id);
 
-        return Product::where('generic_id', $product->generic_id)->where('id', '!=', $id)->get();
+        return Product::where('generic_id', $product->generic_id)->where('purchase_price', '>', 0)->get()->except($product->id);
 
     }
 
