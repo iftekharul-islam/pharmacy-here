@@ -30,16 +30,43 @@ class TransactionHistoryRepository
             ->get();
     }
 
-    public function getAllTransactionHistories()
+    public function getAllTransactionHistories($request)
     {
-        return DB::table('transaction_history')
+        if ($request->area_id !== null) {
+            return TransactionHistory::with(['pharmacy' => function ($query) {
+                $query->select('user_id', 'pharmacy_name');
+            },
+                'pharmacy.pharmacyOrder' =>  function ($query) {
+                    $query->select(DB::raw('SUM(amount) as amount, pharmacy_id'))->where('status', 3)->groupBy('pharmacy_id')->get();
+                }])->whereHas('pharmacy.area', function ($query) use ($request) {
+                $query->where('area_id', $request->area_id);
+            })
+                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
+                ->groupBy('pharmacy_id')
+                ->get();
+        }
+
+        return TransactionHistory::with(['pharmacy' => function ($query) {
+            $query->select('user_id', 'pharmacy_name');
+        },
+            'pharmacy.pharmacyOrder' =>  function ($query) {
+                $query->select(DB::raw('SUM(amount) as amount, pharmacy_id'))->where('status', 3)->groupBy('pharmacy_id')->get();
+            }])
             ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
             ->groupBy('pharmacy_id')
             ->get();
     }
 
-    public function get($id)
+    public function get($request, $id)
     {
+        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
+        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+
+        if ($startDate !== null || $endDate !== null) {
+            $TransactionHistories = TransactionHistory::whereBetween('date', [$startDate, $endDate])->where('pharmacy_id', $id)->paginate(10);
+            return $TransactionHistories;
+        }
+
         return TransactionHistory::with('pharmacy.pharmacyBusiness')
             ->where('pharmacy_id', $id)
             ->paginate(10);
@@ -169,11 +196,14 @@ class TransactionHistoryRepository
 
     public function getPharmacyInfo($id)
     {
-        return TransactionHistory::with('pharmacy.pharmacyBusiness')
-            ->selectRaw(DB::raw( '(SELECT SUM(pharmacy_amount) FROM orders WHERE status=3 GROUP BY pharmacy_id) as total_amount'))
-            ->selectRaw('id,(SELECT SUM(amount) FROM transaction_history GROUP BY pharmacy_id) as amount, pharmacy_id')
-            ->where('pharmacy_id',$id)->first();
-//            ->where('id',$id)->first();
+        return TransactionHistory::with([
+            'pharmacy.pharmacyOrder' =>  function ($query) use ($id) {
+                $query->select(DB::raw('SUM(amount) as amount, pharmacy_id'))->where('status', 3)->where('pharmacy_id', $id)
+                    ->first();
+            }])
+            ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
+            ->where('pharmacy_id', $id)
+            ->first();
     }
 
 

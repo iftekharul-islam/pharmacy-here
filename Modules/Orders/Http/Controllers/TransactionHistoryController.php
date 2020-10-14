@@ -2,6 +2,7 @@
 
 namespace Modules\Orders\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -9,6 +10,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Modules\Locations\Entities\Models\Area;
+use Modules\Orders\Entities\Models\TransactionHistory;
 use Modules\Orders\Http\Requests\CreateTransactionHistoryRequest;
 use Modules\Orders\Repositories\TransactionHistoryRepository;
 
@@ -24,25 +27,13 @@ class TransactionHistoryController extends Controller
      * Display a listing of the resource.
      * @return Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = $this->repository->getAllOrders();
-        $transactionHistories = $this->repository->getAllTransactionHistories();
+        $areaId = $request->area_id;
+        $areas = Area::all();
+        $transactionHistories = $this->repository->getAllTransactionHistories($request);
 
-        $due = new Collection();
-
-        if (count($transactionHistories)) {
-            foreach ($orders as $key => $value) {
-                if ($value->pharmacy_id == $transactionHistories[$key]->pharmacy_id) {
-                    $due->push((object)[
-                        'due' => $value->total_amount - $transactionHistories[$key]->amount,
-                        'pharmacy_id' => $value->pharmacy_id
-                    ]);
-                }
-            }
-        }
-
-        return view('orders::transactionHistory.index', compact('orders', 'transactionHistories', 'due'));
+        return view('orders::transactionHistory.index', compact('transactionHistories', 'areas', 'areaId'));
     }
 
     /**
@@ -75,10 +66,14 @@ class TransactionHistoryController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $data = $this->repository->get($id);
-        return view('orders::transactionHistory.show', compact('data'));
+        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
+        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+        $userId = $id;
+
+        $data = $this->repository->get($request, $id);
+        return view('orders::transactionHistory.show', compact('data', 'userId', 'startDate', 'endDate'));
     }
 
     /**

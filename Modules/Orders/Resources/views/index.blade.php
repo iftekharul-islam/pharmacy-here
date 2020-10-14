@@ -1,37 +1,5 @@
 @extends('adminlte::page')
-
 @section('title', 'Orders')
-
-@section('content_header')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    <a href="{{ route('orders.index') .'?status=0'  }}">
-                    <div class="card">
-                        <h2 class="card-body text-center">Pending</h2>
-                    </div>
-                    </a>
-                </div>
-                <div class="col-sm-4">
-                    <a href="{{ route('orders.index') .'?status=2'  }}">
-                    <div class="card">
-                        <h2 class="card-body text-center">Processing</h2>
-                    </div>
-                    </a>
-                </div>
-                <div class="col-sm-4">
-                    <a href="{{ route('orders.index') .'?status=3'  }}">
-                    <div class="card">
-                        <h2 class="card-body text-center">Completed</h2>
-                    </div>
-                    </a>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-@stop
-
 @section('content')
     <!-- @auth("web")
         <h1>Hello world</h1>
@@ -39,6 +7,37 @@
 
     @endauth -->
 
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('orders.index') }}">
+                <div class="row">
+                <div class="col-4-xxxl col-lg-4 col-4 form-group">
+                    <label>Start date</label>
+                    <input name="start_date" type="date" class="form-control" value="{{ $display_Sdate ?? $display_Sdate  }}">
+                </div>
+                <div class="col-4-xxxl col-lg-4 col-4 form-group">
+                    <label>End date</label>
+                    <input name="end_date" type="date" class="form-control" value="{{ $display_Edate ?? $display_Edate  }}">
+                </div>
+                <div class="col-4-xxxl col-lg-4 col-4 form-group">
+                    <label>Type</label>
+                    <select name="status" class="form-control" id="">
+                        <option value="" selected disabled>Select a type</option>
+                        <option value="3" {{ $status == 3 ? 'selected' : ''}} >Completed</option>
+                        <option value="2" {{ $status == 2 ? 'selected' : '' }}>Processing</option>
+                        <option value="0" {{ $status === 0 ? 'selected' : '' }}>Pending</option>
+                        <option value="10" {{ $status == 10 ? 'selected' : '' }}>Canceled</option>
+                        <option value="9" {{ $status == 9 ? 'selected' : '' }}>On The Way</option>
+                        <option value="9" {{ $status == 1 ? 'selected' : '' }}>Accepted</option>
+                    </select>
+                </div>
+                <div class="col-12 form-group mg-t-2 float-right">
+                    <button type="submit" class="btn btn-primary float-right">Search</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="card">
         <div class="card-header">
@@ -52,6 +51,7 @@
                     <th>Order No</th>
                     <th>Pharmacy Name</th>
                     <th>Amount</th>
+                    <th>Date</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -63,6 +63,7 @@
                             <td>{{ $item->order_no }}</td>
                             <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>
                             <td>{{ $item->amount }}</td>
+                            <td>{{ $item->created_at }}</td>
                             <td>@include('orders::status', ['status' => $item->status])</td>
 
                             <td>

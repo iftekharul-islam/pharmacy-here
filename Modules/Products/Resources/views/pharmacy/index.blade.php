@@ -30,12 +30,12 @@
             <table id="example1" class="table">
                 <thead>
                     <tr>
-                        <th>SL</th>
                         <th>Owner</th>
                         <th>Pharmacy Name</th>
                         <th>Pharmacy Address</th>
                         <th>Phone</th>
                         <th>Email</th>
+                        <th>status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -43,12 +43,18 @@
                 @if($pharmacies->isNotEmpty())
                     @foreach($pharmacies as $index => $item)
                         <tr>
-                            <td>{{ $pharmacies->firstItem() + $index }}</td>
                             <td>@isset($item->name) {{ $item->name }} @endisset</td>
                             <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_name }} @endisset</td>
                             <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_address }} @endisset</td>
                             <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
                             <td>@isset($item->email) {{ $item->email }} @endisset</td>
+                            <td>
+                                @if($item->status == 1)
+                                    <a href="javascript:void(0)" class="badge badge-primary">Active</a>
+                                @else
+                                    <a href="javascript:void(0)" class="badge badge-danger">Inactive</a>
+                                @endif
+                            </td>
                             <td>
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>

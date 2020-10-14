@@ -4,11 +4,11 @@
     @elseif($status == 1)
         <span class="badge badge-success">Accepted</span>
     @elseif($status == 2)
-        <span class="badge badge-success">Processing</span>
+        <span class="badge badge-info">Processing</span>
     @elseif($status == 3)
         <span class="badge badge-success">Completed</span>
     @elseif($status == 9)
-        <span class="badge badge-success">On The Way</span>
+        <span class="badge badge-info">On The Way</span>
     @elseif($status == 10)
         <span class="badge badge-danger">Canceled</span>
     @endif

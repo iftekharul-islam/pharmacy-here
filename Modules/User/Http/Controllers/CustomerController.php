@@ -5,9 +5,9 @@ namespace Modules\User\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\User\Entities\Models\User;
 use Modules\User\Repositories\CustomerRepository;
 use Modules\User\Repositories\UserRepository;
-use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -27,8 +27,7 @@ class CustomerController extends Controller
     public function index()
     {
     	$data = $this->repository->all();
-
-        // return view('user::index', compact('users'));
+//    	return $data;
         return view('user::customer.index', compact('data'));
     }
 
@@ -58,7 +57,8 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        return view('user::show');
+        $data = $this->repository->findById($id);
+        return view('user::customer.show', compact('data'));
     }
 
     /**
@@ -68,7 +68,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        return view('user::edit');
+        $data = $this->repository->findById($id);
+        return view('user::customer.edit', compact('data'));
     }
 
     /**
@@ -79,7 +80,32 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return false;
+        }
+
+        $data = $request->only(['name', 'email', 'phone_number']);
+
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+
+        if (isset($data['email'])) {
+            $user->email = $data['email'];
+        }
+
+        if (isset($data['phone_number'])) {
+            $user->phone_number = $data['phone_number'];
+        }
+        $user->save();
+
+//           $data = $this->repository->updateWeb($id, $request);
+//           if ($data == false){
+//                return redirect()->route('customer.index')->with('failed', 'Customer not updated');
+//           }
+        return redirect()->route('customer.index')->with('success', 'Customer successfully updated');
     }
 
     /**

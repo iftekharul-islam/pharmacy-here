@@ -26,6 +26,26 @@
 
     @endauth -->
 
+    <div class="card col-md-6">
+        <div class="card-body">
+            <form method="get" action="{{ route('transactionHistory.index') }}">
+{{--                <div class="row">--}}
+                    <div class="form-group">
+                        <label>Area</label>
+                        <select name="area_id" class="form-control" id="">
+                            <option value="" selected disabled>Select area</option>
+                            @foreach($areas as $area)
+                                    <option value="{{ $area->id }}" {{ $area->id == $areaId ? 'selected' : '' }}>{{ $area->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class=" form-group mg-t-2 float-right">
+                        <button type="submit" class="btn btn-primary float-right">Search</button>
+                    </div>
+{{--                </div>--}}
+            </form>
+        </div>
+    </div>
 
     <div class="card">
         <div class="card-header">
@@ -33,6 +53,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
+            @if (count($transactionHistories) > 0)
             <table id="example1" class="table  mb-3">
                 <thead>
                 <tr>
@@ -45,33 +66,29 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if(! empty($orders))
-                    @foreach($orders as $index => $item)
+                    @foreach($transactionHistories as $index => $item)
                         <?php $i = 1?>
                         <tr>
                             <td>{{ $i + $index }}</td>
-                            <td>{{ $item->pharmacy_name }}</td>
-{{--                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>--}}
-                            <td>{{ $item->total_amount }}</td>
-{{--                            <td>{{ $item->total_amount }}</td>--}}
-                            <td>{{ $transactionHistories[$index]->amount ?? 0 }}</td>
-{{--                            <td>{{ $item->amount }}</td>--}}
-                            <td>{{ $due[$index]->due ?? 0 }}</td>
-{{--                            <td>{{ $item->total_amount - $item->amount }}</td>--}}
-
+                            <td>{{ $item->pharmacy->pharmacy_name }}</td>
+                            <td>{{ $item->amount }}</td>
+                            <td>{{ $item->pharmacy->pharmacyOrder[0]->amount }}</td>
+                            <td>{{ $item->amount - $item->pharmacy->pharmacyOrder[0]->amount   }}</td>
                             <td>
                                 <a href="{{ route('transactionHistory.show', $item->pharmacy_id) }}" type="button"  class="btn btn-sm btn-success" >
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 <a href="{{ route('transactionHistory.create', $item->pharmacy_id) }}" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-edit"></i> </a>
+                                    <i class="fa fa-plus"></i> </a>
 
                             </td>
                         </tr>
                     @endforeach
-                @endif
                 </tbody>
             </table>
+            @else
+            <h4 class="text-center">No data found !</h4>
+            @endif
 {{--            {{ $orders->links() }}--}}
         </div>
         <!-- /.card-body -->

@@ -149,7 +149,7 @@
                                                   </label>
                                                 @if ( $isPreOrderMedicine )
                                                     <div class="order-summary">
-                                                        You have a pre-order medicine in cart. It will take 3-5 days to deliver
+                                                        You have a pre-order medicine in cart. It will take 4 days to deliver
                                                     </div>
                                                 @else
                                                 <div class="tab-content express-content d-none" id="pills-tabContent">
