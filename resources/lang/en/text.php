@@ -19,8 +19,8 @@ return [
     'youtube' => 'Youtube',
 
     'my_profile' => 'My Profile',
-    'my_order' => 'My Profile',
-    'my_prescription' => 'My Profile',
+    'my_order' => 'My Order',
+    'my_prescription' => 'My Prescription',
 
     'prescription' => 'Prescription',
     'address' => 'Address',

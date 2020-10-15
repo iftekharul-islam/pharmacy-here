@@ -25,7 +25,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-5">
-                    <h2 class="my-dashboard-title">{{ __('text.my_order_detials') }}</h2>
+                    <h2 class="my-dashboard-title">{{ __('text.my_order_details') }}</h2>
 {{--                <div class="col-5">--}}
                     <table class="my-table table table-borderless">
                         <tr>
