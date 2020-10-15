@@ -16,7 +16,7 @@ class CreatePrescriptionRequest extends FormRequest
         return [
             'doctor_name' => 'required',
             'prescription_date' => 'required',
-            'url' => 'required|mimes:jpg,jpeg,png,bmp,tiff |max:5120',
+            'url' => 'required',
         ];
     }
 
