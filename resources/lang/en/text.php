@@ -109,7 +109,7 @@ return [
     'prescription_upload_notice' => 'Please upload images of valid prescription from your doctor.',
     'checkout_pre_order_notice' => 'You have a pre-order medicine in cart. It will take 4 days to deliver',
     'home_delivery' => 'Home Delivery',
-    'pickup_pharmacy' => 'Pickup Pharmacy',
+    'pickup_pharmacy' => 'Pickup from Pharmacy',
     'checkout_heading' => 'You’re almost there...',
     'pharmacy' => 'Pharmacy',
     'select_address_title' => 'Select Address for Pharmacy'

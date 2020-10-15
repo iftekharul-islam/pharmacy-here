@@ -108,7 +108,7 @@ return [
     'prescription_upload_notice' => 'আপনার ডাক্তার থেকে বৈধ প্রেসক্রিপশন চিত্র আপলোড করুন',
     'checkout_pre_order_notice' => 'কার্টে আপনার প্রি-অর্ডার ওষুধ রয়েছে। এটি বিতরণ করতে 4 দিন সময় লাগবে',
     'home_delivery' => 'হোম ডেলিভারি',
-    'pickup_pharmacy' => 'পিকআপ ফার্মাসি',
+    'pickup_pharmacy' => 'ফার্মেসী থেকে সংগ্রহ',
     'checkout_heading' => 'সর্বশেষ পর্যায় ....',
     'pharmacy' => 'ফার্মাসি',
     'select_address_title' => 'ফার্মাসির জন্য ঠিকানা',
