@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 //localization
 Route::get('/locale/{locale}', 'LocalizationController');
 
+
 // Basic pages
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/terms-of-use', 'HomeController@terms')->name('terms');
