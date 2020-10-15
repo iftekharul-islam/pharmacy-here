@@ -39,10 +39,10 @@ class ProductsController extends Controller
      * @param int $id
      * @return Factory|View
      */
-    public function show($id)
+    public function show($slug)
     {
-        $data = $this->repository->get($id);
-        $relatedProducts = $this->repository->getRelatedProductByProductIdWeb($id);
+        $data = $this->repository->get($slug);
+        $relatedProducts = $this->repository->getRelatedProductByProductIdWeb($slug);
         return view('product.show', compact('data', 'relatedProducts'));
     }
 

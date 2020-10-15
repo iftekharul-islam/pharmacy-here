@@ -218,13 +218,14 @@
                                         <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }}, {{ $item->min_order_qty }}, {{ $item->purchase_price }});" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> {{ __('text.add_to_cart') }}</a>
 
                                 @endguest
-                                    <a href="{{ route('single-product', $item->id) }}" class="eyes"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ route('single-product', $item->slug) }}" class="eyes"><i class="fas fa-eye"></i></a>
 
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
+                {{ $data->links() }}
             @else
                 <h4 class="text-center">No Medicine Found!</h4>
             @endif
