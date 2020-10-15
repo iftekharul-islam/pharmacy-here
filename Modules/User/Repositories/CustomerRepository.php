@@ -101,12 +101,14 @@ class CustomerRepository
 
     public function get($id)
     {
-        $data = User::find($id);
-//        $data =  User::with(['points' => function($query) use ($id){
-//            $query->select(DB::raw('SUM(points) as points'))->where('user_id', $id)->get();
-//        }])->find($id);
-//dd($data);
-        return $data;
+//        $data = User::find($id);
+//        return $data;
+
+        return User::select(
+            DB::raw('users.id, users.name, users.phone_number, users.email, users.image,
+            users.alternative_phone_number, users.dob, users.gender, users.referral_code, SUM(points.points) as points'))
+            ->join('points', 'users.id','=','points.user_id')
+            ->where('users.id', $id)->first();
     }
 
     public function userDetails($id)
