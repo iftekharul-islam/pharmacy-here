@@ -425,7 +425,7 @@
         {{--let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);--}}
         let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         let cashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");
-        let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");
+        {{--let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");--}}
 
         let ecashNoramlCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let ecashExpressCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
