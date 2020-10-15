@@ -21,6 +21,12 @@
         text-transform: capitalize;
         padding-right: 20px;
     }
+    .medicine-image {
+        border: 1px solid #00ce5e;
+    }
+    .product-details-btn {
+        margin-top: 45px;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -30,58 +36,51 @@
     @endif
         <div class="container mt-5">
             <div class="row">
-                <div class="col-7 mx-auto">
+                <div class="col-md-12 mb-5">
                     <h2>{{ __('text.medicine_details') }}</h2>
-                    <div class="product-summary mt-5">
+                </div>
+                <div class="col-md-3">
+                    <div class="medicine-image p-5 text-center">
+                        @if ($data->form->slug == 'tablet' || $data->form->name == 'capsul')
+                            <img src="{{ asset('images/pill-large.png') }}" class="pill" alt="pill">
+                        @elseif ($data->form->slug == 'syrup')
+                            <img src="{{ asset('images/syrup-large.png') }}" class="pill" alt="syrup">
+                        @elseif ($data->form->slug == 'injection')
+                            <img src="{{ asset('images/injection-large.png') }}" class="pill" alt="injection">
+                        @elseif ($data->form->slug == 'suppository')
+                            <img src="{{ asset('images/suppositories-large.png') }}" class="pill" alt="suppositories">
+                        @else
+                            <img src="{{ asset('images/pill-large.png') }}" class="pill" alt="pill">
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-7">
+                        <div class="pl-2">
+                            <h3>{{ $data->name }}</h3>
+                            <h3 class="text-success">৳ {{ $data->purchase_price }} / {{ __('text.piece') }}</h3>
+                        </div>
                         <table class="table table-borderless">
-                            <tr>
-                                <th>{{ __('text.name') }}</th>
-                                <td>{{ $data->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ __('text.category') }}</th>
-                                <td>{{ $data->category->name }}</td>
-                            </tr>
                             <tr>
                                 <th>{{ __('text.generic') }}</th>
                                 <td> {{ $data->generic->name }}</td>
                             </tr>
                             <tr>
-                                <th>{{ __('text.form') }}</th>
-                                <td>{{ $data->form->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ __('text.company') }}</th>
+                                <th>{{ trans_choice('text.company', 2) }}</th>
                                 <td>{{ $data->company->name }}</td>
                             </tr>
                             <tr>
-                                <th>{{ __('text.conversation_factor') }}</th>
-                                <td>{{ $data->conversion_factor}}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ __('text.unit') }}</th>
-                                <td>{{ $data->primaryUnit->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ __('text.min_order_qty') }}</th>
-                                <td>{{$data->min_order_qty}}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ __('text.price') }}</th>
-                                <td>{{ $data->purchase_price }}</td>
+                                <th>{{ __('text.form') }}</th>
+                                <td>{{ $data->form->name }}</td>
                             </tr>
                         </table>
-                    </div>
-                </div>
-                <div class="col-7 mx-auto">
-                    <div class="profile-btn">
-                        <a href="{{ route('product-list') }}" class="btn--edit">{{ __('text.back') }}</a>
-                        @guest
-                            <a href="{{ route('customer.login', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
-                        @else
-                            <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
-                        @endguest
-                    </div>
+                        <div class="product-details-btn">
+                            <a href="{{ route('product-list') }}" class="btn--edit">{{ __('text.back') }}</a>
+                            @guest
+                                <a href="{{ route('customer.login', $data->id) }}" class="btn--primary"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
+                            @else
+                                <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
+                            @endguest
+                        </div>
                 </div>
                 @if (count($relatedProducts) > 0)
                 <div class="col-12 my-5">
@@ -121,7 +120,7 @@
                             <p><small>{{ $product->company->name }}</small></p>
                         </div>
                         @auth
-                            <a href="{{ route('single-product', $product->id) }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
+                            <a href="{{ route('single-product', $product->slug) }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
                         @else
                             <a href="{{ route('customer.login') }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
                         @endauth
