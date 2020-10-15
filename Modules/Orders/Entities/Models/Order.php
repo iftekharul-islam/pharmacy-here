@@ -78,5 +78,10 @@ class Order extends Model
         return $this->belongsTo(Feedback::class, 'id', 'order_id');
     }
 
+    public function cancelReason()
+    {
+        return $this->belongsTo(OrderCancelReason::class, 'id', 'order_id');
+    }
+
 }
 

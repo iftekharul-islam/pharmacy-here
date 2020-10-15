@@ -292,9 +292,20 @@ return [
             ],
         ],
         [
-            'text'    => 'Pharmacies',
-            'icon'    => 'fas fa-store-alt',
-            'url'     => 'pharmacies'
+            'text'    => 'Pharmacy',
+            'icon'    => 'fas fa-cogs',
+            'submenu' => [
+                            [
+                                'text'    => 'Pharmacy list',
+                                'icon'    => 'fas fa-store-alt',
+                                'url'     => 'pharmacies'
+                            ],
+                            [
+                                'text'    => 'Transaction History',
+                                'icon'    => 'fas fa-store-alt',
+                                'url'     => 'transaction-history'
+                            ],
+                ]
         ],
         [
             'text'    => 'Location',
@@ -336,11 +347,6 @@ return [
             'text'    => 'Customers',
             'icon'    => 'fas fa-store-alt',
             'url'     => 'customers'
-        ],
-        [
-            'text'    => 'Transaction History',
-            'icon'    => 'fas fa-store-alt',
-            'url'     => 'transaction-history'
         ],
         [
             'text'    => 'Orders',

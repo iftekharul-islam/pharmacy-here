@@ -22,6 +22,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('customers')->group(function() {
         Route::get('/', 'CustomerController@index')->name('customer.index');
+        Route::get('show/{id}', 'CustomerController@show')->name('customer.show');
+        Route::get('edit/{id}', 'CustomerController@edit')->name('customer.edit');
+        Route::post('store/{id}', 'CustomerController@update')->name('customer.store');
         Route::delete('{id}', 'CustomerController@destroy')->name('customer.destroy');
     });
 

@@ -6,15 +6,19 @@ namespace Modules\Auth\Repositories;
 use Carbon\Carbon;
 use Dingo\Api\Exception\ResourceException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
+use Illuminate\Support\Str;
 use JWTAuth;
 use Modules\Auth\Entities\Models\OneTimePassword;
 use Modules\Auth\Entities\Models\PasswordReset;
 use Modules\Auth\Jobs\SendOtp;
 use Modules\Auth\Notifications\PasswordResetNotification;
+use Modules\Points\Entities\Models\Points;
+use Modules\Points\Entities\Models\Refers;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
 use Spatie\Permission\Models\Role;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthRepository
@@ -241,6 +245,7 @@ class AuthRepository
         if ($request->has('phone_number')) {
             $user->phone_number = $request->phone_number;
         }
+        $user->referral_code = Str::random(7);
 
         $user->save();
 
@@ -248,6 +253,39 @@ class AuthRepository
 
         if ($user && $role) {
             $user->assignRole($role);
+        }
+
+        if ($request->has('referral_code')) {
+            $referred_user = User::where('referral_code', $request->referral_code)->first();
+
+            if (! $referred_user) {
+                throw new NotFoundHttpException('Referral code not found');
+            }
+
+            $refers = new Refers();
+//                Refers::create([
+//                'refered_by' => $referred_user->id,
+//                'refered_to' => $user->id,
+//            ]);
+            $refers->referred_by = $referred_user->id;
+            $refers->referred_to = $user->id;
+            $refers->save();
+
+
+            Points::create([
+                'user_id' => $referred_user->id,
+                'points' => 10,
+                'type' => 'referred',
+                'type_id' => $refers->id,
+            ]);
+
+            Points::create([
+                'user_id' => $user->id,
+                'points' => 10,
+                'type' => 'referred',
+                'type_id' => $refers->id,
+            ]);
+
         }
 
         return $this->createOtp($request);

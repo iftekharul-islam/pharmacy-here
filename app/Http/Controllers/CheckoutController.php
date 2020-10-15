@@ -84,7 +84,7 @@ class CheckoutController extends Controller
 
     public function check(CheckoutCreateRequest $request)
     {
-        return $request->all();
+//        return $request->all();
 
         if ($request->payment_type == 1){
             $data = $request->only([

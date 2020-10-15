@@ -6,10 +6,12 @@ namespace Modules\User\Repositories;
 
 use Dingo\Api\Exception\DeleteResourceFailedException;
 // use Modules\Products\Entities\Pharmacy;
+use Illuminate\Support\Facades\DB;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Request;
 
 class CustomerRepository
 {
@@ -86,6 +88,36 @@ class CustomerRepository
 
     public function findById($id)
     {
+        return User::find($id);
+    }
+
+    public function updateWeb($request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return false;
+        }
+//        $data = $request->only('name', 'email', 'phone_number');
+
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+
+//        if (isset($data->name)) {
+//            $user->name = $data->name;
+//        }
+
+//        if (isset($data['email'])) {
+//            $user->email = $data['email'];
+//        }
+//
+//        if (isset($data['phone_number'])) {
+//            $user->phone_number = $data['phone_number'];
+//        }
+        $user->save();
+
+        return true;
 
     }
 
@@ -100,9 +132,14 @@ class CustomerRepository
 
     public function get($id)
     {
-        $data =  User::find($id);
+//        $data = User::find($id);
+//        return $data;
 
-        return $data;
+        return User::select(
+            DB::raw('users.id, users.name, users.phone_number, users.email, users.image,
+            users.alternative_phone_number, users.dob, users.gender, users.referral_code, SUM(points.points) as points'))
+            ->join('points', 'users.id','=','points.user_id')
+            ->where('users.id', $id)->first();
     }
 
     public function userDetails($id)

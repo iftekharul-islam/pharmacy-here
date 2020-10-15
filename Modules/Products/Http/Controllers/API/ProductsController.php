@@ -126,6 +126,7 @@ class ProductsController extends BaseController
 
     public function getRelatedProductByProductId($id)
     {
+
         $product = $this->repository->getRelatedProductByProductId($id);
 
         if (!$product) {
