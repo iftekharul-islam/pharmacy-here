@@ -13,7 +13,7 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-9 mx-auto mb-5">
-                    <h3 class="text-center">FAQs</h3>
+                    <h3 class="text-center">{{ __('text.faqs') }}</h3>
                     <div class="bs-example mt-5">
                         <div class="accordion" id="accordionExample">
                             <div class="card">
@@ -56,35 +56,35 @@
                     </div>
                 </div>
                 <div class="col-md-6 mx-auto mt-5">
-                    <h2 class="text-center mb-5">Got no answer for your desired questions?</h2>
+                    <h2 class="text-center mb-5">{{ __('text.no_ans_found') }}?</h2>
                     <form action="#">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="fname"><b>First Name :</b></label>
+                                    <label for="fname"><b>{{ __('text.fname') }} :</b></label>
                                     <input type="email" class="form-control" id="fname" aria-describedby="fnameHelp">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="lname"><b>Last Name :</b></label>
+                                    <label for="lname"><b>{{ __('text.lname') }} :</b></label>
                                     <input type="email" class="form-control" id="lname" aria-describedby="lnameHelp">
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="phone-number"><b>Phone Number :</b></label>
+                                    <label for="phone-number"><b>{{ __('text.phone_number') }} :</b></label>
                                     <input type="email" class="form-control" id="phone-number" aria-describedby="phoneHelp">
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="question"><b>Additional questions :</b></label>
+                                    <label for="question"><b>{{ __('text.add_ques') }} :</b></label>
                                     <textarea type="email" class="form-control" rows="4" id="question" aria-describedby="addressHelp"></textarea>
                                 </div>
                             </div>
                             <div class="mx-auto mb-5">
-                                <button type="submit" class="btn btn--primary px-5" disabled>Sent</button>
+                                <button type="submit" class="btn btn--primary px-5" disabled>{{ __('text.sent') }}</button>
                             </div>
                         </div>
                     </form>

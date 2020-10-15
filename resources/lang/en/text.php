@@ -92,13 +92,25 @@ return [
     'charge_amount' => 'Charge Amount',
     'add_item_to_cart' => 'Add items to Cart',
     'my_order_details' => 'My Orders Details',
-
-
-
-
-
-
-
-
-
+    'pre_order_text' => 'It will take maximum 4 days to deliver this order, because this order includes Pre-Order medicine',
+    'faqs' => 'FAQs',
+    'no_ans_found' => 'Got no answer for your desired questions',
+    'fname' => 'First Name',
+    'lname' => 'last Name',
+    'add_ques' => 'Additional questions',
+    'sent' => 'Sent',
+    'cart_list' => 'Cart list',
+    'warning' => 'Warning',
+    'delete_cart' => 'Do you want to delete this Medicine from Cart ?',
+    'pre_order_medicine' => 'Pre-order Medicine',
+    'pre_order_medicine_notice' => 'You have a pre-order medicine in cart. It will take maximum 4 days to deliver, do you want to continue?',
+    'prescribed_medicine_notice' => 'You have a prescribed medicine in cart. Do you want to upload prescription ?',
+    'prescription_upload' => 'Prescription Upload',
+    'prescription_upload_notice' => 'Please upload images of valid prescription from your doctor.',
+    'checkout_pre_order_notice' => 'You have a pre-order medicine in cart. It will take 4 days to deliver',
+    'home_delivery' => 'Home Delivery',
+    'pickup_pharmacy' => 'Pickup Pharmacy',
+    'checkout_heading' => 'You’re almost there...',
+    'pharmacy' => 'Pharmacy',
+    'select_address_title' => 'Select Address for Pharmacy'
 ];
