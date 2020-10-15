@@ -25,51 +25,51 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-5">
-                    <h2 class="my-dashboard-title">My Orders Details</h2>
+                    <h2 class="my-dashboard-title">{{ __('text.my_order_detials') }}</h2>
 {{--                <div class="col-5">--}}
                     <table class="my-table table table-borderless">
                         <tr>
-                            <th>Order no</th>
+                            <th>{{ __('text.order_no') }}</th>
                             <td>#{{ $data->order_no }}</td>
                         </tr>
                         <tr>
-                            <th>Order date:</th>
+                            <th>{{ __('text.order_date') }}:</th>
                             <td>{{ date('d F Y', strtotime($data->order_date)) }}</td>
                         </tr>
                         <tr>
-                            <th>Address:</th>
+                            <th>{{ __('text.address') }}:</th>
                             <td>{{ $data->address->address }}, {{ $data->address->area->name }}, {{ $data->address->area->thana->name }}, {{ $data->address->area->thana->district->name }}.</td>
                         </tr>
                         <tr>
-                            <th>Status:</th>
+                            <th>{{ __('text.status') }}:</th>
                             <td>
-                                @if ($order->status == 0)
+                                @if ($data->status == 0)
                                     <span class="badge badge-danger">Pending</span>
-                                @elseif ($order->status == 1)
+                                @elseif ($data->status == 1)
                                     <span class="badge badge-warning">Accepted</span>
-                                @elseif ($order->status == 2)
+                                @elseif ($data->status == 2)
                                     <span class="badge" style="background: #FFFF00">Processing</span>
-                                @elseif ($order->status == 3)
+                                @elseif ($data->status == 3)
                                     <span class="badge badge-success">Completed</span>
-                                @elseif ($order->status == 4)
+                                @elseif ($data->status == 4)
                                     <span class="badge badge-info">Failed</span>
-                                @elseif ($order->status == 5)
+                                @elseif ($data->status == 5)
                                     <span class="badge badge-danger">Rejected By Pharmacy</span>
-                                @elseif ($order->status == 6)
+                                @elseif ($data->status == 6)
                                     <span class="badge badge-info">Forwarded</span>
-                                @elseif ($order->status == 7)
+                                @elseif ($data->status == 7)
                                     <span class="badge badge-danger">Expired</span>
-                                @elseif ($order->status == 8)
+                                @elseif ($data->status == 8)
                                     <span class="badge badge-info">Orphan</span>
-                                @elseif ($order->status == 9)
+                                @elseif ($data->status == 9)
                                     <span class="badge badge-info">On The Way</span>
-                                @elseif ($order->status == 10)
+                                @elseif ($data->status == 10)
                                     <span class="badge badge-danger">Cancel</span>
                                 @endif
                             </td>
                         </tr>
                         <tr>
-                            <th>Payment Type:</th>
+                            <th>{{ __('text.payment_type') }}:</th>
                             <td>
                                 @if ($data->payment_type == 1)
                                     Cash on Delivery
@@ -79,12 +79,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Delivery Type:</th>
+                            <th>{{ __('text.delivery_type') }}:</th>
                             <td>{{ $data->delivery_type == 1 ? 'Home Delivery' : 'Pharmacy Pickup' }}</td>
                         </tr>
                         @if ($data->delivery_type !== 2)
                             <tr>
-                                <th>Delivery Method:</th>
+                                <th>{{ __('text.delivery_method') }}:</th>
                                 <td>
                                     @if ($data->delivery_method == 'express')
                                         Express Delivery
@@ -95,19 +95,19 @@
                             </tr>
                         @endif
                         <tr>
-                            <th>Delivery date:</th>
+                            <th>{{ __('text.delivery_date') }}:</th>
                             <td>
                                 {{ date('d F Y', strtotime($data->delivery_date)) }}
                             </td>
                         </tr>
                         <tr>
-                            <th>Delivery Time:</th>
+                            <th>{{ __('text.delivery_time') }}:</th>
                             <td>
                                 {{ $data->delivery_time }}
                             </td>
                         </tr>
                         <tr>
-                            <th>Charge Amount:</th>
+                            <th>{{ __('text.charge_amount') }}:</th>
                             <td>
                                 {{ $data->delivery_charge }}
                             </td>
@@ -120,10 +120,10 @@
                         <table class="table table-borderless">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Sub total</th>
+                                    <th scope="col">{{ __('text.product') }}</th>
+                                    <th scope="col">{{ __('text.price') }}</th>
+                                    <th scope="col">{{ __('text.price') }}</th>
+                                    <th scope="col">{{ __('text.sub_total') }}l</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -141,7 +141,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td><strong>Grand Total : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
+                                    <td><strong>{{ __('text.grand_total') }} : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
                                 </tr>
                             </tfooter>
                         </table>
@@ -151,7 +151,7 @@
                         <input type="hidden" name="itemId" value="{{ $data->id }}">
                         @csrf
                     <div class="text-center">
-                        <button type="submit" class="button btn--primary mt-5">Add items to Cart</button>
+                        <button type="submit" class="button btn--primary mt-5">{{ __('text.add_item_to_cart') }}</button>
                     </div>
                     </form>
                 </div>

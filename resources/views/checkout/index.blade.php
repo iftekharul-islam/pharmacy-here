@@ -19,6 +19,10 @@
     .add-address {
         padding: 41px!important;
     }
+    .agreement ul li a {
+        color: #000;
+        margin-left: 20px;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -54,7 +58,7 @@
                             <input type="hidden" name="status" value="0">
                             <ul class="payment-step">
                                 <li>
-                                    <p>Delivery Address</p>
+                                    <p>{{ __('text.delivery_address') }}</p>
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="address" id="myAddress">
@@ -85,7 +89,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <p>Phone Number</p>
+                                    <p>{{ __('text.phone_number') }}</p>
                                     <div class="row">
                                         <div class="col-md-4">
                                                 <input type="text" name="phone_number" class="form-control mb-2" onkeypress="return isNumber(event)" value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}" required>
@@ -103,7 +107,7 @@
                                 </li>
                                 <!-- Payment method -->
                                 <li>
-                                    <p>Payment Details</p>
+                                    <p>{{ __('text.payment_details') }}</p>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="d-flex align-items-center justify-content-between payment-method">
@@ -123,7 +127,7 @@
                                 </li>
                                 <!-- Delivery option -->
                                 <li>
-                                    <p>Delivery Option </p>
+                                    <p>{{ __('text.delivery_option') }}</p>
                                     <ul class="nav nav-pills mb-3 delivery-option-tabs" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link active" id="pills-delivery-tab" data-toggle="pill" href="#pills-delivery" role="tab" aria-controls="pills-delivery" aria-selected="true" onclick="getDeliveryType(1)">Home Delivery</a>
@@ -145,7 +149,7 @@
                                                   </label>
                                                 @if ( $isPreOrderMedicine )
                                                     <div class="order-summary">
-                                                        You have a pre-order medicine in cart. It will take 3-5 days to deliver
+                                                        You have a pre-order medicine in cart. It will take 4 days to deliver
                                                     </div>
                                                 @else
                                                 <div class="tab-content express-content d-none" id="pills-tabContent">
@@ -190,16 +194,16 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <p>Order Summary</p>
+                                    <p>{{ __('text.order_summary') }}</p>
                                     <div class="order-summary">
                                         <div class="table-responsive">
                                             <table class="table">
                                                 <thead class="thead-light">
                                                 <tr>
-                                                    <th scope="col">Product</th>
-                                                    <th scope="col">Price</th>
-                                                    <th scope="col">Quantity</th>
-                                                    <th scope="col">Sub total</th>
+                                                    <th scope="col">{{ __('text.product') }}</th>
+                                                    <th scope="col">{{ __('text.price') }}</th>
+                                                    <th scope="col">{{ __('text.quantity') }}</th>
+                                                    <th scope="col">{{ __('text.sub_total') }}</th>
                                                     <th scope="col"></th>
                                                 </tr>
                                                 </thead>
@@ -221,7 +225,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td><h5>Total ৳ {{ $total }}</h5></td>
+                                                    <td><h5>{{ __('text.total') }} ৳ {{ $total }}</h5></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -231,9 +235,22 @@
                                 <li>
                                     <p id="grandTotal"></p>
                                 </li>
+                                <li>
+                                    <label for="">
+                                        <input type="checkbox" class="mr-2" name="agreement" required>
+                                        <b>{{ __('text.agreement') }}</b>
+                                    </label>
+                                    <div class="agreement">
+                                        <ul>
+                                            <li><small><a href="{{ route('terms') }}">{{ __('text.Terms_of_use') }}</a></small></li>
+                                            <li><small><a href="{{ route('privacy.page') }}">{{ __('text.privacy_policy') }}</a></small></li>
+                                            <li><small><a href="{{ route('return.page') }}">{{ __('text.refund_and_return') }}</a></small></li>
+                                        </ul>
+                                    </div>
+                                </li>
                             </ul>
                             <div class="col-md-3 mx-auto">
-                                <button type="submit" id="final-submit" class="btn--primary checkout-btn save-profile-btn d-block px-5">Proceed to Checkout</button>
+                                <button type="submit" id="final-submit" class="btn--primary checkout-btn save-profile-btn d-block px-5">{{ __('text.proceed_to_checkout') }}</button>
                             </div>
                         </form>
                     </div>
@@ -364,6 +381,9 @@
                 pharmacy_search_id: {
                     required: true
                 },
+                agreement: {
+                    required: true
+                },
             },
             messages: {
                 shipping_address_id: {
@@ -371,6 +391,9 @@
                 },
                 pharmacy_search_id: {
                     required: "No pharmacy selected. Please select one",
+                },
+                agreement: {
+                    required: "* please Check",
                 },
             }
         });
@@ -395,10 +418,12 @@
 
         let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>" ) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
-        let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);
+        {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
+        let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
-        let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);;
+        {{--let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);--}}
+        let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         let cashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");
         let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");
 
@@ -642,14 +667,14 @@
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
                 console.log(ecashInNormalDelivery, 'e cash normal');
-                grandTotal = total + parseFloat(ecashInNormalDelivery) ;
+                grandTotal = total + ecashInNormalDelivery ;
                 $('input[name="delivery_charge_amount"]').val(ecashNoramlCharge);
                 // $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
                 console.log(ecashInExpressDelivery, 'e cash express');
-                grandTotal = total + parseFloat(ecashInExpressDelivery);
-                $('input[name="delivery_charge_amount"]').val(ecashExpressCharge)
+                grandTotal = total + ecashInExpressDelivery;
+                $('input[name="delivery_charge_amount"]').val(ecashExpressCharge);
             }
 
             if (deliveryType === 2 && payTypeValue === 1 ) {
@@ -726,10 +751,10 @@
             return 'Express Delivery (Charge: TK ' + cashInExpressDelivery + ')'
         }
         function showNormalDeliveryChargeInEpay() {
-            return 'Normal Delivery (Charge: TK ' + ecashInNormalDelivery + ')'
+            return 'Normal Delivery (Charge: TK ' + ecashInNormalDelivery + ') + E-payment charge';
         }
         function showExpressDeliveryChargeInEpay() {
-            return 'Express Delivery (Charge: TK ' + ecashInExpressDelivery + ')'
+            return 'Express Delivery (Charge: TK ' + ecashInExpressDelivery + ') + E-payment charge'
         }
 
         var addresses = {!! json_encode($allLocations) !!};

@@ -17,6 +17,9 @@
                             <strong>Customer Name : </strong> <span>{{ $data->customer->name }}</span><br>
                             <strong>Delivery Address : </strong> <span>{{ $data->address->address . ', ' . $data->address->area->name . ', ' . $data->address->area->thana->name .', '. $data->address->area->thana->district->name  }}</span><br>
                             <strong>Customer Phone : </strong> <span>{{ $data->customer->phone_number }}</span><br>
+                            @if ($data->cancelReason !== null)
+                                <strong>Cancel Reason : </strong> <span>{{ $data->cancelReason->reason}}</span><br>
+                            @endif
                         </div>
 
                     </div>

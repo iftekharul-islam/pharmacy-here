@@ -4,6 +4,15 @@
 @section('title', 'Customer')
 
 @section('content_header')
+    @if(session('success'))
+        <div id="successMessage" class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @elseif (session('failed'))
+        <div id="successMessage" class="alert alert-danger">
+            {{ session('failed') }}
+        </div>
+    @endif
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -19,7 +28,6 @@
         </div>
     </section>
 @stop
-
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -46,13 +54,13 @@
                             <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
                             <td>@isset($item->email) {{ $item->email }} @endisset</td>
                             <td>
-{{--                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">--}}
-{{--                                    <i class="fa fa-eye"></i>--}}
-{{--                                </button>--}}
-{{--                                @if($item->pharmacyBusiness)--}}
-{{--                                    <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">--}}
-{{--                                    <i class="fa fa-edit"></i> </a>--}}
-{{--                                @endif--}}
+                                <a href="{{ route('customer.show', $item->id) }}" class="btn btn-sm btn-success">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+
+                                <a href="{{ route('customer.edit', $item->id) }}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
 
                                 <form id="delete-form-{{ $loop->index }}" action="{{ route('customer.destroy', $item['id']) }}"
                                     method="post"
@@ -91,33 +99,33 @@
             $('.data-table').dataTable();
         });
 
-        function showProduct(item) {
-            console.log(item)
-            if (item.name) { $('#name').html(item.name);}
-            if (item.pharmacy_business) { $('#pharmacy_name').html(item.pharmacy_business.pharmacy_name); }
-            if (item.phone_number) {$('#phone').html(item.phone_number); }
-            if (item.email) { $('#email').html(item.email); }
-            if (item.pharmacy_business) {$('#address').html(item.pharmacy_business.pharmacy_address); }
-            if (item.pharmacy_business) {$('#bank_account').html(item.pharmacy_business.bank_account_name); }
-            if (item.pharmacy_business) {$('#account_no').html(item.pharmacy_business.bank_account_number); }
-            if (item.pharmacy_business) {$('#bank_name').html(item.pharmacy_business.bank_name); }
-            if (item.pharmacy_business) {$('#branch').html(item.pharmacy_business.bank_brunch_name); }
-            if (item.pharmacy_business) {$('#bkash').html(item.pharmacy_business.bkash_number); }
-            if (item.pharmacy_business) {$('#startTime').html(item.pharmacy_business.start_time); }
-            if (item.pharmacy_business) {$('#endTime').html(item.pharmacy_business.end_time); }
-            if (item.pharmacy_business) {$('#breakStart').html(item.pharmacy_business.break_start_time); }
-            if (item.pharmacy_business) {$('#breakEnd').html(item.pharmacy_business.break_end_time); }
-            if(item.pharmacy_business && item.pharmacy_business.nid_img_path) {
-                $('#nid').html('<img src="'+ item.pharmacy_business.nid_img_path +'" width="100" />');
-            }
-            if(item.pharmacy_business && item.pharmacy_business.trade_img_path) {
-                $('#trade').html('<img src="'+ item.pharmacy_business.trade_img_path +'" width="100"/>');
-            }
-            if(item.pharmacy_business && item.pharmacy_business.drug_img_path) {
-                $('#drug').html('<img src="'+ item.pharmacy_business.drug_img_path +'" width="100" />');
-            }
-            // $('#status').html(checkStatus(item.status));
-        }
+        // function showProduct(item) {
+        //     console.log(item)
+        //     if (item.name) { $('#name').html(item.name);}
+        //     if (item.pharmacy_business) { $('#pharmacy_name').html(item.pharmacy_business.pharmacy_name); }
+        //     if (item.phone_number) {$('#phone').html(item.phone_number); }
+        //     if (item.email) { $('#email').html(item.email); }
+        //     if (item.pharmacy_business) {$('#address').html(item.pharmacy_business.pharmacy_address); }
+        //     if (item.pharmacy_business) {$('#bank_account').html(item.pharmacy_business.bank_account_name); }
+        //     if (item.pharmacy_business) {$('#account_no').html(item.pharmacy_business.bank_account_number); }
+        //     if (item.pharmacy_business) {$('#bank_name').html(item.pharmacy_business.bank_name); }
+        //     if (item.pharmacy_business) {$('#branch').html(item.pharmacy_business.bank_brunch_name); }
+        //     if (item.pharmacy_business) {$('#bkash').html(item.pharmacy_business.bkash_number); }
+        //     if (item.pharmacy_business) {$('#startTime').html(item.pharmacy_business.start_time); }
+        //     if (item.pharmacy_business) {$('#endTime').html(item.pharmacy_business.end_time); }
+        //     if (item.pharmacy_business) {$('#breakStart').html(item.pharmacy_business.break_start_time); }
+        //     if (item.pharmacy_business) {$('#breakEnd').html(item.pharmacy_business.break_end_time); }
+        //     if(item.pharmacy_business && item.pharmacy_business.nid_img_path) {
+        //         $('#nid').html('<img src="'+ item.pharmacy_business.nid_img_path +'" width="100" />');
+        //     }
+        //     if(item.pharmacy_business && item.pharmacy_business.trade_img_path) {
+        //         $('#trade').html('<img src="'+ item.pharmacy_business.trade_img_path +'" width="100"/>');
+        //     }
+        //     if(item.pharmacy_business && item.pharmacy_business.drug_img_path) {
+        //         $('#drug').html('<img src="'+ item.pharmacy_business.drug_img_path +'" width="100" />');
+        //     }
+        //     // $('#status').html(checkStatus(item.status));
+        // }
 
         function removeItem(id) {
             Swal.fire({

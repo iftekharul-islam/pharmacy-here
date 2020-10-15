@@ -47,7 +47,29 @@ class ProductRepository
         }
 
         return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+            ->orderBy('name', 'ASC')
+            ->orderBy('purchase_price', 'DESC')
+            ->where('purchase_price', '>', 0)
             ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
+
+//        $nameSort =  $products
+//            ->orderBy('name', 'ASC')
+//            ->orderBy('purchase_price', 'ASC')
+//            ->where('purchase_price', '>', 0)
+//            ->get();
+////            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
+//        dd( $nameSort);
+//
+//        $priceSort = $products
+//            ->orderBy('name', 'ASC')
+//            ->where('purchase_price', '=', 0)
+//            ->get();
+//        dd( $priceSort);
+//
+//        $newProductList = $nameSort->merge($priceSort);
+//
+//        return $newProductList->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+//            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
 
     public function get($id)
@@ -273,9 +295,9 @@ class ProductRepository
 
     public function getRelatedProductByProductId($id)
     {
-        $product = Product::find($id)->first();
+        $product = Product::find($id);
 
-        return Product::where('generic_id', $product->generic_id)->where('id', '!=', $id)->get();
+        return Product::where('generic_id', $product->generic_id)->where('purchase_price', '>', 0)->get()->except($product->id);
 
     }
 

@@ -9,11 +9,6 @@
                 <div class="col-sm-6">
                     <h1>Transaction History</h1>
                 </div>
-                {{--                <div class="col-sm-6">--}}
-                {{--                    <a href="{{ route('transactionHistory.create') }}" class="btn btn-sm btn-success float-right">--}}
-                {{--                        Create Notice--}}
-                {{--                    </a>--}}
-                {{--                </div>--}}
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -21,15 +16,31 @@
 
 @section('content')
     <!-- @auth("web")
-        <h1>Hello world</h1>
-{{ Auth::guard('web')->user()->can('create.user') }}
-
+            {{ Auth::guard('web')->user()->can('create.user') }}
     @endauth -->
 
-
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('transactionHistory.show', $userId) }}">
+                <div class="row">
+                    <div class="col-6-xxxl col-lg-6 col-6 form-group">
+                        <label>Start date</label>
+                        <input name="start_date" type="date" class="form-control" value="{{ $startDate ?? $startDate }}">
+                    </div>
+                    <div class="col-6-xxxl col-lg-6 col-6 form-group">
+                        <label>End date</label>
+                        <input name="end_date" type="date" class="form-control" value="{{ $endDate ?? $endDate }}">
+                    </div>
+                    <div class="col-12 form-group mg-t-2 float-right">
+                        <button type="submit" class="btn btn-primary float-right">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Transaction History List</h3>
+            <h3 class="card-title">Payment History</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
@@ -39,7 +50,6 @@
                     <th>SL</th>
                     <th>Date</th>
                     <th>Transaction ID</th>
-                    <th>Pharmacy Name</th>
                     <th>Payment Method</th>
                     <th>Amount</th>
 {{--                    <th>Action</th>--}}
@@ -52,10 +62,8 @@
                             <td>{{ $data->firstItem() + $index }}</td>
                             <td>{{ date('d F, Y', strtotime($item->date)) }}</td>
                             <td>{{ $item->transaction_id }}</td>
-                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>
                             <td>{{ $item->payment_method }}</td>
                             <td>{{ $item->amount }}</td>
-
                             <td>
                                 {{--                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">--}}
                                 {{--                                    <i class="fa fa-eye"></i>--}}

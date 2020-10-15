@@ -65,6 +65,7 @@ class CheckoutController extends Controller
         }
 
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
+//        return $delivery_charge;
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
         $allLocations = $this->locationRepository->getLocation();

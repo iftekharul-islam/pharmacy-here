@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\Auth\Notifications\PasswordResetNotification;
 use Modules\Locations\Entities\Models\Address;
-use Modules\Points\Entities\Models\Points;
+use Modules\Orders\Entities\Models\Order;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -98,10 +98,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(CustomerAddress::class, 'user_id', 'id')->orderBy('id', 'ASC');
     }
 
-//    public function points()
-//    {
-//        return $this->hasMany(Points::class, 'user_id','id');
-//    }
-
-
+    public function pharmacyOrder()
+    {
+        return $this->hasMany(Order::class, 'pharmacy_id', 'id');
+    }
 }
