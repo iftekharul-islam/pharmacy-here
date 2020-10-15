@@ -38,7 +38,7 @@
     <section class="checkout-section">
         <div class="container">
             <div class="row">
-                <h6><strong>You’re almost there...</strong></h6>
+                <h6><strong>{{ __('text.checkout_heading') }}</strong></h6>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -71,7 +71,7 @@
                                                 @endforeach
                                                 <a href="#" class="add-address" data-toggle="modal" data-target="#addressModal">
                                                     <i class="fas fa-plus-circle"></i>
-                                                    <span>Address</span>
+                                                    <span>{{ __('text.address') }}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -130,10 +130,10 @@
                                     <p>{{ __('text.delivery_option') }}</p>
                                     <ul class="nav nav-pills mb-3 delivery-option-tabs" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link active" id="pills-delivery-tab" data-toggle="pill" href="#pills-delivery" role="tab" aria-controls="pills-delivery" aria-selected="true" onclick="getDeliveryType(1)">Home Delivery</a>
+                                            <a class="nav-link active" id="pills-delivery-tab" data-toggle="pill" href="#pills-delivery" role="tab" aria-controls="pills-delivery" aria-selected="true" onclick="getDeliveryType(1)">{{ __('text.home_delivery') }}</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link " id="pills-pharmacy-tab" data-toggle="pill" href="#pills-pharmacy" role="tab" aria-controls="pills-pharmacy" aria-selected="false" onclick="getDeliveryType(2)">Pickup Pharmacy</a>
+                                            <a class="nav-link " id="pills-pharmacy-tab" data-toggle="pill" href="#pills-pharmacy" role="tab" aria-controls="pills-pharmacy" aria-selected="false" onclick="getDeliveryType(2)">{{ __('text.pickup_pharmacy') }}</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">
@@ -149,7 +149,7 @@
                                                   </label>
                                                 @if ( $isPreOrderMedicine )
                                                     <div class="order-summary">
-                                                        You have a pre-order medicine in cart. It will take 4 days to deliver
+                                                        {{ __('text.checkout_pre_order_notice') }}
                                                     </div>
                                                 @else
                                                 <div class="tab-content express-content d-none" id="pills-tabContent">
@@ -186,7 +186,7 @@
                                         <div class="tab-pane fade pickup-pharmacy" id="pills-pharmacy" role="tabpanel" aria-labelledby="pills-pharmacy-tab">
                                             @if ( $isPreOrderMedicine )
                                                 <div class="order-summary">
-                                                    You have a pre-order medicine in cart. It will take 3-5 days to deliver
+                                                    {{ __('text.pre_order_text') }}
                                                 </div>
                                                 @else
                                             @endif
@@ -264,16 +264,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="pharmacyModalLabel">Select Address for Pharmacy</h5>
+                    <h5 class="modal-title" id="pharmacyModalLabel">{{ __('text.select_address_title') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                         <div class="form-group">
-                            <label for="district" class="col-form-label">District</label>
+                            <label for="district" class="col-form-label">{{ __('text.district') }}</label>
                             <select class="form-control" id="selectPharmacyDistrict" onchange="getPharmacyThanas(value)">
-                                <option value="" disabled selected>Please select a district name</option>
+                                <option value="" disabled selected>{{ __('text.select_district') }}</option>
                                 @foreach($allLocations as $district)
                                     <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" >{{ $district->name }}</option>
                                 @endforeach
@@ -281,21 +281,21 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="thana" class="col-form-label">Thana</label>
+                            <label for="thana" class="col-form-label">{{ __('text.thana') }}</label>
                             <select class="form-control" id="selectPharmacyThana" onchange="getPharmacy()">
 
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="area" class="col-form-label">Pharamacy</label>
+                            <label for="area" class="col-form-label">{{ __('text.pharmacy') }}</label>
                             <select class="form-control" id="selectPharmacy" name="select_pharamcy" disabled="">
                             </select>
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success" id="pharmacy-submit" disabled="">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
+                    <button type="submit" class="btn btn-success" id="pharmacy-submit" disabled="">{{ __('text.save') }}</button>
                 </div>
             </div>
         </div>
@@ -305,7 +305,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addressModalLabel">New Address</h5>
+                    <h5 class="modal-title" id="addressModalLabel">{{ __('text.new_address') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -315,9 +315,9 @@
                     @csrf
 
                         <div class="form-group">
-                            <label for="district" class="col-form-label">District</label>
+                            <label for="district" class="col-form-label">{{ __('text.district') }}</label>
                             <select class="form-control" id="selectDistrict" onchange="getThanas(value)">
-                                    <option value="" disabled selected>Please select a district name</option>
+                                    <option value="" disabled selected>{{ __('text.select_district') }}</option>
                                 @foreach($allLocations as $district)
                                     <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" >{{ $district->name }}</option>
                                 @endforeach
@@ -325,20 +325,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="thana" class="col-form-label">Thana</label>
+                            <label for="thana" class="col-form-label">{{ __('text.thana') }}</label>
                             <select class="form-control" id="selectThana" onchange="getAreas()">
 
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="area" class="col-form-label">Area</label>
+                            <label for="area" class="col-form-label">{{ __('text.area') }}</label>
                             <select class="form-control" id="selectArea" name="area_id" disabled="">
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="address" class="col-form-label">Address</label>
+                            <label for="address" class="col-form-label">{{ __('text.address') }}</label>
                             <input type="text" name="address" class="form-control" id="address" disabled="" required>
                             @if ($errors->has('address'))
                                 <span class="text-danger">
@@ -348,8 +348,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn--primary" id="submit" disabled="">Save address</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
+                    <button type="submit" class="btn btn--primary" id="submit" disabled="">{{ __('text.save') }}</button>
                 </div>
                 </form>
             </div>
@@ -687,7 +687,7 @@
                 $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
 
-            var grandTotalView = 'Grand Total : ' + grandTotal;
+            var grandTotalView = '{{ __('text.grand_total') }} : ' + grandTotal;
 
         if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
             var grandTotalNormalDB = grandTotal - cashInNormalDelivery ;

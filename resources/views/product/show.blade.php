@@ -76,7 +76,11 @@
                 <div class="col-7 mx-auto">
                     <div class="profile-btn">
                         <a href="{{ route('product-list') }}" class="btn--edit">{{ __('text.back') }}</a>
-                        <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
+                        @guest
+                            <a href="{{ route('customer.login', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
+                        @else
+                            <a href="{{ route('cart.addToCart', $data->id) }}" class="btn--primary save-profile-btn"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
+                        @endguest
                     </div>
                 </div>
                 @if (count($relatedProducts) > 0)
@@ -111,7 +115,7 @@
                                 <span class=" mb-4"></span>
                             @endif
                             <h6 style="margin: 0px">{{ $product->name }}</h6>
-                            <small>{{ $product->primaryUnit->name }}</small>
+                            <small>{{ $product->primaryUnit->name }}</small><small class="float-right">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
                             <br>
                             <small>{{ $product->generic->name }}</small>
                             <p><small>{{ $product->company->name }}</small></p>
