@@ -19,18 +19,18 @@
         <div class="container">
             <div class="row">
                 <div class="col-6 mb-3">
-                    <h2>Upload Prescriptions</h2>
-                    <p class="mb-5">Please upload images of valid prescription from your doctor.</p>
+                    <h2>{{ __('text.prescription_upload') }}</h2>
+                    <p class="mb-5">{{ __('text.prescription_upload_notice') }}</p>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn--primary px-5" data-toggle="modal" data-target="#prescriptionModal">
-                        <i class="fas fa-plus"></i>  Prescription
+                        <i class="fas fa-plus"></i>  {{ __('text.prescription') }}
                     </button>
                     <!-- Modal -->
                     <div class="modal fade" id="prescriptionModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="prescriptionModalLabel">Add Prescription</h5>
+                                    <h5 class="modal-title" id="prescriptionModalLabel">{{ __('text.add_prescription') }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -39,7 +39,7 @@
                                     @csrf
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="patient_name" class="col-form-label">Patient name:</label>
+                                            <label for="patient_name" class="col-form-label">{{ __('text.patient_name') }}:</label>
                                             <input type="text" name="patient_name" class="form-control">
                                             @if ($errors->has('patient_name'))
                                                 <span class="text-danger">
@@ -48,7 +48,7 @@
                                             @endif
                                         </div>
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Doctor name:</label>
+                                            <label for="message-text" class="col-form-label">{{ __('text.doctor_name') }}:</label>
                                             <input type="text" class="form-control" name="doctor_name" id="message-text" required>
                                             @if ($errors->has('doctor_name'))
                                                 <span class="text-danger">
@@ -57,7 +57,7 @@
                                             @endif
                                         </div>
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Prescription date:</label>
+                                            <label for="message-text" class="col-form-label">{{ __('text.prescription_date') }}:</label>
                                             <input type="date" class="form-control" name="prescription_date" id="message-text" required>
                                             @if ($errors->has('prescription_date'))
                                                 <span class="text-danger">
@@ -66,13 +66,13 @@
                                             @endif
                                         </div>
                                         <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Prescription Image:</label>
+                                            <label for="message-text" class="col-form-label">{{ __('text.prescription_image') }}:</label>
                                             <input type="file" name="url" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Add Prescription</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
+                                        <button type="submit" class="btn btn-primary">{{ __('text.add_prescription') }}</button>
                                     </div>
                                 </form>
                             </div>
@@ -87,6 +87,7 @@
                     @endif
                 </div>
             </div>
+            @if (count($prescriptions) > 0)
             <form id="form" method="post" action="{{ route('prescriptions.id') }}">
                 @csrf
             <div class="my-row row mb-5">
@@ -137,12 +138,13 @@
                         </div>
                 @endforeach
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn--primary float-left my-next-button">Next</button>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn--primary float-left my-next-button">Next</button>
+                    </div>
                 </div>
-            </div>
             </form>
+            @endif
         </div>
     </div>
 @endsection

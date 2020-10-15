@@ -106,7 +106,7 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12">
-                            <h2>Cart list</h2>
+                            <h2>{{ __('text.cart_list') }}</h2>
                         </div>
                     </div>
                     <div class="order-summary">
@@ -298,8 +298,8 @@
             var ele = $(this);
 
             Swal.fire({
-                title: "Warning",
-                text: "Do you want to delete this Medicine from Cart ?",
+                title: "{{ __('text.warning') }}",
+                text: "{{ __('text.delete_cart') }}",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -360,8 +360,8 @@
 
         function preOrderMedicineAlert() {
             Swal.fire({
-                title: "Pre-order Medicine",
-                text: "You have a pre-order medicine in cart. It will take 3-5 days to deliver, do you want to continue?",
+                title: "{{ __('text.pre_order_medicine') }}",
+                text: "{{ __('text.pre_order_medicine_notice') }}",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -399,8 +399,8 @@
 
         function isPrescribedMedicineAlert(medicines) {
             Swal.fire({
-                title: "Notice",
-                text: "You have a prescribed medicine in cart. Do you want to upload prescription?",
+                title: "{{ __('text.warning') }}",
+                text: "{{ __('text.prescribed_medicine_notice') }}",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
