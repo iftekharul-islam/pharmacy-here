@@ -12,7 +12,7 @@
 */
 
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['web','role:admin']], function () {
 
 //    Route::get('home','HomeController@index');
 

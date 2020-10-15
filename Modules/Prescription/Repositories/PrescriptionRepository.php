@@ -53,11 +53,11 @@ class PrescriptionRepository
         $data['user_id'] = Auth::user()->id;
         $data['patient_name'] = $data['patient_name'] ? $data['patient_name'] :  Auth::user()->name;
 
-//        $image = $request->file('url');
-//        $link = Storage::disk('gcs');
-//        $disk = $link->put('images/customer/prescription', $image );
-//        $data['url'] = $link->url($disk);
-        $data['url'] = 'test';
+        $image = $request->file('url');
+        $link = Storage::disk('gcs');
+        $disk = $link->put('images/customer/prescription', $image );
+        $data['url'] = $link->url($disk);
+//        $data['url'] = 'test';
 
 //        $data['url']= Storage::disk('gcs')->put('images/customer/prescription', $request->file('url'));
         return Prescription::create($data);
