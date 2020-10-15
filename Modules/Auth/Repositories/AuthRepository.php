@@ -255,7 +255,7 @@ class AuthRepository
             $user->assignRole($role);
         }
 
-        if ($request->has('referral_code')) {
+        if ($request->has('referral_code') && $request->get('referral_code')) {
             $referred_user = User::where('referral_code', $request->referral_code)->first();
 
             if (! $referred_user) {
