@@ -72,10 +72,10 @@ class ProductRepository
 //            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
 
-    public function get($id)
+    public function get($slug)
     {
         return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
-            ->find($id);
+            ->where('slug', $slug)->first();
 
     }
 
@@ -301,9 +301,9 @@ class ProductRepository
 
     }
 
-    public function getRelatedProductByProductIdWeb($id)
+    public function getRelatedProductByProductIdWeb($slug)
     {
-        $product = Product::find($id);
+        $product = Product::where('slug', $slug)->first();
 
         $similar_product = Product::with('generic')->where('generic_id',  $product->generic_id)->get()->except($product->id);
 

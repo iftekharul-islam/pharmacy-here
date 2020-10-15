@@ -14,7 +14,7 @@
                     </div>
 
                     <div class="footer-menu-list">
-                        <a href="#">{{ __('text.company') }}</a>
+                        <a href="#">{{ trans_choice('text.company', 1) }}</a>
                         <ul>
 {{--                            <li><a href="{{ route('home') }}">Home</a></li>--}}
                             <li><a href="{{ route('terms') }}">{{ __('text.Terms_of_use') }}</a></li>
