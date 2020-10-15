@@ -122,7 +122,7 @@
                                 <tr>
                                     <th scope="col">{{ __('text.product') }}</th>
                                     <th scope="col">{{ __('text.price') }}</th>
-                                    <th scope="col">{{ __('text.price') }}</th>
+                                    <th scope="col" class="text-center">{{ __('text.quantity') }}</th>
                                     <th scope="col">{{ __('text.sub_total') }}l</th>
                                 </tr>
                             </thead>
@@ -131,7 +131,7 @@
                                 <tr>
                                     <td>{{ $product->product->name }}</td>
                                     <td>৳ {{ $product->product->purchase_price }}</td>
-                                    <td>{{ $product->quantity }}</td>
+                                    <td class="text-center">{{ $product->quantity }}</td>
                                     <td>৳ {{ $product->quantity * $product->product->purchase_price }}</td>
                                 </tr>
                             @endforeach
