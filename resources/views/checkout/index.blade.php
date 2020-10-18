@@ -111,13 +111,13 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="d-flex align-items-center justify-content-between payment-method">
-                                                <label class="custom-radio" onclick="getPayTypeValue(1)">
+                                                <label id="cod" class="custom-radio" onclick="getPayTypeValue(1)">
                                                     <input type="radio" checked="checked" name="payment_type" value="1">
                                                     <span class="checkmark"></span>
                                                     Cash on Delivery
                                                 </label>
                                                 <label class="custom-radio" onclick="getPayTypeValue(2)">
-                                                    <input type="radio" name="payment_type" value="2">
+                                                    <input id="epay" type="radio" name="payment_type" value="2">
                                                     <span class="checkmark"></span>
                                                     E - Payment
                                                 </label>
@@ -416,16 +416,23 @@
             });
         }
 
-        let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'') ) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let cashInNormalDeliveryValue = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let cashInNormalDeliveryAmount = cashInNormalDeliveryValue.toFixed(2);
+        let cashInNormalDelivery = parseFloat(cashInNormalDeliveryAmount);
+
         {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
+
         let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+
         {{--let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
         {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
         {{--let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);--}}
+
         let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+
         {{--let cashInCollectFromPharmacyD = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");--}}
 
         let discount = "<?php echo $delivery_charge['collect_from_pharmacy']['discount'] ?>";
@@ -436,12 +443,18 @@
         let ecashNoramlCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let ecashExpressCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
 
+        let customerAmount = parseFloat("<?php echo $amount ?>");
+        let customerPayLimit = parseFloat("<?php echo $pay_limit ?>");
+        console.log(customerAmount, 'customerAmount');
+        console.log(customerPayLimit, 'customerPayLimit');
+
 
 
 
         // console.log(ecashInExpressDelivery, 'ecashInExpressDelivery')
         // console.log(cashInExpressDeliveryCharge, 'ecash In Express Delivery Charge')
-        // console.log(cashInNormalDeliveryCharge, 'ecash In NormalDelivery Charge')
+        console.log(cashInNormalDeliveryValue, 'cash In Normal cash In Normal Delivery Value')
+        console.log(cashInNormalDelivery, 'cash In Normal Delivery')
 
         // console.log(cashInCollectFromPharmacy, 'cash In cashInCollectFromPharmacy')
         // console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
@@ -457,6 +470,10 @@
         var deliveryType = 1;
 
         (function() {
+            if (customerAmount > customerPayLimit) {
+                $('#cod').addClass('d-none');
+                $('#epay').attr('checked', true);
+            }
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
             var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
             $('input[name="delivery_type"]').val(deliveryType);

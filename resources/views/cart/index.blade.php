@@ -86,7 +86,7 @@
     }
     .note-text {
         position: absolute;
-        margin-left: -142px;
+        margin-left: -163px;
     }
 </style>
 @section('content')
@@ -211,9 +211,14 @@
             item.parentNode.querySelector('input[type=number]').stepUp();
 
             let inputNumber = $('#' + item.id).parent().find('input').val();
-            let total = inputNumber * price;
-            let initTotal = parseInt($(".grand-total").val());
-            let grandTotal = price + initTotal;
+            let total = parseFloat(inputNumber * price).toFixed(2);
+            let initTotal = $(".grand-total").val();
+            let grandTotal = parseFloat(price + parseFloat(initTotal)).toFixed(2);
+
+            console.log(inputNumber, 'inputNumber');
+            console.log(total, 'total');
+            console.log(initTotal, 'initTotal');
+            console.log(grandTotal, 'grandTotal');
 
             $(".countAmount-"+productId).val(total);
             $(".grand-total").val(grandTotal);
@@ -251,13 +256,17 @@
             item.parentNode.querySelector('input[type=number]').stepDown();
 
             let total = newValue * price;
-            let initTotal = parseInt($(".grand-total").val());
-            let grandTotal = initTotal - price;
+            let initTotal = $(".grand-total").val();
+            let grandTotal = parseFloat(parseFloat(initTotal).toFixed(2) - price).toFixed(2);
 
-            $(".countAmount-"+productId).val(total-price);
-            console.log(".countAmount-"+productId);
+            console.log(total, 'total');
+            console.log(initTotal, 'initTotal');
+            console.log(grandTotal, 'grandTotal');
+
+            $(".countAmount-"+productId).val(parseFloat(total - price).toFixed(2));
             $(".grand-total").val(grandTotal);
-                // clearTimeout(cartDecrement);
+
+
                 clearTimeout(cartIncrement);
 
                 cartDecrement = setTimeout(function () {
