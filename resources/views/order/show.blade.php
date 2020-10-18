@@ -130,9 +130,9 @@
                             @foreach ($data['orderItems'] as $product)
                                 <tr>
                                     <td>{{ $product->product->name }}</td>
-                                    <td>৳ {{ $product->product->purchase_price }}</td>
+                                    <td>{{ $product->product->purchase_price }}</td>
                                     <td class="text-center">{{ $product->quantity }}</td>
-                                    <td>৳ {{ $product->quantity * $product->product->purchase_price }}</td>
+                                    <td>{{ $product->quantity * $product->product->purchase_price }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
