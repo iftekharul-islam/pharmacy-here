@@ -24,7 +24,7 @@ return [
 
     'prescription' => 'Prescription',
     'address' => 'Address',
-    'new_address' => 'New Address',
+    'new_address' => 'Add new Address',
     'name' => 'Name',
     'phone_number' => 'Phone Number',
     'alter_contact' => 'Alter Contact',
@@ -112,5 +112,5 @@ return [
     'pickup_pharmacy' => 'Pickup from Pharmacy',
     'checkout_heading' => 'You’re almost there...',
     'pharmacy' => 'Pharmacy',
-    'select_address_title' => 'Select Address for Pharmacy'
+    'select_address_title' => 'No Pharmacy is available in your area, Please Select a pharmacy from here.'
 ];

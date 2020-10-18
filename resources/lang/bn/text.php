@@ -24,7 +24,7 @@ return [
 
     'prescription' => 'প্রেসক্রিপশন',
     'address' => 'ঠিকানা',
-    'new_address' => 'নতুন ঠিকানা',
+    'new_address' => 'নতুন ঠিকানা সংযোজন',
     'name' => 'নাম',
     'phone_number' => 'ফোন নম্বর',
     'alter_contact' => 'বিকল্প যোগাযোগ',
@@ -111,5 +111,5 @@ return [
     'pickup_pharmacy' => 'ফার্মেসী থেকে সংগ্রহ',
     'checkout_heading' => 'সর্বশেষ পর্যায় ....',
     'pharmacy' => 'ফার্মাসি',
-    'select_address_title' => 'ফার্মাসির জন্য ঠিকানা',
+    'select_address_title' => 'আপনার এলাকায় কোনও ফার্মাসি নেই, দয়া করে এখান থেকে একটি ফার্মাসি নির্বাচন করুন',
 ];
