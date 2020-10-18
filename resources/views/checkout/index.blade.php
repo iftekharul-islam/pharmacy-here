@@ -416,15 +416,21 @@
             });
         }
 
-        let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>" ) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'') ) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
         let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
-        let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        {{--let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
         {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
         {{--let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);--}}
         let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
-        let cashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");
+        {{--let cashInCollectFromPharmacyD = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");--}}
+
+        let discount = "<?php echo $delivery_charge['collect_from_pharmacy']['discount'] ?>";
+        let cashInCollectFromPharmacy = parseFloat(discount.replace(/,/g,''));
+
         {{--let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");--}}
 
         let ecashNoramlCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
@@ -437,9 +443,9 @@
         // console.log(cashInExpressDeliveryCharge, 'ecash In Express Delivery Charge')
         // console.log(cashInNormalDeliveryCharge, 'ecash In NormalDelivery Charge')
 
-        // console.log(cashInNormalDelivery, 'cash In NormalDelivery')
-        console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
-        console.log(typeof (ecashInNormalDelivery), 'ecash In NormalDelivery')
+        // console.log(cashInCollectFromPharmacy, 'cash In cashInCollectFromPharmacy')
+        // console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
+        // console.log(typeof (ecashInNormalDelivery), 'ecash In NormalDelivery')
         // console.log(cashInExpressDelivery, 'cash In ExpressDelivery')
         // console.log(ecashInExpressDelivery, 'ecash In ExpressDelivery')
         // console.log(cashInCollectFromPharmacy, 'cash In CollectFromPharmacy')
@@ -454,7 +460,6 @@
             var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
             var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
             $('input[name="delivery_type"]').val(deliveryType);
-            console.log(deliveryCharge, 'On page load')
 
             getPayTypeValue(payTypeValue);
             getDeliveryChargeValue(deliveryCharge);
@@ -473,7 +478,6 @@
                 data: {_token: '{{ csrf_token() }}', id: areaId},
 
                 success: function (response) {
-                    console.log(response);
                     if (response === true) {
 
                         $('#pharmacy_search').val('1');
@@ -481,9 +485,7 @@
                         console.log(id, 'hello :) its true')
 
                     } else {
-                        console.log(response, 'response')
                         console.log('hello :) its false')
-                        // console.log(thanaId, 'thana')
 
                         $('#pharmacy_search').val('');
                         $('#insert_pharmacy_id').val('');
@@ -530,11 +532,11 @@
                 var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
                 // document.write(next_date);
 
-                console.log(date, 'date')
-                console.log(next_date, 'next_date')
-                console.log(time, 'time')
-                console.log(time_new, 'time_new')
-                console.log(normal_start_time, 'normal_start_time')
+                // console.log(date, 'date')
+                // console.log(next_date, 'next_date')
+                // console.log(time, 'time')
+                // console.log(time_new, 'time_new')
+                // console.log(normal_start_time, 'normal_start_time')
 
                 if ( time_new < normal_start_time) {
                     $(".normal_date").val("(" +normal_time_slot[0] + ")" + ", " + date);
@@ -590,7 +592,6 @@
                     }
 
                 });
-                console.log(available_time, 'available_time for express delivery');
 
                 if ( available_time !== null) {
                     $.each(express_time_slot, function(key, value) {
@@ -649,12 +650,12 @@
 
         function addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge) {
             let grandTotal = total;
-            console.log(total, 'first total');
+            // console.log(total, 'first total');
             $('input[name="delivery_charge_amount"]').prop('disabled', false);
-            console.log('Add delivery total');
-            console.log('Delivery type: ', deliveryType);
-            console.log('pay type: ', payTypeValue);
-            console.log('Delivery Charge: ', deliveryCharge);
+            // console.log('Add delivery total');
+            // console.log('Delivery type: ', deliveryType);
+            // console.log('pay type: ', payTypeValue);
+            // console.log('Delivery Charge: ', deliveryCharge);
 
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
                 grandTotal = total + cashInNormalDelivery;
@@ -713,12 +714,6 @@
         } else {
             $('input[name="amount"]').val(grandTotal);
         }
-            // console.log('hello 2');
-
-            console.log(typeof( cashInNormalDelivery ));
-            console.log(cashInNormalDelivery);
-            console.log(typeof( grandTotal));
-            console.log(grandTotal);
 
             $('input[name="total"]').val(grandTotal);
 
@@ -730,8 +725,6 @@
         function getPayTypeValue(payTypeValue) {
             var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
             var deliveryType = parseInt( $('input[name="delivery_type"]').val() );
-            console.log('paytype()');
-            console.log(deliveryCharge);
 
             if (payTypeValue === 2) {
                 $('#normal_delivery_charge').html(showNormalDeliveryChargeInEpay());
