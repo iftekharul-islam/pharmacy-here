@@ -259,7 +259,7 @@ class ProductImport implements ToCollection, WithHeadingRow
 
     private function getIsPrescripted($value)
     {
-        if ($value != null && $value === 'OTC') {
+        if ($value != null && $value === 'OTC' || $value === 'otc') {
             return 0;
         }
         return 1;

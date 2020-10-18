@@ -297,7 +297,11 @@ class ProductRepository
     {
         $product = Product::find($id);
 
-        return Product::where('generic_id', $product->generic_id)->where('purchase_price', '>', 0)->get()->except($product->id);
+        return Product::where('generic_id', $product->generic_id)
+            ->where('form_id', $product->form_id)
+            ->where('strength', $product->strength)
+            ->where('purchase_price', '>', 0)
+            ->get()->except($product->id);
 
     }
 
