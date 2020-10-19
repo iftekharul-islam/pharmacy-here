@@ -97,6 +97,8 @@
         background: white;
         border-bottom-left-radius: 15px;
         border-bottom-right-radius: 15px;
+        max-height:300px;
+        overflow-y:auto;
 
     }
     #searchResult ul{
@@ -216,10 +218,8 @@
                                             <button id="increase-{{$item->id }}" onclick="newItemIncrease(this, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : '' }});" class="plus {{$matchedItem ? '' : 'disabled'}}"></button>
                                         </div>
                                         <a href="#" id="show-cart-{{ $item->id }}" onclick="addToCart(this, {{ $item->id }}, {{ $item->min_order_qty }}, {{ $item->purchase_price }});" class=" btn--add-to-cart {{ $matchedItem ? 'd-none' : 'block'}}"><i class="fas fa-cart-plus"></i> {{ __('text.add_to_cart') }}</a>
-
                                 @endguest
-                                    <a href="{{ route('single-product', $item->slug) }}" class="eyes"><i class="fas fa-eye"></i></a>
-
+                                    <a href="{{ route('single-product', ['medicine_id' => $item->id, 'medicine_slug' => $item->slug ] ) }}" class="eyes"><i class="fas fa-eye"></i></a>
                                 </div>
                             </div>
                         </div>

@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
-                                        <button type="submit" class="btn btn-primary">{{ __('text.add_prescription') }}</button>
+                                        <button type="submit" class="btn btn-success">{{ __('text.add_prescription') }}</button>
                                     </div>
                                 </form>
                             </div>

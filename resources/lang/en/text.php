@@ -24,7 +24,7 @@ return [
 
     'prescription' => 'Prescription',
     'address' => 'Address',
-    'new_address' => 'New Address',
+    'new_address' => 'Add new Address',
     'name' => 'Name',
     'phone_number' => 'Phone Number',
     'alter_contact' => 'Alter Contact',
@@ -109,8 +109,8 @@ return [
     'prescription_upload_notice' => 'Please upload images of valid prescription from your doctor.',
     'checkout_pre_order_notice' => 'You have a pre-order medicine in cart. It will take 4 days to deliver',
     'home_delivery' => 'Home Delivery',
-    'pickup_pharmacy' => 'Pickup Pharmacy',
+    'pickup_pharmacy' => 'Pickup from Pharmacy',
     'checkout_heading' => 'You’re almost there...',
     'pharmacy' => 'Pharmacy',
-    'select_address_title' => 'Select Address for Pharmacy'
+    'select_address_title' => 'No Pharmacy is available in your area, Please Select a pharmacy from here.'
 ];

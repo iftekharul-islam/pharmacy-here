@@ -24,7 +24,7 @@ return [
 
     'prescription' => 'প্রেসক্রিপশন',
     'address' => 'ঠিকানা',
-    'new_address' => 'নতুন ঠিকানা',
+    'new_address' => 'নতুন ঠিকানা সংযোজন',
     'name' => 'নাম',
     'phone_number' => 'ফোন নম্বর',
     'alter_contact' => 'বিকল্প যোগাযোগ',
@@ -108,8 +108,8 @@ return [
     'prescription_upload_notice' => 'আপনার ডাক্তার থেকে বৈধ প্রেসক্রিপশন চিত্র আপলোড করুন',
     'checkout_pre_order_notice' => 'কার্টে আপনার প্রি-অর্ডার ওষুধ রয়েছে। এটি বিতরণ করতে 4 দিন সময় লাগবে',
     'home_delivery' => 'হোম ডেলিভারি',
-    'pickup_pharmacy' => 'পিকআপ ফার্মাসি',
+    'pickup_pharmacy' => 'ফার্মেসী থেকে সংগ্রহ',
     'checkout_heading' => 'সর্বশেষ পর্যায় ....',
     'pharmacy' => 'ফার্মাসি',
-    'select_address_title' => 'ফার্মাসির জন্য ঠিকানা',
+    'select_address_title' => 'আপনার এলাকায় কোনও ফার্মাসি নেই, দয়া করে এখান থেকে একটি ফার্মাসি নির্বাচন করুন',
 ];

@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="profile-btn">
                                     <a href="javascript:void(0)" class="btn--edit" onclick="input()">{{ __('text.edit') }}</a>
-                                    <button type="submit" class="btn--primary save-profile-btn">{{ __('text.save') }}</button>
+                                    <button type="submit" class="btn-success save-profile-btn">{{ __('text.save') }}</button>
                                 </div>
                             </form>
                         </div>
@@ -255,7 +255,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
-                                                <button type="submit" class="btn btn-primary">{{ __('text.save') }}</button>
+                                                <button type="submit" class="btn btn-success">{{ __('text.save') }}</button>
                                             </div>
                                             </form>
                                         </div>

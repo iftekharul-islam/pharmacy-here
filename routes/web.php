@@ -39,7 +39,7 @@ Route::post('customer/name/update','LoginController@customerNameUpdate')->name('
 
 //medicine
 Route::get('/medicine',  'ProductsController@index')->name('product-list');
-Route::get('/medicine/{medicine_slug}',  'ProductsController@show')->name('single-product');
+Route::get('/medicine/{medicine_id}/{medicine_slug}',  'ProductsController@show')->name('single-product');
 Route::get('/search/medicine-name',  'ProductsController@getProductName');
 
 Route::group(['middleware' => ['customerAuth']], function () {

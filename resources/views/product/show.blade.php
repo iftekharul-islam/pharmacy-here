@@ -120,7 +120,7 @@
                             <p><small>{{ $product->company->name }}</small></p>
                         </div>
                         @auth
-                            <a href="{{ route('single-product', $product->slug) }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
+                            <a href="{{ route('single-product', ['medicine_id' => $product->id, 'medicine_slug' => $product->slug ]) }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
                         @else
                             <a href="{{ route('customer.login') }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
                         @endauth

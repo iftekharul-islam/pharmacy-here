@@ -66,12 +66,15 @@ class CheckoutController extends Controller
 
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
 //        return $delivery_charge;
+//        return $data->sum('amount');
+//        dd(gettype($delivery_charge['collect_from_pharmacy']['discount']));
+        $pay_limit = config('subidha.ecash_payment_limit');
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
         $allLocations = $this->locationRepository->getLocation();
         $user = User::find(Auth::guard('web')->user()->id);
 
-        return view('checkout.index', compact('data', 'user', 'addresses', 'delivery_charge', 'isPreOrderMedicine', 'allLocations'));
+        return view('checkout.index', compact('data', 'user', 'addresses', 'amount', 'pay_limit', 'delivery_charge', 'isPreOrderMedicine', 'allLocations'));
     }
     private function isPreOrderMedicine($medicines) {
         foreach ($medicines as $item) {
@@ -506,7 +509,7 @@ class CheckoutController extends Controller
                 'is_rated'
         ]);
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
-        if ($request->delivery_charge === 1) {
+        if ($request->delivery_charge == 1) {
             $data['delivery_method'] = 'normal';
         } else {
             $data['delivery_method'] = 'express';
@@ -718,7 +721,8 @@ class CheckoutController extends Controller
         $data['pharmacy_amount'] =  round($data['pharmacy_amount'],2);
         $data['customer_amount'] = round( $data['customer_amount'],2);
 
-//
+//        return $data;
+
 //        $user = Auth::user();
 //        logger($user);
 
