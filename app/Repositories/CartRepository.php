@@ -106,7 +106,7 @@ class CartRepository
 
     public function getCartByCustomer($customer_id)
     {
-        return Cart::with('product')->where('customer_id', $customer_id)->get();
+        return Cart::with('product', 'product.form')->where('customer_id', $customer_id)->get();
     }
 
     public function getCartAmount($customer_id)
