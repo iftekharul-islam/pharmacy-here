@@ -114,7 +114,7 @@
                                 <span class=" mb-4"></span>
                             @endif
                             <h6 style="margin: 0px">{{ $product->name }}</h6>
-                            <small>{{ $product->primaryUnit->name }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
+                            <small>{{ $product->strength }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
                             <br>
                             <small>{{ $product->generic->name }}</small>
                             <p><small>{{ $product->company->name }}</small></p>
@@ -130,6 +130,5 @@
                 </div>
                 @endif
             </div>
-
         </div>
 @endsection

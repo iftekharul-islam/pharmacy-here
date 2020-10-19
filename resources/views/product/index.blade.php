@@ -181,7 +181,7 @@
                                         <span class="mb-3"></span>
                                     @endif
                                         <h4 style="margin: 0px">{{ $item->name }}</h4>
-                                        <small>{{ $item->primaryUnit->name }}</small>
+                                        <small>{{ $item->strength }}</small>
                                     <p><strong>{{ $item->company->name }}</strong></p>
                                 </div>
                                     @auth
