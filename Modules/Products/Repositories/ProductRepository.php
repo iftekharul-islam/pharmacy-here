@@ -317,6 +317,6 @@ class ProductRepository
     public function getProductName($request)
     {
         $medicine = $request->get('medicine');
-        return Product::with('form')->where('slug', 'LIKE', "%$medicine%")->orderBy('name', 'ASC')->get();
+        return Product::with('form')->where('slug', 'LIKE', "%$medicine%")->where('purchase_price', '>', 0)->orderBy('name', 'ASC')->get();
     }
 }

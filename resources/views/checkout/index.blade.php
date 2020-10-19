@@ -349,7 +349,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
-                    <button type="submit" class="btn btn--primary" id="submit" disabled="">{{ __('text.save') }}</button>
+                    <button type="submit" class="btn btn-success" id="submit" disabled="">{{ __('text.save') }}</button>
                 </div>
                 </form>
             </div>
