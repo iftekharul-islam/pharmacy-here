@@ -87,10 +87,10 @@
                     <h3>{{ __('text.similar_product') }}</h3>
                     <hr class="fancy4">
                 </div>
-                <div class="col-12">
+                <div class="col-12 mx-auto">
                     <div class="row">
                     @foreach($relatedProducts as $product)
-                    <div class="medicine-details col-2 ml-3">
+                    <div class="medicine-details col-md-2 ml-3 mb-3">
                         <div class="text-center mb-4">
                             @if ($product->is_prescripted == 1)
                                 <div class="related-madicine-badge">RX</div>
@@ -114,7 +114,7 @@
                                 <span class=" mb-4"></span>
                             @endif
                             <h6 style="margin: 0px">{{ $product->name }}</h6>
-                            <small>{{ $product->primaryUnit->name }}</small><small class="float-right">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
+                            <small>{{ $product->primaryUnit->name }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
                             <br>
                             <small>{{ $product->generic->name }}</small>
                             <p><small>{{ $product->company->name }}</small></p>
@@ -127,9 +127,9 @@
                     </div>
                     @endforeach
                     </div>
-
                 </div>
                 @endif
             </div>
+
         </div>
 @endsection
