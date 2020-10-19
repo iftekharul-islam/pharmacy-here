@@ -267,7 +267,7 @@ class ProductImport implements ToCollection, WithHeadingRow
 
     private function getIsPreOrder($value)
     {
-        if ($value != null && $value === 'yes') {
+        if ($value != null && $value == 'Yes' || $value === 'yes') {
             return 1;
         }
         return 0;

@@ -1,0 +1,13 @@
+{
+    "name": "Alarm",
+    "alias": "alarm",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Alarm\\Providers\\AlarmServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
