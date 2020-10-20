@@ -571,7 +571,7 @@ class OrderRepository
         $data['pharmacy_amount'] =  round($data['pharmacy_amount'],2);
         $data['customer_amount'] = round( $data['customer_amount'],2);
 
-//        return $data;
+        return $data;
         $order = Order::create($data);
 
         OrderHistory::create([
