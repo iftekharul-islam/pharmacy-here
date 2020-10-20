@@ -361,6 +361,7 @@
     <script>
         $("#pharmacy-submit").on('click', function () {
             var pharmacy = $('#selectPharmacy').val();
+            $('#pharmacy_search-error').addClass('d-none');
             $('#insert_pharmacy_id').val(pharmacy);
             $('#pharmacy_search').val(pharmacy);
             console.log(pharmacy, 'pharmacy');
@@ -488,6 +489,7 @@
         function getAddressId(id, areaId) {
 
             $('input[name="shipping_address_id"]').val(id);
+            $('#shipping_address_id-error').addClass('d-none');
 
             $.ajax({
                 url: '{{ url('find-pharmacy') }}',
