@@ -96,7 +96,7 @@
                             <div class="order-summary">
                                 <div class="row">
                                     <div class="col-10">
-                                    <img height="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
+                                    <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
                                     <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
                                     <p>Doctor: {{ $prescription->doctor_name }}</p>
                                     <button type="button" class="btn btn--primary px-5 w-89" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
