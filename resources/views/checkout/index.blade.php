@@ -192,6 +192,11 @@
                                             @endif
                                         </div>
                                     </div>
+{{--                                    <div class="row">--}}
+{{--                                        <div class="col-md-4 mt-2">--}}
+{{--                                            --}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
                                 </li>
                                 <li>
                                     <p>{{ __('text.order_summary') }}</p>
