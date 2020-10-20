@@ -85,10 +85,6 @@
     .order-summary table tbody tr td input {
         border: none!important;
     }
-    .note-text {
-        position: absolute;
-        margin-left: -163px;
-    }
     .btn-continue {
         width: 180px;
         position: absolute;
@@ -140,6 +136,7 @@
                             <h2>{{ __('text.cart_list') }}</h2>
                         </div>
                     </div>
+                    <strong class="note-text text-danger d-none">Please add amount more than ৳100</strong>
                     <div class="order-summary">
                         <div class="table-responsive">
                             <table class="table">
@@ -373,7 +370,7 @@
                 text: "{{ __('text.delete_cart') }}",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00AE4D',
                 cancelButtonColor: '#d33',
                 cancelButtonText: 'No',
                 confirmButtonText: 'Yes',
@@ -397,11 +394,11 @@
             let total = $('.grand-total').val();
             console.log(total, 'total');
             if ( total < 100 ) {
-                $('.alert-note').removeClass('d-none');
+                $('.note-text').removeClass('d-none');
                 return;
             }
 
-            $('.alert-note').addClass('d-none');
+            $('.note-text').addClass('d-none');
 
             let medicineData = data;
             newData = data;
@@ -435,7 +432,7 @@
                 text: "{{ __('text.pre_order_medicine_notice') }}",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00AE4D',
                 cancelButtonColor: '#d33',
                 cancelButtonText: 'No',
                 confirmButtonText: 'Yes',
@@ -474,7 +471,7 @@
                 text: "{{ __('text.prescribed_medicine_notice') }}",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00AE4D',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'Remove prescribed medicine',
