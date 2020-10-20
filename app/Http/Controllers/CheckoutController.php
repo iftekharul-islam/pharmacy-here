@@ -65,14 +65,14 @@ class CheckoutController extends Controller
         }
 
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
-//        return $delivery_charge;
-//        return $data->sum('amount');
-//        dd(gettype($delivery_charge['collect_from_pharmacy']['discount']));
         $pay_limit = config('subidha.ecash_payment_limit');
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
         $allLocations = $this->locationRepository->getLocation();
         $user = User::find(Auth::guard('web')->user()->id);
+
+        $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
+        session()->put('cartCount', count($data) ?? '');
 
         return view('checkout.index', compact('data', 'user', 'addresses', 'amount', 'pay_limit', 'delivery_charge', 'isPreOrderMedicine', 'allLocations'));
     }
