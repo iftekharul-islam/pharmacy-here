@@ -11,6 +11,6 @@
 |
 */
 
-//Route::prefix('feedback')->group(function() {
-//    Route::get('/', 'FeedbackController@index');
+//Route::prefix('alarm')->group(function() {
+//    Route::get('/', 'AlarmController@index');
 //});

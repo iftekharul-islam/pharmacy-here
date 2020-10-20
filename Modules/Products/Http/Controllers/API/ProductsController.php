@@ -135,4 +135,15 @@ class ProductsController extends BaseController
 
         return $this->response->collection($product, new ProductTransformer());
     }
+
+    public function search(Request $request)
+    {
+        $productList = $this->repository->search($request);
+
+        if (! $productList) {
+            throw new NotFoundHttpException('Search Product List Not Found');
+        }
+
+        return $this->response->collection($productList, new ProductTransformer());
+    }
 }
