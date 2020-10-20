@@ -18,7 +18,7 @@ class CreateAlarmsTable extends Migration
             $table->integer('alarm_id')->nullable();
             $table->string('date')->nullable();
 
-            $table->boolean('status')->default(true);
+            $table->string('status');
 
             $table->unsignedBigInteger('reminder_id');
             $table->unsignedBigInteger('customer_id');

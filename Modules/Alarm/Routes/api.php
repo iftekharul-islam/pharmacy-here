@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/alarm', function (Request $request) {
-//    return $request->user();
-//});
-
 
 
 $namespace = 'Modules\Alarm\Http\Controllers\API';
@@ -25,19 +21,24 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namespace) {
 
-    $api->get('alarm', $namespace . '\FeedbackController@pharmacyAverageRating');
-    $api->post('alarm/store', $namespace . '\FeedbackController@store');
-    $api->put('alarm/{alarm_id}', $namespace . '\FeedbackController@update');
-    $api->delete('alarm/{alarm_id}', $namespace . '\FeedbackController@delete');
+    $api->get('alarm', $namespace . '\AlarmController@index');
+    $api->post('alarm/store', $namespace . '\AlarmController@store');
+    $api->put('alarm/{alarm_id}', $namespace . '\AlarmController@update');
+    $api->delete('alarm/{alarm_id}', $namespace . '\AlarmController@delete');
+
+    $api->get('reminder', $namespace . '\ReminderController@index');
+    $api->post('reminder/store', $namespace . '\ReminderController@store');
+    $api->put('reminder/{reminder_id}', $namespace . '\ReminderController@update');
+    $api->delete('reminder/{reminder_id}', $namespace . '\ReminderController@delete');
 
 });
 
-$reminderNamespace = 'Modules\Alarm\Http\Controllers\API';
-
-$api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($reminderNamespace) {
-
-    $api->get('reminder', $reminderNamespace . '\AlarmController@index');
-    $api->post('reminder/store', $reminderNamespace . '\AlarmController@store');
-    $api->put('reminder/{reminder_id}', $reminderNamespace . '\AlarmController@update');
-    $api->delete('reminder/{reminder_id}', $reminderNamespace . '\AlarmController@delete');
-});
+//$reminderNamespace = 'Modules\Alarm\Http\Controllers\API';
+//
+//$api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($reminderNamespace) {
+//
+//    $api->get('reminder', $reminderNamespace . '\ReminderController@index');
+//    $api->post('reminder/store', $reminderNamespace . '\ReminderController@store');
+//    $api->put('reminder/{reminder_id}', $reminderNamespace . '\ReminderController@update');
+//    $api->delete('reminder/{reminder_id}', $reminderNamespace . '\ReminderController@delete');
+//});

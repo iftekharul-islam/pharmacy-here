@@ -3,77 +3,70 @@
 namespace Modules\Alarm\Http\Controllers\API;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Modules\Alarm\Http\Requests\CreateReminderRequest;
+use Modules\Alarm\Http\Requests\UpdateReminderRequest;
+use Modules\Alarm\Repositories\ReminderRepository;
 
 class ReminderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
+    private $repository;
+
+    public function __construct(ReminderRepository $repository)
     {
-        return view('alarm::index');
+        $this->repository = $repository;
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Renderable
+     * Display a listing of the resource.
+     * @return JsonResponse
      */
-    public function create()
+    public function index()
     {
-        return view('alarm::create');
+        $user = Auth::guard('api')->user();
+        $data = $this->repository->all($user->id);
+
+        return responsePreparedData($data);
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     * @param CreateReminderRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateReminderRequest $request)
     {
-        //
-    }
+        $user = Auth::guard('api')->user();
+        $data = $this->repository->create($request, $user->id);
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('alarm::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('alarm::edit');
+        return responsePreparedData($data);
     }
 
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
-     * @return Renderable
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateReminderRequest $request, $id)
     {
-        //
+        $data = $this->repository->update($request, $id);
+
+        return responsePreparedData($data);
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Renderable
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $data = $this->repository->delete($id);
+
+        return responseData('Reminder deletion successful');
     }
 }

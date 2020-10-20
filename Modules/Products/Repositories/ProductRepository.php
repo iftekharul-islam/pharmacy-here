@@ -79,6 +79,17 @@ class ProductRepository
 
     }
 
+    public function search($request)
+    {
+        $medicine = $request->get('brand');
+
+        $products = Product::query();
+        return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+            ->where('name', 'LIKE', $medicine. "%")
+            ->orderBy('name', 'ASC')
+            ->get();
+    }
+
     public function create($request)
     {
         $productData = $request->only(
