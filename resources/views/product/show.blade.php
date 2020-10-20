@@ -128,6 +128,7 @@
                     @endforeach
                     </div>
                 </div>
+                    {{ $relatedProducts->links() }}
                 @endif
             </div>
         </div>

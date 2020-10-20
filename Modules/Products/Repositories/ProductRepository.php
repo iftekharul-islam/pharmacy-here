@@ -304,10 +304,9 @@ class ProductRepository
     public function getRelatedProductByProductIdWeb($id)
     {
         $product = Product::find($id);
-
-        $similar_product = Product::with('generic')->where('generic_id',  $product->generic_id)->get()->except($product->id);
-
-        return $similar_product;
+        $similar_products = Product::query();
+        $similar_products->where('id', '!=',  $product->id)->where('generic_id',  $product->generic_id);
+        return $similar_products->with('generic')->paginate(5);
     }
 
     public function getProductName($request)

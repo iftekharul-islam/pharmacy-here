@@ -313,7 +313,7 @@
                                         <h4 class="text-center">{{ __('text.no_data') }}</h4>
                                     @endif
                             </div>
-                            {{ $prescriptions->links() }}
+                                {{ $prescriptions->links() }}
                         </div>
                     </div>
                 </div>
