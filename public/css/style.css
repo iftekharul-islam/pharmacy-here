@@ -16400,6 +16400,18 @@ html {
             flex-direction: row;
   }
 }
+.customer-address-box {
+    cursor: pointer;
+    min-width: 175px;
+    border: 1px solid #00A34A;
+    -webkit-box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    /*-ms-flex-preferred-size: 70%;*/
+    /*flex-basis: 70%;*/
+    min-height: 150px;
+}
 
 .address-box {
     cursor: pointer;
