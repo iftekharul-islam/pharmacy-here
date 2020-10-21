@@ -53,7 +53,8 @@ class ReminderController extends Controller
      */
     public function update(UpdateReminderRequest $request, $id)
     {
-        $data = $this->repository->update($request, $id);
+        $user = Auth::guard('api')->user();
+        $data = $this->repository->update($request, $id, $user->id);
 
         return responsePreparedData($data);
     }
@@ -65,7 +66,8 @@ class ReminderController extends Controller
      */
     public function destroy($id)
     {
-        $data = $this->repository->delete($id);
+        $user = Auth::guard('api')->user();
+        $data = $this->repository->delete($id, $user->id);
 
         return responseData('Reminder deletion successful');
     }

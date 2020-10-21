@@ -4,6 +4,7 @@
 namespace Modules\Resources\Transformers;
 
 
+use Illuminate\Support\Facades\Storage;
 use League\Fractal\TransformerAbstract;
 use Modules\Resources\Entities\Models\Resource;
 
@@ -18,6 +19,7 @@ class ResourceTransformer extends TransformerAbstract
             'description'            => $item->description,
             'bn_description'            => $item->bn_description,
             'url'                    => $item->url,
+            'files'                    => isset($item->files) ? asset(Storage::url($item->files)) : null,
         ];
     }
 }

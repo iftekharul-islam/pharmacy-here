@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Resource extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['title','bn_title', 'description','bn_description', 'url'];
+    protected $fillable = ['title','bn_title', 'description','bn_description', 'url', 'files'];
 }

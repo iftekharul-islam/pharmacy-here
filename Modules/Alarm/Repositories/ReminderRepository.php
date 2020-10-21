@@ -69,9 +69,9 @@ class ReminderRepository
 
     }
 
-    public function update($request, $reminder_id)
+    public function update($request, $reminder_id, $customer_id)
     {
-        $data = Reminder::where('reminder_id', $reminder_id)->first();
+        $data = Reminder::where('reminder_id', $reminder_id)->where('customer_id', $customer_id)->first();
 
         if ($request->has('frequency') && $request->get('frequency')) {
             $item = $request->frequency;
@@ -119,9 +119,9 @@ class ReminderRepository
         return $data;
     }
 
-    public function delete($reminder_id)
+    public function delete($reminder_id, $customer_id)
     {
-        $data = Reminder::where('reminder_id', $reminder_id)->first();
+        $data = Reminder::where('reminder_id', $reminder_id)->where('customer_id', $customer_id)->first();
 
         return $data->delete();
     }

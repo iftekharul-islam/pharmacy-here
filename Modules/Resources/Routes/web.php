@@ -14,7 +14,9 @@
 Route::prefix('resources')->group(function() {
     Route::get('/', 'ResourcesController@index')->name('resource.index');
 
-    Route::get('create', 'ResourcesController@create')->name('resource.create');
+    Route::get('create-with-file', 'ResourcesController@createWithFile')->name('resource.create-with-file');
+    Route::get('create-with-link', 'ResourcesController@createWithLink')->name('resource.create-with-link');
+
     Route::post('store', 'ResourcesController@store')->name('resource.store');
     Route::get('{id}/edit', 'ResourcesController@edit')->name('resource.edit');
     Route::put('{id}', 'ResourcesController@update')->name('resource.update');

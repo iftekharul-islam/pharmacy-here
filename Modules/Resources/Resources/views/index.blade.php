@@ -9,11 +9,11 @@
                 <div class="col-sm-6">
                     <h1>Resources</h1>
                 </div>
-                <div class="col-sm-6">
-                    <a href="{{ route('resource.create') }}" class="btn btn-sm btn-success float-right">
-                        Create Resource
-                    </a>
-                </div>
+{{--                <div class="col-sm-6">--}}
+{{--                    <a href="{{ route('resource.create') }}" class="btn btn-sm btn-success float-right">--}}
+{{--                        Create Resource--}}
+{{--                    </a>--}}
+{{--                </div>--}}
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -90,16 +90,17 @@
 
 @section('js')
     <script>
-
         function showProduct(item) {
             console.log(item)
             if (item.title) { $('#title').html(item.title);}
             if (item.bn_title) {$('#bn_title').html(item.bn_title); }
             if (item.description) {$('#description').html(item.description); }
             if (item.bn_description) {$('#bn_description').html(item.bn_description); }
-            if (item.url) {$('#url').html(item.url); }
-
+            if (item.url) {$('#url').html(item.url);}
+            if (item.files) {$('#files').html(item.files);}
         }
+
+
 
         function removeItem(id) {
             Swal.fire({
@@ -124,10 +125,5 @@
             })
         }
 
-        // function checkStatus(status  = 0) {
-        //     return status == 1 ?
-        //         '<button type="button" class="btn btn-success btn-sm-status waves-effect waves-light d-flex align-items-center"><i class="fa fa-check"></i></button>'
-        //         : '<button type="button" class="btn btn-danger btn-sm-status waves-effect waves-light d-flex align-items-center"><i class="fa fa-times"></i></button>';
-        // }
     </script>
 @stop

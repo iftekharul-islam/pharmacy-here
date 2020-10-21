@@ -1,4 +1,3 @@
-{{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
 
 @section('adminlte_css')
@@ -9,24 +8,28 @@
   </style>
 @endsection
 
-@section('title', 'Edit Resource')
-
+@section('title', 'Create Resource')
+<style type="text/css">
+    .error{
+        color: red;
+    }
+</style>
 @section('content')
+
     <div class="col-md-6">
         <div class="card card-primary-outline">
             <div class="card-header">
-                <h3 class="card-title">Edit Resource</h3>
+                <h3 class="card-title">Create Resource</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('resource.update', $data->id) }}" enctype="multipart/form-data" method="POST">
+            <form role="form" id="form" action="{{ route('resource.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="title" class="col-sm-5 col-form-label">Title(English)</label>
                         <div class="col-sm-7" id="">
-                            <input type="text" name="title" class="form-control" value="{{ $data->title }}" id="title" placeholder="Resource Title" required>
+                            <input type="text" name="title" class="form-control" value="{{ old('title') }}" id="title" placeholder="Resource Title" required>
                             @if ($errors->has('title'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('title') }}</strong>
@@ -37,7 +40,7 @@
                     <div class="form-group row">
                         <label for="bn_title" class="col-sm-5 col-form-label">Title(Bangla)</label>
                         <div class="col-sm-7" id="">
-                            <input type="text" name="bn_title" class="form-control" value="{{ $data->bn_title }}" id="bn_title" placeholder="Resource Title(Bangla)" required>
+                            <input type="text" name="bn_title" class="form-control" value="{{ old('bn_title') }}" id="bn_title" placeholder="Resource Title(Bangla)" required>
                             @if ($errors->has('bn_title'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('bn_title') }}</strong>
@@ -49,7 +52,7 @@
                     <div class="form-group row">
                         <label for="description" class="col-sm-5 col-form-label">Description(English)</label>
                         <div class="col-sm-7" id="">
-                            <textarea type="text" name="description" class="form-control" id="description" placeholder="Resource Description" required>{{ $data->description }}</textarea>
+                            <textarea type="text" name="description" class="form-control" id="description" placeholder="Resource Description" required></textarea>
                             @if ($errors->has('description'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('description') }}</strong>
@@ -60,7 +63,7 @@
                     <div class="form-group row">
                         <label for="bn_description" class="col-sm-5 col-form-label">Description(Bangla)</label>
                         <div class="col-sm-7" id="">
-                            <textarea type="text" name="bn_description" class="form-control" id="bn_description" placeholder="Resource Description(Bangla)" required>{{ $data->bn_description }}</textarea>
+                            <textarea type="text" name="bn_description" class="form-control" id="bn_description" placeholder="Resource Description(Bangla)" required></textarea>
                             @if ($errors->has('bn_description'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('bn_description') }}</strong>
@@ -69,11 +72,10 @@
                         </div>
                     </div>
 
-                    @if($data->url)
                     <div class="form-group row">
                         <label for="url" class="col-sm-5 col-form-label">Link</label>
                         <div class="col-sm-7" id="">
-                            <input type="text" name="url" class="form-control" value="{{ $data->url }}" id="url" placeholder="Link">
+                            <input type="text" name="url" class="form-control validategroup" id="url" placeholder="Link" required>
                             @if ($errors->has('url'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('url') }}</strong>
@@ -81,21 +83,6 @@
                             @endif
                         </div>
                     </div>
-                    @endif
-
-                    @if($data->files)
-                    <div class="form-group row">
-                        <label for="files" class="col-sm-5 col-form-label">File</label>
-                        <div class="col-sm-7" id="">
-                            <input type="file" name="files" class="form-control" value="" placeholder="{{ $data->files }}" id="files">
-                            @if ($errors->has('files'))
-                                <span class="text-danger">
-                                    <strong>{{ $errors->first('files') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-                    @endif
 
 
                 </div>
@@ -103,13 +90,66 @@
 
                 <div class="card-footer">
                     <a href="{{ route('index') }}" class="btn btn-danger">Back</a>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
         </div>
     </div>
 @endsection
 
+@section('adminlte_js')
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+     $(document).ready(function() {
+            $('.select2').select2();
+        });
+</script>
+@endsection
 
+@section('js')
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script>
+        $(document).ready(function() {
+            alert('new alert');
+            $('#form').validate({
+                rules: {
+                    title: {
+                        required: true
+                    },
+                    bn_title: {
+                        required: true
+                    },
+                    description: {
+                        required: true
+                    },
+                    bn_description: {
+                        required: true
+                    },
+                    url: {
+                        required:true
+                    },
+                },
+
+                message: {
+                    url: "Provide either Link or File",
+                    doc_file: "Provide either Link or File",
+                }
+            });
+
+            function isNumber(evt) {
+                // console.log (evt);
+                evt = (evt) ? evt : window.event;
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (charCode == 13 || charCode == 46 || (charCode >= 48 && charCode <= 57)) {
+                    return true;
+                }
+                return false;
+            }
+        });
+</script>
+@endsection
 
 

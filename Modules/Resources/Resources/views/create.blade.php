@@ -23,7 +23,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" id="form" action="{{ route('resource.store') }}" method="POST">
+            <form role="form" id="form" action="{{ route('resource.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
@@ -75,10 +75,22 @@
                     <div class="form-group row">
                         <label for="url" class="col-sm-5 col-form-label">Link</label>
                         <div class="col-sm-7" id="">
-                            <input type="text" name="url" class="form-control" id="url" placeholder="Link" required>
+                            <input type="text" name="url" class="form-control validategroup" id="url" placeholder="Link">
                             @if ($errors->has('url'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('url') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="doc_file" class="col-sm-5 col-form-label">File</label>
+                        <div class="col-sm-7" id="">
+                            <input type="file" name="doc_file" class="form-control validategroup" id="doc_file">
+                            @if ($errors->has('files'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('files') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -98,6 +110,8 @@
 @endsection
 
 @section('adminlte_js')
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
      $(document).ready(function() {
@@ -107,40 +121,68 @@
 @endsection
 
 @section('js')
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-    <script>
-        $('#form').validate({
-            rules: {
-                title: {
-                    required: true
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script>
+        $(document).ready(function() {
+            alert('new alert');
+            $('#form').validate({
+                rules: {
+                    title: {
+                        required: true
+                    },
+                    bn_title: {
+                        required: true
+                    },
+                    description: {
+                        required: true
+                    },
+                    bn_description: {
+                        required: true
+                    },
+                    url: {
+                        required:true
+                        // require_from_group: [1, '.validategroup'],
+
+                        // required: function () {
+                        //     return !$("#url").val();
+                        // }
+
+                        // required: function(element) {
+                        //     return $("#url").is(':empty');
+                        // }
+                    },
+                    doc_file: {
+                        required:true
+                        // require_from_group: [1, '.validategroup'],
+
+                        // required: function () {
+                        //     return !$("#doc_file").val();
+                        // }
+
+                        // required: function(element) {
+                        //     return $("#doc_file").is(':empty');
+                        // }
+                    },
                 },
-                bn_title: {
-                    required: true
-                },
-                description: {
-                    required: true
-                },
-                bn_description: {
-                    required: true
-                },
-                link: {
-                    required: true
-                },
+
+                message: {
+                    url: "Provide either Link or File",
+                    doc_file: "Provide either Link or File",
+                }
+            });
+
+            function isNumber(evt) {
+                // console.log (evt);
+                evt = (evt) ? evt : window.event;
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (charCode == 13 || charCode == 46 || (charCode >= 48 && charCode <= 57)) {
+                    return true;
+                }
+                return false;
             }
         });
-        function isNumber(evt)
-        {
-            // console.log (evt);
-            evt = (evt) ? evt : window.event;
-            var charCode = (evt.which) ? evt.which : evt.keyCode;
-            if (charCode == 13 || charCode == 46 || (charCode >= 48 && charCode <= 57))
-            {
-                return true;
-            }
-            return false;
-        }
-    </script>
+</script>
 @endsection
 
 

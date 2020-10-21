@@ -295,17 +295,17 @@ return [
             'text'    => 'Pharmacy',
             'icon'    => 'fas fa-cogs',
             'submenu' => [
-                            [
-                                'text'    => 'Pharmacy list',
-                                'icon'    => 'fas fa-store-alt',
-                                'url'     => 'pharmacies'
-                            ],
-                            [
-                                'text'    => 'Transaction History',
-                                'icon'    => 'fas fa-store-alt',
-                                'url'     => 'transaction-history'
-                            ],
-                ]
+                [
+                    'text'    => 'Pharmacy list',
+                    'icon'    => 'fas fa-store-alt',
+                    'url'     => 'pharmacies'
+                ],
+                [
+                    'text'    => 'Transaction History',
+                    'icon'    => 'fas fa-store-alt',
+                    'url'     => 'transaction-history'
+                ],
+            ]
         ],
         [
             'text'    => 'Location',
@@ -336,7 +336,19 @@ return [
         [
             'text'    => 'Resources',
             'icon'    => 'fas fa-store-alt',
-            'url'     => 'resources'
+//            'url'     => 'resources'
+            'submenu' => [
+                [
+                    'text' => 'Resource with Link',
+                    'icon_color' => 'cyan',
+                    'url'  => 'resources/create-with-link',
+                ],
+                [
+                    'text' => 'Resource with File',
+                    'icon_color' => 'cyan',
+                    'url'  => 'resources/create-with-file',
+                ],
+            ],
         ],
         [
             'text'    => 'Notice',
