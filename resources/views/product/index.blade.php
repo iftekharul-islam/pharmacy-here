@@ -204,7 +204,7 @@
                                         @else
                                         <div class="package d-flex justify-content-between">
                                             <p>৳ {{ $item->purchase_price }}</p>
-                                            <p>Min quantity ({{ $item->min_order_qty }})</p>
+                                            <p>{{ __('text.min_qty') }} ({{ $item->min_order_qty }})</p>
                                         </div>
                                     @endauth
                                 <p><strong>{{ __('text.packing_type') }} - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>

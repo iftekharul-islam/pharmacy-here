@@ -200,19 +200,17 @@
                                 </li>
                                 <li>
                                     <p>{{ __('text.order_summary') }}</p>
-                                    <div class="order-summary">
+                                    <div class="order-summary col-md-10">
                                         <div class="table-responsive">
                                             <table class="table">
-                                                <thead class="thead-light">
-                                                <tr>
-                                                    <th scope="col">{{ __('text.product') }}</th>
-                                                    <th scope="col">{{ __('text.price') }}</th>
-                                                    <th scope="col">{{ __('text.quantity') }}</th>
-                                                    <th scope="col">{{ __('text.sub_total') }}</th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                                </thead>
                                                 <tbody>
+                                                <tr>
+                                                    <td scope="col"><b>{{ __('text.product') }}</b></td>
+                                                    <td scope="col"><b>{{ __('text.price') }}</b></td>
+                                                    <td scope="col"><b>{{ __('text.quantity') }}</b></td>
+                                                    <td class="text-center"><b>{{ __('text.sub_total') }}</b></td>
+                                                    <td scope="col"></td>
+                                                </tr>
                                                 <?php $total = 0 ?>
                                                 @if($data)
                                                     @foreach ($data as $id => $details)
@@ -220,7 +218,7 @@
                                                         <?php $total +=  $details['product']['purchase_price']  * $details['quantity'] ?>
                                                         <tr>
                                                             <td scope="row">{{ $details['product']['name'] }}</td>
-                                                            <td>৳ {{ $details['product']['purchase_price'] }}</td>
+                                                            <td>৳ {{ $details['product']['purchase_price'] }} / {{ __('text.piece') }}</td>
                                                             <td data-th="Quantity">{{ $details['quantity'] }}</td>
                                                             <td data-th="Subtotal" class="text-center">৳ {{ $details['product']['purchase_price']  * $details->quantity }}</td>
                                                         </tr>

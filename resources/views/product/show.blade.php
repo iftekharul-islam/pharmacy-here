@@ -82,52 +82,58 @@
                             @endguest
                         </div>
                 </div>
+            </div>
+            <div class="row">
                 @if (count($relatedProducts) > 0)
-                <div class="col-12 my-5">
-                    <h3>{{ __('text.similar_product') }}</h3>
-                    <hr class="fancy4">
-                </div>
-                <div class="col-12 mx-auto">
-                    <div class="row">
-                    @foreach($relatedProducts as $product)
-                    <div class="medicine-details col-md-2 ml-3 mb-3">
-                        <div class="text-center mb-4">
-                            @if ($product->is_prescripted == 1)
-                                <div class="related-madicine-badge">RX</div>
-                            @endif
-                            @if ($product->form->slug == 'tablet' || $product->form->name == 'capsul')
-                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
-                            @elseif ($product->form->slug == 'syrup')
-                                <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
-                            @elseif ($product->form->slug == 'injection')
-                                <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
-                            @elseif ($product->form->slug == 'suppository')
-                                <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
-                            @else
-                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
-                            @endif
-                        </div>
-                        <div class="medicine-details--content">
-                            @if ($product->is_pre_order == 1 )
-                                <a href="#" class="mb-3">Pre-order</a>
-                            @else
-                                <span class=" mb-4"></span>
-                            @endif
-                            <h6 style="margin: 0px">{{ $product->name }}</h6>
-                            <small>{{ $product->strength }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
-                            <br>
-                            <small>{{ $product->generic->name }}</small>
-                            <p><small>{{ $product->company->name }}</small></p>
-                        </div>
-                        @auth
-                            <a href="{{ route('single-product', ['medicine_id' => $product->id, 'medicine_slug' => $product->slug ]) }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
-                        @else
-                            <a href="{{ route('customer.login') }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
-                        @endauth
+                    <div class="col-12 my-5">
+                        <h3>{{ __('text.similar_product') }}</h3>
+                        <hr class="fancy4">
                     </div>
-                    @endforeach
+                    <div class="col-md-12">
+                        <div class="row">
+                            @foreach($relatedProducts as $product)
+                                <div class="col-sm-6 col-lg-3 mb-3">
+                                <div class="medicine-details mb-1">
+                                    <div class="text-center mb-4">
+                                        @if ($product->is_prescripted == 1)
+                                            <div class="related-madicine-badge">RX</div>
+                                        @endif
+                                        <div class="pt-5">
+                                            @if ($product->form->slug == 'tablet' || $product->form->name == 'capsul')
+                                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                                            @elseif ($product->form->slug == 'syrup')
+                                                <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
+                                            @elseif ($product->form->slug == 'injection')
+                                                <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
+                                            @elseif ($product->form->slug == 'suppository')
+                                                <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
+                                            @else
+                                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="medicine-details--content">
+                                        @if ($product->is_pre_order == 1 )
+                                            <a href="#" class="mb-3">Pre-order</a>
+                                        @else
+                                            <span class=" mb-4"></span>
+                                        @endif
+                                        <h5 style="margin: 0px">{{ $product->name }}</h5>
+                                        <small>{{ $product->strength }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
+                                        <br>
+                                        <small>{{ $product->generic->name }}</small>
+                                        <p><small>{{ $product->company->name }}</small></p>
+                                    </div>
+                                    @auth
+                                        <a href="{{ route('single-product', ['medicine_id' => $product->id, 'medicine_slug' => $product->slug ]) }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
+                                    @else
+                                        <a href="{{ route('customer.login') }}" class="btn btn--primary w-100">{{ __('text.view') }}</a>
+                                    @endauth
+                                </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
                     {{ $relatedProducts->links() }}
                 @endif
             </div>

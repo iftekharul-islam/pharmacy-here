@@ -7,6 +7,11 @@
     .prescription-image {
         border: 1px solid #00CE5E ;
     }
+    .view-button {
+        position: absolute;
+        margin-top: 200px;
+        margin-left: -29px;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -95,13 +100,16 @@
                         <div class="my-box col-3 mt-3">
                             <div class="order-summary">
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="col-md-10">
                                     <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
                                     <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
                                     <p>Doctor: {{ $prescription->doctor_name }}</p>
-                                    <button type="button" class="btn btn--primary px-5 w-89" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
-                                        View
-                                    </button>
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}">
+                                        <a class="btn eyes view-button" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                         <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
@@ -129,9 +137,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}">
                                     </div>
                                 </div>
                             </div>
