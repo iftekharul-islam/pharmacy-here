@@ -136,6 +136,7 @@ strong {
 
 small {
   font-size: 80%;
+  color: #808080;
 }
 
 sub,
@@ -16061,6 +16062,15 @@ html {
   transition: all .3s ease-in;
 }
 
+.eyes {
+    color: #808080;
+    border: 1px solid #000;
+}
+.eyes:hover {
+    background: #808080;
+    border: #808080;
+    color: #000;
+}
 .medicine-details--footer .eyes i {
   color: #808080;
 }

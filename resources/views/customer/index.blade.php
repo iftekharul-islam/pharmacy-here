@@ -9,6 +9,43 @@
     }
     .save-profile-btn {
         border: 1px solid #00ce5e;
+        position: absolute;
+        margin-left: 642px;
+        margin-top: -24px;
+    }
+    }
+    .header-text {
+        position: absolute;
+        margin-left: -382px;
+    }
+    .header-text-profile {
+        position: absolute;
+        margin-left: -382px;
+        margin-top: -70px;
+    }
+
+    .my-profile-position {
+        margin-top: 84px;
+    }
+    .my-address-position {
+        margin-top: 41px;
+    }
+    .my-prescription-position {
+        margin-top: 63px;
+    }
+    .prescription-button {
+        position: absolute;
+        margin-left: 600px;
+        margin-top: -59px;
+    }
+    .my-edit-btn {
+        position: absolute;
+        margin-left: 680px;
+        margin-top: -143px;
+    }
+    .my-address-header {
+        position: absolute;
+        margin-left: -380px;
     }
 </style>
 @section('content')
@@ -27,14 +64,57 @@
                 <div class="col-md-4">
                     <div class="nav flex-column nav-pills my-dashboard" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="true">{{ __('text.my_profile') }}</a>
+                        <a class="nav-link" id="v-pills-address-tab" data-toggle="pill" href="#v-pills-address" role="tab" aria-controls="v-pills-address" aria-selected="true">{{ __('text.my_address') }}</a>
                         <a class="nav-link" id="v-pills-orders-tab" data-toggle="pill" href="#v-pills-orders" role="tab" aria-controls="v-pills-orders" aria-selected="false">{{ __('text.my_order') }}</a>
-                        <a class="nav-link" id="v-pills-wishlists-tab" data-toggle="pill" href="#v-pills-wishlists" role="tab" aria-controls="v-pills-wishlists" aria-selected="false">{{ __('text.my_prescription') }}</a>
+                        <a class="nav-link" id="v-pills-prescription-tab" data-toggle="pill" href="#v-pills-prescription" role="tab" aria-controls="v-pills-prescription" aria-selected="false">{{ __('text.my_prescription') }}</a>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content my-dashboard-content" id="v-pills-tabContent">
                         <div class="tab-pane show fade active my-account" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account-tab">
-                            <h2 class="my-dashboard-title">{{ __('text.my_profile') }}</h2>
+                            <h2 class="my-dashboard-title header-text-profile">{{ __('text.my_profile') }}</h2>
+                            <form method="post" action="{{ route('customer.update', $data->id) }}">
+                            @csrf
+                                <div class="my-order-list my-profile my-profile-position">
+                                    <div class="table-responsive">
+                                        <table>
+                                            <tr>
+                                                <td><b>{{ __('text.name') }}:</b></td>
+                                                <td class="save-value">{{ $data->name }}</td>
+                                                <td class="edit-value d-none"><input type="text" name="name" value="{{ $data->name }}"></td>
+                                                <td><b>{{ __('text.date_of_birth') }}:</b></td>
+                                                <td class="save-value">{{ $data->dob != null ? $data->dob : '' }}</td>
+                                                <td class="edit-value d-none"><input type="date" name="dob"  value="{{ $data->dob }}"></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><b>{{ __('text.phone_number') }}:</b></td>
+                                                <td class="save-value">{{ $data->phone_number }}</td>
+                                                <td class="edit-value d-none"><input type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
+                                                <td><b>{{ __('text.gender') }}:</b></td>
+                                                <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
+                                                <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>{{ __('text.alter_contact') }}:</b></td>
+                                                <td class="save-value">{{ $data->alternative_phone_number }}</td>
+                                                <td class="edit-value d-none"><input type="text" name="alternative_phone_number" value="{{ $data->alternative_phone_number }}"></td>
+                                            </tr>
+{{--                                            <tr>--}}
+{{--                                                <td><b>{{ __('text.address') }}:</b></td>--}}
+{{--                                                <td class="save-value">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</td>--}}
+{{--                                                <td class="edit-value d-none"><textarea type="text" name="address" value="{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</textarea></td>--}}
+{{--                                            </tr>--}}
+                                        </table>
+                                    </div>
+                                    <a href="javascript:void(0)" class="badge badge-success my-edit-btn" onclick="input()"><i class="fas fa-edit"></i></a>
+                                    <button type="submit" class="btn btn-success save-profile-btn d-none">{{ __('text.save') }}</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-address" role="tabpanel" aria-labelledby="v-pills-address-tab">
+                            <h2 class="my-dashboard-title my-address-header">{{ __('text.my_address') }}</h2>
                             <a href="#" class="btn btn--primary mb-2 my-address d-block" data-toggle="modal" data-target="#addressModal">
                                 <i class="fas fa-plus-circle"></i>
                                 <span>{{ __('text.address') }}</span>
@@ -94,52 +174,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <form method="post" action="{{ route('customer.update', $data->id) }}">
-                            @csrf
-                                <input type="hidden" name="addressId" value="{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->id : null }}">
-                                <div class="my-order-list my-profile">
-                                    <div class="table-responsive">
-                                        <table>
-                                            <tr>
-                                                <td><b>{{ __('text.name') }}:</b></td>
-                                                <td class="save-value">{{ $data->name }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="name" value="{{ $data->name }}"></td>
-                                                <td><b>{{ __('text.date_of_birth') }}:</b></td>
-                                                <td class="save-value">{{ $data->dob != null ? $data->dob : '' }}</td>
-                                                <td class="edit-value d-none"><input type="date" name="dob"  value="{{ $data->dob }}"></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><b>{{ __('text.phone_number') }}:</b></td>
-                                                <td class="save-value">{{ $data->phone_number }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
-                                                <td><b>{{ __('text.gender') }}:</b></td>
-                                                <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>{{ __('text.alter_contact') }}:</b></td>
-                                                <td class="save-value">{{ $data->alternative_phone_number }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="alternative_phone_number" value="{{ $data->alternative_phone_number }}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>{{ __('text.address') }}:</b></td>
-                                                <td class="save-value">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</td>
-                                                <td class="edit-value d-none"><textarea type="text" name="address" value="{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</textarea></td>
-                                            </tr>
-                                        </table>
+                            @if (count($addresses) > 0)
+                                    <div class="row my-address-position">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                            @foreach($addresses as $item)
+                                                <div class="col-md-4">
+                                                    <div class="address-box mr-2 mb-4">
+                                                        <address>
+                                                            {{ $item['address'] . ', ' . $item['area']['name'] . ', ' . $item['area']['thana']['name'] . ', ' . $item['area']['thana']['district']['name'] }}
+                                                        </address>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="profile-btn">
-                                    <a href="javascript:void(0)" class="btn--edit" onclick="input()">{{ __('text.edit') }}</a>
-                                    <button type="submit" class="btn-success save-profile-btn">{{ __('text.save') }}</button>
-                                </div>
-                            </form>
+                            @else
+                                <h4 class="text-center">{{ __('text.no_data') }}</h4>
+                            @endif
                         </div>
 
                         <div class="tab-pane fade my-orders" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
-                            <h2 class="my-dashboard-title">{{ __('text.my_order') }}</h2>
-                            <div class="my-order-list">
+                            <h2 class="my-dashboard-title header-text-profile">{{ __('text.my_order') }}</h2>
+                            <div class="my-order-list my-profile-position">
                                 <div class="table-responsive">
                                     @if (count($orders) > 0)
                                     <table class="table table-borderless">
@@ -200,13 +258,13 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade my-wishlists" id="v-pills-wishlists" role="tabpanel" aria-labelledby="v-pills-wishlists-tab">
-                            <h2 class="my-dashboard-title">{{ __('text.my_prescription') }}
+                        <div class="tab-pane fade my-prescription" id="v-pills-prescription" role="tabpanel" aria-labelledby="v-pills-prescription-tab">
+                            <h2 class="my-dashboard-title header-text-profile">{{ __('text.my_prescription') }}
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn--primary float-right mb-2" data-toggle="modal" data-target="#prescriptionModal">
-                                    <i class="fas fa-plus"></i>  {{ __('text.prescription') }}
-                                </button>
                             </h2>
+                            <button type="button" class="btn btn--primary prescription-button" data-toggle="modal" data-target="#prescriptionModal">
+                                <i class="fas fa-plus"></i>  {{ __('text.prescription') }}
+                            </button>
 {{--                            <div class="my-order-list">--}}
                                 <!-- Modal -->
                                 <div class="modal fade" id="prescriptionModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
@@ -263,13 +321,13 @@
                                 </div>
 {{--                                <div class="container">--}}
                                     @if (count($prescriptions) > 0)
-                                        <div class="my-row row mb-3">
+                                        <div class="my-row row mb-3 my-prescription-position">
                                             @foreach($prescriptions as $prescription )
                                                 <div class="my-box col-4 mt-4">
                                                     <div class="order-summary">
                                                         <div class="row">
                                                             <div class="col-10">
-                                                                <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
+                                                                <img height="150px" width="150px" class="prescription-image mb-2"  src="{{ $prescription->url }}" alt="">
                                                                 <strong>Patient: {{ $prescription->patient_name }}</strong><br>
                                                                 <small>Doctor: {{ $prescription->doctor_name }}</small>
                                                                 <br>
@@ -309,11 +367,12 @@
                                                 </div>
                                             @endforeach
                                         </div>
+                                    {{ $prescriptions->links() }}
                                     @else
                                         <h4 class="text-center">{{ __('text.no_data') }}</h4>
                                     @endif
                             </div>
-                                {{ $prescriptions->links() }}
+
                         </div>
                     </div>
                 </div>
@@ -337,6 +396,9 @@
         function input(){
             $(".save-value").addClass('d-none');
             $(".edit-value").removeClass('d-none');
+            $(".save-profile-btn").removeClass('d-none');
+            $(".my-edit-btn").addClass('d-none');
+
         };
 
         function removeItem(id) {
