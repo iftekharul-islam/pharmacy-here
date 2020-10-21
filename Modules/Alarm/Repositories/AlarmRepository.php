@@ -39,9 +39,9 @@ class AlarmRepository
         return $data;
     }
 
-    public function update($request, $alarm_id)
+    public function update($request, $alarm_id, $customer_id)
     {
-        $data = Alarm::where('alarm_id', $alarm_id)->first();
+        $data = Alarm::where('alarm_id', $alarm_id)->where('customer_id', $customer_id)->first();
 
         if ($request->has('date') && $request->get('date')) {
             $data->date = $request->date;
@@ -60,9 +60,9 @@ class AlarmRepository
         return $data;
     }
 
-    public function delete($alarm_id)
+    public function delete($alarm_id, $customer_id)
     {
-        $data = Alarm::where('alarm_id', $alarm_id)->first();
+        $data = Alarm::where('alarm_id', $alarm_id)->where('customer_id', $customer_id)->first();
 
         return $data->delete();
     }

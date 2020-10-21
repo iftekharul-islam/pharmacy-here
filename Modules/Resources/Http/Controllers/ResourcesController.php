@@ -25,6 +25,7 @@ class ResourcesController extends Controller
     public function index()
     {
         $data = $this->repository->all();
+//        return $data;
         return view('resources::index', compact('data'));
     }
 
@@ -32,9 +33,14 @@ class ResourcesController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function createWithFile()
     {
-        return view('resources::create');
+        return view('resources::create-with-file');
+    }
+
+    public function createWithLink()
+    {
+        return view('resources::create-with-link');
     }
 
     /**
@@ -44,6 +50,7 @@ class ResourcesController extends Controller
      */
     public function store(CreateResourceRequest $request)
     {
+//        return $request->all();
         $data = $this->repository->create($request);
         return redirect()->route('resource.index');
     }
@@ -77,6 +84,7 @@ class ResourcesController extends Controller
      */
     public function update(UpdateResourceRequest $request, $id)
     {
+//        return $request->all();
         $data = $this->repository->update($request, $id);
         return redirect()->route('resource.index')->with('success', 'Resource updated successfully');
     }
@@ -84,7 +92,7 @@ class ResourcesController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Renderable
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
