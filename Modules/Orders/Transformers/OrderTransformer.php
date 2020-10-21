@@ -21,6 +21,7 @@ class OrderTransformer extends TransformerAbstract
     {
         return [
             'id'                        => $item->id,
+            'phone_number'              => $item->phone_number,
             'customer_name'             => $item->customer->name,
             'pharmacy_id'               => $item->pharmacy_id,
             'amount'                    => $item->amount,
