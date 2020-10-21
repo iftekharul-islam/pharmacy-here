@@ -23,6 +23,7 @@ class OrderTransformer extends TransformerAbstract
             'id'                        => $item->id,
             'phone_number'              => $item->phone_number,
             'customer_name'             => $item->customer->name,
+            'customer_phone_number'     => $item->customer->phone_number,
             'pharmacy_id'               => $item->pharmacy_id,
             'amount'                    => $item->amount,
             'subidha_comission'         => $item->subidha_comission,
