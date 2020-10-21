@@ -100,11 +100,6 @@
                                                 <td class="save-value">{{ $data->alternative_phone_number }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="alternative_phone_number" value="{{ $data->alternative_phone_number }}"></td>
                                             </tr>
-{{--                                            <tr>--}}
-{{--                                                <td><b>{{ __('text.address') }}:</b></td>--}}
-{{--                                                <td class="save-value">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</td>--}}
-{{--                                                <td class="edit-value d-none"><textarea type="text" name="address" value="{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}">{{ isset($data->customerAddress[0]) == true ?  $data->customerAddress[0]->address : null }}</textarea></td>--}}
-{{--                                            </tr>--}}
                                         </table>
                                     </div>
                                     <a href="javascript:void(0)" class="badge badge-success my-edit-btn" onclick="input()"><i class="fas fa-edit"></i></a>
@@ -180,7 +175,7 @@
                                             <div class="row">
                                             @foreach($addresses as $item)
                                                 <div class="col-md-4">
-                                                    <div class="address-box mr-2 mb-4">
+                                                    <div class="customer-address-box mr-2 mb-4">
                                                         <address>
                                                             {{ $item['address'] . ', ' . $item['area']['name'] . ', ' . $item['area']['thana']['name'] . ', ' . $item['area']['thana']['district']['name'] }}
                                                         </address>
@@ -331,36 +326,7 @@
                                                                 <strong>Patient: {{ $prescription->patient_name }}</strong><br>
                                                                 <small>Doctor: {{ $prescription->doctor_name }}</small>
                                                                 <br>
-                                                                <button type="button" class="btn btn--primary px-5 w-89 mt-3" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
-                                                                    {{ __('text.view') }}
-                                                                </button>
-                                                                <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
-                                                                    <div class="modal-dialog" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title" id="prescriptionDetailsModalLabel">Prescription Details</h5>
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                    <span aria-hidden="true">&times;</span>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <div class="row">
-                                                                                    <div class="col-6 mb-3">
-                                                                                        <img width="200px" height="250px" src="{{ $prescription->url }}" alt="">
-                                                                                    </div>
-                                                                                    <div class="col-6 My-modal">
-                                                                                        <strong>Patient </strong>
-                                                                                        <label> {{$prescription->patient_name}}</label><br>
-                                                                                        <strong>Doctor </strong>
-                                                                                        <label>{{ $prescription->doctor_name }}</label><br>
-                                                                                        <strong>Date</strong>
-                                                                                        <label>{{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                <small>Date: {{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</small>
                                                             </div>
                                                         </div>
                                                     </div>
