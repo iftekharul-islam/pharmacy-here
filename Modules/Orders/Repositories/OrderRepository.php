@@ -155,7 +155,7 @@ class OrderRepository
 
                 if ($order->delivery_method == config('subidha.express_delivery')) {
                     if ($order->payment_type == config('subidha.cod_payment_type')) {
-                        logger('Into subidha cod payment');
+                        logger('Into subidha epay payment');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -164,7 +164,7 @@ class OrderRepository
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                        logger('Assigning subidha comission in cod payment');
+                        logger('Assigning subidha comission in epay payment');
                         $order->subidha_comission = round( ($amount_value + $delivery_value + $total_value), 2);
                         $order->pharmacy_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $order->subidha_comission ), 2);
                         $order->customer_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
@@ -224,7 +224,7 @@ class OrderRepository
 
                 if ($order->delivery_method == config('subidha.express_delivery')) {
                     if ($order->payment_type == config('subidha.cod_payment_type')) {
-                        logger('Into subidha cod payment');
+                        logger('Into subidha epay payment');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -233,12 +233,12 @@ class OrderRepository
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                        logger('Assigning subidha comission in cod payment');
+                        logger('Assigning subidha comission in epay payment');
                         $order->subidha_comission = round( ($amount_value + $delivery_value + $total_value), 2);
                         $order->pharmacy_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $order->subidha_comission ), 2);
                         $order->customer_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
 
-                        logger('Subidha comission in cod payment: ' . $order->subidha_comission);
+                        logger('Subidha comission in epay payment: ' . $order->subidha_comission);
 
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
@@ -355,7 +355,7 @@ class OrderRepository
         $data['order_date'] = Carbon::today();
         $data['customer_id'] = Auth::user()->id;
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
-        $data['notes'] = "Its a sample for cod" ;
+        $data['notes'] = "Its a sample for epay" ;
         $data['is_rated'] = "no";
         $data['delivery_charge'] = $request->delivery_charge_amount;
 
@@ -424,7 +424,7 @@ class OrderRepository
                 if ($data['delivery_method'] == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
                         logger('3 in');
-                        logger('Into subidha cod payment');
+                        logger('Into subidha epay payment');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -433,7 +433,7 @@ class OrderRepository
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100,2);
 
-                        logger('Assigning subidha comission in cod payment');
+                        logger('Assigning subidha comission in epay payment');
 
                         $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
                         $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
@@ -497,7 +497,7 @@ class OrderRepository
 
                 if ($request->delivery_method == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
-                        logger('Into subidha cod payment');
+                        logger('Into subidha epay payment');
                         logger('7 in');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
@@ -507,13 +507,13 @@ class OrderRepository
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                        logger('Assigning subidha comission in cod payment');
+                        logger('Assigning subidha comission in epay payment');
 
                         $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
                         $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
                         $data['customer_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
 
-                        logger('Subidha comission in cod payment: ' . $data['subidha_comission']);
+                        logger('Subidha comission in epay payment: ' . $data['subidha_comission']);
 
                     }
                     if ($request->payment_type == config('subidha.ecash_payment_type')) {
