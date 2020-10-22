@@ -15,11 +15,11 @@ class ResourceTransformer extends TransformerAbstract
         return [
             'id'                     => $item->id,
             'title'                  => $item->title,
-            'bn_title'                  => $item->bn_title,
+            'bn_title'               => $item->bn_title,
             'description'            => $item->description,
-            'bn_description'            => $item->bn_description,
+            'bn_description'         => $item->bn_description,
             'url'                    => $item->url,
-            'files'                    => isset($item->files) ? asset(Storage::url($item->files)) : null,
+            'files'                  => isset($item->files) ? $item->files : null,
         ];
     }
 }
