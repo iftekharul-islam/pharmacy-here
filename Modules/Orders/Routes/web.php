@@ -23,7 +23,7 @@ Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('transaction/create/{trans_id}', 'TransactionHistoryController@create')->name('transactionHistory.create');
     Route::get('transaction-history/{trans_id}', 'TransactionHistoryController@show')->name('transactionHistory.show');
     Route::post('transaction', 'TransactionHistoryController@store')->name('transactionHistory.store');
+
+    Route::get('cod-transaction-history', 'TransactionHistoryController@cod')->name('cod.transactionHistory.index');
+    Route::get('cod-transaction-history/{trans_id}', 'TransactionHistoryController@codShow')->name('cod.transactionHistory.show');
 });
-//Route::get('transaction-history', function (){
-//    return 'Hello controller';
-//});

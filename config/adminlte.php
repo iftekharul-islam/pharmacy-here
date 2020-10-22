@@ -216,7 +216,7 @@ return [
 
     'enabled_laravel_mix' => false,
     'laravel_mix_css_path' => 'css/app.css',
-    'laravel_mix_js_path' => 'js/app.js',
+    'laravel_mix_js_path' => 'js/main.js',
 
     /*
     |--------------------------------------------------------------------------
@@ -294,18 +294,23 @@ return [
         [
             'text'    => 'Pharmacy',
             'icon'    => 'fas fa-cogs',
+            'url'     => 'pharmacies'
+        ],
+        [
+            'text'    => 'Transaction History',
+            'icon'    => 'fas fa-cogs',
             'submenu' => [
                 [
-                    'text'    => 'Pharmacy list',
-                    'icon'    => 'fas fa-store-alt',
-                    'url'     => 'pharmacies'
-                ],
-                [
-                    'text'    => 'Transaction History',
-                    'icon'    => 'fas fa-store-alt',
+                    'text'    => 'E-pay Transaction History',
+                    'icon_color' => 'cyan',
                     'url'     => 'transaction-history'
                 ],
-            ]
+                [
+                    'text'    => 'COD Transaction History',
+                    'icon_color' => 'cyan',
+                    'url'     => 'cod-transaction-history'
+                ],
+            ],
         ],
         [
             'text'    => 'Location',
