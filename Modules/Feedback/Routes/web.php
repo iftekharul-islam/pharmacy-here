@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('feedback')->group(function() {
-    Route::get('/', 'FeedbackController@index');
-});
+//Route::prefix('feedback')->group(function() {
+//    Route::get('/', 'FeedbackController@index');
+//});

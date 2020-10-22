@@ -136,6 +136,7 @@ strong {
 
 small {
   font-size: 80%;
+  color: #808080;
 }
 
 sub,
@@ -250,6 +251,32 @@ input {
   overflow: visible;
 }
 
+/*input[type='checkbox']:after {*/
+/*    width: 15px;*/
+/*    height: 15px;*/
+/*    top: -2px;*/
+/*    left: -1px;*/
+/*    position: relative;*/
+/*    background-color: #d1d3d1;*/
+/*    content: '';*/
+/*    display: inline-block;*/
+/*    visibility: visible;*/
+/*    border: 2px solid white;*/
+/*}*/
+
+/*input[type='checkbox']:checked:after {*/
+/*    width: 15px;*/
+/*    height: 15px;*/
+/*    top: -2px;*/
+/*    left: -1px;*/
+/*    position: relative;*/
+/*    background-color: #00AE4D;*/
+/*    content: '';*/
+/*    display: inline-block;*/
+/*    visibility: visible;*/
+/*    border: 2px solid white;*/
+/*}*/
+
 button,
 select {
   text-transform: none;
@@ -290,6 +317,7 @@ input[type="checkbox"] {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 0;
+
 }
 
 textarea {
@@ -15296,6 +15324,7 @@ input[type="checkbox"] {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 0;
+    background-color: #00AE4D;
 }
 
 textarea {
@@ -16033,6 +16062,15 @@ html {
   transition: all .3s ease-in;
 }
 
+.eyes {
+    color: #808080;
+    border: 1px solid #000;
+}
+.eyes:hover {
+    background: #808080;
+    border: #808080;
+    color: #000;
+}
 .medicine-details--footer .eyes i {
   color: #808080;
 }
@@ -16362,6 +16400,18 @@ html {
             flex-direction: row;
   }
 }
+.customer-address-box {
+    cursor: pointer;
+    min-width: 175px;
+    border: 1px solid #00A34A;
+    -webkit-box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    /*-ms-flex-preferred-size: 70%;*/
+    /*flex-basis: 70%;*/
+    min-height: 150px;
+}
 
 .address-box {
     cursor: pointer;
@@ -16488,11 +16538,15 @@ html {
 
 .order-summary table tbody tr td {
   color: #505050 !important;
-  text-align: center;
+  text-align: left;
   border-top: 0;
   border-bottom: 1px solid #F5F6FA;
   /* Chrome, Safari, Edge, Opera */
   /* Firefox */
+}
+
+.header-tr {
+    padding-top: 400px;
 }
 
 .order-summary table tbody tr td input {
@@ -16503,8 +16557,22 @@ html {
   border-radius: 5px;
   /*border: 1px solid;*/
 }
+.order-summary table tbody tr td:nth-child(2) {
+    min-width: 90px;
+}
+.order-summary table tbody tr td:nth-child(3) {
+    text-align: center;
+}
 .order-summary table tbody tr td:nth-child(4) {
     text-align: center;
+    max-width: 150px;
+}
+.order-summary table tbody tr td:nth-child(5) {
+    text-align: center;
+    max-width: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
+    /*max-width: 0px;*/
 }
 .order-summary table tbody tr td a {
   width: 30px;
@@ -16530,11 +16598,11 @@ html {
   margin-right: 10px;
 }
 
-.order-summary table tbody tr td .cart-btn {
-  height: 100%;
-  width: 100%;
-  border: none;
-}
+/*.order-summary table tbody tr td .cart-btn {*/
+/*  height: 100%;*/
+/*  width: 100%;*/
+/*  border: none;*/
+/*}*/
 
 .order-summary table tbody tr td .icon {
   display: -webkit-box;

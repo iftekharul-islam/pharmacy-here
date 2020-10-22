@@ -19,7 +19,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('resource.update', $data->id) }}" method="POST">
+            <form role="form" action="{{ route('resource.update', $data->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="card-body">
@@ -69,10 +69,11 @@
                         </div>
                     </div>
 
+                    @if($data->url)
                     <div class="form-group row">
                         <label for="url" class="col-sm-5 col-form-label">Link</label>
                         <div class="col-sm-7" id="">
-                            <input type="text" name="url" class="form-control" value="{{ $data->url }}" id="url" placeholder="Link" required>
+                            <input type="text" name="url" class="form-control" value="{{ $data->url }}" id="url" placeholder="Link">
                             @if ($errors->has('url'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('url') }}</strong>
@@ -80,6 +81,21 @@
                             @endif
                         </div>
                     </div>
+                    @endif
+
+                    @if($data->files)
+                    <div class="form-group row">
+                        <label for="files" class="col-sm-5 col-form-label">File</label>
+                        <div class="col-sm-7" id="">
+                            <input type="file" name="files" class="form-control" value="" placeholder="{{ $data->files }}" id="files">
+                            @if ($errors->has('files'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('files') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
 
 
                 </div>

@@ -144,8 +144,7 @@ class CustomerRepository
 
     public function userDetails($id)
     {
-        $data =  User::with('customerAddress')->find($id);
-
+        $data =  User::find($id);
         return $data;
     }
     public function userDetailsUpdate($request, $id)
@@ -169,17 +168,6 @@ class CustomerRepository
             $user->gender = $data['gender'];
         }
         $user->save();
-
-        if (isset($request->addressId)){
-            $address = CustomerAddress::find($request->addressId);
-
-            if (isset($request->address)) {
-                $address->address = $request->address;
-            }
-            $address->save();
-        } else {
-            $data = $request->only(['']);
-        }
     }
 
 }

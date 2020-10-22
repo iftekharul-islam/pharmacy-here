@@ -32,11 +32,12 @@
         background-color: transparent;
         align-items: center;
         justify-content: center;
-        width: 2rem;
-        height: 2rem;
+        width: 1.5rem;
+        height: 1.5rem;
         cursor: pointer;
         margin: 0;
         position: relative;
+        margin-top: 4px;
         border: 1px solid #00AE4D;
         border-radius: 50%;
     }
@@ -75,7 +76,7 @@
     .count-style {
         border: none;
         height: 25px;
-        width: 64px;
+        width: 50% !important;
     }
     .count-style:focus {
         outline: none!important;
@@ -84,9 +85,35 @@
     .order-summary table tbody tr td input {
         border: none!important;
     }
-    .note-text {
+    .btn-continue {
+        width: 180px;
         position: absolute;
-        margin-left: -163px;
+        color: #00AE4D !important;
+        border-radius: 10px;
+        border: 1px solid #00AE4D!important;
+    }
+    .btn-checkout {
+        width: 180px;
+        background: #00AE4D !important;
+        font-weight: 500;
+        font-size: 16px;
+    }
+    .btn-continue:hover{
+        background: #00AE4D;
+        font-weight: 500;
+        font-size: 16px;
+        color: #ffffff!important;
+    }
+    .grand-total-final {
+        margin-left: 408px;
+    }
+    .grand-total-count-style {
+        border: none;
+        height: 25px;
+        width: 20% !important;
+    }
+    .grand-total-count-style:focus {
+        outline: none!important;
     }
 </style>
 @section('content')
@@ -103,24 +130,26 @@
     <div class="cart-section">
         <div class="container">
             <div class="row">
-                <div class="col-12">
+                <div class="col-10 mx-auto">
                     <div class="row">
                         <div class="col-12">
                             <h2>{{ __('text.cart_list') }}</h2>
                         </div>
                     </div>
+                    <strong class="note-text text-danger d-none">Please add amount more than ৳100</strong>
                     <div class="order-summary">
                         <div class="table-responsive">
                             <table class="table">
-                                <thead class="thead-light">
+{{--                                <thead class="thead-light">--}}
+                                <tbody>
                                 <tr>
-                                    <th scope="col">{{ __('text.product') }}</th>
-                                    <th scope="col">{{ __('text.price') }}</th>
-                                    <th scope="col">{{ __('text.quantity') }}</th>
-                                    <th class="text-center">{{ __('text.sub_total') }}</th>
-                                    <th scope="col"></th>
+                                    <td scope="col">{{ __('text.product') }}</td>
+                                    <td scope="col">{{ __('text.price') }}</td>
+                                    <td scope="col">{{ __('text.quantity') }}</td>
+                                    <td class="text-center">{{ __('text.sub_total') }}</td>
+                                    <td scope="col"></td>
                                 </tr>
-                                </thead>
+{{--                                </thead>--}}
                                 <tbody>
                                 <?php $total = 0 ?>
                                 @guest
@@ -130,7 +159,7 @@
                                             <?php $total += $details['amount'] * $details['quantity'] ?>
                                         <tr>
                                             <td scope="row">{{ $details['product_name'] }}</td>
-                                            <td class="float-left">৳ {{ $details['amount'] }}</td>
+                                            <td class="float-left">৳ {{ $details['amount'] }} / {{ __('text.piece') }}</td>
                                             <td data-th="Quantity"><input type="number" class="quantity" value="{{ $details['quantity'] }}" min="{{ $details['minQuantity'] }}"></td>
                                             <td data-th="Subtotal" class="text-center"><p>৳</p> {{ $details['amount'] * $details['quantity'] }}</td>
                                             <td>
@@ -148,8 +177,28 @@
 
                                             <?php $total += $details['product']['purchase_price'] * $details['quantity'] ?>
                                             <tr>
-                                                <td scope="row">{{ $details['product']['name'] }}</td>
-                                                <td class="text-center">৳ {{ $details['product']['purchase_price'] }}</td>
+                                                <td scope="row">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            @if ($details->product->form->slug == 'tablet' || $details->product->form->name == 'capsul')
+                                                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                                                            @elseif ($details->product->form->slug == 'syrup')
+                                                                <img src="{{ asset('images/syrup.png') }}" class="pill" alt="syrup">
+                                                            @elseif ($details->product->form->slug == 'injection')
+                                                                <img src="{{ asset('images/injection.png') }}" class="pill" alt="injection">
+                                                            @elseif ($details->product->form->slug == 'suppository')
+                                                                <img src="{{ asset('images/suppositories.png') }}" class="pill" alt="suppositories">
+                                                            @else
+                                                                <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
+                                                            @endif
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <strong>{{ $details['product']['name'] }}</strong><br>
+                                                            <small>{{ $details['product']['form']['name'] }}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>৳ {{ $details['product']['purchase_price'] }} / {{ __('text.piece') }}</td>
                                                 <td data-th="Quantity">
                                                     <div class="number-input" id="show-button-{{ $details->id }}">
                                                         <button id="decrease-{{$details->id }}" onclick="newItemdec(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})"></button>
@@ -158,7 +207,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-center">৳
-                                                    <input class="countAmount-{{$details->id}} count-style" value="{{ $details->amount }}" readonly>
+                                                    <input class="countAmount-{{$details->id}} count-style text-left" value="{{ $details->amount }}" readonly>
                                                 </td>
                                                 <td>
                                                     <div class="actions" data-th="">
@@ -169,24 +218,34 @@
                                         @endforeach
                                     @endif
                                 @endguest
-                                    <tr>
-                                        <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">{{ __('text.continue_shopping') }}</a></td>
-                                        <td></td>
-                                        <td class="text-right total-amount-alignment"><b>{{ __('text.grand_total') }}</b></td>
-                                        <td class="text-center total-amount-alignment">৳
-                                            <input type="number" class="grand-total count-style" value="{{ $total }}" readonly>
-                                        </td>
-                                        @guest
-                                                <td><p class="badge btn-primary">{{ __('text.login_to_checkout') }}</p></td>
-                                            @else
-                                                <td>
-                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">{{ __('text.checkout') }}</a>
-                                                    <strong class="note-text alert-note text-danger d-none">Please add amount more than ৳100</strong>
-                                                </td>
-                                        @endguest
-                                    </tr>
+{{--                                    <tr>--}}
+{{--                                        <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">{{ __('text.continue_shopping') }}</a></td>--}}
+{{--                                        <td></td>--}}
+{{--                                        <td class="text-right total-amount-alignment"><b>{{ __('text.grand_total') }}</b></td>--}}
+{{--                                        <td class="text-center total-amount-alignment">৳--}}
+{{--                                            <input type="number" class="grand-total count-style" value="{{ $total }}" readonly>--}}
+{{--                                        </td>--}}
+{{--                                        @guest--}}
+{{--                                                <td><p class="badge btn-primary">{{ __('text.login_to_checkout') }}</p></td>--}}
+{{--                                            @else--}}
+{{--                                                <td>--}}
+{{--                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">{{ __('text.checkout') }}</a>--}}
+{{--                                                    <strong class="note-text alert-note text-danger d-none">Please add amount more than ৳100</strong>--}}
+{{--                                                </td>--}}
+{{--                                        @endguest--}}
+{{--                                    </tr>--}}
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md">
+                                <a href="{{ route('product-list')  }}" class="btn btn-continue d-block text-center"><i class="fas fa-arrow-left"></i> {{ __('text.continue_shopping') }}</a>
+                                <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn btn-checkout d-block text-center float-right text-white">{{ __('text.checkout') }}</a>
+                                <div class="text-center grand-total-final">
+                                    <b>Grand Total : ৳</b>
+                                    <input type="number" class="grand-total grand-total-count-style" value="{{ $total }}" readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -311,8 +370,9 @@
                 text: "{{ __('text.delete_cart') }}",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                reverseButtons: true,
                 cancelButtonColor: '#d33',
+                confirmButtonColor: '#00AE4D',
                 cancelButtonText: 'No',
                 confirmButtonText: 'Yes',
             }).then((result) => {
@@ -335,11 +395,11 @@
             let total = $('.grand-total').val();
             console.log(total, 'total');
             if ( total < 100 ) {
-                $('.alert-note').removeClass('d-none');
+                $('.note-text').removeClass('d-none');
                 return;
             }
 
-            $('.alert-note').addClass('d-none');
+            $('.note-text').addClass('d-none');
 
             let medicineData = data;
             newData = data;
@@ -373,7 +433,8 @@
                 text: "{{ __('text.pre_order_medicine_notice') }}",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                reverseButtons: true,
+                confirmButtonColor: '#00AE4D',
                 cancelButtonColor: '#d33',
                 cancelButtonText: 'No',
                 confirmButtonText: 'Yes',
@@ -412,7 +473,8 @@
                 text: "{{ __('text.prescribed_medicine_notice') }}",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                reverseButtons: true,
+                confirmButtonColor: '#00AE4D',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'Remove prescribed medicine',

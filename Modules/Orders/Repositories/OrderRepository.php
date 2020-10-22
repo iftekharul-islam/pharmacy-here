@@ -15,6 +15,7 @@ use Modules\Orders\Entities\Models\OrderCancelReason;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
+use Modules\Points\Entities\Models\Points;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
@@ -110,6 +111,8 @@ class OrderRepository
         logger('Start of generate OrderNo()');
         $order->order_no = $this->generateOrderNo();
         logger('End of generate OrderNo()');
+        $order->point_amount =  round($request->get('point_amount'), 2);
+        $order->points = $request->get('points');
 
         if ($order->delivery_type == config('subidha.home_delivery')) {
 
@@ -125,7 +128,7 @@ class OrderRepository
 
                         $total_value = round( (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100), 2);
 
-                        $order->subidha_comission =  ($amount_value + $delivery_value + $total_value);
+                        $order->subidha_comission =  ($amount_value + $delivery_value + $total_value - $order->point_amount);
 
                         $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission );
                         $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value );
@@ -294,6 +297,15 @@ class OrderRepository
 
         logger($order);
         $order->save();
+
+        if ($request->has('points') && $request->get('points')) {
+            Points::create([
+                'user_id' => $customer_id,
+                'points' => 0 - $request->get('points'),
+                'type' => 'order',
+                'type_id' => $order->id,
+            ]);
+        }
 
         OrderHistory::create([
             'order_id' => $order->id,
@@ -571,7 +583,7 @@ class OrderRepository
         $data['pharmacy_amount'] =  round($data['pharmacy_amount'],2);
         $data['customer_amount'] = round( $data['customer_amount'],2);
 
-//        return $data;
+        return $data;
         $order = Order::create($data);
 
         OrderHistory::create([

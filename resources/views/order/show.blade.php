@@ -123,7 +123,7 @@
                                     <th scope="col">{{ __('text.product') }}</th>
                                     <th scope="col">{{ __('text.price') }}</th>
                                     <th scope="col" class="text-center">{{ __('text.quantity') }}</th>
-                                    <th scope="col">{{ __('text.sub_total') }}l</th>
+                                    <th scope="col">{{ __('text.sub_total') }}</th>
                                 </tr>
                             </thead>
                             <tbody>

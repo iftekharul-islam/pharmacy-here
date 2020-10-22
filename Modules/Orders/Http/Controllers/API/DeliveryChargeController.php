@@ -6,7 +6,7 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Modules\Orders\Http\Requests\DeliveryChargeRequest;
 use Modules\Orders\Repositories\DeliveryChargeRepository;
 
@@ -26,13 +26,14 @@ class DeliveryChargeController extends BaseController
      */
     /**
      * Display a listing of the resource.
-     * @return Renderable
-    */
-    
+     * @param DeliveryChargeRequest $request
+     * @return JsonResponse
+     */
+
     public function index(DeliveryChargeRequest $request)
     {
-
-        $data = $this->repository->deliveryCharge($request->amount);
+        $user = Auth::guard('api')->user();
+        $data = $this->repository->deliveryCharge($request->amount, $user->id);
 
         return responsePreparedData($data);
     }

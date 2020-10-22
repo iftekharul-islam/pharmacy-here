@@ -30,6 +30,10 @@
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Link</label>
                             <div class="col-sm-8 pt-2" id="url"> </div>
                         </div>
+                        <div class="form-group row mb-0">
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">File</label>
+                            <div class="col-sm-8 pt-2" id="files"></div>
+                        </div>
 
                     </div>
 

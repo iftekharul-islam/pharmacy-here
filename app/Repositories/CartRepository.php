@@ -27,6 +27,7 @@ class CartRepository
 
         if ($cartData) {
             $cartData->quantity++;
+            $cartData->amount = $cartData->amount + $product->purchase_price;
             return $cartData->save();
         }
         return Cart::create([
@@ -54,7 +55,7 @@ class CartRepository
         if($request->id && $request->quantity)
         {
             $item->quantity = $request->quantity;
-            $item->amount =$product->purchase_price * $request->quantity;
+            $item->amount = $product->purchase_price * $request->quantity;
 
 
             $item->save();
@@ -106,7 +107,7 @@ class CartRepository
 
     public function getCartByCustomer($customer_id)
     {
-        return Cart::with('product')->where('customer_id', $customer_id)->get();
+        return Cart::with('product', 'product.form')->where('customer_id', $customer_id)->get();
     }
 
     public function getCartAmount($customer_id)

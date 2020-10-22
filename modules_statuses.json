@@ -13,5 +13,6 @@
     "Resources": true,
     "Delivery": true,
     "Feedback": true,
-    "Points": true
+    "Points": true,
+    "Alarm": true
 }

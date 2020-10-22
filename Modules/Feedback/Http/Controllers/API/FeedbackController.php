@@ -94,6 +94,9 @@ class FeedbackController extends Controller
         //
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function pharmacyAverageRating()
     {
         $pharmacy = Auth::user();

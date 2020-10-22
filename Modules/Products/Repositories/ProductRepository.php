@@ -79,6 +79,17 @@ class ProductRepository
 
     }
 
+    public function search($request)
+    {
+        $medicine = $request->get('brand');
+
+        $products = Product::query();
+        return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+            ->where('name', 'LIKE', $medicine. "%")
+            ->orderBy('name', 'ASC')
+            ->get();
+    }
+
     public function create($request)
     {
         $productData = $request->only(
@@ -308,15 +319,17 @@ class ProductRepository
     public function getRelatedProductByProductIdWeb($id)
     {
         $product = Product::find($id);
-
-        $similar_product = Product::with('generic')->where('generic_id',  $product->generic_id)->get()->except($product->id);
-
-        return $similar_product;
+        $similar_products = Product::query();
+        $similar_products->where('id', '!=',  $product->id)->where('generic_id',  $product->generic_id);
+        return $similar_products->with('generic')->paginate(5);
     }
 
     public function getProductName($request)
     {
         $medicine = $request->get('medicine');
-        return Product::with('form')->where('slug', 'LIKE', "%$medicine%")->orderBy('name', 'ASC')->get();
+        return Product::with('form')
+            ->where('slug', 'LIKE', $medicine.'%' )
+            ->orWhere('slug', 'LIKE', '%'.$medicine)
+            ->where('purchase_price', '>', 0)->get();
     }
 }

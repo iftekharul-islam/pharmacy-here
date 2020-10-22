@@ -3,7 +3,6 @@
     .my-next-button {
         width: 206px;
     }
-
     .prescription-image {
         border: 1px solid #00CE5E ;
     }
@@ -95,40 +94,12 @@
                         <div class="my-box col-3 mt-3">
                             <div class="order-summary">
                                 <div class="row">
-                                    <div class="col-10">
-                                    <img height="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
+                                    <div class="col-md-10">
+                                    <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
                                     <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
-                                    <p>Doctor: {{ $prescription->doctor_name }}</p>
-                                    <button type="button" class="btn btn--primary px-5 w-89" data-toggle="modal" data-target="#prescriptionDetailsModal-{{$prescription->id}}">
-                                        View
-                                    </button>
-                                        <div class="modal fade" id="prescriptionDetailsModal-{{$prescription->id}}" tabindex="-1" role="dialog" aria-labelledby="prescriptionDetailsModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="prescriptionDetailsModalLabel">Prescription Details</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <img width="200px" height="250px" src="{{ $prescription->url }}" alt="">
-                                                            </div>
-                                                            <div class="col-6 My-modal">
-                                                                <strong>Patient : </strong>
-                                                                <label>{{$prescription->patient_name}}</label><br>
-                                                                <strong>Doctor : </strong>
-                                                                <label>{{ $prescription->doctor_name }}</label><br>
-                                                                <strong>Date : </strong>
-                                                                <label>{{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <small>Doctor: {{ $prescription->doctor_name }}</small>
+                                        <br>
+                                    <small>Date: {{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</small>
                                     </div>
                                     <div class="col-2">
                                         <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}">

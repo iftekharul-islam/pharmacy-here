@@ -34,7 +34,9 @@ class Order extends Model
         'subidha_comission',
         'is_rated',
         'pharmacy_amount',
-        'customer_amount'
+        'customer_amount',
+        'point_amount',
+        'points',
     ];
 
     public function customer()
