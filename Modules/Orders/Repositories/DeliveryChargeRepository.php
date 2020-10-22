@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DeliveryChargeRepository
 {
-    public function deliveryCharge($amount, $customer_id)
+    public function deliveryCharge($amount, $customer_id = null)
     {
         $normalDeliveryCharge = $amount > config('subidha.free_delivery_limit') ? 0.00 : config('subidha.normal_delivery_charge');
 
