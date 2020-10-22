@@ -10,6 +10,7 @@ use Modules\Orders\Entities\Models\OrderCancelReason;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Entities\Models\OrderItems;
 use Modules\Orders\Entities\Models\OrderPrescription;
+use Modules\Points\Entities\Models\Points;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
@@ -17,15 +18,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DeliveryChargeRepository
 {
-    public function deliveryCharge($amount)
+    public function deliveryCharge($amount, $customer_id)
     {
         $normalDeliveryCharge = $amount > config('subidha.free_delivery_limit') ? 0.00 : config('subidha.normal_delivery_charge');
-        
+
         $normalDelivery = [
             'delivery_charge' => $normalDeliveryCharge,
             'cash'  => number_format($amount * config('subidha.cash_payment_charge_percentage') / 100, 2)
         ];
-       
+
         $expressDelivery = [
             'delivery_charge' => config('subidha.express_delivery_charge'),
             'cash'  =>  number_format($amount * config('subidha.cash_payment_charge_percentage') / 100, 2)
@@ -52,7 +53,9 @@ class DeliveryChargeRepository
         return [
             'normal_delivery'       => $normalDelivery,
             'express_delivery'      => $expressDelivery,
-            'collect_from_pharmacy' => $collectFromPharmacy
+            'collect_from_pharmacy' => $collectFromPharmacy,
+            'points' => Points::where('user_id', $customer_id)->sum('points'),
+            'amount_per_point' => 0.01,
         ];
     }
 }
