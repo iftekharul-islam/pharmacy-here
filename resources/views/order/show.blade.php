@@ -151,7 +151,7 @@
                         <input type="hidden" name="itemId" value="{{ $data->id }}">
                         @csrf
                     <div class="text-center">
-                        <button type="submit" class="button btn--primary mt-5">{{ __('text.add_item_to_cart') }}</button>
+                        <button type="submit" class="button btn--primary mt-5">{{ __('text.re_order') }}</button>
                     </div>
                     </form>
                 </div>

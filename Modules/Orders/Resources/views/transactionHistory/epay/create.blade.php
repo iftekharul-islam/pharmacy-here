@@ -15,10 +15,25 @@
                 <input type="hidden" name="pharmacy_id" value="{{ $data->pharmacy_id }}">
                 <div class="card-body">
                     <div class="form-group row">
-                        <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
-                        <div class="col-sm-8">
-                            <label class="col-form-label">{{ $data->amount - $data->pharmacy->pharmacyOrder[0]->amount }}</label>
-                        </div>
+                        @if (isset($data->pharmacy->pharmacyOrder[0]->pharmacy_amount))
+                            @if ($data->pharmacy->pharmacyOrder[0]->pharmacy_amount > $data->amount)
+                                <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
+                                <div class="col-sm-8">
+                                        <label class="col-form-label">{{ $data->pharmacy->pharmacyOrder[0]->pharmacy_amount - $data->amount }}</label>
+                                </div>
+                            @else
+                                <label for="due-amount" class="col-sm-4 col-form-label">Paid more amount</label>
+                                <div class="col-sm-8">
+                                    <label class="col-form-label">{{ $data->amount - $data->pharmacy->pharmacyOrder[0]->pharmacy_amount }}</label>
+                                </div>
+
+                            @endif
+                        @else
+                            <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
+                            <div class="col-sm-8">
+                                <label class="col-form-label">{{ $data->amount }}</label>
+                            </div>
+                        @endif
                     </div>
                 <div class="form-group row">
                     <label for="amount" class="col-sm-4 col-form-label">Amount</label>
@@ -59,7 +74,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="{{ route('notice.index') }}" class="btn btn-danger">Back</a>
+                    <a href="{{ route('transactionHistory.index') }}" class="btn btn-danger">Back</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>

@@ -117,7 +117,7 @@
                                                     Cash on Delivery
                                                 </label>
                                                 <label class="custom-radio" onclick="getPayTypeValue(2)">
-                                                    <input id="epay" type="radio" name="payment_type" value="2">
+                                                    <input type="radio" id="epay"  name="payment_type" value="2">
                                                     <span class="checkmark"></span>
                                                     E - Payment
                                                 </label>

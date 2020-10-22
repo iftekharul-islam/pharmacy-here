@@ -126,7 +126,7 @@ class CheckoutController extends Controller
             $data['order_date'] = Carbon::today();
             $data['customer_id'] = Auth::user()->id;
             $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
-            $data['notes'] = "Its a sample for cod" ;
+            $data['notes'] = "Its a sample for epay" ;
             $data['is_rated'] = "no";
             $data['delivery_charge'] = $request->delivery_charge_amount;
 
@@ -196,7 +196,7 @@ class CheckoutController extends Controller
                     if ($data['delivery_method'] == config('subidha.express_delivery')) {
                         if ($request->payment_type == config('subidha.cod_payment_type')) {
                             logger('3 in');
-                            logger('Into subidha cod payment');
+                            logger('Into subidha epay payment');
 
                             $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -205,7 +205,7 @@ class CheckoutController extends Controller
 
                             $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100,2);
 
-                            logger('Assigning subidha comission in cod payment');
+                            logger('Assigning subidha comission in epay payment');
 
                             $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
                             $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
@@ -270,7 +270,7 @@ class CheckoutController extends Controller
 
                     if ($data['delivery_method'] == config('subidha.express_delivery')) {
                         if ($request->payment_type == config('subidha.cod_payment_type')) {
-                            logger('Into subidha cod payment');
+                            logger('Into subidha epay payment');
                             logger('7 in');
 
                             $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
@@ -280,13 +280,13 @@ class CheckoutController extends Controller
 
                             $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                            logger('Assigning subidha comission in cod payment');
+                            logger('Assigning subidha comission in epay payment');
 
                             $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
                             $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
                             $data['customer_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
 
-                            logger('Subidha comission in cod payment: ' . $data['subidha_comission']);
+                            logger('Subidha comission in epay payment: ' . $data['subidha_comission']);
 
                         }
                         if ($request->payment_type == config('subidha.ecash_payment_type')) {
@@ -494,6 +494,7 @@ class CheckoutController extends Controller
 
     public function sslPayment($request)
     {
+//        return $request->all();
         $data = $request->only([
                 'phone_number',
                 'payment_type',
@@ -581,7 +582,7 @@ class CheckoutController extends Controller
                 if ($data['delivery_method'] == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
                         logger('3 in');
-                        logger('Into subidha cod payment');
+                        logger('Into subidha epay payment');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -590,7 +591,7 @@ class CheckoutController extends Controller
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100,2);
 
-                        logger('Assigning subidha comission in cod payment');
+                        logger('Assigning subidha comission in epay payment');
 
                         $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
                         $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
@@ -654,7 +655,7 @@ class CheckoutController extends Controller
 
                 if ($data['delivery_method'] == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
-                        logger('Into subidha cod payment');
+                        logger('Into subidha epay payment');
                         logger('7 in');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
@@ -664,13 +665,13 @@ class CheckoutController extends Controller
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                        logger('Assigning subidha comission in cod payment');
+                        logger('Assigning subidha comission in epay payment');
 
                         $data['subidha_comission'] = round( ($amount_value + $delivery_value + $total_value), 2);
                         $data['pharmacy_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission'] ), 2);
                         $data['customer_amount'] = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
 
-                        logger('Subidha comission in cod payment: ' . $data['subidha_comission']);
+                        logger('Subidha comission in epay payment: ' . $data['subidha_comission']);
 
                     }
                     if ($request->payment_type == config('subidha.ecash_payment_type')) {
@@ -789,6 +790,7 @@ class CheckoutController extends Controller
             ->updateOrInsert( $order =[
                 'customer_id' => Auth::user()->id,
                 'phone_number' => $data['phone_number'],
+                'payment_type' => $data['payment_type'],
                 'delivery_type' => $data['delivery_type'] ,
                 'status' => 0 ,
                 'amount' => $data['amount'],
@@ -798,6 +800,7 @@ class CheckoutController extends Controller
                 'order_no' =>$post_data['tran_id'],
                 'pharmacy_id' => $data['pharmacy_id'],
                 'shipping_address_id' => $data['shipping_address_id'],
+                'delivery_method' => $data['delivery_method'],
                 'delivery_date' => $data['delivery_date'],
                 'delivery_time' => $data['delivery_time'],
                 'created_at' => Carbon::today(),

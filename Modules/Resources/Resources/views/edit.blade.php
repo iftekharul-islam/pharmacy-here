@@ -85,9 +85,9 @@
 
                     @if($data->files)
                     <div class="form-group row">
-                        <label for="files" class="col-sm-5 col-form-label">File</label>
+                        <label for="doc_file" class="col-sm-5 col-form-label">File</label>
                         <div class="col-sm-7" id="">
-                            <input type="file" name="files" class="form-control" value="" placeholder="{{ $data->files }}" id="files">
+                            <input type="file" name="doc_file" class="form-control" value="" placeholder="{{ $data->files }}" id="doc_file">
                             @if ($errors->has('files'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('files') }}</strong>

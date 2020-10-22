@@ -40,8 +40,12 @@ class ResourceRepository
             $data->url = $request->url;
         }
         if (isset($request->doc_file)) {
-            $path = Storage::disk('public')->put('resource', $request->file('doc_file'));
-            $data->files = $path;
+            $image = $request->file('doc_file');
+            $link = Storage::disk('gcs');
+            $disk = $link->put('resources', $image );
+            $data->files = $link->url($disk);
+//            $path = Storage::disk('public')->put('resource', $request->file('doc_file'));
+//            $data->files = $path;
         }
 
         $data->save();
@@ -81,15 +85,20 @@ class ResourceRepository
             $data->url = $request->url;
         }
 //        if ($request->hasFile('files') && $request->get('files')) {
-        if (isset($request->files)) {
+        if (isset($request->doc_file)) {
 //            if ($data->files) {
 ////                File::delete('storage/' . $data->files);
 ////                Storage::delete($data->files);
 ////                unlink(Storage::url($data->files));
 //                unlink(public_path('storage/' . $data->files));
 //            }
-            $path = Storage::disk('public')->put('resource', $request->file('files'));
-            $data->files = $path;
+            $image = $request->file('doc_file');
+            $link = Storage::disk('gcs');
+            $disk = $link->put('resources', $image );
+            $data->files = $link->url($disk);
+
+//            $path = Storage::disk('public')->put('resource', $request->file('files'));
+//            $data->files = $path;
         }
 
         $data->save();

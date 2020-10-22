@@ -90,7 +90,7 @@ return [
     'delivery_date' => 'Delivery date',
     'delivery_time' => 'Delivery Time',
     'charge_amount' => 'Charge Amount',
-    'add_item_to_cart' => 'Add items to Cart',
+    're_order' => 'Re-order',
     'my_order_details' => 'My Orders Details',
     'pre_order_text' => 'It will take maximum 4 days to deliver this order, because this order includes Pre-Order medicine',
     'faqs' => 'FAQs',
