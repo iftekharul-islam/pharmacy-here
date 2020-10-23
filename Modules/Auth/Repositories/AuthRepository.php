@@ -205,7 +205,7 @@ class AuthRepository
 
     public function checkPhoneNumber($phone)
     {
-        return User::where('phone_number', $phone)->where('status', 1)->count();
+        return User::where('phone_number', $phone)->count();
     }
 
     public function loginWithPhone($phone)

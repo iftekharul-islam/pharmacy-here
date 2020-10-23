@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Http\Requests\LoginValidationRequest;
 use Modules\Auth\Http\Requests\PhoneValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class LoginController extends Controller
@@ -84,6 +85,11 @@ class LoginController extends Controller
 
     public function createOtp(PhoneValidationRequest $request)
     {
+        $isActivePhone = $this->repository->isActivePhoneNumber($request->phone_number);
+
+        if ($isActivePhone) {
+            throw new AccessDeniedException('Pharmacy is inactive !',403);
+        }
         $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
 
         if (! $verifyNumber) {
