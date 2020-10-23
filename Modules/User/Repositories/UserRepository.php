@@ -26,9 +26,9 @@ class UserRepository {
 		return User::create($user);
 	}
 
-//	public function delete() {
-//
-//	}
+	public function delete() {
+
+	}
 
 	public function update() {
 

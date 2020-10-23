@@ -83,7 +83,7 @@
                                                 <td class="save-value">{{ $data->name }}</td>
                                                 <td class="edit-value d-none"><input type="text" name="name" value="{{ $data->name }}"></td>
                                                 <td><b>{{ __('text.date_of_birth') }}:</b></td>
-                                                <td class="save-value">{{ $data->dob != null ? $data->dob : '' }}</td>
+                                                <td class="save-value">{{ $data->dob != null ? date('d F Y', strtotime($data->dob)) : '' }}</td>
                                                 <td class="edit-value d-none"><input type="date" name="dob"  value="{{ $data->dob }}"></td>
 
                                             </tr>

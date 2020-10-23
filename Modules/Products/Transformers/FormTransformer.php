@@ -14,6 +14,7 @@ class FormTransformer extends TransformerAbstract
         return [
             'id'                        => $form->id,
             'name'                      => $form->name,
+            'slug'                      => $form->slug,
             'status'                    => $form->status,
         ];
     }
