@@ -176,6 +176,8 @@ class AuthRepository
             $user->is_pharmacy = true;
         }
 
+        $user->status = false;
+
         $user->save();
 
         UserDeviceId::create([
@@ -194,6 +196,11 @@ class AuthRepository
             'token' => $token,
             'user' => $user
         ];
+    }
+
+    public function isActivePhoneNumber($phone)
+    {
+        return User::where('phone_number', $phone)->where('status', 0)->count();
     }
 
     public function checkPhoneNumber($phone)

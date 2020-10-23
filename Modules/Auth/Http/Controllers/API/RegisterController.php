@@ -12,6 +12,7 @@ use Modules\Auth\Http\Requests\CustomerRegistrationRequest;
 use Modules\Auth\Http\Requests\PharmacyRegistrationRequest;
 use Modules\Auth\Http\Requests\PhoneValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class RegisterController extends Controller
@@ -81,6 +82,11 @@ class RegisterController extends Controller
 
     public function registerPharmacyWithOtp(PhoneValidationRequest $request)
     {
+        $isActivePhone = $this->repository->isActivePhoneNumber($request->phone_number);
+
+        if ($isActivePhone) {
+            throw new AccessDeniedException('Pharmacy is inactive !',403);
+        }
         $isPhoneExists = $this->repository->checkPhoneNumber($request->phone_number);
 
         if ($isPhoneExists) {

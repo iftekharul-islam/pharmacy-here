@@ -33,8 +33,23 @@ class TransactionHistoryController extends Controller
     public function index(Request $request)
     {
         $transactionHistories = $this->repository->getAllTransactionHistories($request);
+//        return $transactionHistories;
+//        $total_order = 0;
+//        $total_pharmacy_amount = 0;
+//        $total_paid_amount = 0;
+//        foreach ($transactionHistories as $totalAmount) {
+//            return $totalAmount;
+//            return $totalAmount->pharmacy->pharmacy_order;
+//            $total_order += isset($totalAmount->pharmacy->pharmacy_order->customer_amount) ? $totalAmount->pharmacy->pharmacy_order->customer_amount : 0 ;
+//            $total_pharmacy_amount += isset($totalAmount->pharmacy->pharmacy_order->pharmacy_amount) ? $totalAmount->pharmacy->pharmacy_order->pharmacy_amount : 0 ;
+//            $total_paid_amount += isset($totalAmount->amount) ? $totalAmount->amount: 0 ;
+//        }
+//        return $total_pharmacy_amount;
+//        return $total_order;
+//        return $total_paid_amount;
         $allLocations = $this->locationRepository->getLocation();
 
+//        return view('orders::transactionHistory.epay.index', compact('transactionHistories', 'allLocations', 'total_order', 'total_pharmacy_amount', 'total_paid_amount'));
         return view('orders::transactionHistory.epay.index', compact('transactionHistories', 'allLocations'));
     }
 
