@@ -191,8 +191,6 @@ class CheckoutController extends Controller
                         }
 
                     }
-                    logger($data['delivery_method'], '1');
-                    logger(config('subidha.express_delivery'), '2');
                     if ($data['delivery_method'] == config('subidha.express_delivery')) {
                         if ($request->payment_type == config('subidha.cod_payment_type')) {
                             logger('3 in');

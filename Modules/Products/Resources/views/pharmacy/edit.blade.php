@@ -136,6 +136,20 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="break_end_time" class="col-sm-4 col-form-label">Status</label>
+                        <div class="col-sm-8" id="break_end_time">
+                            <select class="form-control" name="status" id="">
+                                <option value="1" {{ $pharmacy->user->status == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ $pharmacy->user->status == 0 ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                            @if ($errors->has('break_end_time'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('break_end_time') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card-footer">

@@ -429,7 +429,9 @@
         {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
 
         let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
-        let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        let cashInExpressDeliveryValue = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        let cashInExpressDeliveryAmount = cashInExpressDeliveryValue.toFixed(2);
+        let cashInExpressDelivery = parseFloat(cashInExpressDeliveryAmount);
 
         {{--let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
         {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
@@ -463,7 +465,7 @@
         // console.log(cashInCollectFromPharmacy, 'cash In cashInCollectFromPharmacy')
         // console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
         // console.log(typeof (ecashInNormalDelivery), 'ecash In NormalDelivery')
-        // console.log(cashInExpressDelivery, 'cash In ExpressDelivery')
+        console.log(cashInExpressDelivery, 'cash In ExpressDelivery')
         // console.log(ecashInExpressDelivery, 'ecash In ExpressDelivery')
         // console.log(cashInCollectFromPharmacy, 'cash In CollectFromPharmacy')
         // console.log(ecashInCollectFromPharmacy, 'ecash In CollectFromPharmacy')

@@ -66,7 +66,7 @@ class PharmacyController extends Controller
     public function edit($id)
     {
         $pharmacy = $this->repository->findById($id);
-        // dd($pharmacy);
+//        return $pharmacy;
         return view('products::pharmacy.edit', compact('pharmacy'));
     }
 
@@ -78,6 +78,7 @@ class PharmacyController extends Controller
      */
     public function update(UpdatePharmacyRequest $request, $id)
     {
+//        return $request->all();
         $pharmacy = $this->repository->update($request, $id);
         return redirect()->route('pharmacy.index')->with('success', 'Pharmacy updated Successfully');
     }
