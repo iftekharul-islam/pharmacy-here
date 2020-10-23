@@ -24,7 +24,9 @@ Route::group(['middleware' => ['web','role:admin']], function () {
         Route::get('/', 'CustomerController@index')->name('customer.index');
         Route::get('show/{id}', 'CustomerController@show')->name('customer.show');
         Route::get('edit/{id}', 'CustomerController@edit')->name('customer.edit');
-        Route::post('store/{id}', 'CustomerController@update')->name('customer.store');
+        Route::get('create', 'CustomerController@create')->name('customer.create');
+        Route::post('store', 'CustomerController@store')->name('customer.store');
+        Route::post('update/{id}', 'CustomerController@update')->name('new.customer.update');
         Route::delete('{id}', 'CustomerController@destroy')->name('customer.destroy');
     });
 

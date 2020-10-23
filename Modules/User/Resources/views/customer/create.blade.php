@@ -1,6 +1,6 @@
 {{--@extends('products::layouts.master')--}}
 @extends('adminlte::page')
-@section('title', 'Transaction Payment')
+@section('title', 'Customer Create')
 
 @section('content')
     <div class="col-md-6">
@@ -10,13 +10,13 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('new.customer.update', $data->id) }}" method="POST">
+            <form role="form" action="{{ route('customer.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Name</label>
                         <div class="col-sm-8">
-                            <input type="text" name="name" value="{{ $data->name }}" class="form-control" placeholder="name">
+                            <input type="text" name="name" value="" class="form-control" placeholder="name" required>
                             @if ($errors->has('name'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('name') }}</strong>
@@ -27,7 +27,7 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">E-mail</label>
                         <div class="col-sm-8">
-                            <input type="email" name="email" value="{{ $data->email }}" class="form-control" placeholder="e-mail">
+                            <input type="email" name="email" value="" class="form-control" placeholder="e-mail" required>
                             @if ($errors->has('email'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('email') }}</strong>
@@ -35,11 +35,10 @@
                             @endif
                         </div>
                     </div>
-
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Phone number</label>
                         <div class="col-sm-8">
-                            <input type="number" name="phone_number" value="{{ $data->phone_number }}" class="form-control" placeholder="phone_number">
+                            <input type="number" name="phone_number" value="" class="form-control" placeholder="phone-number" required>
                             @if ($errors->has('phone_number'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('phone_number') }}</strong>
@@ -73,8 +72,8 @@
                         <label class="col-sm-4 col-form-label">Status</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="status" id="status">
-                                <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive</option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
                             </select>
                             @if ($errors->has('status'))
                                 <span class="text-danger">

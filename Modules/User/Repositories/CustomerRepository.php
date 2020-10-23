@@ -7,9 +7,11 @@ namespace Modules\User\Repositories;
 use Dingo\Api\Exception\DeleteResourceFailedException;
 // use Modules\Products\Entities\Pharmacy;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Request;
 
@@ -19,6 +21,22 @@ class CustomerRepository
     {
         return User::where('is_pharmacy', 0)->where('is_admin', 0)->orderby('id', 'desc')->paginate(20);
     }
+
+    public function create($request)
+    {
+        $data = $request->only(['name', 'email', 'phone_number', 'password', 'status']);
+        $data['password'] = Hash::make($data['password']);
+        $user = User::create($data);
+
+        $role = Role::where('name', 'customer')->first();
+
+        if ($user && $role) {
+            $user->assignRole($role);
+        }
+        return $user;
+    }
+
+
 
     public function update($request, $id)
     {

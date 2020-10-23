@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\User\Entities\Models\User;
+use Modules\User\Http\Requests\CustomerCreateRequest;
+use Modules\User\Http\Requests\UserCreateRequest;
 use Modules\User\Repositories\CustomerRepository;
 use Modules\User\Repositories\UserRepository;
 
@@ -37,7 +39,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('user::create');
+        return view('user::customer.create');
     }
 
     /**
@@ -45,9 +47,10 @@ class CustomerController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CustomerCreateRequest $request)
     {
-        //
+        $user = $this->repository->create($request);
+        return redirect()->route('customer.index')->with('success', 'Customer successfully Created');
     }
 
     /**
@@ -86,7 +89,7 @@ class CustomerController extends Controller
             return false;
         }
 
-        $data = $request->only(['name', 'email', 'phone_number']);
+        $data = $request->only(['name', 'email', 'phone_number', 'status']);
 
         if (isset($request->name)) {
             $user->name = $request->name;
@@ -98,6 +101,12 @@ class CustomerController extends Controller
 
         if (isset($data['phone_number'])) {
             $user->phone_number = $data['phone_number'];
+        }
+        if (isset($data['phone_number'])) {
+            $user->phone_number = $data['phone_number'];
+        }
+        if (isset($data['status'])) {
+            $user->status = $data['status'];
         }
         $user->save();
 
@@ -116,6 +125,6 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $users = $this->repository->delete($id);
-        return redirect()->route('customer.index')->with('success', 'Customer deletion successfully');
+        return redirect()->route('customer.index')->with('success', 'Customer deleted successfully');
     }
 }

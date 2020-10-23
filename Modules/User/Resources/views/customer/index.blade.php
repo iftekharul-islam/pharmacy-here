@@ -19,6 +19,11 @@
                 <div class="col-sm-6">
                     <h1>Customers</h1>
                 </div>
+                <div class="col-sm-6">
+                    <a href="{{ route('customer.create') }}" class="btn btn-sm btn-success float-right">
+                        Create Customer
+                    </a>
+                </div>
                 <!-- <div class="col-sm-6">
                     <a href="{{ route('generic.create') }}" class="btn btn-sm btn-success float-right">
                         Create Pharmacy
@@ -42,6 +47,7 @@
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Email</th>
+                        <th>status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -53,6 +59,13 @@
                             <td>@isset($item->name) {{ $item->name }} @endisset</td>
                             <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
                             <td>@isset($item->email) {{ $item->email }} @endisset</td>
+                            <td>
+                                @if($item->status == 1)
+                                    <a href="javascript:void(0)" class="badge badge-primary">Active</a>
+                                @else
+                                    <a href="javascript:void(0)" class="badge badge-danger">Inactive</a>
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('customer.show', $item->id) }}" class="btn btn-sm btn-success">
                                     <i class="fa fa-eye"></i>
