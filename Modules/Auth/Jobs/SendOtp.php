@@ -71,5 +71,22 @@ class SendOtp implements ShouldQueue
             ]);
         } catch (GuzzleException $exception) {
         }
+
+        //             sslwireless sms configuration
+//
+//            $user = config("message.sms_user");
+//            $pass = config("message.sms_pass");
+//            $sid = config("message.sms_sid");
+//          $url = "http://sms.sslwireless.com/pushapi/dynamic/server.php";
+//          $response = $client->request('POST', $url, [
+//                'form_params' => [
+//                    'user' => $user,
+//                    'pass' => $pass,
+//                    'sid'  => $sid,
+//                    'sms'  => [
+//                        [$phone, $message],
+//                    ],
+//                ],
+//            ]);
     }
 }
