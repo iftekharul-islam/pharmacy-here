@@ -22,11 +22,17 @@ class PharmacyRepository
     public function update($request, $id)
     {
         $pharmacy = PharmacyBusiness::find($id);
+        $data = $request->only(['pharmacy_name', 'pharmacy_address', 'bank_account_name',
+                                'bank_account_number', 'bank_name', 'bank_brunch_name', 'bkash_number',
+                                'start_time', 'end_time', 'break_start_time', 'break_end_time']);
 
         if (!$pharmacy) {
             throw new NotFoundHttpException('Pharmacy not found');
         }
-        $pharmacy->update($request->all());
+        $pharmacy->update($data);
+        $user = User::find($pharmacy->user_id);
+        $user->status = $request->status;
+        $user->save();
         return $pharmacy;
     }
 
