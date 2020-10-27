@@ -20,6 +20,11 @@ return [
     'express_delivery' => 'express',
     'subidha_comission_collect_from_pharmacy_ecash_percentage' => 3.7,
     'subidha_comission_collect_from_pharmacy_cash_percentage' => 3,
+    'customer_point_redeem' => 50,
+    'point_redeem_discount_percentage' => 2,
+    'prescription_upload_point' => 10,
+    'customer_referral_point' => 10,
+    'new_customer_point' => 10,
     'delivery_type' => [
         1 => [
             'name' => 'Normal Delivery',

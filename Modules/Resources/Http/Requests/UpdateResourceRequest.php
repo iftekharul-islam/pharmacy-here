@@ -16,8 +16,8 @@ class UpdateResourceRequest extends FormRequest
         return [
             'title' => 'required|min:3|string',
             'bn_title' => 'required|min:3|string',
-            'description' => 'required|min:3|string',
-            'bn_description' => 'required|min:3|string',
+//            'description' => 'required|min:3|string',
+//            'bn_description' => 'required|min:3|string',
 //            'url' => 'required',
         ];
     }

@@ -341,8 +341,13 @@ return [
         [
             'text'    => 'Resources',
             'icon'    => 'fas fa-store-alt',
-//            'url'     => 'resources'
+//            'url'     => 'resources',
             'submenu' => [
+                [
+                    'text' => 'Resource List',
+                    'icon_color' => 'cyan',
+                    'url'  => 'resources',
+                ],
                 [
                     'text' => 'Resource with Link',
                     'icon_color' => 'cyan',

@@ -128,11 +128,16 @@ class OrderRepository
 
                         $total_value = round( (($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100), 2);
 
-                        $order->subidha_comission =  ($amount_value + $delivery_value + $total_value - $order->point_amount);
+                        $order->subidha_comission =  ($amount_value + $delivery_value + $total_value);
+
+                        logger('In 1, Subidha comission '. $order->subidha_comission);
 
                         $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission );
-                        $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value );
-
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        logger('In 1, Subidha comission with discount '. $order->subidha_comission);
+                        $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->point_amount);
+                        logger('In 1, Subidha customer amount '. $order->customer_amount);
+                        logger('Out 1');
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
 
@@ -149,7 +154,8 @@ class OrderRepository
 
                         $order->subidha_comission = round( ($amount_value + $delivery_value), 2) ;
                         $order->pharmacy_amount = round( (($request->get('amount')) + config('subidha.normal_delivery_charge') - $order->subidha_comission ), 2);
-                        $order->customer_amount = round( (($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        $order->customer_amount = round( (($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value - $order->point_amount), 2);
 
 
                     }
@@ -170,7 +176,8 @@ class OrderRepository
                         logger('Assigning subidha comission in epay payment');
                         $order->subidha_comission = round( ($amount_value + $delivery_value + $total_value), 2);
                         $order->pharmacy_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $order->subidha_comission ), 2);
-                        $order->customer_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        $order->customer_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $order->point_amount), 2);
 
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
@@ -187,7 +194,8 @@ class OrderRepository
 
                         $order->subidha_comission = number_format( ($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission ), 2);
-                        $order->customer_amount = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        $order->customer_amount = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value - $order->point_amount), 2);
 
                     }
                 }
@@ -205,7 +213,8 @@ class OrderRepository
 
                         $order->subidha_comission = $amount_value + $total_value;
                         $order->pharmacy_amount = round( (($request->get('amount')) + $amount_value - $order->subidha_comission ), 2);
-                        $order->customer_amount = round( (($request->get('amount')) + $amount_value), 2);
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        $order->customer_amount = round( (($request->get('amount')) + $amount_value - $order->point_amount), 2);
 
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
@@ -219,7 +228,8 @@ class OrderRepository
 
                         $order->subidha_comission = round( $amount_value, 2);
                         $order->pharmacy_amount = round( (($request->get('amount')) - $order->subidha_comission ), 2);
-                        $order->customer_amount = round( (($request->get('amount')) + $ssl_value), 2);
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        $order->customer_amount = round( (($request->get('amount')) + $ssl_value - $order->point_amount), 2);
 
                     }
 
@@ -239,7 +249,8 @@ class OrderRepository
                         logger('Assigning subidha comission in epay payment');
                         $order->subidha_comission = round( ($amount_value + $delivery_value + $total_value), 2);
                         $order->pharmacy_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $order->subidha_comission ), 2);
-                        $order->customer_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        $order->customer_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $order->point_amount), 2);
 
                         logger('Subidha comission in epay payment: ' . $order->subidha_comission);
 
@@ -258,7 +269,8 @@ class OrderRepository
 
                         $order->subidha_comission = number_format( ($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission ), 2);
-                        $order->customer_amount = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                        $order->customer_amount = number_format( (($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value - $order->point_amount), 2);
 
                     }
                 }
@@ -277,7 +289,8 @@ class OrderRepository
 
                 $order->subidha_comission = round( $amount_value, 2);
                 $order->pharmacy_amount = round( ($orderAmount - $order->subidha_comission), 2);
-                $order->customer_amount = round( $orderAmount, 2);
+                $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                $order->customer_amount = round( $orderAmount - $order->point_amount, 2);
 
             }
             if ($order->payment_type == config('subidha.ecash_payment_type')) {
@@ -289,7 +302,8 @@ class OrderRepository
 
                 $order->subidha_comission = round( $amount_value, 2);
                 $order->pharmacy_amount = round( ($request->get('amount') - ($ssl_value + $order->subidha_comission)), 2);
-                $order->customer_amount = round( ($request->get('amount') ), 2);
+                $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
+                $order->customer_amount = round( ($request->get('amount') - $order->point_amount ), 2);
 
             }
         }
@@ -583,7 +597,7 @@ class OrderRepository
         $data['pharmacy_amount'] =  round($data['pharmacy_amount'],2);
         $data['customer_amount'] = round( $data['customer_amount'],2);
 
-        return $data;
+//        return $data;
         $order = Order::create($data);
 
         OrderHistory::create([
