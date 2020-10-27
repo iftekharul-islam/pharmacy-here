@@ -49,7 +49,7 @@
                     <div class="form-group row">
                         <label for="description" class="col-sm-5 col-form-label">Description(English)</label>
                         <div class="col-sm-7" id="">
-                            <textarea type="text" name="description" class="form-control" id="description" placeholder="Resource Description" required>{{ $data->description }}</textarea>
+                            <textarea type="text" name="description" class="form-control" id="description" placeholder="Resource Description" >{{ $data->description }}</textarea>
                             @if ($errors->has('description'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('description') }}</strong>
@@ -60,7 +60,7 @@
                     <div class="form-group row">
                         <label for="bn_description" class="col-sm-5 col-form-label">Description(Bangla)</label>
                         <div class="col-sm-7" id="">
-                            <textarea type="text" name="bn_description" class="form-control" id="bn_description" placeholder="Resource Description(Bangla)" required>{{ $data->bn_description }}</textarea>
+                            <textarea type="text" name="bn_description" class="form-control" id="bn_description" placeholder="Resource Description(Bangla)" >{{ $data->bn_description }}</textarea>
                             @if ($errors->has('bn_description'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('bn_description') }}</strong>
