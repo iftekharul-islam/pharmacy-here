@@ -25,6 +25,7 @@ return [
     'prescription_upload_point' => 10,
     'customer_referral_point' => 10,
     'new_customer_point' => 10,
+    'google_playstore_rating_point' => 10,
     'delivery_type' => [
         1 => [
             'name' => 'Normal Delivery',
