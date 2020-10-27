@@ -46,11 +46,11 @@
                     <div class="col-12-xxxl col-lg-12 col-12 form-group">
                         <button type="submit" class="btn btn-primary float-right">Search</button>
                     </div>
-{{--                    <div class="col-12-xxxl col-lg-12 col-12">--}}
-{{--                        <span>Total order amount :<lable>{{ $total_order }}</lable></span><br>--}}
-{{--                        <span>Total pharmacy amount :<label>{{ $total_pharmacy_amount }}</label></span><br>--}}
-{{--                        <span>Total due amoun :<label>{{ $total_paid_amount }}</label></span>--}}
-{{--                    </div>--}}
+                    <div class="col-12-xxxl col-lg-12 col-12">
+                        <span>Total order amount : <b>{{ $total_order }}</b></span><br>
+                        <span>Total pharmacy amount : <b>{{ $total_pharmacy_amount }}</b></span><br>
+                        <span>Total paid amount : <b>{{ $total_paid_amount }}</b></span>
+                    </div>
                 </div>
             </form>
         </div>

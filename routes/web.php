@@ -19,7 +19,11 @@ Route::get('/locale/{locale}', 'LocalizationController');
 
 
 // Basic pages
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', function (){
+    return 'hello';
+})->name('home');
+
+//Route::get('/', 'HomeController@index')->name('home');
 Route::get('/terms-of-use', 'HomeController@terms')->name('terms');
 Route::get('/faq', 'HomeController@faq')->name('faq');
 Route::get('/return-&-refund-page', 'HomeController@refundPage')->name('return.page');
