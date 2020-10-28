@@ -4,7 +4,13 @@
 namespace Modules\Notice\Repositories;
 
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Modules\Notice\Entities\Models\Notice;
+use Modules\Notice\Entities\UserNotice;
+use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\TransactionHistory;
+use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
 
@@ -20,9 +26,34 @@ class NoticeRepository
         return Notice::find($id);
     }
 
+    public function showById($id) {
+        return Notice::with('UserNotices', 'UserNotices.Pharmacy.area')->where('id', $id)->first();
+    }
+
+    public function getUserList($request)
+    {
+        if ($request->area_id !== null) {
+            return PharmacyBusiness::with('area')->whereHas('area', function ($query) use ($request) {
+                $query->where('area_id', $request->area_id);
+            })->paginate(10);
+        }
+        if ($request->thana_id !== null) {
+            return PharmacyBusiness::with('area')->whereHas('area.thana', function ($query) use ($request) {
+                $query->where('thana_id', $request->thana_id);
+            })->paginate(10);
+        }
+        if ($request->district_id !== null) {
+            return PharmacyBusiness::with('area')->whereHas('area.thana.district', function ($query) use ($request) {
+                $query->where('district_id', $request->district_id);
+            })->paginate(10);
+        }
+        return PharmacyBusiness::with('area')->paginate(10);
+    }
+
     public function create($request) {
 
         $data = new Notice();
+        $request->type = 1;
 
         if (isset($request->notice)) {
             $data->notice = $request->notice;
@@ -36,8 +67,15 @@ class NoticeRepository
         if (isset($request->type)) {
             $data->type = $request->type;
         }
-
         $data->save();
+
+        foreach ($request->pharmacy_id as $id){
+            UserNotice::create([
+                'notice_id' => $data->id,
+                'pharmacy_id' => $id,
+                'author_id' => Auth::user()->id,
+            ]);
+        }
 
         if ($request->sendNow) {
 

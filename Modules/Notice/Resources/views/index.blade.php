@@ -52,9 +52,10 @@
                             <td>{{ $item['type'] == 1 ? 'Pharmacy' : 'Customer' }}</td>
                             <td>@include('notice::status', ['status' => $item->status])</td>
                             <td>
-                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
+                                <a href="{{ route('notice.show', $item->id) }}" class="btn btn-sm btn-success">
                                     <i class="fa fa-eye"></i>
-                                </button>
+                                </a>
+
                                 <a href="{{ route('notice.edit', $item['id']) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i> </a>
                                 <form id="delete-form-{{ $loop->index }}" action="{{ route('notice.destroy', $item['id']) }}"
@@ -73,30 +74,16 @@
                         </tr>
                     @endforeach
                 @endif
-
                 </tbody>
             </table>
             {{ $data->links() }}
         </div>
         <!-- /.card-body -->
     </div>
-
-    @include('notice::show')
-
 @endsection
 
 @section('js')
     <script>
-
-        function showProduct(item) {
-            console.log(item);
-            if (item.notice) { $('#notice').html(item.notice);}
-            if (item.bn_notice) {$('#bn_notice').html(item.bn_notice); }
-            if (item.status) {$('#status').html(checkStatus(item.status)); }
-            if (item.type) {$('#type').html(checkUserType(item.type)); }
-
-        }
-
         function removeItem(id) {
             Swal.fire({
                 title: 'Are you sure?',

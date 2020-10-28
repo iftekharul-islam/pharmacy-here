@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Transaction History</h1>
+                    <h1>COD Transaction History</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -40,7 +40,7 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Payment History</h3>
+            <h3 class="card-title">COD Payment History</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">

@@ -151,13 +151,26 @@ class TransactionHistoryRepository
             ->paginate(10);
     }
 
+    public function getCod($request, $id)
+    {
+        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
+        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+
+        if ($startDate !== null || $endDate !== null) {
+            $TransactionHistories = Order::whereBetween('order_date', [$startDate, $endDate])->where('pharmacy_id', $id)->paginate(10);
+            return $TransactionHistories;
+        }
+
+        return Order::where('pharmacy_id', $id)
+            ->paginate(10);
+    }
+
     public function store($request)
     {
         $data = new TransactionHistory();
 
 
         $data->pharmacy_id = $request->pharmacy_id;
-//        $data->transaction_id = 112233;
         $data->date = Carbon::now()->format('Y-m-d');
 
         if (isset($request->transaction_id)) {

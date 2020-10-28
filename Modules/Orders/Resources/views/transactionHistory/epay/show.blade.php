@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Transaction History</h1>
+                    <h1>E-pay Transaction History</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -50,7 +50,7 @@
                     <th>SL</th>
                     <th>Date</th>
                     <th>Transaction ID</th>
-                    <th>Payment Method</th>
+                    <th>Payment Through</th>
                     <th>Amount</th>
 {{--                    <th>Action</th>--}}
                 </tr>

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Repositories\LocationRepository;
 use Modules\Notice\Http\Requests\CreateNoticeRequest;
 use Modules\Notice\Http\Requests\UpdateNoticeRequest;
 use Modules\Notice\Repositories\NoticeRepository;
@@ -13,10 +14,12 @@ use Modules\Notice\Repositories\NoticeRepository;
 class NoticeController extends Controller
 {
     private $repository;
+    private $locationRepository;
 
-    public function __construct(NoticeRepository $repository)
+    public function __construct(NoticeRepository $repository, LocationRepository $locationRepository)
     {
         $this->repository = $repository;
+        $this->locationRepository = $locationRepository;
     }
     /**
      * Display a listing of the resource.
@@ -32,9 +35,13 @@ class NoticeController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('notice::create');
+//        return $request->all();
+        $allLocations = $this->locationRepository->getLocation();
+        $data = $this->repository->getUserList($request);
+//        return $data;
+        return view('notice::create',compact('allLocations', 'data'));
     }
 
     /**
@@ -55,7 +62,9 @@ class NoticeController extends Controller
      */
     public function show($id)
     {
-        return view('notice::show');
+        $data = $this->repository->showById($id);
+//        return $data;
+        return view('notice::show', compact('data'));
     }
 
     /**

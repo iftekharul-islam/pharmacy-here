@@ -48,6 +48,11 @@
                     <div class="col-12-xxxl col-lg-12 col-12 form-group">
                         <button type="submit" class="btn btn-primary float-right">Search</button>
                     </div>
+                    <div class="col-12-xxxl col-lg-12 col-12">
+                        <span>Total customer amount : <b>{{ $total_customer_amount }}</b></span><br>
+                        <span>Total pharmacy amount : <b>{{ $total_pharmacy_amount }}</b></span><br>
+                        <span>Total subidha comission : <b>{{ $total_subidha_comission }}</b></span>
+                    </div>
                 </div>
             </form>
         </div>

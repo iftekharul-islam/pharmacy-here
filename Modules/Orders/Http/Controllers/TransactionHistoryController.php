@@ -33,24 +33,17 @@ class TransactionHistoryController extends Controller
     public function index(Request $request)
     {
         $transactionHistories = $this->repository->getAllTransactionHistories($request);
-//        return $transactionHistories;
-//        $total_order = 0;
-//        $total_pharmacy_amount = 0;
-//        $total_paid_amount = 0;
-//        foreach ($transactionHistories as $totalAmount) {
-//            return $totalAmount;
-//            return $totalAmount->pharmacy->pharmacy_order;
-//            $total_order += isset($totalAmount->pharmacy->pharmacy_order->customer_amount) ? $totalAmount->pharmacy->pharmacy_order->customer_amount : 0 ;
-//            $total_pharmacy_amount += isset($totalAmount->pharmacy->pharmacy_order->pharmacy_amount) ? $totalAmount->pharmacy->pharmacy_order->pharmacy_amount : 0 ;
-//            $total_paid_amount += isset($totalAmount->amount) ? $totalAmount->amount: 0 ;
-//        }
-//        return $total_pharmacy_amount;
-//        return $total_order;
-//        return $total_paid_amount;
+        $total_order = 0;
+        $total_pharmacy_amount = 0;
+        $total_paid_amount = 0;
+        foreach ($transactionHistories as $totalAmount) {
+            $total_order += isset($totalAmount->pharmacy->pharmacyOrder[0]->customer_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->customer_amount : 0 ;
+            $total_pharmacy_amount += isset($totalAmount->pharmacy->pharmacyOrder[0]->pharmacy_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->pharmacy_amount : 0 ;
+            $total_paid_amount += isset($totalAmount->amount) ? $totalAmount->amount: 0 ;
+        }
         $allLocations = $this->locationRepository->getLocation();
 
-//        return view('orders::transactionHistory.epay.index', compact('transactionHistories', 'allLocations', 'total_order', 'total_pharmacy_amount', 'total_paid_amount'));
-        return view('orders::transactionHistory.epay.index', compact('transactionHistories', 'allLocations'));
+        return view('orders::transactionHistory.epay.index', compact('transactionHistories', 'allLocations', 'total_order', 'total_pharmacy_amount', 'total_paid_amount'));
     }
 
     /**
@@ -60,9 +53,18 @@ class TransactionHistoryController extends Controller
     public function cod(Request $request)
     {
         $transactionHistories = $this->repository->getCodTransactionHistories($request);
+//        return $transactionHistories;
+        $total_customer_amount = 0;
+        $total_pharmacy_amount = 0;
+        $total_subidha_comission = 0;
+        foreach ($transactionHistories as $totalAmount) {
+            $total_customer_amount += isset($totalAmount->customer_amount) ? $totalAmount->customer_amount : 0 ;
+            $total_pharmacy_amount += isset($totalAmount->pharmacy_amount) ? $totalAmount->pharmacy_amount : 0 ;
+            $total_subidha_comission += isset($totalAmount->subidha_comission) ? $totalAmount->subidha_comission: 0 ;
+        }
         $allLocations = $this->locationRepository->getLocation();
 
-        return view('orders::transactionHistory.cod.index', compact('transactionHistories','allLocations'));
+        return view('orders::transactionHistory.cod.index', compact('transactionHistories', 'total_customer_amount', 'total_pharmacy_amount', 'total_subidha_comission', 'allLocations'));
     }
 
     /**
