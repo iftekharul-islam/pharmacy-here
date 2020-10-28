@@ -3,11 +3,23 @@
 namespace Modules\Points\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Points\Http\Requests\CreatePointRequest;
+use Modules\Points\Repositories\PointRepository;
+use Modules\User\Repositories\UserRepository;
 
 class PointsController extends Controller
 {
+    private $repository;
+    private $userRepository;
+
+    public function __construct(PointRepository $repository, UserRepository $userRepository)
+    {
+        $this->repository = $repository;
+        $this->userRepository = $userRepository;
+    }
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -23,17 +35,19 @@ class PointsController extends Controller
      */
     public function create()
     {
-        return view('points::create');
+        $customer = $this->userRepository->getAllCustomer();
+        return view('points::create', compact('customer'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     * @param CreatePointRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreatePointRequest $request)
     {
-        //
+        $data = $this->repository->createManualPoints($request);
+        return redirect()->route('point.create')->with('success', 'Manual Point Creation Successful');
     }
 
     /**

@@ -396,6 +396,18 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Points',
+            'icon'    => 'fas fa-store-alt',
+//            'url'     => 'feedback'
+            'submenu' => [
+                [
+                    'text' => 'Create Manual Point',
+                    'icon_color' => 'cyan',
+                    'url'  => 'points/create',
+                ],
+            ],
+        ],
 //        ['header' => 'account_settings'],
 //        [
 //            'text' => 'profile',

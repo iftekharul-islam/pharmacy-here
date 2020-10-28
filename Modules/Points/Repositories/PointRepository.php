@@ -16,4 +16,13 @@ class PointRepository
             'type' => 'playstore',
         ]);
     }
+
+    public function createManualPoints($request)
+    {
+        return Points::create([
+            'user_id' => $request->customer_id,
+            'points' => $request->point,
+            'type' => 'manual',
+        ]);
+    }
 }
