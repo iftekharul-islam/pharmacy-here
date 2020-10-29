@@ -40,6 +40,17 @@ class ProductsController extends BaseController
         return $this->response->paginator($productList, new ProductTransformer());
     }
 
+    public function getAllProduct()
+    {
+        $productList = $this->repository->getAllProduct();
+
+        if (! $productList) {
+            throw new NotFoundHttpException('Product List Not Found');
+        }
+
+        return $this->response->collection($productList, new ProductTransformer());
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Response
