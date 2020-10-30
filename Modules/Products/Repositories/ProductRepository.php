@@ -72,6 +72,15 @@ class ProductRepository
 //            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
 
+    public function getAllProduct()
+    {
+        return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+            ->orderBy('name', 'ASC')
+            ->orderBy('purchase_price', 'DESC')
+            ->where('purchase_price', '>', 0)
+            ->get();
+    }
+
     public function get($id)
     {
         return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
