@@ -48,7 +48,7 @@ class ProductsController extends BaseController
             throw new NotFoundHttpException('Product List Not Found');
         }
 
-        return $this->response->collection($productList, new ProductTransformer());
+        return $this->response->paginator($productList, new ProductTransformer());
     }
 
     /**
