@@ -78,7 +78,7 @@ class ProductRepository
             ->orderBy('name', 'ASC')
             ->orderBy('purchase_price', 'DESC')
             ->where('purchase_price', '>', 0)
-            ->get();
+            ->paginate(200);
     }
 
     public function get($id)
