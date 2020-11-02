@@ -21,6 +21,7 @@ class PharmacyBusiness extends Model
         "end_time",
         "break_start_time",
         "break_end_time",
+        'user_id',
         'area_id',
         'bank_routing_number',
         'is_full_open',

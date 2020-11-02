@@ -2,19 +2,23 @@
 
 namespace Modules\Orders\Http\Controllers;
 
+use App\Exports\CodTransactionHistoryByIdExport;
+use App\Exports\CodTransactionExport;
+use App\Exports\TransactionHistoryByIdExport;
+use App\Exports\TranscationExport;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Modules\Locations\Entities\Models\Area;
 use Modules\Locations\Repositories\LocationRepository;
-use Modules\Orders\Entities\Models\TransactionHistory;
 use Modules\Orders\Http\Requests\CreateTransactionHistoryRequest;
 use Modules\Orders\Repositories\TransactionHistoryRepository;
+use Modules\User\Entities\Models\PharmacyBusiness;
 
 class TransactionHistoryController extends Controller
 {
@@ -32,7 +36,11 @@ class TransactionHistoryController extends Controller
      */
     public function index(Request $request)
     {
+        $district_new_id = $request->district_id;
+        $thana_new_id = $request->thana_id;
+        $area_new_id = $request->area_id;
         $transactionHistories = $this->repository->getAllTransactionHistories($request);
+
         $total_order = 0;
         $total_pharmacy_amount = 0;
         $total_paid_amount = 0;
@@ -43,7 +51,9 @@ class TransactionHistoryController extends Controller
         }
         $allLocations = $this->locationRepository->getLocation();
 
-        return view('orders::transactionHistory.epay.index', compact('transactionHistories', 'allLocations', 'total_order', 'total_pharmacy_amount', 'total_paid_amount'));
+        return view('orders::transactionHistory.epay.index',
+            compact('transactionHistories', 'allLocations', 'total_order', 'total_pharmacy_amount',
+                            'total_paid_amount', 'district_new_id', 'thana_new_id', 'area_new_id'));
     }
 
     /**
@@ -52,6 +62,10 @@ class TransactionHistoryController extends Controller
      */
     public function cod(Request $request)
     {
+        $district_new_id = $request->district_id;
+        $thana_new_id = $request->thana_id;
+        $area_new_id = $request->area_id;
+
         $transactionHistories = $this->repository->getCodTransactionHistories($request);
 //        return $transactionHistories;
         $total_customer_amount = 0;
@@ -64,7 +78,9 @@ class TransactionHistoryController extends Controller
         }
         $allLocations = $this->locationRepository->getLocation();
 
-        return view('orders::transactionHistory.cod.index', compact('transactionHistories', 'total_customer_amount', 'total_pharmacy_amount', 'total_subidha_comission', 'allLocations'));
+        return view('orders::transactionHistory.cod.index',
+            compact('transactionHistories', 'total_customer_amount', 'total_pharmacy_amount',
+                            'total_subidha_comission', 'allLocations', 'district_new_id', 'thana_new_id', 'area_new_id'));
     }
 
     /**
@@ -149,5 +165,46 @@ class TransactionHistoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function exportPharmacyTransaction(Request $request)
+    {
+        $district = $request->district;
+        $thana = $request->thana;
+        $area = $request->area;
+        $date = Carbon::now()->format('d-m-Y');
+
+        return (new TranscationExport($district, $thana, $area))->download( 'Transaction-history-'. $date . '.xls');
+    }
+    public function exportPharmacyTransactionById(Request $request)
+    {
+        $toDate = $request->toDate;
+        $fromDate = $request->fromDate;
+        $userId = $request->userId;
+        $date = Carbon::now()->format('d-m-Y');
+        $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
+        $pharmacy = Str::slug($data->pharmacy_name);
+
+        return (new TransactionHistoryByIdExport($toDate, $fromDate, $userId))->download($pharmacy.'-'. $date . '.xls');
+    }
+    public function codExportPharmacyTransaction(Request $request)
+    {
+        $district = $request->district;
+        $thana = $request->thana;
+        $area = $request->area;
+        $date = Carbon::now()->format('d-m-Y');
+
+        return (new CodTransactionExport($district, $thana, $area))->download( 'Transaction-history-'. $date . '.xls');
+    }
+    public function codExportPharmacyTransactionById(Request $request)
+    {
+        $toDate = $request->toDate;
+        $fromDate = $request->fromDate;
+        $userId = $request->userId;
+        $date = Carbon::now()->format('d-m-Y');
+        $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
+        $pharmacy = Str::slug($data->pharmacy_name);
+
+        return (new CodTransactionHistoryByIdExport($toDate, $fromDate, $userId))->download($pharmacy.'-'. $date . '.xls');
     }
 }

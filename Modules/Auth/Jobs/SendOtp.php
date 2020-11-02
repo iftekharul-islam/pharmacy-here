@@ -35,11 +35,15 @@ class SendOtp implements ShouldQueue
      */
     public function handle()
     {
-        $base_url_non_masking = 'http://smscp.datasoftbd.com/smsapi/non-masking';
+//        $base_url_non_masking = 'http://smscp.datasoftbd.com/smsapi/non-masking';
+//        $api_key = '$2y$10$nCixye2JmYu8p65XRv.yFeuMV4mc4BBko4KZ6XpmwEDiaEqfh1h2O';
+//        $message = "Your OTP code is " . $this->otp;
 
-        $api_key = '$2y$10$nCixye2JmYu8p65XRv.yFeuMV4mc4BBko4KZ6XpmwEDiaEqfh1h2O';
-
-        $message = "Your OTP code is " . $this->otp;
+        $base_url = 'https://smsplus.sslwireless.com/api/v3/send-sms';
+        $api_token = '9650d63a-d586-4f06-925b-e9abe6ca0225';
+        $sid = 'SUBIDHABRAND';
+        $message = "Your OTP code is " . $this->otp . '- Subidha';
+        $csms_id = $this->unique_code();
 
         $phone = $this->phone_number;
 
@@ -57,11 +61,16 @@ class SendOtp implements ShouldQueue
             $phone = '880' . $phone;
         }
 
-        $url = $base_url_non_masking . "?api_key=" . $api_key . "&smsType=text&mobileNo=" . $phone . "&smsContent=" . $message;
+        $url = $base_url . "?api_token=" . $api_token . "&sid=". $sid . "&sms=" .$message ."&msisdn=" .$phone. "&csms_id=" .$csms_id ;
+
+        // datasoftbd url
+//        $url = $base_url_non_masking . "?api_key=" . $api_key . "&smsType=text&mobileNo=" . $phone . "&smsContent=" . $message;
+
         $client = new Client();
         try {
             $client->get($url);
             logger('SMS info');
+            logger($csms_id);
             logger($url);
             logger($this->otp);
 
@@ -88,5 +97,9 @@ class SendOtp implements ShouldQueue
 //                    ],
 //                ],
 //            ]);
+    }
+    function unique_code()
+    {
+        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 5);
     }
 }

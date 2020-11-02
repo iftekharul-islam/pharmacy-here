@@ -28,14 +28,13 @@
                         <select name="district_id" class="form-control" id="selectDistrict" onchange="getThanas(value)">
                             <option value="" selected disabled>Select district</option>
                             @foreach($allLocations as $district)
-                                <option value="{{ $district->id }}" >{{ $district->name }}</option>
+                                <option value="{{ $district->id }}" {{ $district_new_id == $district->id ? 'selected' : ''  }}>{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
                         <label>Thana</label>
                         <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()">
-
                         </select>
                     </div>
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
@@ -59,6 +58,9 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Transactions of Pharmacy</h3>
+            <a class="btn btn-success float-right"
+               href="{{ route('epay.export.transaction', ['district' => $district_new_id, 'thana' => $thana_new_id, 'area' => $area_new_id]) }}">Export pharmacy transaction
+            </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
@@ -114,6 +116,8 @@
 @endsection
 <script>
     var addresses = {!! json_encode($allLocations) !!};
+    {{--var thana_new_id = {!! json_encode($thana_new_id) !!};--}}
+    {{--var area_new_id = {!! json_encode($area_new_id) !!};--}}
     var thanas = [];
     var areas = [];
 

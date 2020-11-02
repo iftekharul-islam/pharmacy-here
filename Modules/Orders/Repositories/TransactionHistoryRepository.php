@@ -36,7 +36,6 @@ class TransactionHistoryRepository
      */
     public function getAllTransactionHistories($request)
     {
-
         if ($request->area_id !== null) {
             return TransactionHistory::with(['pharmacy' => function ($query) {
                 $query->select('user_id', 'pharmacy_name');
