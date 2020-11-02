@@ -61,6 +61,9 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Transactions of Pharmacy</h3>
+            <a class="btn btn-success float-right"
+               href="{{ route('cod.export.transaction', ['district' => $district_new_id, 'thana' => $thana_new_id, 'area' => $area_new_id]) }}">Export pharmacy transaction
+            </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
