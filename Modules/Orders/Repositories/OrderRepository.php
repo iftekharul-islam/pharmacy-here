@@ -636,7 +636,6 @@ class OrderRepository
 
     }
 
-
     public function generateOrderNo()
     {
         $latestOrder = Order::orderBy('id', 'desc')->first();

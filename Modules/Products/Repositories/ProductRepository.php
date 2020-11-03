@@ -72,6 +72,43 @@ class ProductRepository
 //            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
 
+    public function searchByProductAmount($request)
+    {
+        $products = Product::query();
+
+        if ($request->has('form_id')) {
+            $products->where('form_id', $request->get('form_id'));
+        }
+
+        if ($request->has('medicine') && $request->get('medicine')) {
+            $medicine = $request->get('medicine');
+            $products->where('name', 'LIKE', "%$medicine%")->orderBy('name', 'ASC');
+        }
+
+        if ($request->has('brand') && $request->get('brand')) {
+            $brand = $request->get('brand');
+            $products->where('name', 'LIKE', "%$brand%");
+        }
+
+        if ($request->has('generic') && $request->get('generic')) {
+            $genericName = $request->get('generic');
+            $generic = Generic::where('name', 'LIKE', "%$genericName%")->get()->pluck('id')->toArray();
+            $products->whereIn('generic_id', $generic);
+        }
+
+        if ($request->has('company') && $request->get('company')) {
+            $companyName = $request->get('company');
+            $company = Company::where('name', 'LIKE', "%$companyName%")->get()->pluck('id')->toArray();
+            $products->whereIn('company_id', $company);
+        }
+
+        return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+            ->orderBy('name', 'ASC')
+            ->orderBy('purchase_price', 'DESC')
+            ->where('purchase_price', '>', 0)
+            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.bundle_item_per_page'));
+    }
+
     public function get($id)
     {
         return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')

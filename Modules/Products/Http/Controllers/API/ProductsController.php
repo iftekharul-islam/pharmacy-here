@@ -136,6 +136,10 @@ class ProductsController extends BaseController
         return $this->response->collection($product, new ProductTransformer());
     }
 
+    /**
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     */
     public function search(Request $request)
     {
         $productList = $this->repository->search($request);
@@ -145,5 +149,20 @@ class ProductsController extends BaseController
         }
 
         return $this->response->collection($productList, new ProductTransformer());
+    }
+
+    /**
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     */
+    public function productByAmount(Request $request)
+    {
+        $productList = $this->repository->searchByProductAmount($request);
+
+        if (! $productList) {
+            throw new NotFoundHttpException('Product List Not Found');
+        }
+
+        return $this->response->paginator($productList, new ProductTransformer());
     }
 }

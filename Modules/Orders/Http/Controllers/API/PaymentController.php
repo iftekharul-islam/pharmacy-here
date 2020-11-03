@@ -106,7 +106,13 @@ class PaymentController extends BaseController
         $post_data['total_amount'] = $requestData['total_amount'];
         $post_data['currency'] = "BDT";
 //        $post_data['tran_id'] = $tranId;
-        $post_data['tran_id'] = $requestData['tran_id'];
+
+        logger('order_no :');
+        logger($requestData['order_no']);
+        logger('tran_id :');
+        logger($requestData['tran_id']);
+
+        $post_data['tran_id'] = $requestData['order_no'];
         $post_data['success_url'] = url('/api/payment/success');
         $post_data['fail_url'] = url('/api/payment/failed');
         $post_data['cancel_url'] = url('/api/payment/cancel');
@@ -122,7 +128,7 @@ class PaymentController extends BaseController
         curl_setopt($handle, CURLOPT_POSTFIELDS, $post_data);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
-        $content = curl_exec($handle);
+        $content = curl_e6xec($handle);
         $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         if ($code == 200 && !(curl_errno($handle))) {
             curl_close($handle);
