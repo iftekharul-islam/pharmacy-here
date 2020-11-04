@@ -107,8 +107,6 @@ class PaymentController extends BaseController
         $post_data['currency'] = "BDT";
 //        $post_data['tran_id'] = $tranId;
 
-        logger('order_no :');
-        logger($requestData['order_no']);
         logger('tran_id :');
         logger($requestData['tran_id']);
 
