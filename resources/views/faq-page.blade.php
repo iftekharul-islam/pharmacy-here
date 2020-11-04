@@ -120,7 +120,7 @@
                                 </div>
                             </div>
                             <div class="mx-auto mb-5">
-                                <button type="submit" class="btn btn--primary px-5" disabled>{{ __('text.sent') }}</button>
+                                <button type="submit" class="btn btn--primary px-5" disabled>{{ __('text.submit') }}</button>
                             </div>
                         </div>
                     </form>

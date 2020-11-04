@@ -114,4 +114,5 @@ return [
     'pharmacy' => 'Pharmacy',
     'select_address_title' => 'No Pharmacy is available in your area, Please Select a pharmacy from here.',
     'my_address' => 'My Address',
+    'submit' => 'Submit',
 ];
