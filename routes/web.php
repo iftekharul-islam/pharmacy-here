@@ -22,8 +22,8 @@ Route::get('/locale/{locale}', 'LocalizationController');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/terms-of-use', 'HomeController@terms')->name('terms');
 Route::get('/faq', 'HomeController@faq')->name('faq');
-Route::get('/return-&-refund-page', 'HomeController@refundPage')->name('return.page');
-Route::get('/privacy-policy-page', 'HomeController@privacyPage')->name('privacy.page');
+Route::get('/refund-&-return-policy', 'HomeController@refundPage')->name('return.page');
+Route::get('/privacy-policy', 'HomeController@privacyPage')->name('privacy.page');
 Route::get('/about-page', 'HomeController@about')->name('about.page');
 
 // User login
