@@ -101,7 +101,7 @@ class PaymentController extends BaseController
 //        dd($direct_api_url);
         $post_data = array();
         $post_data['store_id'] = env('SSL_STORE_ID');
-        $post_data['store_passwd'] = env('SSL_STORE_PASSWORD');
+        $post_data['store_password'] = env('SSL_STORE_PASSWORD');
 //        $post_data['total_amount'] = round($productDetail['totalAmount']+$deliveryCharge, 2);
         $post_data['total_amount'] = $requestData['total_amount'];
         $post_data['currency'] = "BDT";
@@ -129,7 +129,9 @@ class PaymentController extends BaseController
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, true); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
         $content = curl_exec($handle);
-        return json_encode($content);
+        logger($direct_api_url);
+        logger($post_data);
+//        return json_encode($content);
 
         $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         if ($code == 200 && !(curl_errno($handle))) {
