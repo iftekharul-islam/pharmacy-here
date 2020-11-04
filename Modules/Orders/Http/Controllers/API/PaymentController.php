@@ -112,7 +112,9 @@ class PaymentController extends BaseController
         logger('tran_id :');
         logger($requestData['tran_id']);
 
-        $post_data['tran_id'] = $requestData['order_no'];
+//        $post_data['tran_id'] = $requestData['order_no'];
+
+        $post_data['tran_id'] = $requestData['tran_id'];
         $post_data['success_url'] = url('/api/payment/success');
         $post_data['fail_url'] = url('/api/payment/failed');
         $post_data['cancel_url'] = url('/api/payment/cancel');
