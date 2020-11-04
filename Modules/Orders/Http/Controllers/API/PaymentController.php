@@ -101,8 +101,9 @@ class PaymentController extends BaseController
 //        dd($direct_api_url);
         $post_data = array();
         $post_data['store_id'] = env('SSL_STORE_ID');
-        $post_data['store_password'] = env('SSL_STORE_PASSWORD');
+        $post_data['store_passwd'] = env('SSL_STORE_PASSWORD');
 //        $post_data['total_amount'] = round($productDetail['totalAmount']+$deliveryCharge, 2);
+        $post_data['amount'] = $requestData['total_amount'];
         $post_data['total_amount'] = $requestData['total_amount'];
         $post_data['currency'] = "BDT";
 //        $post_data['tran_id'] = $tranId;
@@ -127,8 +128,10 @@ class PaymentController extends BaseController
         curl_setopt($handle, CURLOPT_POST, 1);
         curl_setopt($handle, CURLOPT_POSTFIELDS, $post_data);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, true); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
         $content = curl_exec($handle);
+        logger('content');
+        logger($content);
         logger($direct_api_url);
         logger($post_data);
 //        return json_encode($content);
@@ -144,7 +147,7 @@ class PaymentController extends BaseController
         }
         # PARSE THE JSON RESPONSE
         $sslcz = json_decode($sslcommerzResponse, true);
-//        dd($sslcz['GatewayPageURL']);
+        logger($sslcz['GatewayPageURL']);
         if (isset($sslcz['GatewayPageURL']) && $sslcz['GatewayPageURL'] != "") {
             # THERE ARE MANY WAYS TO REDIRECT - Javascript, Meta Tag or Php Header Redirect or Other
             # echo "<script>window.location.href = '". $sslcz['GatewayPageURL'] ."';</script>";
