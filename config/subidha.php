@@ -48,7 +48,7 @@ return [
     'ecash_payment_type' => 2,
 
     'item_per_page' => 20,
-    'bundle_item_per_page' => 5000,
+    'bundle_item_per_page' => 1000,
 
     'free_delivery_limit' => 500,
 ];
