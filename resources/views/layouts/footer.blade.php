@@ -8,9 +8,12 @@
                         <a href="#" class="subidha--logo">
                             <img src="{{ asset('images/logo.png') }}" alt="subidha logo" class="img-fluid"><span class="">{{ __('text.subidha') }}</span>
                         </a>
-                        <p>Lorem ipsum dolor sit amet, consectetur
-                            adipiscing elit ut aliquam, purus
-                            sit amet luctus venenatis</p>
+{{--                        <p>Lorem ipsum dolor sit amet, consectetur--}}
+{{--                            adipiscing elit ut aliquam, purus--}}
+{{--                            sit amet luctus venenatis</p>--}}
+                        <p>Medicine purchase and get home delivery with lots of payment methods</p>
+                        <p>Medicine alarm – never forget to take medicines timely</p>
+                        <p>Prescription holder – keep prescriptions safely. No chance of prescription missing</p>
                     </div>
 
                     <div class="footer-menu-list">
@@ -28,9 +31,8 @@
                     <div class="footer-menu-list">
                         <a href="#">{{ __('text.contact_us') }}</a>
                         <address>
-                            House 5/4/B (2nd Floor), Block A,<br> Lalmatia, Dhaka-1207<br>
-                            <br><p>info@subidha.com</p>
-                            <p>+880 1234 567890</p>
+                            Village : Chak kanchan, <br>P.O. : Farakkabad, P.S. : Biral,<br>District : Dinajpur-5210 <br>
+                            <br><p>Email: subidhabd@gmail.com</p>
                         </address>
                     </div>
                     <div class="footer-menu-list">

@@ -432,7 +432,6 @@ class OrderRepository
                     }
 
                 }
-
                 if ($data['delivery_method'] == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
                         logger('3 in');
@@ -474,6 +473,7 @@ class OrderRepository
 
             }
             else {
+                logger('inside else');
                 if ($data['delivery_method'] == config('subidha.normal_delivery')) {
 
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
@@ -507,7 +507,7 @@ class OrderRepository
 
                 }
 
-                if ($request->delivery_method == config('subidha.express_delivery')) {
+                if ($data['delivery_method'] == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
                         logger('Into subidha epay payment');
                         logger('7 in');
@@ -578,12 +578,18 @@ class OrderRepository
 
             }
         }
+
+        logger('data amount');
+        logger($data['subidha_comission']);
+        logger($data['pharmacy_amount']);
+        logger($data['customer_amount']);
+
         $data['amount'] = round($request->amount,2);
         $data['subidha_comission'] = round($data['subidha_comission'],2);
         $data['pharmacy_amount'] =  round($data['pharmacy_amount'],2);
         $data['customer_amount'] = round( $data['customer_amount'],2);
 
-        return $data;
+//        return $data;
         $order = Order::create($data);
 
         OrderHistory::create([
