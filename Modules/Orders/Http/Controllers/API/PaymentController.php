@@ -129,6 +129,8 @@ class PaymentController extends BaseController
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, true); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
         $content = curl_exec($handle);
+        return json_encode($content);
+
         $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         if ($code == 200 && !(curl_errno($handle))) {
             curl_close($handle);
