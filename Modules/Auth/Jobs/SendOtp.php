@@ -42,7 +42,7 @@ class SendOtp implements ShouldQueue
         $base_url = 'https://smsplus.sslwireless.com/api/v3/send-sms';
         $api_token = '9650d63a-d586-4f06-925b-e9abe6ca0225';
         $sid = 'SUBIDHABRAND';
-        $message = "Your OTP code is " . $this->otp . '- Subidha';
+        $message = "Your OTP code is " . $this->otp . ' - Subidha';
         $csms_id = $this->unique_code();
 
         $phone = $this->phone_number;
