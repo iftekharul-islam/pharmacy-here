@@ -130,10 +130,6 @@ class PaymentController extends BaseController
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); # KEEP IT FALSE IF YOU RUN FROM LOCAL PC
         $content = curl_exec($handle);
-        logger('content');
-        logger($content);
-        logger($direct_api_url);
-        logger($post_data);
 //        return json_encode($content);
 
         $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
@@ -147,7 +143,6 @@ class PaymentController extends BaseController
         }
         # PARSE THE JSON RESPONSE
         $sslcz = json_decode($sslcommerzResponse, true);
-        logger($sslcz['GatewayPageURL']);
         if (isset($sslcz['GatewayPageURL']) && $sslcz['GatewayPageURL'] != "") {
             # THERE ARE MANY WAYS TO REDIRECT - Javascript, Meta Tag or Php Header Redirect or Other
             # echo "<script>window.location.href = '". $sslcz['GatewayPageURL'] ."';</script>";
