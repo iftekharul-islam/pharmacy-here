@@ -146,7 +146,7 @@
                                     <td scope="col">{{ __('text.product') }}</td>
                                     <td scope="col">{{ __('text.price') }}</td>
                                     <td scope="col">{{ __('text.quantity') }}</td>
-                                    <td class="text-center">{{ __('text.sub_total') }}</td>
+                                    <td scope="col" class="text-center">{{ __('text.sub_total') }}</td>
                                     <td scope="col"></td>
                                 </tr>
 {{--                                </thead>--}}
@@ -206,8 +206,8 @@
                                                         <button id="increase-{{$details->id }}" onclick="newItemIncrease(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})" class="plus"></button>
                                                     </div>
                                                 </td>
-                                                <td class="text-center">৳
-                                                    <input class="countAmount-{{$details->id}} count-style text-left" value="{{ $details->amount }}" readonly>
+                                                <td class="text-center">
+                                                    <input class="countAmount-{{$details->id}} count-style text-left ml-4" value="৳ {{ $details->amount }}" readonly>
                                                 </td>
                                                 <td>
                                                     <div class="actions" data-th="">
