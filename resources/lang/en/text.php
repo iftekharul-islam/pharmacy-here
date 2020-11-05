@@ -115,4 +115,5 @@ return [
     'select_address_title' => 'No Pharmacy is available in your area, Please Select a pharmacy from here.',
     'my_address' => 'My Address',
     'submit' => 'Submit',
+    'add_to_cart_message' => 'Product added to cart successfully !'
 ];

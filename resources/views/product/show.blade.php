@@ -30,7 +30,7 @@
 </style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
@@ -59,20 +59,22 @@
                             <h3>{{ $data->name }}</h3>
                             <h3 class="text-success">৳ {{ $data->purchase_price }} / {{ __('text.piece') }}</h3>
                         </div>
-                        <table class="table table-borderless">
-                            <tr>
-                                <th>{{ __('text.generic') }}</th>
-                                <td> {{ $data->generic->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ trans_choice('text.company', 2) }}</th>
-                                <td>{{ $data->company->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ __('text.form') }}</th>
-                                <td>{{ $data->form->name }}</td>
-                            </tr>
-                        </table>
+                        <div>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>{{ __('text.generic') }}</th>
+                                    <td> {{ $data->generic->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ trans_choice('text.company', 2) }}</th>
+                                    <td>{{ $data->company->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ __('text.form') }}</th>
+                                    <td>{{ $data->form->name }}</td>
+                                </tr>
+                            </table>
+                        </div>
                         <div class="product-details-btn">
                             <a href="{{ route('product-list') }}" class="btn--edit mr-2">{{ __('text.back') }}</a>
                             @guest
