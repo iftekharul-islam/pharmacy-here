@@ -420,6 +420,7 @@
             });
         }
 
+        {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         let cashInNormalDeliveryValue = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInNormalDeliveryAmount = cashInNormalDeliveryValue.toFixed(2);
         let cashInNormalDelivery = parseFloat(cashInNormalDeliveryAmount);
@@ -459,7 +460,7 @@
 
         // console.log(ecashInExpressDelivery, 'ecashInExpressDelivery')
         // console.log(cashInExpressDeliveryCharge, 'ecash In Express Delivery Charge')
-        console.log(cashInNormalDeliveryValue, 'cash In Normal cash In Normal Delivery Value')
+        // console.log(cashInNormalDeliveryValue, 'cash In Normal cash In Normal Delivery Value')
         console.log(cashInNormalDelivery, 'cash In Normal Delivery')
 
         // console.log(cashInCollectFromPharmacy, 'cash In cashInCollectFromPharmacy')
@@ -682,12 +683,16 @@
             // console.log('Delivery Charge: ', deliveryCharge);
 
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
-                grandTotal = total + cashInNormalDelivery;
+                grandTotalValue = total + cashInNormalDelivery;
+                grandTotalAmount = grandTotalValue.toFixed(2);
+                grandTotal = parseFloat(grandTotalAmount);
                 $('input[name="delivery_charge_amount"]').val(cashInNormalDelivery);
 
             }
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 2) {
-                grandTotal = total + cashInExpressDelivery;
+                grandTotalValue = total + cashInExpressDelivery;
+                grandTotalAmount = grandTotalValue.toFixed(2);
+                grandTotal = parseFloat(grandTotalAmount);
                 $('input[name="delivery_charge_amount"]').val(cashInExpressDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {

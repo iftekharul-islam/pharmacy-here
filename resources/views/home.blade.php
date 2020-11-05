@@ -26,6 +26,10 @@
         #searchResult li:hover {
             background: #ddd;
         }
+        .text-resize {
+            font-size: 19px;
+            font-weight: bold;
+        }
     </style>
 @endsection
 @section('content')
@@ -64,10 +68,10 @@
                 <div class="col-md-6 col-lg-4 delivery-card">
                     <div class="card-item">
                         <div class="left">
-                            <h4>Home Delivery</h4>
+                            <p class="text-resize">Home Delivery</p>
                             <p>With extra care we deliver
                                 your products.</p>
-{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
+                            <a href="{{ route('product-list') }}" class="btn--shop-now">Shop Now</a>
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/card-image-1.svg') }}" alt="card 1">
@@ -77,26 +81,24 @@
                 <div class="col-md-6 col-lg-4 delivery-card">
                     <div class="card-item">
                         <div class="left">
-                            <h4>Home Delivery</h4>
-                            <p>With extra care we deliver
-                                your products.</p>
-{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
+                            <p class="text-resize">Prescription Holder</p>
+                            <p>Keep your prescription here</p>
+                            <a href="{{ route('prescription.create') }}" class="btn--shop-now">Try now</a>
                         </div>
                         <div class="right">
-                            <img src="{{ asset('images/card-image-2.svg') }}" alt="card 1">
+                            <img src="{{ asset('images/prescription.svg') }}" alt="card 1">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 delivery-card">
                     <div class="card-item">
                         <div class="left">
-                            <h4>Home Delivery</h4>
-                            <p>With extra care we deliver
-                                your products.</p>
-{{--                            <a href="#" class="btn--shop-now">Shop Now</a>--}}
+                            <p class="text-resize">Medicine Alarm</p>
+                            <p>Install mobile app for this facilities</p>
+                            <a href="https://play.google.com/store/apps/details?id=com.subidha.customer" target="_blank" class="btn--shop-now">Try now</a>
                         </div>
                         <div class="right">
-                            <img src="{{ asset('images/card-image-3.svg') }}" alt="card 1">
+                            <img src="{{ asset('images/clock.svg') }}" alt="card 1">
                         </div>
                     </div>
                 </div>

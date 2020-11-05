@@ -13,7 +13,6 @@
         margin-left: 642px;
         margin-top: -24px;
     }
-    }
     .header-text {
         position: absolute;
         margin-left: -382px;
@@ -196,18 +195,16 @@
                                 <div class="table-responsive">
                                     @if (count($orders) > 0)
                                     <table class="table table-borderless">
-                                        <thead class="thead-light">
-                                        <tr>
+                                        <tr class="text-center">
                                             <th scope="col">{{ __('text.order') }} #</th>
                                             <th scope="col">{{ __('text.date') }}</th>
                                             <th scope="col">{{ __('text.total') }}</th>
                                             <th scope="col">{{ __('text.status') }}</th>
                                             <th scope="col">{{ __('text.action') }}</th>
                                         </tr>
-                                        </thead>
                                         <tbody>
                                             @foreach ($orders as $order)
-                                                <tr>
+                                                <tr class="text-center">
                                                     <td scope="row">#{{ $order->order_no }}</td>
                                                     <td>{{ date('d F Y', strtotime($order->order_date)) }}</td>
                                                     <td>৳ {{ $order->amount + $order->delivery_charge }}</td>
@@ -246,7 +243,7 @@
                                         </tbody>
                                     </table>
                                     @else
-                                        <h4 class="text-center">{{ __('text.no_data') }}</h4>
+                                        <h4>{{ __('text.no_data') }}</h4>
                                     @endif
                                 </div>
                                 {{ $orders->links() }}

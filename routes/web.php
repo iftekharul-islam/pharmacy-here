@@ -49,7 +49,7 @@ Route::group(['middleware' => ['customerAuth']], function () {
     });
 
     //Prescription
-    Route::get('prescription/create', 'PrescriptionController@create');
+    Route::get('prescription/create', 'PrescriptionController@create')->name('prescription.create');
     Route::post('store/prescription','PrescriptionController@store')->name('prescription.store');
     Route::post('prescription-id/store', 'PrescriptionController@selectedId')->name('prescriptions.id');
     Route::delete('prescription/{id}', 'PrescriptionController@destroy')->name('prescription.destroy');
