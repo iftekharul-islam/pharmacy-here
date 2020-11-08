@@ -60,7 +60,7 @@
                                 <li>
                                     <p>{{ __('text.delivery_address') }}</p>
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-5 col-sm-5">
                                             <div class="address" id="myAddress">
                                                 @foreach($addresses as $item)
                                                 <div class="address-box mr-2 selectedAddress" onclick="getAddressId({{ $item['id'] }}, {{ $item['area_id'] }}, {{ $item['area']['thana_id'] }})">
