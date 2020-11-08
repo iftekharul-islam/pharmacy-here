@@ -118,13 +118,13 @@
             if (item.pharmacy_business) {$('#breakStart').html(item.pharmacy_business.break_start_time); }
             if (item.pharmacy_business) {$('#breakEnd').html(item.pharmacy_business.break_end_time); }
             if(item.pharmacy_business && item.pharmacy_business.nid_img_path) {
-                $('#nid').html('<img src="'+ item.pharmacy_business.nid_img_path +'" width="100" />');
+                $('#nid').html('<img src="'+ item.pharmacy_business.nid_img_path +'" width="100" /> <a href="'+ item.pharmacy_business.nid_img_path +'" target="_blank"></a>');
             }
             if(item.pharmacy_business && item.pharmacy_business.trade_img_path) {
-                $('#trade').html('<img src="'+ item.pharmacy_business.trade_img_path +'" width="100"/>');
+                $('#trade').html('<img src="'+ item.pharmacy_business.trade_img_path +'" width="100"/> <a class="badge badge-primary" href="'+ item.pharmacy_business.trade_img_path +'" target="_blank">View Image</a>');
             }
             if(item.pharmacy_business && item.pharmacy_business.drug_img_path) {
-                $('#drug').html('<img src="'+ item.pharmacy_business.drug_img_path +'" width="100" />');
+                $('#drug').html('<img src="'+ item.pharmacy_business.drug_img_path +'" width="100" /> <a class="badge badge-primary" href="'+ item.pharmacy_business.drug_img_path +'" target="_blank">View Image</a>');
             }
             // $('#status').html(checkStatus(item.status));
         }
