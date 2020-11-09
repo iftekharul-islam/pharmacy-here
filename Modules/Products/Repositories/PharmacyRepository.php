@@ -23,7 +23,7 @@ class PharmacyRepository
     {
         $pharmacy = PharmacyBusiness::find($id);
         $data = $request->only(['pharmacy_name', 'pharmacy_address', 'bank_account_name',
-                                'bank_account_number', 'bank_name', 'bank_brunch_name', 'bkash_number',
+                                'bank_account_number', 'bank_name', 'bank_brunch_name', 'bkash_number', 'bank_routing_number',
                                 'start_time', 'end_time', 'break_start_time', 'break_end_time']);
 
         if (!$pharmacy) {

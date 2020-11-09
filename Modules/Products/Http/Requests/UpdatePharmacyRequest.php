@@ -19,7 +19,7 @@ class UpdatePharmacyRequest extends FormRequest
             'bank_account_name' => 'required|max:191', 
             'bank_account_number' => 'required|max:191', 
             'bank_name' => 'required|max:191', 
-            'bkash_number' => 'required|max:11|min:11',
+            'bank_routing_number' => 'required',
             'start_time' => 'required|max:191',
             "end_time" => 'required|max:191',
             "break_start_time" => 'required|max:191',
