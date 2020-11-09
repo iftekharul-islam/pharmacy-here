@@ -85,11 +85,11 @@ class LoginController extends Controller
 
     public function createOtp(PhoneValidationRequest $request)
     {
-        $isActivePhone = $this->repository->isActivePhoneNumber($request->phone_number);
+//        $isActivePhone = $this->repository->isActivePhoneNumber($request->phone_number);
 
-        if ($isActivePhone) {
-            throw new AccessDeniedException('Pharmacy is inactive !',403);
-        }
+//        if ($isActivePhone) {
+//            throw new AccessDeniedException('Pharmacy is inactive !',403);
+//        }
         $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
 
         if (! $verifyNumber) {
