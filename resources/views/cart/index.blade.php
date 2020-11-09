@@ -178,7 +178,9 @@
             justify-content: space-between;
             margin-top: 20px;
         }
-
+    }
+    .cart-product {
+        display: flex;
     }
 </style>
 @section('content')
@@ -243,8 +245,8 @@
                                             <?php $total += $details['product']['purchase_price'] * $details['quantity'] ?>
                                             <tr>
                                                 <td scope="row">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
+                                                    <div class="cart-product">
+                                                        <div class="cart-product-image">
                                                             @if ($details->product->form->slug == 'tablet' || $details->product->form->name == 'capsul')
                                                                 <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
                                                             @elseif ($details->product->form->slug == 'syrup')
@@ -257,7 +259,7 @@
                                                                 <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
                                                             @endif
                                                         </div>
-                                                        <div class="col-md-9">
+                                                        <div class="cart-product-text">
                                                             <strong>{{ $details['product']['name'] }}</strong><br>
                                                             <small>{{ $details['product']['form']['name'] }}</small>
                                                         </div>

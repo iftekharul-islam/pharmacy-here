@@ -130,10 +130,10 @@
                                     <p>{{ __('text.delivery_option') }}</p>
                                     <ul class="nav nav-pills mb-3 delivery-option-tabs" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link active" id="pills-delivery-tab" data-toggle="pill" href="#pills-delivery" role="tab" aria-controls="pills-delivery" aria-selected="true" onclick="getDeliveryType(1)">{{ __('text.home_delivery') }}</a>
+                                            <a class="nav-link active home-delivery" id="pills-delivery-tab" data-toggle="pill" href="#pills-delivery" role="tab" aria-controls="pills-delivery" aria-selected="true" onclick="getDeliveryType(1)">{{ __('text.home_delivery') }}</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link " id="pills-pharmacy-tab" data-toggle="pill" href="#pills-pharmacy" role="tab" aria-controls="pills-pharmacy" aria-selected="false" onclick="getDeliveryType(2)">{{ __('text.pickup_pharmacy') }}</a>
+                                            <a class="nav-link pharmacy-delivery" id="pills-pharmacy-tab" data-toggle="pill" href="#pills-pharmacy" role="tab" aria-controls="pills-pharmacy" aria-selected="false" onclick="getDeliveryType(2)">{{ __('text.pickup_pharmacy') }}</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">

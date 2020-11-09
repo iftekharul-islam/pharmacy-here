@@ -1,8 +1,5 @@
 @extends('layouts.app')
 <style>
-    .My-modal {
-        text-align: left;
-    }
     .my-address {
         width: fit-content;
         margin-left: auto;
@@ -13,16 +10,49 @@
         margin-left: 642px;
         margin-top: -24px;
     }
-    .header-text {
-        position: absolute;
-        margin-left: -382px;
+    @media (max-width: 992px) {
+        .save-profile-btn {
+            position: absolute;
+            margin-left: 603px;
+        }
+    }
+    @media (max-width: 768px) {
+        .save-profile-btn {
+            position: absolute;
+            margin-left: 423px;
+        }
+    }
+    @media (max-width: 576px) {
+        .save-profile-btn {
+            position: absolute;
+            margin-left: 319px;
+        }
     }
     .header-text-profile {
         position: absolute;
         margin-left: -382px;
         margin-top: -70px;
     }
+    @media (max-width: 992px) {
+        .header-text-profile {
+            position: absolute;
+            margin-left: 27px;
+            margin-top: -427px
+        }
+    }
+    .header-text-prescription {
+        position: absolute;
+        margin-left: -382px;
+        margin-top: -70px;
+    }
+    @media (max-width: 992px) {
+        .header-text-prescription {
+            position: absolute;
+            margin-left: 27px;
+            margin-top: -409px;
+        }
 
+    }
     .my-profile-position {
         margin-top: 84px;
     }
@@ -32,19 +62,110 @@
     .my-prescription-position {
         margin-top: 63px;
     }
-    .prescription-button {
+    .add-prescription-button {
         position: absolute;
-        margin-left: 600px;
-        margin-top: -59px;
+        margin-top: -63px;
+        margin-left: 571px;
+    }
+    @media (max-width: 1200px) {
+        .add-prescription-button {
+            position: absolute;
+            margin-left: 774px;
+            margin-top: -59px;
+        }
+    }
+    @media (max-width: 992px) {
+        .add-prescription-button {
+            position: absolute;
+            margin-left: 532px;
+            margin-top: -59px;
+        }
+    }
+    @media (max-width: 768px) {
+        .add-prescription-button {
+            position: absolute;
+            margin-left: 355px;
+            margin-top: -59px;
+        }
+    }
+    @media (max-width: 576px) {
+        .add-prescription-button {
+            position: absolute;
+            margin-left: 319px;
+            margin-top: -59px;
+        }
+    }
+    @media (max-width: 440px) {
+        .add-prescription-button {
+            position: absolute;
+            margin-left: 220px;
+            margin-top: -59px;
+        }
+    }
+    @media (max-width: 360px) {
+        .add-prescription-button {
+            position: absolute;
+            margin-left: 174px;
+            margin-top: -59px;
+        }
     }
     .my-edit-btn {
         position: absolute;
         margin-left: 680px;
         margin-top: -143px;
     }
-    .my-address-header {
+    @media (max-width: 1200px ) {
+        .my-edit-btn {
+            position: absolute;
+            margin-left: 558px;
+            margin-top: -143px;
+        }
+    }
+    @media (max-width: 992px ) {
+        .my-edit-btn {
+            position: absolute;
+            margin-left: 636px;
+            margin-top: -143px;
+        }
+    }
+    @media (max-width: 768px ) {
+        .my-edit-btn {
+            position: absolute;
+            margin-left: 459px;
+            margin-top: -143px;
+        }
+    }
+    @media (max-width: 576px ) {
+        .my-edit-btn {
+            position: absolute;
+            margin-left: 461px;
+            margin-top: -143px;
+        }
+    }
+    @media (max-width: 480px ) {
+        .my-edit-btn {
+            position: absolute;
+            margin-left: 340px;
+            margin-top: -143px;
+        }
+    }
+    @media (max-width: 360px ) {
+        .my-edit-btn {
+            position: absolute;
+            margin-left: 281px;
+            margin-top: -143px;
+        }
+    }
+    .header-text-address {
         position: absolute;
         margin-left: -380px;
+    }
+    @media (max-width: 992px) {
+        .header-text-address {
+            position: absolute;
+            margin-left: 28px;
+            margin-top: -345px;
+        }
     }
 </style>
 @section('content')
@@ -60,7 +181,7 @@
     <div class="order-section">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-xl-4 customer-title">
                     <div class="nav flex-column nav-pills my-dashboard" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="true">{{ __('text.my_profile') }}</a>
                         <a class="nav-link" id="v-pills-address-tab" data-toggle="pill" href="#v-pills-address" role="tab" aria-controls="v-pills-address" aria-selected="true">{{ __('text.my_address') }}</a>
@@ -68,7 +189,7 @@
                         <a class="nav-link" id="v-pills-prescription-tab" data-toggle="pill" href="#v-pills-prescription" role="tab" aria-controls="v-pills-prescription" aria-selected="false">{{ __('text.my_prescription') }}</a>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-xl-8">
                     <div class="tab-content my-dashboard-content" id="v-pills-tabContent">
                         <div class="tab-pane show fade active my-account" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account-tab">
                             <h2 class="my-dashboard-title header-text-profile">{{ __('text.my_profile') }}</h2>
@@ -108,7 +229,7 @@
                         </div>
 
                         <div class="tab-pane fade" id="v-pills-address" role="tabpanel" aria-labelledby="v-pills-address-tab">
-                            <h2 class="my-dashboard-title my-address-header">{{ __('text.my_address') }}</h2>
+                            <h2 class="my-dashboard-title header-text-address">{{ __('text.my_address') }}</h2>
                             <a href="#" class="btn btn--primary mb-2 my-address d-block" data-toggle="modal" data-target="#addressModal">
                                 <i class="fas fa-plus-circle"></i>
                                 <span>{{ __('text.address') }}</span>
@@ -233,7 +354,7 @@
                                                             <span class="badge badge-danger">Cancel</span>
                                                         @endif
                                                     </td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         <a href="{{ route('order.details', $order->id)}}">
                                                             {{ __('text.view') }}
                                                         </a>
@@ -251,10 +372,10 @@
                         </div>
 
                         <div class="tab-pane fade my-prescription" id="v-pills-prescription" role="tabpanel" aria-labelledby="v-pills-prescription-tab">
-                            <h2 class="my-dashboard-title header-text-profile">{{ __('text.my_prescription') }}
+                            <h2 class="my-dashboard-title header-text-prescription">{{ __('text.my_prescription') }}
                                 <!-- Button trigger modal -->
                             </h2>
-                            <button type="button" class="btn btn--primary prescription-button" data-toggle="modal" data-target="#prescriptionModal">
+                            <button type="button" class="btn btn--primary add-prescription-button" data-toggle="modal" data-target="#prescriptionModal">
                                 <i class="fas fa-plus"></i>  {{ __('text.prescription') }}
                             </button>
 {{--                            <div class="my-order-list">--}}
@@ -315,11 +436,11 @@
                                     @if (count($prescriptions) > 0)
                                         <div class="my-row row mb-3 my-prescription-position">
                                             @foreach($prescriptions as $prescription )
-                                                <div class="my-box col-4 mt-4">
+                                                <div class="my-box col-4 col-md-4 col-lg-4 col-xs-4 mt-4">
                                                     <div class="order-summary">
                                                         <div class="row">
-                                                            <div class="col-10">
-                                                                <img height="150px" width="150px" class="prescription-image mb-2"  src="{{ $prescription->url }}" alt="">
+                                                            <div class="col-12">
+                                                                <img class="prescription-image mb-2 img-fluid"  src="{{ $prescription->url }}" alt="">
                                                                 <strong>Patient: {{ $prescription->patient_name }}</strong><br>
                                                                 <small>Doctor: {{ $prescription->doctor_name }}</small>
                                                                 <br>

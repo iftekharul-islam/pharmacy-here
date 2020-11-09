@@ -24,7 +24,7 @@
     <div class="order-section">
         <div class="container">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-lg-5">
                     <h2 class="my-dashboard-title">{{ __('text.my_order_details') }}</h2>
 {{--                <div class="col-5">--}}
                     <table class="my-table table table-borderless">
@@ -114,7 +114,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-md-7">
+                <div class="col-lg-7">
                 <div class="order-summary">
                     <div class="table-responsive">
                         <table class="table table-borderless">
