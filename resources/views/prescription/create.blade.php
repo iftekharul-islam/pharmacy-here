@@ -5,6 +5,16 @@
     }
     .prescription-image {
         border: 1px solid #00CE5E ;
+        width: 80%;
+    }
+    .prescription-checkbox {
+        position: absolute;
+        top: 20px;
+        right: 40px;
+    }
+    .prescription-section {
+        padding: 50px;
+        overflow: hidden;
     }
 </style>
 @section('content')
@@ -13,8 +23,8 @@
             {{ session('success') }}
         </div>
     @endif
-    <!-- cart section -->
-    <div class="cart-section">
+    <!-- prescription section -->
+    <div class="prescription-section">
         <div class="container">
             <div class="row">
                 <div class="col-6 mb-3">
@@ -85,36 +95,30 @@
                         </span>
                     @endif
                 </div>
-            </div>
             @if (count($prescriptions) > 0)
-            <form id="form" method="post" action="{{ route('prescriptions.id') }}">
-                @csrf
-            <div class="my-row row mb-5">
-                    @foreach($prescriptions as $prescription )
-                        <div class="my-box col-3 mt-3">
-                            <div class="order-summary">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                    <img height="150px" width="150px" class="prescription-image"  src="{{ $prescription->url }}" alt="">
-                                    <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
-                                    <small>Doctor: {{ $prescription->doctor_name }}</small>
+                <form id="form" method="post" action="{{ route('prescriptions.id') }}">
+                    @csrf
+                    <div class="col-12">
+                        <div class="row">
+                            @foreach($prescriptions as $prescription )
+                                <div class="my-box col-12 col-md-6 col-lg-3 mt-3 mb-3 prescription-margin">
+                                    <div class="order-summary">
+                                        <img class="prescription-image img-fluid"  src="{{ $prescription->url }}" alt="">
+                                        <p><h5>Patient: {{ $prescription->patient_name }}</h5></p>
+                                        <small>Doctor: {{ $prescription->doctor_name }}</small>
                                         <br>
-                                    <small>Date: {{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</small>
-                                    </div>
-                                    <div class="col-2">
-                                        <input type="checkbox" class="float-right" name="prescription_id[]" value="{{ $prescription->id }}">
+                                        <small>Date: {{ date('d-m-Y', strtotime($prescription->prescription_date)) }}</small>
+                                        <input type="checkbox" class="prescription-checkbox" name="prescription_id[]" value="{{ $prescription->id }}">
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                @endforeach
-            </div>
-                <div class="row">
-                    <div class="col-12">
+                    </div>
+                    <div class="col-12 mt-3">
                         <button type="submit" class="btn btn--primary float-left my-next-button">Next</button>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
             @endif
         </div>
     </div>

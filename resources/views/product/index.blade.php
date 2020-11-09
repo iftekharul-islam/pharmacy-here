@@ -99,6 +99,21 @@
         border-bottom-right-radius: 15px;
         max-height:300px;
         overflow-y:auto;
+    }
+    @media (max-width: 992px) {
+        #searchResult {
+            /*padding-top: 8px;*/
+            position: absolute;
+            width: 91.5%;
+            z-index: 99;
+            border: 1px solid #ced4da;
+            margin-top: -11px;
+            background: white;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            max-height:300px;
+            overflow-y:auto;
+        }
 
     }
     #searchResult ul{

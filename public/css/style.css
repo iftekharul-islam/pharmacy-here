@@ -15605,9 +15605,21 @@ html {
           align-items: center;
   margin-bottom: 0;
 }
+@media (max-width: 480px) {
+    .navbar-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
+}
 .navbar-list li {
   margin-right: 50px;
+}
+@media (max-width: 480px) {
+    .navbar-list li {
+        margin-right: 0px;
+        margin-bottom: 20px;
+    }
 }
 
 .navbar-list li:last-child {
@@ -16400,6 +16412,11 @@ html {
             flex-direction: row;
   }
 }
+@media (max-width: 992px) {
+  .address {
+      flex-direction: column;
+  }
+}
 .customer-address-box {
     cursor: pointer;
     min-width: 175px;
@@ -16448,7 +16465,7 @@ html {
   margin-top: 20px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .add-address {
     display: -webkit-box;
     display: -ms-flexbox;
