@@ -21,16 +21,74 @@ class PharmacyRepository
 
     public function update($request, $id)
     {
-        $pharmacy = PharmacyBusiness::find($id);
-        $data = $request->only(['pharmacy_name', 'pharmacy_address', 'bank_account_name',
-                                'bank_account_number', 'bank_name', 'bank_brunch_name', 'bkash_number', 'bank_routing_number',
+        $pharmacy = PharmacyBusiness::where('user_id', $id)->first();
+        $data = $request->only(['pharmacy_name', 'area_id', 'pharmacy_address', 'bank_account_name',
+                                'bank_account_number', 'bank_name', 'bank_brunch_name', 'bank_routing_number',
                                 'start_time', 'end_time', 'break_start_time', 'break_end_time']);
 
         if (!$pharmacy) {
-            throw new NotFoundHttpException('Pharmacy not found');
+
+            $pharmacyBusiness = new PharmacyBusiness();
+
+            if (isset($request->pharmacy_name)) {
+                $pharmacyBusiness->pharmacy_name = $request->pharmacy_name;
+            }
+
+            if (isset($request->area_id)) {
+                $pharmacyBusiness->area_id = $request->area_id;
+            }
+
+            if (isset($request->pharmacy_address)) {
+                $pharmacyBusiness->pharmacy_address = $request->pharmacy_address;
+            }
+
+            if (isset($request->bank_account_name)) {
+                $pharmacyBusiness->bank_account_name = $request->bank_account_name;
+            }
+
+            if (isset($request->bank_account_number)) {
+                $pharmacyBusiness->bank_account_number = $request->bank_account_number;
+            }
+
+            if (isset($request->bank_name)) {
+                $pharmacyBusiness->bank_name = $request->bank_name;
+            }
+
+            if (isset($request->bank_brunch_name)) {
+                $pharmacyBusiness->bank_brunch_name = $request->bank_brunch_name;
+            }
+
+            if (isset($request->bank_routing_number)) {
+                $pharmacyBusiness->bank_routing_number = $request->bank_routing_number;
+            }
+            if (isset($request->start_time)) {
+                $pharmacyBusiness->start_time = $request->start_time;
+            }
+
+            if (isset($request->end_time)) {
+                $pharmacyBusiness->end_time = $request->end_time;
+            }
+
+            if (isset($request->break_start_time)) {
+                $pharmacyBusiness->break_start_time = $request->break_start_time;
+            }
+
+            if (isset($request->break_end_time)) {
+                $pharmacyBusiness->break_end_time = $request->break_end_time;
+            }
+
+            $pharmacyBusiness->user_id = $id;
+
+            $pharmacyBusiness->save();
+
+            $user = User::find($id);
+            $user->status = $request->status;
+            $user->save();
+            return $pharmacyBusiness;
         }
+
         $pharmacy->update($data);
-        $user = User::find($pharmacy->user_id);
+        $user = User::find($id);
         $user->status = $request->status;
         $user->save();
         return $pharmacy;
@@ -44,11 +102,15 @@ class PharmacyRepository
     public function findById($id)
     {
         // $pharmacy = PharmacyBusiness::with('user', 'weekends')->find($id);
-        $pharmacy = PharmacyBusiness::with('user', 'weekends')->where('user_id', $id)->first();
+//        $pharmacy = PharmacyBusiness::with('user', 'weekends')->where('user_id', $id)->first();
+        $pharmacy = User::with('PharmacyBusiness', 'PharmacyBusiness.weekends', 'PharmacyBusiness.area', 'PharmacyBusiness.area.thana', 'PharmacyBusiness.area.thana.district')->find($id);
+
         // $pharmacy = User::with('pharmacyBusiness', 'weekends')->find($id);
 
         if (!$pharmacy) {
-            throw new NotFoundHttpException('Pharmacy not found');
+            $user = User::find($id);
+            return $user;
+//            throw new NotFoundHttpException('Pharmacy not found');
         }
         return $pharmacy;
     }

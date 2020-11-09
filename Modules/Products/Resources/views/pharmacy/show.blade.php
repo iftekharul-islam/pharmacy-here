@@ -47,9 +47,13 @@
                             <div class="col-sm-8 pt-2" id="branch"> </div>
                         </div>
                         <div class="form-group row mb-0">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label">Bkash</label>
-                            <div class="col-sm-8 pt-2" id="bkash"> </div>
+                            <label for="inputEmail3" class="col-sm-4 col-form-label">Bank Routing Number</label>
+                            <div class="col-sm-8 pt-2" id="routing_number"> </div>
                         </div>
+{{--                        <div class="form-group row mb-0">--}}
+{{--                            <label for="inputEmail3" class="col-sm-4 col-form-label">Bkash</label>--}}
+{{--                            <div class="col-sm-8 pt-2" id="bkash"> </div>--}}
+{{--                        </div>--}}
                         <div class="form-group row mb-0">
                             <label for="inputEmail3" class="col-sm-4 col-form-label">Start Time</label>
                             <div class="col-sm-8 pt-2" id="startTime"> </div>

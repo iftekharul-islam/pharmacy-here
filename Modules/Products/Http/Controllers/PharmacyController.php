@@ -5,6 +5,7 @@ namespace Modules\Products\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Repositories\LocationRepository;
 use Modules\Products\Http\Requests\UpdatePharmacyRequest;
 use Modules\Products\Repositories\PharmacyRepository;
 use Modules\User\Entities\Models\User;
@@ -12,10 +13,12 @@ use Modules\User\Entities\Models\User;
 class PharmacyController extends Controller
 {
     private $repository;
+    private $locationRepository;
 
-    public function __construct(PharmacyRepository $repository)
+    public function __construct(PharmacyRepository $repository, LocationRepository $locationRepository)
     {
         $this->repository =$repository;
+        $this->locationRepository =$locationRepository;
     }
 
     /**
@@ -25,6 +28,7 @@ class PharmacyController extends Controller
     public function index()
     {
         $pharmacies = $this->repository->all();
+//        return $pharmacies;
         return view('products::pharmacy.index', compact('pharmacies'));
     }
 
@@ -64,9 +68,10 @@ class PharmacyController extends Controller
      */
     public function edit($id)
     {
+        $allLocations = $this->locationRepository->getLocation();
         $pharmacy = $this->repository->findById($id);
 //        return $pharmacy;
-        return view('products::pharmacy.edit', compact('pharmacy'));
+        return view('products::pharmacy.edit', compact('pharmacy', 'allLocations'));
     }
 
     /**
