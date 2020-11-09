@@ -176,7 +176,7 @@ class AuthRepository
             $user->is_pharmacy = true;
         }
 
-        $user->status = false;
+        $user->status = true;
 
         $user->save();
 
