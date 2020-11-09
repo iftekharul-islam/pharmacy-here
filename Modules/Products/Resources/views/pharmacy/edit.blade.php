@@ -82,12 +82,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="bkash_number" class="col-sm-4 col-form-label">Bkash Number</label>
+                        <label for="bkash_number" class="col-sm-4 col-form-label">Bank Routing Number</label>
                         <div class="col-sm-8" id="bkash_number">
-                            <input type="text" name="bkash_number" value="{{ $pharmacy->bkash_number ?? old('bkash_number') }}" class="form-control" id="bkash_number" placeholder="Bkash Number">
-                            @if ($errors->has('bkash_number'))
+                            <input type="number" name="bank_routing_number" value="{{ $pharmacy->bank_routing_number ?? old('bank_routing_number') }}" class="form-control" id="bank_routing_number" placeholder="Routing Number">
+                            @if ($errors->has('bank_routing_number'))
                                 <span class="text-danger">
-                                    <strong>{{ $errors->first('bkash_number') }}</strong>
+                                    <strong>{{ $errors->first('bank_routing_number') }}</strong>
                                 </span>
                             @endif
                         </div>

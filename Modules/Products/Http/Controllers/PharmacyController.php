@@ -77,7 +77,6 @@ class PharmacyController extends Controller
      */
     public function update(UpdatePharmacyRequest $request, $id)
     {
-//        return $request->all();
         $pharmacy = $this->repository->update($request, $id);
         return redirect()->route('pharmacy.index')->with('success', 'Pharmacy updated Successfully');
     }
