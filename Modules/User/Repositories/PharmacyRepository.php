@@ -60,6 +60,8 @@ class PharmacyRepository
         if (! $user) {
             throw new NotFoundHttpException('Pharmacy Not Found');
         }
+        $user->status = false;
+        $user->save();
 
 
         $weekends = $request->weekends;
