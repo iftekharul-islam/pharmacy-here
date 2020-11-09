@@ -21,6 +21,11 @@
 @stop
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Pharmacies</h3>
@@ -59,10 +64,10 @@
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
                                 </button>
-                                @if($item->pharmacyBusiness)
+{{--                                @if($item->pharmacyBusiness)--}}
                                     <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i> </a>
-                                @endif
+{{--                                @endif--}}
                                 
                                 <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
                                     method="post"
@@ -111,7 +116,7 @@
             if (item.pharmacy_business) {$('#account_no').html(item.pharmacy_business.bank_account_number); }
             if (item.pharmacy_business) {$('#bank_name').html(item.pharmacy_business.bank_name); }
             if (item.pharmacy_business) {$('#branch').html(item.pharmacy_business.bank_brunch_name); }
-            if (item.pharmacy_business) {$('#bkash').html(item.pharmacy_business.bkash_number); }
+            if (item.pharmacy_business) {$('#routing_number').html(item.pharmacy_business.bank_routing_number); }
             if (item.pharmacy_business) {$('#startTime').html(item.pharmacy_business.start_time); }
             if (item.pharmacy_business) {$('#endTime').html(item.pharmacy_business.end_time); }
             if (item.pharmacy_business) {$('#breakStart').html(item.pharmacy_business.break_start_time); }
