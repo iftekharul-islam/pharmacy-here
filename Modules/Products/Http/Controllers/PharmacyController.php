@@ -25,7 +25,6 @@ class PharmacyController extends Controller
     public function index()
     {
         $pharmacies = $this->repository->all();
-        // dd($pharmacies);
         return view('products::pharmacy.index', compact('pharmacies'));
     }
 
