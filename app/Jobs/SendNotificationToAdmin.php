@@ -10,19 +10,20 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Modules\Orders\Emails\SendOrderStatusEmail;
 
-class SentMailNotificationToAdmin implements ShouldQueue
+class SendNotificationToAdmin implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+
+    private $order;
+    private $subject;
+    private $isCancel;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    private $order;
-    private $subject;
-    private $isCancel;
-
     public function __construct($order, $subject, $isCancel)
     {
         $this->order = $order;
@@ -37,7 +38,7 @@ class SentMailNotificationToAdmin implements ShouldQueue
      */
     public function handle()
     {
-        $toMailAddress = 'iftekharul@augnitive.com';
+        $toMailAddress = 'rasel@augnitive.com';
         Mail::to($toMailAddress)->send( new SendOrderStatusEmail($this->order, $this->subject, $this->isCancel));
     }
 }
