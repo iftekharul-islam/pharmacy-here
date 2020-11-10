@@ -33,7 +33,6 @@
                                 <option value="" disabled selected>{{ __('text.select_district') }}</option>
                                 @foreach($allLocations as $district)
                                     <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" @isset($pharmacy->PharmacyBusiness->area) {{ $pharmacy->PharmacyBusiness->area->thana->district->id ==$district->id ? 'selected' : ''  }} @endisset>{{ $district->name }}</option>
-{{--                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}">{{ $district->name }}</option>--}}
                                 @endforeach
                             </select>
                         </div>
@@ -261,12 +260,10 @@
             $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
             $.map(thanas, function(value) {
-                // let selected = value.id === selectedThana ? true : false;
 
                 $('#selectThana')
                     .append($("<option></option>")
                         .attr("value",value.id)
-                        // .attr('selected', selected)
                         .text(value.name));
             });
 
