@@ -3,6 +3,7 @@
 
 namespace Modules\Orders\Repositories;
 
+use App\Jobs\SendNotificationToAdmin;
 use App\Models\Cart;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -714,7 +715,7 @@ class OrderRepository
 
         if ($status_id == 10) {
             $subject ='An order ID: ' . $order->order_no . ' has been canceled from ' . $order->pharmacy->name;
-            sendOrderStatusEmail($order, $subject, $isCancel = true);
+            SendNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
             logger('Status id');
             logger($status_id);
             $order->status = $status_id;
@@ -784,7 +785,7 @@ class OrderRepository
         }
 
         $subject ='An order ID: ' . $order->order_no . ' has been Orphaned';
-        sendOrderStatusEmail($order, $subject, $isCancel = false);
+        SendNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
         $order->status = 8;
         $order->save();
 
