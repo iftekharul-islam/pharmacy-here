@@ -29,13 +29,13 @@ if (!function_exists('responsePreparedData')) {
     }
 }
 
-if (!function_exists('sendOrderStatusEmail')) {
-    function sendOrderStatusEmail($order, $subject, $isCancel)
-    {
-        $toMailAddress = 'rasel@rasel.com';
-        Mail::to($toMailAddress)->send( new SendOrderStatusEmail($order, $subject, $isCancel));
-    }
-}
+//if (!function_exists('sendOrderStatusEmail')) {
+//    function sendOrderStatusEmail($order, $subject, $isCancel)
+//    {
+//        $toMailAddress = 'rasel@rasel.com';
+//        Mail::to($toMailAddress)->send( new SendOrderStatusEmail($order, $subject, $isCancel));
+//    }
+//}
 
 
 if (!function_exists('sendPushNotification')) {

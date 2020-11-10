@@ -3,6 +3,7 @@
 
 namespace Modules\Orders\Repositories;
 
+use App\Jobs\SentMailNotificationToAdmin;
 use App\Models\Cart;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -700,7 +701,7 @@ class OrderRepository
         if ($status_id == 5 || $status_id == 6) {
 
             $user = Auth::user();
-            $pharmacy_id = Order::where('pharmacy_id', $user->id)->where('id', $order_id)->first();
+            $pharmacy_id = Order::where('pharmacy_id', $user)->where('id', $order_id)->first();
 
             if (! $pharmacy_id) {
                 return responsePreparedData([
@@ -714,7 +715,7 @@ class OrderRepository
 
         if ($status_id == 10) {
             $subject ='An order ID: ' . $order->order_no . ' has been canceled from ' . $order->pharmacy->name;
-            sendOrderStatusEmail($order, $subject, $isCancel = true);
+            SentMailNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
             logger('Status id');
             logger($status_id);
             $order->status = $status_id;
