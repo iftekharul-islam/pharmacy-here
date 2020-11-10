@@ -785,7 +785,7 @@ class OrderRepository
         }
 
         $subject ='An order ID: ' . $order->order_no . ' has been Orphaned';
-        sendOrderStatusEmail($order, $subject, $isCancel = false);
+        SentMailNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
         $order->status = 8;
         $order->save();
 
