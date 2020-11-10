@@ -32,7 +32,7 @@
                             <select class="form-control" id="selectDistrict" onchange="getThanas(value)">
                                 <option value="" disabled selected>{{ __('text.select_district') }}</option>
                                 @foreach($allLocations as $district)
-                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" @isset($pharmacy->PharmacyBusiness->area) {{ $pharmacy->PharmacyBusiness->area->thana->district->id ==$district->id ? 'selected' : ''  }} @endisset>{{ $district->name }}</option>
+                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" @isset($pharmacy->PharmacyBusiness->area) {{ $pharmacy->PharmacyBusiness->area->thana->district->id == $district->id ? 'selected' : ''  }} @endisset>{{ $district->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -207,7 +207,7 @@
                 var districtId = $('#selectDistrict option:selected').val();
                 var selectedDistrict = addresses.find(address => address.id == districtId);
                 thanas = selectedDistrict.thanas;
-                console.log(selectedDistrict);
+
                 $('#selectThana').html('');
                 $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
