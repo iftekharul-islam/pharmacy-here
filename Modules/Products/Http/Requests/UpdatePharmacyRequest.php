@@ -15,7 +15,7 @@ class UpdatePharmacyRequest extends FormRequest
     {
         return [
             'pharmacy_name' => 'required|max:191',
-//            'area_id' => 'required',
+            'area_id' => 'required',
             'pharmacy_address' => 'required|max:191', 
 //            'bank_account_name' => 'required|max:191',
 //            'bank_account_number' => 'required|max:191',

@@ -16491,6 +16491,22 @@ html {
   margin-bottom: 10px;
 }
 
+@media (max-width: 460px) {
+    .home-delivery{
+        font-size: 8px;
+    }
+}
+@media (max-width: 480px) {
+    .pharmacy-delivery{
+        font-size: 8px;
+    }
+}
+@media (max-width: 480px) {
+    .checkout-btn{
+        font-size: 12px;
+        margin: auto;
+    }
+}
 .name-edit {
   margin-bottom: 10px;
 }

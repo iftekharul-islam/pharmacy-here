@@ -64,15 +64,12 @@
                                 <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-eye"></i>
                                 </button>
-{{--                                @if($item->pharmacyBusiness)--}}
                                     <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i> </a>
-{{--                                @endif--}}
                                 
                                 <form id="delete-form-{{ $loop->index }}" action="{{ route('pharmacy.destroy', $item['id']) }}"
                                     method="post"
                                     class="form-horizontal d-inline">
-                                    {{--                            @method('DELETE')--}}
                                     {{ csrf_field() }}
                                     <input type="hidden" name="_method" value="DELETE">
                                     <div class="btn-group">
@@ -130,7 +127,6 @@
             if(item.pharmacy_business && item.pharmacy_business.drug_img_path) {
                 $('#drug').html('<img src="'+ item.pharmacy_business.drug_img_path +'" width="100" /> <a class="badge badge-primary" href="'+ item.pharmacy_business.drug_img_path +'" target="_blank">View Image</a>');
             }
-            // $('#status').html(checkStatus(item.status));
         }
 
         function removeItem(id) {
