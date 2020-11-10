@@ -1,173 +1,181 @@
 @extends('layouts.app')
-<style>
-    .my-address {
-        width: fit-content;
-        margin-left: auto;
-    }
-    .save-profile-btn {
-        border: 1px solid #00ce5e;
-        position: absolute;
-        margin-left: 642px;
-        margin-top: -24px;
-    }
-    @media (max-width: 992px) {
-        .save-profile-btn {
-            position: absolute;
-            margin-left: 603px;
+@section('style')
+    <style>
+        .my-address {
+            width: fit-content;
+            margin-left: auto;
         }
-    }
-    @media (max-width: 768px) {
         .save-profile-btn {
+            border: 1px solid #00ce5e;
             position: absolute;
-            margin-left: 423px;
+            margin-left: 642px;
+            margin-top: -24px;
         }
-    }
-    @media (max-width: 576px) {
-        .save-profile-btn {
-            position: absolute;
-            margin-left: 319px;
+        @media (max-width: 1200px) {
+            .save-profile-btn {
+                position: absolute;
+                margin-left: 840px;
+            }
         }
-    }
-    .header-text-profile {
-        position: absolute;
-        margin-left: -382px;
-        margin-top: -70px;
-    }
-    @media (max-width: 992px) {
+        @media (max-width: 992px) {
+            .save-profile-btn {
+                position: absolute;
+                margin-left: 603px;
+            }
+        }
+        @media (max-width: 768px) {
+            .save-profile-btn {
+                position: absolute;
+                margin-left: 423px;
+            }
+        }
+        @media (max-width: 576px) {
+            .save-profile-btn {
+                position: absolute;
+                margin-left: 245px;
+            }
+        }
         .header-text-profile {
             position: absolute;
-            margin-left: 27px;
-            margin-top: -427px
+            margin-left: -382px;
+            margin-top: -70px;
         }
-    }
-    .header-text-prescription {
-        position: absolute;
-        margin-left: -382px;
-        margin-top: -70px;
-    }
-    @media (max-width: 992px) {
+        @media (max-width: 992px) {
+            .header-text-profile {
+                position: absolute;
+                margin-left: 27px;
+                margin-top: -427px
+            }
+        }
         .header-text-prescription {
             position: absolute;
-            margin-left: 27px;
-            margin-top: -409px;
+            margin-left: -382px;
+            margin-top: -70px;
         }
+        @media (max-width: 992px) {
+            .header-text-prescription {
+                position: absolute;
+                margin-left: 27px;
+                margin-top: -409px;
+            }
 
-    }
-    .my-profile-position {
-        margin-top: 84px;
-    }
-    .my-address-position {
-        margin-top: 41px;
-    }
-    .my-prescription-position {
-        margin-top: 63px;
-    }
-    .add-prescription-button {
-        position: absolute;
-        margin-top: -63px;
-        margin-left: 571px;
-    }
-    @media (max-width: 1200px) {
+        }
+        .my-profile-position {
+            margin-top: 84px;
+        }
+        .my-address-position {
+            margin-top: 41px;
+        }
+        .my-prescription-position {
+            margin-top: 63px;
+        }
         .add-prescription-button {
             position: absolute;
-            margin-left: 774px;
-            margin-top: -59px;
+            margin-top: -63px;
+            margin-left: 571px;
         }
-    }
-    @media (max-width: 992px) {
-        .add-prescription-button {
-            position: absolute;
-            margin-left: 532px;
-            margin-top: -59px;
+        @media (max-width: 1200px) {
+            .add-prescription-button {
+                position: absolute;
+                margin-left: 774px;
+                margin-top: -59px;
+            }
         }
-    }
-    @media (max-width: 768px) {
-        .add-prescription-button {
-            position: absolute;
-            margin-left: 355px;
-            margin-top: -59px;
+        @media (max-width: 992px) {
+            .add-prescription-button {
+                position: absolute;
+                margin-left: 532px;
+                margin-top: -59px;
+            }
         }
-    }
-    @media (max-width: 576px) {
-        .add-prescription-button {
-            position: absolute;
-            margin-left: 319px;
-            margin-top: -59px;
+        @media (max-width: 768px) {
+            .add-prescription-button {
+                position: absolute;
+                margin-left: 355px;
+                margin-top: -59px;
+            }
         }
-    }
-    @media (max-width: 440px) {
-        .add-prescription-button {
-            position: absolute;
-            margin-left: 220px;
-            margin-top: -59px;
+        @media (max-width: 576px) {
+            .add-prescription-button {
+                position: absolute;
+                margin-left: 319px;
+                margin-top: -59px;
+            }
         }
-    }
-    @media (max-width: 360px) {
-        .add-prescription-button {
-            position: absolute;
-            margin-left: 174px;
-            margin-top: -59px;
+        @media (max-width: 440px) {
+            .add-prescription-button {
+                position: absolute;
+                margin-left: 220px;
+                margin-top: -59px;
+            }
         }
-    }
-    .my-edit-btn {
-        position: absolute;
-        margin-left: 680px;
-        margin-top: -143px;
-    }
-    @media (max-width: 1200px ) {
+        @media (max-width: 360px) {
+            .add-prescription-button {
+                position: absolute;
+                margin-left: 174px;
+                margin-top: -59px;
+            }
+        }
         .my-edit-btn {
             position: absolute;
-            margin-left: 558px;
-            margin-top: -143px;
+            margin-left: 680px;
+            margin-top: -158px;
         }
-    }
-    @media (max-width: 992px ) {
-        .my-edit-btn {
-            position: absolute;
-            margin-left: 636px;
-            margin-top: -143px;
+        @media (max-width: 1200px ) {
+            .my-edit-btn {
+                position: absolute;
+                margin-left: 877px;
+                margin-top: -143px;
+            }
         }
-    }
-    @media (max-width: 768px ) {
-        .my-edit-btn {
-            position: absolute;
-            margin-left: 459px;
-            margin-top: -143px;
+        @media (max-width: 992px ) {
+            .my-edit-btn {
+                position: absolute;
+                margin-left: 636px;
+                margin-top: -143px;
+            }
         }
-    }
-    @media (max-width: 576px ) {
-        .my-edit-btn {
-            position: absolute;
-            margin-left: 461px;
-            margin-top: -143px;
+        @media (max-width: 768px ) {
+            .my-edit-btn {
+                position: absolute;
+                margin-left: 459px;
+                margin-top: -143px;
+            }
         }
-    }
-    @media (max-width: 480px ) {
-        .my-edit-btn {
-            position: absolute;
-            margin-left: 340px;
-            margin-top: -143px;
+        @media (max-width: 576px ) {
+            .my-edit-btn {
+                position: absolute;
+                margin-left: 294px;
+                margin-top: -143px;
+            }
         }
-    }
-    @media (max-width: 360px ) {
-        .my-edit-btn {
-            position: absolute;
-            margin-left: 281px;
-            margin-top: -143px;
+        @media (max-width: 480px ) {
+            .my-edit-btn {
+                position: absolute;
+                margin-left: 294px;
+                margin-top: -143px;
+            }
         }
-    }
-    .header-text-address {
-        position: absolute;
-        margin-left: -380px;
-    }
-    @media (max-width: 992px) {
+        @media (max-width: 360px ) {
+            .my-edit-btn {
+                position: absolute;
+                margin-left: 281px;
+                margin-top: -143px;
+            }
+        }
         .header-text-address {
             position: absolute;
-            margin-left: 28px;
-            margin-top: -345px;
+            margin-left: -380px;
         }
-    }
-</style>
+        @media (max-width: 992px) {
+            .header-text-address {
+                position: absolute;
+                margin-left: 28px;
+                margin-top: -345px;
+            }
+        }
+    </style>
+@endsection
 @section('content')
     @if(session('success'))
         <div id="successMessage" class="alert alert-success">
@@ -201,24 +209,33 @@
                                             <tr>
                                                 <td><b>{{ __('text.name') }}:</b></td>
                                                 <td class="save-value">{{ $data->name }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="name" value="{{ $data->name }}"></td>
+                                                <td class="edit-value d-none"><input type="text" class="form-control" name="name" value="{{ $data->name }}"></td>
                                                 <td><b>{{ __('text.date_of_birth') }}:</b></td>
                                                 <td class="save-value">{{ $data->dob != null ? date('d F Y', strtotime($data->dob)) : '' }}</td>
-                                                <td class="edit-value d-none"><input type="date" name="dob"  value="{{ $data->dob }}"></td>
+                                                <td class="edit-value d-none"><input type="date" class="form-control" name="dob"  value="{{ $data->dob }}"></td>
 
                                             </tr>
+                                            @php
+                                                $gender = Str::lower($data->gender);
+                                            @endphp
                                             <tr>
                                                 <td><b>{{ __('text.phone_number') }}:</b></td>
                                                 <td class="save-value">{{ $data->phone_number }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
+                                                <td class="edit-value d-none"><input class="form-control" type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
                                                 <td><b>{{ __('text.gender') }}:</b></td>
                                                 <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>
+{{--                                                <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>--}}
+                                                <td class="edit-value d-none">
+                                                    <select class="form-control" name="gender" id="">
+                                                        <option value="male" {{ $gender == 'male' ? 'selected' : '' }}>Male</option>
+                                                        <option value="female" {{ $gender == 'female' ? 'selected' : '' }}>Female</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>{{ __('text.alter_contact') }}:</b></td>
                                                 <td class="save-value">{{ $data->alternative_phone_number }}</td>
-                                                <td class="edit-value d-none"><input type="text" name="alternative_phone_number" value="{{ $data->alternative_phone_number }}"></td>
+                                                <td class="edit-value d-none"><input type="text" class="form-control" name="alternative_phone_number" value="{{ $data->alternative_phone_number }}"></td>
                                             </tr>
                                         </table>
                                     </div>

@@ -32,8 +32,8 @@
                             <select class="form-control" id="selectDistrict" onchange="getThanas(value)">
                                 <option value="" disabled selected>{{ __('text.select_district') }}</option>
                                 @foreach($allLocations as $district)
-{{--                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" @isset($pharmacy->PharmacyBusiness->area) {{ $pharmacy->PharmacyBusiness->area->thana->district->id ==$district->id ? 'selected' : ''  }} @endisset>{{ $district->name }}</option>--}}
-                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}">{{ $district->name }}</option>
+                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" @isset($pharmacy->PharmacyBusiness->area) {{ $pharmacy->PharmacyBusiness->area->thana->district->id ==$district->id ? 'selected' : ''  }} @endisset>{{ $district->name }}</option>
+{{--                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}">{{ $district->name }}</option>--}}
                                 @endforeach
                             </select>
                         </div>
@@ -192,13 +192,63 @@
 @section('js')
     <script>
         var addresses = {!! json_encode($allLocations) !!};
+        var pharmacy = {!! json_encode($pharmacy) !!};
 
-        {{--var selectedDistrict = {!! json_encode($pharmacy->PharmacyBusiness->area->thana->district->id) !!};--}}
-{{--        var selectedThana = {!! json_encode($pharmacy->PharmacyBusiness->area->thana->id) !!};--}}
-{{--        var selectedArea = {!! json_encode($pharmacy->PharmacyBusiness->area->id) !!};--}}
+        if ( pharmacy.pharmacy_business != null) {
+            var selectedDistrict = {!! json_encode( isset($pharmacy->PharmacyBusiness) ? $pharmacy->PharmacyBusiness->area->thana->district->id : null) !!};
+            var selectedThana = {!! json_encode(isset($pharmacy->PharmacyBusiness) ? $pharmacy->PharmacyBusiness->area->thana->id : null) !!};
+            var selectedArea = {!! json_encode(isset($pharmacy->PharmacyBusiness) ? $pharmacy->PharmacyBusiness->area->id : null) !!};
+        }
 
         var thanas = [];
         var areas = [];
+
+        window.onload=function(){
+            if (pharmacy.pharmacy_business != null) {
+                var districtId = $('#selectDistrict option:selected').val();
+                var selectedDistrict = addresses.find(address => address.id == districtId);
+                thanas = selectedDistrict.thanas;
+                console.log(selectedDistrict);
+                $('#selectThana').html('');
+                $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+                $.map(thanas, function (value) {
+                    let selectedvalue = value.id == selectedThana ? true : false;
+
+                    $('#selectThana')
+                        .append($("<option></option>")
+                            .attr("value", value.id)
+                            .prop('selected', selectedvalue)
+                            .text(value.name));
+                });
+
+                var areaId = $('#selectThana option:selected').val();
+
+                var selectedThanaValues = thanas.find(thana => thana.id == areaId);
+                areas = selectedThanaValues.areas;
+
+                if (areas.length === 0) {
+                    $('#selectArea').attr('disabled', 'disabled');
+                    $('#address').attr('disabled', 'disabled');
+                    $('#submit').attr('disabled', 'disabled');
+                }
+
+                $('#selectArea').html('');
+                $.map(areas, function (value) {
+                    let selected = value.id == selectedArea ? true : false;
+
+                    $('#selectArea').removeAttr('disabled');
+                    $('#address').removeAttr('disabled');
+                    $('#submit').removeAttr('disabled');
+
+                    $('#selectArea')
+                        .append($("<option></option>")
+                            .attr("value", value.id)
+                            .prop('selected', selected)
+                            .text(value.name));
+                });
+            }
+        };
 
         function getThanas() {
             var districtId = $('#selectDistrict option:selected').val();
@@ -243,8 +293,8 @@
 
         function getAreas() {
             var areaId = $('#selectThana option:selected').val();
-            var selectedThana = thanas.find(thana => thana.id == areaId);
-            areas = selectedThana.areas;
+            var selectedThanaValue = thanas.find(thana => thana.id == areaId);
+            areas = selectedThanaValue.areas;
 
             if ( areas.length === 0 ) {
                 $('#selectArea').attr('disabled', 'disabled');
@@ -266,7 +316,3 @@
         }
     </script>
 @endsection
-
-
-
-
