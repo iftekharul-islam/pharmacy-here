@@ -701,7 +701,7 @@ class OrderRepository
         if ($status_id == 5 || $status_id == 6) {
 
             $user = Auth::user();
-            $pharmacy_id = Order::where('pharmacy_id', $user)->where('id', $order_id)->first();
+            $pharmacy_id = Order::where('pharmacy_id', $user->id)->where('id', $order_id)->first();
 
             if (! $pharmacy_id) {
                 return responsePreparedData([
