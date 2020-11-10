@@ -38,7 +38,7 @@ class SendNotificationToAdmin implements ShouldQueue
      */
     public function handle()
     {
-        $toMailAddress = 'rasel@augnitive.com';
+        $toMailAddress = config('mailto.mail_to_address');
         Mail::to($toMailAddress)->send( new SendOrderStatusEmail($this->order, $this->subject, $this->isCancel));
     }
 }
