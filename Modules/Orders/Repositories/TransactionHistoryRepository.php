@@ -137,16 +137,14 @@ class TransactionHistoryRepository
 
     public function get($request, $id)
     {
-        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
-        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+        $startDate = $request->start_date ;
+        $endDate = $request->end_date ;
 
-        if ($startDate !== null || $endDate !== null) {
-            $TransactionHistories = TransactionHistory::whereBetween('date', [$startDate, $endDate])->where('pharmacy_id', $id)->paginate(10);
-            return $TransactionHistories;
+        if ($startDate != null || $endDate != null) {
+            return TransactionHistory::whereBetween('date', [$startDate, $endDate])->where('pharmacy_id', $id)->paginate(10);
         }
 
-        return TransactionHistory::with('pharmacy.pharmacyBusiness')
-            ->where('pharmacy_id', $id)
+        return TransactionHistory::where('pharmacy_id', $id)
             ->paginate(10);
     }
 

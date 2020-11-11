@@ -11,6 +11,27 @@
         <div class="card-body">
             <form action="{{ route('orders.index') }}">
                 <div class="row">
+                    <div class="col-4-xxxl col-lg-4 col-4 form-group">
+                        <label>District</label>
+                        <select name="district_id" class="form-control" id="selectDistrict" onchange="getThanas(value)">
+                            <option value="" selected disabled>Select district</option>
+                            @foreach($allLocations as $district)
+                                <option value="{{ $district->id }}"@isset($display_district) {{ $display_district == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
+{{--                                <option value="{{ $district->id }}">{{ $district->name }}</option>--}}
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-4-xxxl col-lg-4 col-4 form-group">
+                        <label>Thana</label>
+                        <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()" disabled="">
+                        </select>
+                    </div>
+                    <div class="col-4-xxxl col-lg-4 col-4 form-group">
+                        <label>Area</label>
+                        <select class="form-control" id="selectArea" name="area_id" disabled="">
+                        </select>
+                    </div>
+
                 <div class="col-4-xxxl col-lg-4 col-4 form-group">
                     <label>Start date</label>
                     <input name="start_date" type="date" class="form-control" value="{{ $display_Sdate ?? $display_Sdate  }}">
@@ -46,6 +67,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
+            @if($data->isNotEmpty())
             <table id="example1" class="table  mb-3">
                 <thead>
                 <tr>
@@ -58,13 +80,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if($data->isNotEmpty())
                     @foreach($data as $index => $item)
                         <tr>
                             <td>{{ $item->order_no }}</td>
                             <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>
                             <td>{{ $item->amount }}</td>
-                            <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->order_date }}</td>
                             <td>@include('orders::status', ['status' => $item->status])</td>
 
                             <td>
@@ -74,15 +95,148 @@
                             </td>
                         </tr>
                     @endforeach
-
-                @endif
                 </tbody>
             </table>
-            {{ $data->links() }}
+                {{ $data->appends(Request::all())->links() }}
+                @else
+                <h3 class="text-center">No data found !!!</h3>
+            @endif
         </div>
         <!-- /.card-body -->
     </div>
+@endsection
+@section('js')
+    <script>
+        var addresses = {!! json_encode($allLocations) !!};
 
+        var selectedDistrict = {!! json_encode( $display_district ?? null ) !!};
+        var selectedThana = {!! json_encode( $display_thana ?? null ) !!};
+        var selectedArea = {!! json_encode($display_area ?? null ) !!};
+
+        var thanas = [];
+        var areas = [];
+
+        window.onload=function(){
+        if (selectedDistrict != null) {
+            var districtId = $('#selectDistrict option:selected').val();
+            var selectedDistrictValue = addresses.find(address => address.id == districtId);
+
+                thanas = selectedDistrictValue.thanas;
+
+                if (thanas.length === 0) {
+                    $('#selectThana').prop('disabled', true);
+                    $('#selectThana').html('');
+                    return;
+                }
+
+                $('#selectThana').html('');
+                $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+                $.map(thanas, function (value) {
+                    let selectedvalue = value.id == selectedThana ? true : false;
+                    $('#selectThana').removeAttr('disabled');
+                    $('#selectThana')
+                        .append($("<option></option>")
+                            .attr("value", value.id)
+                            .prop('selected', selectedvalue)
+                            .text(value.name));
+                });
+
+                var areaId = $('#selectThana option:selected').val();
+
+                var selectedThanaValues = thanas.find(thana => thana.id == areaId);
+                    areas = selectedThanaValues.areas;
+
+                    if (areas.length === 0) {
+                        $('#selectArea').attr('disabled', 'disabled');
+                        $('#selectArea').html('');
+                        return;
+                    }
+
+                    $('#selectArea').html('');
+                    $('#selectArea').append(`<option value="" selected disabled>Please Select a area</option>`);
+                    $.map(areas, function (value) {
+                        let selected = value.id == selectedArea ? true : false;
+
+                        $('#selectArea').removeAttr('disabled');
+                        $('#address').removeAttr('disabled');
+                        $('#submit').removeAttr('disabled');
+
+                        $('#selectArea')
+                            .append($("<option></option>")
+                                .attr("value", value.id)
+                                .prop('selected', selected)
+                                .text(value.name));
+                    });
+                }
+        };
+
+        function getThanas() {
+            var districtId = $('#selectDistrict option:selected').val();
+
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+
+            thanas = selectedDistrict.thanas;
+
+            $('#selectThana').html('');
+            $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+            $.map(thanas, function(value) {
+                $('#selectThana').removeAttr('disabled');
+                $('#selectThana')
+                    .append($("<option></option>")
+                        .attr("value",value.id)
+                        .text(value.name));
+            });
+
+        }
+
+        function getPharmacyThanas() {
+            var districtId = $('#selectPharmacyDistrict option:selected').val();
+
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+
+            thanas = selectedDistrict.thanas;
+
+            $('#selectPharmacyThana').html('');
+            $('#selectPharmacyThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+            $.map(thanas, function(value) {
+                $('#selectPharmacyThana')
+                    .append($("<option></option>")
+                        .attr("value",value.id)
+                        .text(value.name));
+            });
+
+        }
+
+        function getAreas() {
+            var areaId = $('#selectThana option:selected').val();
+            var selectedThanaValue = thanas.find(thana => thana.id == areaId);
+            areas = selectedThanaValue.areas;
+
+            if ( areas.length === 0 ) {
+                $('#selectArea').attr('disabled', 'disabled');
+                $('#address').attr('disabled', 'disabled');
+                $('#submit').attr('disabled', 'disabled');
+                $('#selectArea').html('');
+                return;
+            }
+
+            $('#selectArea').html('');
+
+            $('#selectArea').removeAttr('disabled');
+            $('#address').removeAttr('disabled');
+            $('#submit').removeAttr('disabled');
+            $('#selectArea').append(`<option value="" selected disabled>Please Select a area</option>`);
+            $.map(areas, function(value) {
+                $('#selectArea')
+                    .append($("<option></option>")
+                        .attr("value",value.id)
+                        .text(value.name));
+            });
+        }
+    </script>
 @endsection
 
 

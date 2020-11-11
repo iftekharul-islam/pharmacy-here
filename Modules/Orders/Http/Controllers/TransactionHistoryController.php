@@ -82,6 +82,23 @@ class TransactionHistoryController extends Controller
             compact('transactionHistories', 'total_customer_amount', 'total_pharmacy_amount',
                             'total_subidha_comission', 'allLocations', 'district_new_id', 'thana_new_id', 'area_new_id'));
     }
+    /**
+     * Show the specified resource.
+     * @param int $id
+     * @return Response
+     */
+    public function show(Request $request, $id)
+    {
+//        return $request->all();
+        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
+        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+        $userId = $id;
+
+        $data = $this->repository->get($request, $id);
+//        return $data;
+        return view('orders::transactionHistory.epay.show', compact('data', 'userId', 'startDate', 'endDate'));
+    }
+
 
     /**
      * @param Request $request
@@ -120,22 +137,6 @@ class TransactionHistoryController extends Controller
 
         return redirect()->route('transactionHistory.index');
     }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show(Request $request, $id)
-    {
-        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
-        $endDate = $request->end_date ? $request->end_date : Carbon::today();
-        $userId = $id;
-
-        $data = $this->repository->get($request, $id);
-        return view('orders::transactionHistory.epay.show', compact('data', 'userId', 'startDate', 'endDate'));
-    }
-
     /**
      * Show the form for editing the specified resource.
      * @param int $id
@@ -179,13 +180,13 @@ class TransactionHistoryController extends Controller
     public function exportPharmacyTransactionById(Request $request)
     {
         $toDate = $request->toDate;
-        $fromDate = $request->fromDate;
+        $endDate = $request->endDate;
         $userId = $request->userId;
         $date = Carbon::now()->format('d-m-Y');
         $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
         $pharmacy = Str::slug($data->pharmacy_name);
 
-        return (new TransactionHistoryByIdExport($toDate, $fromDate, $userId))->download($pharmacy.'-'. $date . '.xls');
+        return (new TransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy.'-'. $date . '.xls');
     }
     public function codExportPharmacyTransaction(Request $request)
     {
@@ -199,12 +200,12 @@ class TransactionHistoryController extends Controller
     public function codExportPharmacyTransactionById(Request $request)
     {
         $toDate = $request->toDate;
-        $fromDate = $request->fromDate;
+        $endDate = $request->endDate;
         $userId = $request->userId;
         $date = Carbon::now()->format('d-m-Y');
         $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
         $pharmacy = Str::slug($data->pharmacy_name);
 
-        return (new CodTransactionHistoryByIdExport($toDate, $fromDate, $userId))->download($pharmacy.'-'. $date . '.xls');
+        return (new CodTransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy.'-'. $date . '.xls');
     }
 }

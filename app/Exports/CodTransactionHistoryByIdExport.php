@@ -13,11 +13,11 @@ use Modules\Orders\Entities\Models\TransactionHistory;
 class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, WithMapping
 {
     use Exportable;
-    protected $fromDate, $toDate, $userId;
+    protected $endDate, $toDate, $userId;
 
-    public function __construct($fromDate, $toDate, $userId)
+    public function __construct($endDate, $toDate, $userId)
     {
-        $this->fromDate = $fromDate;
+        $this->endDate = $endDate;
         $this->toDate = $toDate;
         $this->userId = $userId;
     }
@@ -27,9 +27,7 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
     public function collection()
     {
 
-//        DB::enableQueryLog();
         $transaction =  Order::query();
-//        dd(DB::getQueryLog());
 
         $allTransactionHistories = $this->query($transaction);
 
@@ -47,8 +45,8 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
 
     public function query($transaction)
     {
-        if ($this->toDate !== null || $this->fromDate !== null) {
-            return $transaction->whereBetween('order_date', [$this->fromDate, $this->toDate])->where('pharmacy_id', $this->userId)->get();
+        if ($this->toDate !== null || $this->endDate !== null) {
+            return $transaction->whereBetween('order_date', [$this->endDate, $this->toDate])->where('pharmacy_id', $this->userId)->get();
         }
         return $transaction->where('pharmacy_id', $this->userId)->get();
 

@@ -42,7 +42,7 @@
         <div class="card-header">
             <h3 class="card-title">COD Payment History</h3>
             <a class="btn btn-success float-right"
-               href="{{ route('cod.export.transaction.history', [ 'toDate' => $startDate, 'fromDate' => $endDate, 'userId' => $userId ]) }}">Export transaction
+               href="{{ route('cod.export.transaction.history', [ 'toDate' => $startDate, 'endDate' => $endDate, 'userId' => $userId ]) }}">Export transaction
             </a>
         </div>
         <!-- /.card-header -->
