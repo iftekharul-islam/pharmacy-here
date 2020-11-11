@@ -114,6 +114,7 @@ class OrderRepository
         logger('End of generate OrderNo()');
         $order->point_amount =  round($request->get('point_amount'), 2);
         $order->points = $request->get('points');
+        $order->delivery_duration = $request->get('delivery_duration');
 
         if ($order->delivery_type == config('subidha.home_delivery')) {
 
