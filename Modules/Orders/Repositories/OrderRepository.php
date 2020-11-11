@@ -302,7 +302,6 @@ class OrderRepository
         ]);
 
         if ( $request->order_items ) {
-//             $order->orderItems()->saveMany($request->order_items);
             $this->storeAssociateProducts($request->order_items, $order->id);
         }
 
@@ -969,21 +968,6 @@ class OrderRepository
         if ($startDate !== null || $endDate !== null) {
             return Order::with(['pharmacy.pharmacyBusiness'])->whereBetween('order_date', [$startDate, $endDate])->where('status', $request->status)->paginate(10);
         }
-
-//        if ($request->has('status')) {
-
-//            $status = $request->get('status');
-//            if ( $status == 2) {
-//                $order->whereIn('status', [2,9]);
-//            } else {
-//                $order->where('status', $status);
-//            }
-
-//            return Order::with(['orderItems.product', 'address', 'pharmacy'])
-//                ->where('status', $request->get('status'))
-//                ->orderBy('id','desc')
-//                ->paginate(10);
-//        }
 
         return Order::with(['pharmacy.pharmacyBusiness'])
             ->orderBy('id','desc')

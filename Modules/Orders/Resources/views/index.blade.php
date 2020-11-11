@@ -17,7 +17,6 @@
                             <option value="" selected disabled>Select district</option>
                             @foreach($allLocations as $district)
                                 <option value="{{ $district->id }}"@isset($display_district) {{ $display_district == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
-{{--                                <option value="{{ $district->id }}">{{ $district->name }}</option>--}}
                             @endforeach
                         </select>
                     </div>

@@ -56,7 +56,6 @@
                     <th>Transaction ID</th>
                     <th>Payment Through</th>
                     <th>Amount</th>
-{{--                    <th>Action</th>--}}
                 </tr>
                 </thead>
                 <tbody>
@@ -67,14 +66,6 @@
                             <td>{{ $item->transaction_id }}</td>
                             <td>{{ $item->payment_method }}</td>
                             <td>{{ $item->amount }}</td>
-{{--                            <td>--}}
-                                {{--                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">--}}
-                                {{--                                    <i class="fa fa-eye"></i>--}}
-                                {{--                                </button>--}}
-{{--                                <a href="{{ route('transactionHistory.create', $item['id']) }}" class="btn btn-sm btn-primary">--}}
-{{--                                    <i class="fa fa-edit"></i> </a>--}}
-
-{{--                            </td>--}}
                         </tr>
                     @endforeach
 
