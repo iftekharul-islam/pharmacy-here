@@ -24,7 +24,6 @@ class OrdersController extends Controller
      */
     public function index(Request $request)
     {
-//        return $request->all();
         $display_area = $request->area_id;
         $display_thana = $request->thana_id;
         $display_district = $request->district_id;
@@ -33,7 +32,6 @@ class OrdersController extends Controller
         $status = $request->status;
 
         $data = $this->repository->ordersByStatus($request);
-//        return $data;
         $allLocations = $this->locationRepository->getLocation();
         return view('orders::index', compact('data', 'display_Sdate','display_Edate', 'status', 'allLocations',
                                                             'display_area', 'display_thana', 'display_district'));
@@ -66,7 +64,6 @@ class OrdersController extends Controller
     public function show($id)
     {
         $data = $this->repository->getOrderDetails($id);
-//        return $data;
         return view('orders::show', compact('data'));
     }
 

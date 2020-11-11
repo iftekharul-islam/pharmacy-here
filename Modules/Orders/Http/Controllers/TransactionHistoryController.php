@@ -89,13 +89,11 @@ class TransactionHistoryController extends Controller
      */
     public function show(Request $request, $id)
     {
-//        return $request->all();
         $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
         $endDate = $request->end_date ? $request->end_date : Carbon::today();
         $userId = $id;
 
         $data = $this->repository->get($request, $id);
-//        return $data;
         return view('orders::transactionHistory.epay.show', compact('data', 'userId', 'startDate', 'endDate'));
     }
 
