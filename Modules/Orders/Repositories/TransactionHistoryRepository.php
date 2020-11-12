@@ -137,17 +137,16 @@ class TransactionHistoryRepository
 
     public function get($request, $id)
     {
-        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
-        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+        $startDate = $request->start_date ;
+        $endDate = $request->end_date ;
+        $data = TransactionHistory::query();
+        $data->where('pharmacy_id', $id);
 
-        if ($startDate !== null || $endDate !== null) {
-            $TransactionHistories = TransactionHistory::whereBetween('date', [$startDate, $endDate])->where('pharmacy_id', $id)->paginate(10);
-            return $TransactionHistories;
+        if ($startDate != null || $endDate != null) {
+            $data->whereBetween('date', [ $startDate ?? Carbon::today()->subDays(30), $endDate ?? Carbon::today() ]);
         }
 
-        return TransactionHistory::with('pharmacy.pharmacyBusiness')
-            ->where('pharmacy_id', $id)
-            ->paginate(10);
+        return $data->paginate(config('subidha.item_per_page'));
     }
 
     public function getCod($request, $id)

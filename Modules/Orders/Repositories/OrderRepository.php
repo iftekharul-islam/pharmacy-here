@@ -82,11 +82,8 @@ class OrderRepository
 
     public function create($request, $customer_id)
     {
-        logger('Into the Order repository create method');
         $order = new Order();
-        logger('Into the Order controller create method pharmacy_id');
         $pharmacy_id = $request->get('pharmacy_id') ? $request->get('pharmacy_id') : $this->getNearestPharmacyId($request->get('shipping_address_id'));
-        logger('End of Order controller create method pharmacy_id');
         if (empty($pharmacy_id)) {
             throw new NotFoundHttpException('Pharmacy Not Found');
         }
@@ -101,17 +98,13 @@ class OrderRepository
         $order->order_date = Carbon::now()->format('Y-m-d');
         $order->delivery_time = $delivery_time;
         $order->notes = $request->get('notes');
-        logger('Start of Order controller create method customer: '. $customer_id);
         $order->customer_id = $customer_id;
         $order->pharmacy_id = $pharmacy_id;
-        logger('end of Order controller create method customer: '. $customer_id);
         $order->shipping_address_id = $request->get('shipping_address_id');
         $order->delivery_method = $request->get('delivery_method');
         $order->delivery_date = $request->get('delivery_date');
         $order->is_rated = "no";
-        logger('Start of generate OrderNo()');
         $order->order_no = $this->generateOrderNo();
-        logger('End of generate OrderNo()');
         $order->point_amount =  round($request->get('point_amount'), 2);
         $order->points = $request->get('points');
         $order->delivery_duration = $request->get('delivery_duration');
@@ -160,7 +153,6 @@ class OrderRepository
 
                 if ($order->delivery_method == config('subidha.express_delivery')) {
                     if ($order->payment_type == config('subidha.cod_payment_type')) {
-                        logger('Into subidha epay payment');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -176,7 +168,6 @@ class OrderRepository
 
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
-                        logger('Into subidha ecash payment method');
 
                         $delivery_value = config('subidha.express_delivery_charge') *
                             config('subidha.subidha_delivery_percentage') / 100;
@@ -229,7 +220,6 @@ class OrderRepository
 
                 if ($order->delivery_method == config('subidha.express_delivery')) {
                     if ($order->payment_type == config('subidha.cod_payment_type')) {
-                        logger('Into subidha epay payment');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -238,16 +228,12 @@ class OrderRepository
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                        logger('Assigning subidha comission in epay payment');
                         $order->subidha_comission = round( ($amount_value + $delivery_value + $total_value), 2);
                         $order->pharmacy_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $order->subidha_comission ), 2);
                         $order->customer_amount = round( (($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
 
-                        logger('Subidha comission in epay payment: ' . $order->subidha_comission);
-
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
-                        logger('Into subidha ecash payment method');
 
                         $delivery_value = config('subidha.express_delivery_charge') *
                             config('subidha.subidha_delivery_percentage') / 100;
@@ -316,16 +302,11 @@ class OrderRepository
         ]);
 
         if ( $request->order_items ) {
-            logger('Into the Order items');
-            // $order->orderItems()->saveMany($request->order_items);
             $this->storeAssociateProducts($request->order_items, $order->id);
-            logger('End of Order Items');
         }
 
         if ( $request->prescriptions ) {
-            logger('Into the prescription');
             $this->storeAssociatePrescriptions($request->prescriptions, $order->id);
-            logger('End of prescription');
         }
 
         $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
@@ -867,37 +848,38 @@ class OrderRepository
 
     public function ordersByStatus($request)
     {
-        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
-        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+        $district_id = $request->district_id;
+        $thana_id = $request->thana_id;
+        $area_id = $request->area_id;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
 
-        if ( $request->status !== null){
-            $orders = Order::whereBetween('order_date', [$startDate, $endDate])->where('status', $request->status)->paginate(10);
-            return $orders;
+        $data = Order::query();
+        $data->with(['pharmacy.pharmacyBusiness'])->orderBy('id','desc');
+
+        if ($area_id !== null) {
+            $data->whereHas('pharmacy.pharmacyBusiness', function ($query) use ($area_id) {
+                    $query->where('area_id', $area_id);
+                });
+        }
+        if ($thana_id !== null && $area_id == null) {
+            $data->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($thana_id) {
+                    $query->where('thana_id', $thana_id);
+                });
+        }
+        if ($district_id !== null && $thana_id == null && $area_id == null) {
+            $data->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($district_id) {
+                    $query->where('district_id', $district_id);
+                });
+        }
+        if ( $request->status !== null) {
+            $data->where('status', $request->status);
         }
         if ($startDate !== null || $endDate !== null) {
-            $orders = Order::whereBetween('order_date', [$startDate, $endDate])->paginate(10);
-            return $orders;
+            $data->whereBetween('order_date', [$startDate ?? Carbon::today()->subDays(30), $endDate ?? Carbon::today()]);
         }
 
-        $order = Order::query();
-
-        if ($request->has('status')) {
-
-            $status = $request->get('status');
-            if ( $status == 2) {
-                $order->whereIn('status', [2,9]);
-            } else {
-                $order->where('status', $status);
-            }
-
-//            return Order::with(['orderItems.product', 'address', 'pharmacy'])
-//                ->where('status', $request->get('status'))
-//                ->orderBy('id','desc')
-//                ->paginate(10);
-        }
-        return $order->with(['orderItems.product', 'address', 'pharmacy'])
-            ->orderBy('id','desc')
-            ->paginate(10);
+        return $data->paginate(config('subidha.item_per_page'));
 
     }
 

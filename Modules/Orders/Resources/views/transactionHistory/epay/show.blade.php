@@ -25,11 +25,11 @@
                 <div class="row">
                     <div class="col-6-xxxl col-lg-6 col-6 form-group">
                         <label>Start date</label>
-                        <input name="start_date" type="date" class="form-control" value="{{ $startDate ?? $startDate }}">
+                        <input name="start_date" type="date" class="form-control" value="{{ $startDate ?? '' }}">
                     </div>
                     <div class="col-6-xxxl col-lg-6 col-6 form-group">
                         <label>End date</label>
-                        <input name="end_date" type="date" class="form-control" value="{{ $endDate ?? $endDate }}">
+                        <input name="end_date" type="date" class="form-control" value="{{ $endDate ?? '' }}">
                     </div>
                     <div class="col-12 form-group mg-t-2 float-right">
                         <button type="submit" class="btn btn-primary float-right">Search</button>
@@ -42,11 +42,12 @@
         <div class="card-header">
             <h3 class="card-title">Payment History</h3>
             <a class="btn btn-success float-right"
-               href="{{ route('epay.export.transaction.history', [ 'toDate' => $startDate, 'fromDate' => $endDate, 'userId' => $userId ]) }}">Export transaction
+               href="{{ route('epay.export.transaction.history', [ 'toDate' => $startDate, 'endDate' => $endDate, 'userId' => $userId ]) }}">Export transaction
             </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
+            @if(count($data) > 0)
             <table id="example1" class="table  mb-3">
                 <thead>
                 <tr>
@@ -55,11 +56,9 @@
                     <th>Transaction ID</th>
                     <th>Payment Through</th>
                     <th>Amount</th>
-{{--                    <th>Action</th>--}}
                 </tr>
                 </thead>
                 <tbody>
-                @if($data->isNotEmpty())
                     @foreach($data as $index => $item)
                         <tr>
                             <td>{{ $data->firstItem() + $index }}</td>
@@ -67,20 +66,15 @@
                             <td>{{ $item->transaction_id }}</td>
                             <td>{{ $item->payment_method }}</td>
                             <td>{{ $item->amount }}</td>
-                            <td>
-                                {{--                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">--}}
-                                {{--                                    <i class="fa fa-eye"></i>--}}
-                                {{--                                </button>--}}
-{{--                                <a href="{{ route('transactionHistory.create', $item['id']) }}" class="btn btn-sm btn-primary">--}}
-{{--                                    <i class="fa fa-edit"></i> </a>--}}
-
-                            </td>
                         </tr>
                     @endforeach
-                @endif
+
                 </tbody>
             </table>
             {{ $data->links() }}
+            @else
+            <h3 class="text-center">No data Found !!!</h3>
+            @endif
         </div>
         <!-- /.card-body -->
     </div>

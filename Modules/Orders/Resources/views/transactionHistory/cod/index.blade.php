@@ -36,7 +36,7 @@
                     </div>
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
                         <label>Thana</label>
-                        <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()">
+                        <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()" disabled="">
 
                         </select>
                     </div>
@@ -119,10 +119,15 @@
 
         thanas = selectedDistrict.thanas;
 
+        if ( thanas.length === 0 ) {
+            $('#selectThana').prop('disabled', true );
+        }
+
         $('#selectThana').html('');
         $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
         $.map(thanas, function(value) {
+            $('#selectThana').removeAttr('disabled');
             $('#selectThana')
                 .append($("<option></option>")
                     .attr("value",value.id)
@@ -141,6 +146,8 @@
         }
 
         $('#selectArea').html('');
+        $('#selectArea').append(`<option value="" selected disabled>Please Select an area</option>`);
+
         $.map(areas, function(value) {
             $('#selectArea').removeAttr('disabled');
 

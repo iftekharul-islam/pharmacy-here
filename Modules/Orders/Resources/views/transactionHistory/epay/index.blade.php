@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
                         <label>Thana</label>
-                        <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()">
+                        <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()" disabled="">
                         </select>
                     </div>
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
@@ -96,7 +96,7 @@
                                 <td>0</td>
                             @endif
                             <td>
-                                <a href="{{ route('transactionHistory.show', $item->pharmacy_id) }}" type="button"  class="btn btn-sm btn-success" >
+                                <a href="{{ route('transactionHistory.show', $item->pharmacy->user_id) }}" type="button"  class="btn btn-sm btn-success" >
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 <a href="{{ route('transactionHistory.create', $item->pharmacy_id) }}" class="btn btn-sm btn-primary">
@@ -114,10 +114,9 @@
         <!-- /.card-body -->
     </div>
 @endsection
-<script>
+@section('js')
+    <script>
     var addresses = {!! json_encode($allLocations) !!};
-    {{--var thana_new_id = {!! json_encode($thana_new_id) !!};--}}
-    {{--var area_new_id = {!! json_encode($area_new_id) !!};--}}
     var thanas = [];
     var areas = [];
 
@@ -128,10 +127,15 @@
 
         thanas = selectedDistrict.thanas;
 
+        if ( thanas.length === 0 ) {
+            $('#selectThana').prop('disabled', true );
+        }
+
         $('#selectThana').html('');
         $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
         $.map(thanas, function(value) {
+            $('#selectThana').removeAttr('disabled');
             $('#selectThana')
                 .append($("<option></option>")
                     .attr("value",value.id)
@@ -146,10 +150,11 @@
         areas = selectedThana.areas;
 
         if ( areas.length === 0 ) {
-            $('#selectArea').attr('disabled', 'disabled');
+            $('#selectArea').prop('disabled', true );
         }
 
         $('#selectArea').html('');
+        $('#selectArea').append(`<option value="" selected disabled>Please Select an area</option>`);
         $.map(areas, function(value) {
             $('#selectArea').removeAttr('disabled');
 
@@ -160,6 +165,7 @@
         });
     }
 </script>
+@endsection
 
 
 

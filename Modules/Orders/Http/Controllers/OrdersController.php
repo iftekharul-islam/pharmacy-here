@@ -5,15 +5,18 @@ namespace Modules\Orders\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Repositories\LocationRepository;
 use Modules\Orders\Repositories\OrderRepository;
 
 class OrdersController extends Controller
 {
     private $repository;
+    private $locationRepository;
 
-    public function __construct(OrderRepository $repository)
+    public function __construct(OrderRepository $repository, LocationRepository $locationRepository)
     {
         $this->repository = $repository;
+        $this->locationRepository = $locationRepository;
     }
     /**
      * Display a listing of the resource.
@@ -21,11 +24,17 @@ class OrdersController extends Controller
      */
     public function index(Request $request)
     {
+        $display_area = $request->area_id;
+        $display_thana = $request->thana_id;
+        $display_district = $request->district_id;
         $display_Sdate = $request->start_date;
         $display_Edate = $request->end_date;
         $status = $request->status;
+
         $data = $this->repository->ordersByStatus($request);
-        return view('orders::index', compact('data', 'display_Sdate','display_Edate', 'status'));
+        $allLocations = $this->locationRepository->getLocation();
+        return view('orders::index', compact('data', 'display_Sdate','display_Edate', 'status', 'allLocations',
+                                                            'display_area', 'display_thana', 'display_district'));
     }
 
     /**
@@ -55,7 +64,6 @@ class OrdersController extends Controller
     public function show($id)
     {
         $data = $this->repository->getOrderDetails($id);
-//        return $data;
         return view('orders::show', compact('data'));
     }
 
