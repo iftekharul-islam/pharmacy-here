@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 //});
 Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('orders', 'OrdersController@index')->name('orders.index');
+    Route::get('export-orders', 'OrdersController@exportOrder')->name('export.orders');
     Route::get('orders/{order_id}', 'OrdersController@show')->name('orders.show');
 
     Route::get('transaction-history', 'TransactionHistoryController@index')->name('transactionHistory.index');

@@ -6,11 +6,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Modules\Orders\Entities\Models\TransactionHistory;
 
-class TransactionHistoryByIdExport implements FromCollection, WithHeadings, WithMapping
+class TransactionHistoryByIdExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
 {
     use Exportable;
     protected $endDate, $toDate, $userId;
@@ -61,7 +62,9 @@ class TransactionHistoryByIdExport implements FromCollection, WithHeadings, With
         ];
     }
 
-
+    /**
+     * @return array
+     */
     public function headings(): array
     {
         return [
@@ -70,5 +73,18 @@ class TransactionHistoryByIdExport implements FromCollection, WithHeadings, With
                 'Payment Through',
                 'Amount',
             ];
+    }
+
+    /**
+     * @return array
+     */
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 10,
+            'B' => 20,
+            'C' => 20,
+            'D' => 10,
+        ];
     }
 }

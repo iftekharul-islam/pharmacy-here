@@ -2,6 +2,8 @@
 
 namespace Modules\Orders\Http\Controllers;
 
+use App\Exports\OrderExport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -35,6 +37,19 @@ class OrdersController extends Controller
         $allLocations = $this->locationRepository->getLocation();
         return view('orders::index', compact('data', 'display_Sdate','display_Edate', 'status', 'allLocations',
                                                             'display_area', 'display_thana', 'display_district'));
+    }
+
+    public function exportOrder(Request $request)
+    {
+        $district = $request->district;
+        $thana = $request->thana;
+        $area = $request->area;
+        $toDate = $request->toDate;
+        $endDate = $request->endDate;
+        $status = $request->status;
+        $date = Carbon::now()->format('d-m-Y');
+
+        return (new OrderExport($district, $thana, $area, $toDate, $endDate, $status))->download('order-report-'. time() . '-' . $date . '.xls');
     }
 
     /**

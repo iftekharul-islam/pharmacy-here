@@ -35,12 +35,12 @@
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
                         <label>Start date</label>
                         <input name="start_date" type="date" class="form-control"
-                               value="{{ $display_Sdate ?? $display_Sdate  }}">
+                               value="{{ $display_Sdate ?? ''  }}">
                     </div>
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
                         <label>End date</label>
                         <input name="end_date" type="date" class="form-control"
-                               value="{{ $display_Edate ?? $display_Edate  }}">
+                               value="{{ $display_Edate ?? ''  }}">
                     </div>
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
                         <label>Type</label>
@@ -66,6 +66,9 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Order List</h3>
+            <a class="btn btn-success float-right"
+               href="{{ route('export.orders', ['district' => $display_district, 'thana' => $display_thana, 'area' => $display_area, 'toDate' => $display_Sdate, 'endDate' => $display_Edate, 'status' => $status ]) }}">Export orders
+            </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">

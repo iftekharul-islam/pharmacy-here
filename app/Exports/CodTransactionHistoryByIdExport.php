@@ -5,12 +5,13 @@ namespace App\Exports;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\TransactionHistory;
 
-class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, WithMapping
+class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
 {
     use Exportable;
     protected $endDate, $toDate, $userId;
@@ -62,7 +63,9 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
         ];
     }
 
-
+    /**
+     * @return array
+     */
     public function headings(): array
     {
         return [
@@ -70,6 +73,19 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
             'Customer Amount',
             'Pharmacy Amount',
             'Subidha Amount',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 15,
+            'B' => 20,
+            'C' => 20,
+            'D' => 20,
         ];
     }
 }

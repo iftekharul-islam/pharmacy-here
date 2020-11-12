@@ -6,11 +6,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Modules\Orders\Entities\Models\Order;
 
-class CodTransactionExport implements FromCollection , WithHeadings, WithMapping
+class CodTransactionExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
 {
     use Exportable;
     protected $district, $thana, $area;
@@ -21,29 +22,30 @@ class CodTransactionExport implements FromCollection , WithHeadings, WithMapping
         $this->thana = $thana;
         $this->area = $area;
     }
+
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        $transaction =  Order::query();
-        $allTransactionHistories = $this->query($transaction);
-
+        $transaction = Order::query();
+        $allTransactionHistories = $this->dataQuery($transaction);
         $transactionCollection = new Collection();
+
         foreach ($allTransactionHistories as $allTransaction) {
-            logger('Yoo ');
-            logger($allTransaction);
-            $transactionCollection->push((object) [
+            $transactionCollection->push((object)[
                 'pharmacy_name' => $allTransaction->pharmacy->pharmacyBusiness->pharmacy_name,
                 'customer_amount' => $allTransaction->customer_amount,
                 'pharmacy_amount' => $allTransaction->pharmacy_amount,
                 'subidha_comission' => $allTransaction->subidha_comission,
             ]);
         }
+
         return $transactionCollection;
     }
 
-    public function query($transaction) {
+    public function dataQuery($transaction)
+    {
 
         if ($this->area !== null) {
             return $transaction->with('pharmacy.pharmacyBusiness')
@@ -104,6 +106,16 @@ class CodTransactionExport implements FromCollection , WithHeadings, WithMapping
             'Order Amount',
             'Pharmacy Amount',
             'Subidha Comission',
+        ];
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 25,
+            'B' => 20,
+            'C' => 20,
+            'D' => 20,
         ];
     }
 }
