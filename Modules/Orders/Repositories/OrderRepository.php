@@ -854,124 +854,32 @@ class OrderRepository
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
+        $data = Order::query();
+        $data->with(['pharmacy.pharmacyBusiness'])->orderBy('id','desc');
+
         if ($area_id !== null) {
-            if ( $request->status !== null) {
-                if ($startDate !== null || $endDate !== null) {
-                    return Order::with(['pharmacy.pharmacyBusiness'])
-                        ->whereHas('pharmacy.pharmacyBusiness', function ($query) use ($area_id) {
-                            $query->where('area_id', $area_id);
-                        })
-                        ->whereBetween('order_date', [$startDate, $endDate])
-                        ->where('status', $request->status)
-                        ->paginate(10);
-                }
-                return Order::with(['pharmacy.pharmacyBusiness'])
-                    ->whereHas('pharmacy.pharmacyBusiness', function ($query) use ($area_id) {
-                        $query->where('area_id', $area_id);
-                    })
-                    ->where('status', $request->status)
-                    ->paginate(10);
-            }
-            if ($startDate !== null || $endDate !== null) {
-                return Order::with(['pharmacy.pharmacyBusiness'])
-                    ->whereHas('pharmacy.pharmacyBusiness', function ($query) use ($area_id) {
-                        $query->where('area_id', $area_id);
-                    })
-                    ->whereBetween('order_date', [$startDate, $endDate])
-                    ->paginate(10);
-            }
-
-            return Order::with('pharmacy.pharmacyBusiness')
-                ->whereHas('pharmacy.pharmacyBusiness', function ($query) use ($area_id) {
-                $query->where('area_id', $area_id);
-            })
-                ->orderBy('id','desc')
-                ->paginate(10);
+            $data->whereHas('pharmacy.pharmacyBusiness', function ($query) use ($area_id) {
+                    $query->where('area_id', $area_id);
+                });
         }
-
-        if ($thana_id !== null) {
-            if ( $request->status !== null) {
-                if ($startDate !== null || $endDate !== null) {
-                    return Order::with(['pharmacy.pharmacyBusiness'])
-                        ->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($thana_id) {
-                            $query->where('thana_id', $thana_id);
-                        })
-                        ->whereBetween('order_date', [$startDate, $endDate])
-                        ->where('status', $request->status)
-                        ->paginate(10);
-                }
-                return Order::with(['pharmacy.pharmacyBusiness'])
-                    ->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($thana_id) {
-                        $query->where('thana_id', $thana_id);
-                    })
-                    ->where('status', $request->status)
-                    ->paginate(10);
-            }
-            if ($startDate !== null || $endDate !== null) {
-                return Order::with(['pharmacy.pharmacyBusiness'])
-                    ->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($thana_id) {
-                        $query->where('thana_id', $thana_id);
-                    })
-                    ->whereBetween('order_date', [$startDate, $endDate])
-                    ->paginate(10);
-            }
-
-            return Order::with('pharmacy.pharmacyBusiness')
-                ->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($thana_id) {
+        if ($thana_id !== null && $area_id == null) {
+            $data->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($thana_id) {
                     $query->where('thana_id', $thana_id);
-                })
-                ->orderBy('id','desc')
-                ->paginate(10);
+                });
         }
-        if ($district_id !== null) {
-            if ( $request->status !== null) {
-                if ($startDate !== null || $endDate !== null) {
-                    return Order::with(['pharmacy.pharmacyBusiness'])
-                        ->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($district_id) {
-                            $query->where('district_id', $district_id);
-                        })
-                        ->whereBetween('order_date', [$startDate, $endDate])
-                        ->where('status', $request->status)
-                        ->paginate(10);
-                }
-                return Order::with(['pharmacy.pharmacyBusiness'])
-                    ->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($district_id) {
-                        $query->where('district_id', $district_id);
-                    })
-                    ->where('status', $request->status)
-                    ->paginate(10);
-            }
-            if ($startDate !== null || $endDate !== null) {
-                return Order::with(['pharmacy.pharmacyBusiness'])
-                    ->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($district_id) {
-                        $query->where('district_id', $district_id);
-                    })
-                    ->whereBetween('order_date', [$startDate, $endDate])
-                    ->paginate(10);
-            }
-
-            return Order::with('pharmacy.pharmacyBusiness')
-                ->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($district_id) {
+        if ($district_id !== null && $thana_id == null && $area_id == null) {
+            $data->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($district_id) {
                     $query->where('district_id', $district_id);
-                })
-                ->orderBy('id','desc')
-                ->paginate(10);
+                });
         }
-
         if ( $request->status !== null) {
-            if ($startDate !== null || $endDate !== null) {
-                return Order::with(['pharmacy.pharmacyBusiness'])->whereBetween('order_date', [$startDate, $endDate])->where('status', $request->status)->paginate(10);
-            }
-            return Order::with(['pharmacy.pharmacyBusiness'])->where('status', $request->status)->paginate(10);
+            $data->where('status', $request->status);
         }
-
         if ($startDate !== null || $endDate !== null) {
-            return Order::with(['pharmacy.pharmacyBusiness'])->whereBetween('order_date', [$startDate, $endDate])->where('status', $request->status)->paginate(10);
+            $data->whereBetween('order_date', [$startDate, $endDate]);
         }
 
-        return Order::with(['pharmacy.pharmacyBusiness'])
-            ->orderBy('id','desc')
-            ->paginate(10);
+        return $data->paginate(config('subidha.item_per_page'));
 
     }
 

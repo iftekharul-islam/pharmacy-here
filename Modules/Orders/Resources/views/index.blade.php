@@ -117,74 +117,25 @@
 
         window.onload=function(){
         if (selectedDistrict != null) {
-            var districtId = $('#selectDistrict option:selected').val();
-            var selectedDistrictValue = addresses.find(address => address.id == districtId);
-
-                thanas = selectedDistrictValue.thanas;
-
-                if (thanas.length === 0) {
-                    $('#selectThana').prop('disabled', true);
-                    $('#selectThana').html('');
-                    return;
-                }
-
-                $('#selectThana').html('');
-                $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
-
-                $.map(thanas, function (value) {
-                    let selectedvalue = value.id == selectedThana ? true : false;
-                    $('#selectThana').removeAttr('disabled');
-                    $('#selectThana')
-                        .append($("<option></option>")
-                            .attr("value", value.id)
-                            .prop('selected', selectedvalue)
-                            .text(value.name));
-                });
-
-                var areaId = $('#selectThana option:selected').val();
-
-                var selectedThanaValues = thanas.find(thana => thana.id == areaId);
-                    areas = selectedThanaValues.areas;
-
-                    if (areas.length === 0) {
-                        $('#selectArea').attr('disabled', 'disabled');
-                        $('#selectArea').html('');
-                        return;
-                    }
-
-                    $('#selectArea').html('');
-                    $('#selectArea').append(`<option value="" selected disabled>Please Select a area</option>`);
-                    $.map(areas, function (value) {
-                        let selected = value.id == selectedArea ? true : false;
-
-                        $('#selectArea').removeAttr('disabled');
-                        $('#address').removeAttr('disabled');
-                        $('#submit').removeAttr('disabled');
-
-                        $('#selectArea')
-                            .append($("<option></option>")
-                                .attr("value", value.id)
-                                .prop('selected', selected)
-                                .text(value.name));
-                    });
-                }
+                getThanas();
+                getAreas();
+            }
         };
 
         function getThanas() {
             var districtId = $('#selectDistrict option:selected').val();
-
             var selectedDistrict = addresses.find(address => address.id == districtId);
-
             thanas = selectedDistrict.thanas;
-
             $('#selectThana').html('');
             $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
             $.map(thanas, function(value) {
+                let selectedvalue = value.id == selectedThana ? true : false;
                 $('#selectThana').removeAttr('disabled');
                 $('#selectThana')
                     .append($("<option></option>")
                         .attr("value",value.id)
+                        .prop('selected', selectedvalue)
                         .text(value.name));
             });
 
@@ -192,9 +143,7 @@
 
         function getPharmacyThanas() {
             var districtId = $('#selectPharmacyDistrict option:selected').val();
-
             var selectedDistrict = addresses.find(address => address.id == districtId);
-
             thanas = selectedDistrict.thanas;
 
             $('#selectPharmacyThana').html('');
@@ -229,9 +178,11 @@
             $('#submit').removeAttr('disabled');
             $('#selectArea').append(`<option value="" selected disabled>Please Select a area</option>`);
             $.map(areas, function(value) {
-                $('#selectArea')
+                let selected = value.id == selectedArea ? true : false;
+                    $('#selectArea')
                     .append($("<option></option>")
                         .attr("value",value.id)
+                        .prop('selected', selectedArea)
                         .text(value.name));
             });
         }
