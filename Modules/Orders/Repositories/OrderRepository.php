@@ -876,7 +876,7 @@ class OrderRepository
             $data->where('status', $request->status);
         }
         if ($startDate !== null || $endDate !== null) {
-            $data->whereBetween('order_date', [$startDate, $endDate]);
+            $data->whereBetween('order_date', [$startDate ?? Carbon::today()->subDays(30), $endDate ?? Carbon::today()]);
         }
 
         return $data->paginate(config('subidha.item_per_page'));
