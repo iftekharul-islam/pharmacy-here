@@ -173,7 +173,7 @@ class TransactionHistoryController extends Controller
         $area = $request->area;
         $date = Carbon::now()->format('d-m-Y');
 
-        return (new TranscationExport($district, $thana, $area))->download( 'Transaction-history-'. $date . '.xls');
+        return (new TranscationExport($district, $thana, $area))->download( 'Transaction-history-'. time() . '-' . $date . '.xls');
     }
     public function exportPharmacyTransactionById(Request $request)
     {
@@ -184,7 +184,7 @@ class TransactionHistoryController extends Controller
         $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
         $pharmacy = Str::slug($data->pharmacy_name);
 
-        return (new TransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy.'-'. $date . '.xls');
+        return (new TransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy . '-' . time() . '-' . $date . '.xls');
     }
     public function codExportPharmacyTransaction(Request $request)
     {
@@ -193,7 +193,7 @@ class TransactionHistoryController extends Controller
         $area = $request->area;
         $date = Carbon::now()->format('d-m-Y');
 
-        return (new CodTransactionExport($district, $thana, $area))->download( 'Transaction-history-'. $date . '.xls');
+        return (new CodTransactionExport($district, $thana, $area))->download( 'Transaction-history-'. time() . '-' . $date . '.xls');
     }
     public function codExportPharmacyTransactionById(Request $request)
     {
@@ -204,6 +204,6 @@ class TransactionHistoryController extends Controller
         $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
         $pharmacy = Str::slug($data->pharmacy_name);
 
-        return (new CodTransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy.'-'. $date . '.xls');
+        return (new CodTransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy.'-'.time().'-'. $date . '.xls');
     }
 }
