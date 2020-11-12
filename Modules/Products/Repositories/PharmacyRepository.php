@@ -13,10 +13,34 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PharmacyRepository
 {
-    public function all()
+    public function all($request)
     {
-        return User::with('pharmacyBusiness', 'pharmacyBusiness.area', 'pharmacyBusiness.area.thana', 'pharmacyBusiness.area.thana.district', 'weekends')->where('is_pharmacy', 1)->orderby('id', 'desc')->paginate(20);
-        // return PharmacyBusiness::with('user', 'weekends')->paginate(20);
+        $district_id = $request->district_id;
+        $thana_id = $request->thana_id;
+        $area_id = $request->area_id;
+        $data = User::query();
+
+        $data->with('pharmacyBusiness', 'pharmacyBusiness.area', 'pharmacyBusiness.area.thana', 'pharmacyBusiness.area.thana.district', 'weekends')
+            ->where('is_pharmacy', 1)
+            ->orderby('id', 'desc');
+
+        if ($area_id !== null) {
+            $data->whereHas('pharmacyBusiness', function ($query) use ($area_id) {
+                $query->where('area_id', $area_id);
+            });
+        }
+        if ($thana_id !== null && $area_id == null) {
+            $data->whereHas('pharmacyBusiness.area', function ($query) use ($thana_id) {
+                $query->where('thana_id', $thana_id);
+            });
+        }
+        if ($district_id !== null && $thana_id == null && $area_id == null) {
+            $data->whereHas('pharmacyBusiness.area.thana', function ($query) use ($district_id) {
+                $query->where('district_id', $district_id);
+            });
+        }
+
+        return $data->paginate(config('subidha.item_per_page'));
     }
 
     public function update($request, $id)
