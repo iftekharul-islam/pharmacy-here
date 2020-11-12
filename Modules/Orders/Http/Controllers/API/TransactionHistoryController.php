@@ -19,6 +19,7 @@ class TransactionHistoryController extends BaseController
     {
         $this->repository = $repository;
     }
+
     /**
      * Display a listing of the resource.
      * @return Response
@@ -41,7 +42,7 @@ class TransactionHistoryController extends BaseController
 
 //        return $data;
 
-        return responsePreparedData( $data );
+        return responsePreparedData($data);
     }
 
     public function pharmacySalesHistory()
@@ -56,15 +57,12 @@ class TransactionHistoryController extends BaseController
     public function pharmacyTotalSale()
     {
         $user = Auth::user();
-
-
         $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
-//        return $pharmacySales;
-
+        $pendingOrders = $this->repository->TotalPendingOrders($user->id);
         $totalSale = 0;
 
-        foreach($pharmacySales as $item) {
-            if($item['payment_type'] == 2) {
+        foreach ($pharmacySales as $item) {
+            if ($item['payment_type'] == 2) {
                 $totalSale = $totalSale + $item['pharmacy_amount'];
             } else {
                 $totalSale = $totalSale + $item['customer_amount'];
@@ -73,13 +71,11 @@ class TransactionHistoryController extends BaseController
 
         $data = [
             'total_sale' => $totalSale,
-            'sale_count' => count($pharmacySales)
+            'sale_count' => count($pharmacySales),
+            'pending_orders_count' => count($pendingOrders)
         ];
 
         return responsePreparedData($data);
-
-//        return $this->response->paginator($data, new OrderTransformer());
-
     }
 
     public function storePharmacyTransaction(CreateTransactionHistoryRequest $request)
@@ -90,8 +86,6 @@ class TransactionHistoryController extends BaseController
 
         return $this->response->item($data, new TransactionHistoryTransformer());
     }
-
-
 
 
 }
