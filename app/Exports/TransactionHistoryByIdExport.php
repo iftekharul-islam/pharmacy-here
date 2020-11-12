@@ -82,8 +82,8 @@ class TransactionHistoryByIdExport implements FromCollection, WithHeadings, With
     {
         return [
             'A' => 10,
-            'B' => 25,
-            'C' => 15,
+            'B' => 20,
+            'C' => 20,
             'D' => 10,
         ];
     }

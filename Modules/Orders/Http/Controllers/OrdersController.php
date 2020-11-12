@@ -41,7 +41,6 @@ class OrdersController extends Controller
 
     public function exportOrder(Request $request)
     {
-//        return $request->all();
         $district = $request->district;
         $thana = $request->thana;
         $area = $request->area;

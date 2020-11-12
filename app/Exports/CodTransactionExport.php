@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Modules\Orders\Entities\Models\Order;
 
-class CodTransactionExport implements FromCollection , WithHeadings, WithMapping, WithColumnWidths
+class CodTransactionExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
 {
     use Exportable;
     protected $district, $thana, $area;
@@ -22,27 +22,30 @@ class CodTransactionExport implements FromCollection , WithHeadings, WithMapping
         $this->thana = $thana;
         $this->area = $area;
     }
+
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        $transaction =  Order::query();
+        $transaction = Order::query();
         $allTransactionHistories = $this->dataQuery($transaction);
-
         $transactionCollection = new Collection();
+
         foreach ($allTransactionHistories as $allTransaction) {
-            $transactionCollection->push((object) [
+            $transactionCollection->push((object)[
                 'pharmacy_name' => $allTransaction->pharmacy->pharmacyBusiness->pharmacy_name,
                 'customer_amount' => $allTransaction->customer_amount,
                 'pharmacy_amount' => $allTransaction->pharmacy_amount,
                 'subidha_comission' => $allTransaction->subidha_comission,
             ]);
         }
+
         return $transactionCollection;
     }
 
-    public function dataQuery($transaction) {
+    public function dataQuery($transaction)
+    {
 
         if ($this->area !== null) {
             return $transaction->with('pharmacy.pharmacyBusiness')
@@ -110,9 +113,9 @@ class CodTransactionExport implements FromCollection , WithHeadings, WithMapping
     {
         return [
             'A' => 25,
-            'B' => 10,
-            'C' => 10,
-            'D' => 10,
+            'B' => 20,
+            'C' => 20,
+            'D' => 20,
         ];
     }
 }

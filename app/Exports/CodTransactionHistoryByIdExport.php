@@ -82,10 +82,10 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
     public function columnWidths(): array
     {
         return [
-            'A' => 10,
-            'B' => 10,
-            'C' => 10,
-            'D' => 10,
+            'A' => 15,
+            'B' => 20,
+            'C' => 20,
+            'D' => 20,
         ];
     }
 }

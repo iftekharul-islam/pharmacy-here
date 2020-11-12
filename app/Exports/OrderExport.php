@@ -33,6 +33,7 @@ class OrderExport implements FromCollection, WithHeadings, WithColumnWidths
         $data = Order::query();
         $allOrders = $this->dataQuery($data);
         $orderCollection = new Collection();
+
         foreach ($allOrders as $order) {
             $orderCollection->push((object)[
                 'order_no' => $order->order_no,
@@ -41,7 +42,7 @@ class OrderExport implements FromCollection, WithHeadings, WithColumnWidths
                 'amount' => $order->pharmacy_amount,
             ]);
         }
-        logger($orderCollection);
+
         return $orderCollection;
 
     }
