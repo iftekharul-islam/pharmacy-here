@@ -17,19 +17,25 @@ class PharmacyController extends Controller
 
     public function __construct(PharmacyRepository $repository, LocationRepository $locationRepository)
     {
-        $this->repository =$repository;
-        $this->locationRepository =$locationRepository;
+        $this->repository = $repository;
+        $this->locationRepository = $locationRepository;
     }
 
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pharmacies = $this->repository->all();
+        $display_area = $request->area_id;
+        $display_thana = $request->thana_id;
+        $display_district = $request->district_id;
+        $allLocations = $this->locationRepository->getLocation();
+        $pharmacies = $this->repository->all($request);
 //        return $pharmacies;
-        return view('products::pharmacy.index', compact('pharmacies'));
+
+        return view('products::pharmacy.index', compact('pharmacies', 'allLocations',
+            'display_area', 'display_thana', 'display_district'));
     }
 
     /**
@@ -70,7 +76,6 @@ class PharmacyController extends Controller
     {
         $allLocations = $this->locationRepository->getLocation();
         $pharmacy = $this->repository->findById($id);
-//        return $pharmacy;
         return view('products::pharmacy.edit', compact('pharmacy', 'allLocations'));
     }
 
