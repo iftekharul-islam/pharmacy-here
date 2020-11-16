@@ -12,26 +12,31 @@
             <!-- form start -->
             <form role="form" action="{{ route('transactionHistory.store') }}" method="POST">
                 @csrf
-                <input type="hidden" name="pharmacy_id" value="{{ $data->pharmacy_id }}">
+                <input type="hidden" name="pharmacy_id" value="{{ $data->user_id }}">
                 <div class="card-body">
                     <div class="form-group row">
-                        @if (isset($data->pharmacy->pharmacyOrder[0]->pharmacy_amount))
-                            @if ($data->pharmacy->pharmacyOrder[0]->pharmacy_amount > $data->amount)
+                        @php
+                            $payable = $data->pharmacyOrder[0]->subidha_amount + $data->pharmacyTransaction[0]->amount ?? 0;
+                        @endphp
+                        @if (isset($data->pharmacyOrder[0]->pharmacy_amount))
+                            @if ($data->pharmacyOrder[0]->pharmacy_amount > $payable)
                                 <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
                                 <div class="col-sm-8">
-                                        <label class="col-form-label">{{ $data->pharmacy->pharmacyOrder[0]->pharmacy_amount - $data->amount }}</label>
+                                    <label
+                                        class="col-form-label">{{ $data->pharmacyOrder[0]->pharmacy_amount - $payable }}</label>
                                 </div>
                             @else
                                 <label for="due-amount" class="col-sm-4 col-form-label">Paid more amount</label>
                                 <div class="col-sm-8">
-                                    <label class="col-form-label">{{ $data->amount - $data->pharmacy->pharmacyOrder[0]->pharmacy_amount }}</label>
+                                    <label
+                                        class="col-form-label">{{ $payable - $data->pharmacyOrder[0]->pharmacy_amount }}</label>
                                 </div>
 
                             @endif
                         @else
                             <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
                             <div class="col-sm-8">
-                                <label class="col-form-label">{{ $data->amount }}</label>
+                                <label class="col-form-label">{{ $payable }}</label>
                             </div>
                         @endif
                     </div>
@@ -74,7 +79,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="{{ route('transactionHistory.index') }}" class="btn btn-danger">Back</a>
+                    <a href="{{ URL::previous() }}" class="btn btn-danger">Back</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>

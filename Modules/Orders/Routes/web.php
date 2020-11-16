@@ -29,6 +29,8 @@ Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('transaction-history/{trans_id}', 'TransactionHistoryController@show')->name('transactionHistory.show');
     Route::post('transaction', 'TransactionHistoryController@store')->name('transactionHistory.store');
 
+    Route::get('all-transaction-history', 'TransactionHistoryController@allTransaction')->name('transaction.all');
+
     Route::get('cod-transaction-history', 'TransactionHistoryController@cod')->name('cod.transactionHistory.index');
     Route::get('cod-transaction-history/{trans_id}', 'TransactionHistoryController@codShow')->name('cod.transactionHistory.show');
 });

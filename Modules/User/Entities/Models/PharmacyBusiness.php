@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Locations\Entities\Models\Address;
 use Modules\Locations\Entities\Models\Area;
 use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\TransactionHistory;
 
 class PharmacyBusiness extends Model
 {
@@ -51,6 +52,11 @@ class PharmacyBusiness extends Model
     public function pharmacyOrder()
     {
         return $this->hasMany(Order::class, 'pharmacy_id', 'user_id');
+    }
+
+    public function pharmacyTransaction()
+    {
+        return $this->hasMany(TransactionHistory::class, 'pharmacy_id', 'user_id');
     }
 
 //    public function pharmacyAddress()

@@ -32,10 +32,11 @@ class PharmacyController extends Controller
         $display_district = $request->district_id;
         $allLocations = $this->locationRepository->getLocation();
         $pharmacies = $this->repository->all($request);
+        $totalPharmacy = count($pharmacies);
 //        return $pharmacies;
 
         return view('products::pharmacy.index', compact('pharmacies', 'allLocations',
-            'display_area', 'display_thana', 'display_district'));
+            'display_area', 'display_thana', 'display_district', 'totalPharmacy'));
     }
 
     /**

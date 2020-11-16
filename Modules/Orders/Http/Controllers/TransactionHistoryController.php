@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Modules\Locations\Repositories\LocationRepository;
@@ -39,7 +40,7 @@ class TransactionHistoryController extends Controller
         $district_new_id = $request->district_id;
         $thana_new_id = $request->thana_id;
         $area_new_id = $request->area_id;
-        $transactionHistories = $this->repository->getAllTransactionHistories($request);
+        $transactionHistories = $this->repository->getEpayTransactionHistories($request);
 
         $total_order = 0;
         $total_pharmacy_amount = 0;
@@ -56,6 +57,19 @@ class TransactionHistoryController extends Controller
                             'total_paid_amount', 'district_new_id', 'thana_new_id', 'area_new_id'));
     }
 
+
+    public function allTransaction()
+    {
+        $allLocations = $this->locationRepository->getLocation();
+//        DB::enableQueryLog();
+        $transactionHistories = $this->repository->getAllTransactionHistories();
+//        return $transactionHistories[0]->pharmacyOrder[0];
+//        dd(DB::getQueryLog());
+//        return $transactionHistories;
+
+        return view('orders::transactionHistory.all.index', compact('allLocations', 'transactionHistories'));
+    }
+
     /**
      * @param Request $request
      * @return Factory|View
@@ -67,7 +81,6 @@ class TransactionHistoryController extends Controller
         $area_new_id = $request->area_id;
 
         $transactionHistories = $this->repository->getCodTransactionHistories($request);
-//        return $transactionHistories;
         $total_customer_amount = 0;
         $total_pharmacy_amount = 0;
         $total_subidha_comission = 0;
@@ -121,6 +134,7 @@ class TransactionHistoryController extends Controller
     public function create($id)
     {
         $data = $this->repository->getPharmacyInfo($id);
+//        return $data;
         return view('orders::transactionHistory.epay.create', compact('data'));
     }
 

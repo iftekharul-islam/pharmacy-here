@@ -116,54 +116,86 @@
 @endsection
 @section('js')
     <script>
-    var addresses = {!! json_encode($allLocations) !!};
-    var thanas = [];
-    var areas = [];
+        var addresses = {!! json_encode($allLocations) !!};
 
-    function getThanas() {
-        var districtId = $('#selectDistrict option:selected').val();
+        var selectedDistrict = {!! json_encode( $district_new_id ?? null ) !!};
+        var selectedThana = {!! json_encode( $thana_new_id ?? null ) !!};
+        var selectedArea = {!! json_encode($area_new_id ?? null ) !!};
 
-        var selectedDistrict = addresses.find(address => address.id == districtId);
+        var thanas = [];
+        var areas = [];
 
-        thanas = selectedDistrict.thanas;
+        window.onload = function () {
+            if (selectedDistrict != null) {
+                getThanas();
+                getAreas();
+            }
+        };
 
-        if ( thanas.length === 0 ) {
-            $('#selectThana').prop('disabled', true );
+        function getThanas() {
+            var districtId = $('#selectDistrict option:selected').val();
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+            thanas = selectedDistrict.thanas;
+            $('#selectThana').html('');
+            $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+            $.map(thanas, function (value) {
+                let selectedvalue = value.id == selectedThana ? true : false;
+                $('#selectThana').removeAttr('disabled');
+                $('#selectThana')
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .prop('selected', selectedvalue)
+                        .text(value.name));
+            });
+
         }
 
-        $('#selectThana').html('');
-        $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+        function getPharmacyThanas() {
+            var districtId = $('#selectPharmacyDistrict option:selected').val();
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+            thanas = selectedDistrict.thanas;
 
-        $.map(thanas, function(value) {
-            $('#selectThana').removeAttr('disabled');
-            $('#selectThana')
-                .append($("<option></option>")
-                    .attr("value",value.id)
-                    .text(value.name));
-        });
+            $('#selectPharmacyThana').html('');
+            $('#selectPharmacyThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
-    }
+            $.map(thanas, function (value) {
+                $('#selectPharmacyThana')
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.name));
+            });
 
-    function getAreas() {
-        var areaId = $('#selectThana option:selected').val();
-        var selectedThana = thanas.find(thana => thana.id == areaId);
-        areas = selectedThana.areas;
-
-        if ( areas.length === 0 ) {
-            $('#selectArea').prop('disabled', true );
         }
 
-        $('#selectArea').html('');
-        $('#selectArea').append(`<option value="" selected disabled>Please Select an area</option>`);
-        $.map(areas, function(value) {
+        function getAreas() {
+            var areaId = $('#selectThana option:selected').val();
+            var selectedThanaValue = thanas.find(thana => thana.id == areaId);
+            areas = selectedThanaValue.areas;
+
+            if (areas.length === 0) {
+                $('#selectArea').attr('disabled', 'disabled');
+                $('#address').attr('disabled', 'disabled');
+                $('#submit').attr('disabled', 'disabled');
+                $('#selectArea').html('');
+                return;
+            }
+
+            $('#selectArea').html('');
+
             $('#selectArea').removeAttr('disabled');
-
-            $('#selectArea')
-                .append($("<option></option>")
-                    .attr("value",value.id)
-                    .text(value.name));
-        });
-    }
+            $('#address').removeAttr('disabled');
+            $('#submit').removeAttr('disabled');
+            $('#selectArea').append(`<option value="" selected disabled>Please Select a area</option>`);
+            $.map(areas, function (value) {
+                let selected = value.id == selectedArea ? true : false;
+                $('#selectArea')
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .prop('selected', selectedArea)
+                        .text(value.name));
+            });
+        }
 </script>
 @endsection
 
