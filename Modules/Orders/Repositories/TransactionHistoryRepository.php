@@ -4,7 +4,6 @@
 namespace Modules\Orders\Repositories;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\TransactionHistory;
@@ -12,15 +11,6 @@ use Modules\User\Entities\Models\PharmacyBusiness;
 
 class TransactionHistoryRepository
 {
-    public function all()
-    {
-//        return TransactionHistory::with('pharmacy.pharmacyBusiness')
-//            ->groupBy('pharmacy_id')
-//            ->get();
-
-//        $phar
-    }
-
     public function getAllOrders()
     {
         return DB::table('orders')
@@ -31,9 +21,24 @@ class TransactionHistoryRepository
             ->get();
     }
 
-    public function getAllTransactionHistories()
+    public function getAllTransactionHistories($district_id, $thana_id, $area_id)
     {
         $data = PharmacyBusiness::query();
+
+        if ($area_id !== null) {
+            $data->where('area_id', $area_id);
+        }
+        if ($thana_id !== null && $area_id == null) {
+            $data->whereHas('area', function ($query) use ($thana_id) {
+                $query->where('thana_id', $thana_id);
+            });
+        }
+        if ($district_id !== null && $thana_id == null && $area_id == null) {
+            $data->whereHas('area.thana', function ($query) use ($district_id) {
+                $query->where('district_id', $district_id);
+            });
+        }
+
         $data->with(['pharmacyTransaction' => function ($query) {
             $query->select(DB::raw('SUM(amount) as amount, pharmacy_id'))->groupBy('pharmacy_id');
         }]);
@@ -46,7 +51,7 @@ class TransactionHistoryRepository
                 ->groupBy('pharmacy_id');
         }]);
 
-        return $data->get();
+        return $data->paginate(config('subidha.item_per_page'));
     }
 
     /**
@@ -199,19 +204,6 @@ class TransactionHistoryRepository
         if (isset($request->payment_method)) {
             $data->payment_method = $request->payment_method;
         }
-
-//        if (isset($request->bank_account_name)) {
-//            $data->bank_account_name = $request->bank_account_name;
-//        }
-//        if (isset($request->bank_account_number)) {
-//            $data->bank_account_number = $request->bank_account_number;
-//        }
-//        if (isset($request->bank_name)) {
-//            $data->bank_name = $request->bank_name;
-//        }
-//        if (isset($request->bank_branch_name)) {
-//            $data->bank_branch_name = $request->bank_branch_name;
-//        }
 
         $data->save();
 

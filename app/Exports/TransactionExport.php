@@ -11,11 +11,17 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Modules\Orders\Entities\Models\TransactionHistory;
 
-class TranscationExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
+class TransactionExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
 {
     use Exportable;
     protected $district, $thana, $area;
 
+    /**
+     * TransactionExport constructor.
+     * @param $district
+     * @param $thana
+     * @param $area
+     */
     public function __construct($district, $thana, $area)
     {
         $this->district = $district;

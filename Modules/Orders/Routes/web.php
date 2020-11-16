@@ -20,7 +20,7 @@ Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('export-orders', 'OrdersController@exportOrder')->name('export.orders');
     Route::get('orders/{order_id}', 'OrdersController@show')->name('orders.show');
 
-    Route::get('transaction-history', 'TransactionHistoryController@index')->name('transactionHistory.index');
+    Route::get('epay-transaction-history', 'TransactionHistoryController@index')->name('transactionHistory.index');
     Route::get('export-pharmacy-transaction/district/thana/area', 'TransactionHistoryController@exportPharmacyTransaction')->name('epay.export.transaction');
     Route::get('export-pharmacy-transaction-history/to-date/form-date/user-id', 'TransactionHistoryController@exportPharmacyTransactionById')->name('epay.export.transaction.history');
     Route::get('cod-export-pharmacy-transaction/district/thana/area', 'TransactionHistoryController@codExportPharmacyTransaction')->name('cod.export.transaction');
@@ -30,6 +30,7 @@ Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::post('transaction', 'TransactionHistoryController@store')->name('transactionHistory.store');
 
     Route::get('all-transaction-history', 'TransactionHistoryController@allTransaction')->name('transaction.all');
+    Route::get('export-all-transaction', 'TransactionHistoryController@exportAllTransaction')->name('export.all.transaction');
 
     Route::get('cod-transaction-history', 'TransactionHistoryController@cod')->name('cod.transactionHistory.index');
     Route::get('cod-transaction-history/{trans_id}', 'TransactionHistoryController@codShow')->name('cod.transactionHistory.show');
