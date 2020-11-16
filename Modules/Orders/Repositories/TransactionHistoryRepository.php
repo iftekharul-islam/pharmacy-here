@@ -255,7 +255,7 @@ class TransactionHistoryRepository
 
     public function completeOrdersByMonth($pharmacy_id)
     {
-        return Order::select(DB::raw("(SUM(amount)) as amount"),
+        return Order::select(DB::raw("(SUM(pharmacy_amount)) as amount"),
             DB::raw("MONTHNAME(created_at) as month_name"))
             ->whereYear('created_at', date('Y'))
             ->groupBy('month_name')
