@@ -61,11 +61,7 @@ class TransactionHistoryController extends Controller
     public function allTransaction()
     {
         $allLocations = $this->locationRepository->getLocation();
-//        DB::enableQueryLog();
         $transactionHistories = $this->repository->getAllTransactionHistories();
-//        return $transactionHistories[0]->pharmacyOrder[0];
-//        dd(DB::getQueryLog());
-//        return $transactionHistories;
 
         return view('orders::transactionHistory.all.index', compact('allLocations', 'transactionHistories'));
     }
@@ -134,7 +130,7 @@ class TransactionHistoryController extends Controller
     public function create($id)
     {
         $data = $this->repository->getPharmacyInfo($id);
-//        return $data;
+
         return view('orders::transactionHistory.epay.create', compact('data'));
     }
 

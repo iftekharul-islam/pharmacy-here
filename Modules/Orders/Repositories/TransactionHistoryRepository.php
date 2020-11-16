@@ -47,44 +47,6 @@ class TransactionHistoryRepository
         }]);
 
         return $data->get();
-
-//        return PharmacyBusiness::join('orders', 'pharmacy_businesses.user_id', '=', 'orders.pharmacy_id')
-//            ->groupBy('orders.pharmacy_id')
-//            ->select(DB::raw('SUM(customer_amount) as cod_customer_amount, SUM(pharmacy_amount) as cod_pharmacy_amount, pharmacy_id'))
-//            ->where('status', 3)
-//            ->groupBy('pharmacy_id')
-//            ->get();
-
-//        return PharmacyBusiness::join('orders', 'pharmacy_businesses.user_id', '=', 'orders.pharmacy_id')
-//            ->groupBy('orders.pharmacy_id')
-//            ->select('pharmacy_id'
-//                , DB::raw('(SELECT  SUM(customer_amount) FROM `orders` WHERE (`payment_type`, `status`) = (1 , 3)) as cod_customer_amount')
-//                , DB::raw('(SELECT  SUM(customer_amount) FROM `orders` WHERE (`payment_type`, `status`) = (2 , 3)) as epay_customer_amount'))
-//            ->get();
-
-//        return PharmacyBusiness::join('orders', 'pharmacy_businesses.user_id', '=', 'orders.pharmacy_id')
-//            ->whereRaw(DB::raw( '(CASE
-//                                           WHEN payment_type = 1 THEN SUM(customer_amount) as cod_customer_amount
-//                                           WHEN payment_type = 2 THEN SUM(customer_amount) as epay_customer_amount
-//                                       END )'))
-//            ->where('status', 3)
-//            ->groupBy('orders.pharmacy_id')
-//            ->get();
-
-//        return PharmacyBusiness::join('orders', 'pharmacy_businesses.user_id', '=', 'orders.pharmacy_id')
-//            ->select(DB::raw('(CASE WHEN payment_type = THEN 1 SUM(customer_amount) "cod_customer_amount" END)'))
-//            ->where('status', 3)
-//            ->groupBy('orders.pharmacy_id')
-//            ->get();
-
-//        return PharmacyBusiness::with('pharmacyTransaction')
-//        ->join('orders', 'pharmacy_businesses.user_id', '=', 'orders.pharmacy_id')
-//            ->select('orders.pharmacy_id',
-//                DB::raw('sum(case when payment_type = 1 then customer_amount END) as `cod_customer_amount`'),
-//                DB::raw('sum(case when payment_type = 2 then customer_amount END) as `epay_customer_amount`'))
-//                ->where('orders.status', 3)
-//                ->groupBy('orders.pharmacy_id')
-//            ->get();
     }
 
     /**
@@ -347,15 +309,6 @@ class TransactionHistoryRepository
 
     public function getPharmacyInfo($id)
     {
-//        return TransactionHistory::with([
-//            'pharmacy.pharmacyOrder' => function ($query) use ($id) {
-//                $query->select(DB::raw('SUM(pharmacy_amount) as pharmacy_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->where('pharmacy_id', $id)
-//                    ->get();
-//            }])
-//            ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-//            ->where('pharmacy_id', $id)
-//            ->first();
-
         $data = PharmacyBusiness::query();
         $data->with(['pharmacyTransaction' => function ($query) use ($id) {
             $query->select(DB::raw('SUM(amount) as amount, pharmacy_id'))->where('pharmacy_id', $id);
@@ -367,6 +320,7 @@ class TransactionHistoryRepository
                 ->where('status', 3)
                 ->where('pharmacy_id', $id);
         }]);
+
         return $data->where('user_id', $id)->first();
     }
 
