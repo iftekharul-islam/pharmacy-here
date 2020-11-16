@@ -59,6 +59,7 @@ class TransactionHistoryController extends BaseController
         $user = Auth::user();
         $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
         $pendingOrders = $this->repository->TotalPendingOrders($user->id);
+        $ordersByMonth = $this->repository->completeOrdersByMonth($user->id);
         $totalSale = 0;
 
         foreach ($pharmacySales as $item) {
@@ -72,7 +73,8 @@ class TransactionHistoryController extends BaseController
         $data = [
             'total_sale' => $totalSale,
             'sale_count' => count($pharmacySales),
-            'pending_orders_count' => count($pendingOrders)
+            'pending_orders_count' => count($pendingOrders),
+            'orders_by_month' => $ordersByMonth
         ];
 
         return responsePreparedData($data);

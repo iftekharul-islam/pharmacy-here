@@ -25,7 +25,7 @@ class TransactionHistoryRepository
         return DB::table('orders')
             ->select(DB::raw('SUM(pharmacy_amount) as total_amount,pharmacy_id, pharmacy_businesses.pharmacy_name'))
             ->join('pharmacy_businesses', 'orders.pharmacy_id', '=', 'pharmacy_businesses.user_id')
-            ->where('status',3)
+            ->where('status', 3)
             ->groupBy('pharmacy_id')
             ->get();
     }
@@ -40,7 +40,7 @@ class TransactionHistoryRepository
             return TransactionHistory::with(['pharmacy' => function ($query) {
                 $query->select('user_id', 'pharmacy_name');
             },
-                'pharmacy.pharmacyOrder' =>  function ($query) {
+                'pharmacy.pharmacyOrder' => function ($query) {
                     $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
                 }])->whereHas('pharmacy.area', function ($query) use ($request) {
                 $query->where('area_id', $request->area_id);
@@ -53,7 +53,7 @@ class TransactionHistoryRepository
             return TransactionHistory::with(['pharmacy' => function ($query) {
                 $query->select('user_id', 'pharmacy_name');
             },
-                'pharmacy.pharmacyOrder' =>  function ($query) {
+                'pharmacy.pharmacyOrder' => function ($query) {
                     $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
                 }])->whereHas('pharmacy.area.thana', function ($query) use ($request) {
                 $query->where('thana_id', $request->thana_id);
@@ -66,7 +66,7 @@ class TransactionHistoryRepository
             return TransactionHistory::with(['pharmacy' => function ($query) {
                 $query->select('user_id', 'pharmacy_name');
             },
-                'pharmacy.pharmacyOrder' =>  function ($query) {
+                'pharmacy.pharmacyOrder' => function ($query) {
                     $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
                 }])->whereHas('pharmacy.area.thana.district', function ($query) use ($request) {
                 $query->where('district_id', $request->district_id);
@@ -79,7 +79,7 @@ class TransactionHistoryRepository
         return TransactionHistory::with(['pharmacy' => function ($query) {
             $query->select('user_id', 'pharmacy_name');
         },
-            'pharmacy.pharmacyOrder' =>  function ($query) {
+            'pharmacy.pharmacyOrder' => function ($query) {
                 $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
             }])
             ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
@@ -96,8 +96,8 @@ class TransactionHistoryRepository
         if ($request->area_id !== null) {
             return Order::with('pharmacy.pharmacyBusiness')
                 ->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($request) {
-                $query->where('area_id', $request->area_id);
-            })
+                    $query->where('area_id', $request->area_id);
+                })
                 ->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_comission, pharmacy_id'))
                 ->where('status', 3)
                 ->where('payment_type', 1)
@@ -137,13 +137,13 @@ class TransactionHistoryRepository
 
     public function get($request, $id)
     {
-        $startDate = $request->start_date ;
-        $endDate = $request->end_date ;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
         $data = TransactionHistory::query();
         $data->where('pharmacy_id', $id);
 
         if ($startDate != null || $endDate != null) {
-            $data->whereBetween('date', [ $startDate ?? Carbon::today()->subDays(30), $endDate ?? Carbon::today() ]);
+            $data->whereBetween('date', [$startDate ?? Carbon::today()->subDays(30), $endDate ?? Carbon::today()]);
         }
 
         return $data->paginate(config('subidha.item_per_page'));
@@ -208,21 +208,21 @@ class TransactionHistoryRepository
     {
         $order = DB::table('orders')
             ->select(DB::raw('SUM(pharmacy_amount) as total_amount,pharmacy_id'))
-            ->where('status',3)
+            ->where('status', 3)
             ->where('pharmacy_id', $pharmacy_id)
             ->first();
 
         $pharmacy_epay_amount = DB::table('orders')
             ->select(DB::raw('SUM(pharmacy_amount) as total_amount,pharmacy_id'))
-            ->where('status',3)
-            ->where('payment_type',2)
+            ->where('status', 3)
+            ->where('payment_type', 2)
             ->where('pharmacy_id', $pharmacy_id)
             ->first();
 
         $subidha_cod_amount = DB::table('orders')
             ->select(DB::raw('SUM(subidha_comission) as total_amount,pharmacy_id'))
-            ->where('status',3)
-            ->where('payment_type',1)
+            ->where('status', 3)
+            ->where('payment_type', 1)
             ->where('pharmacy_id', $pharmacy_id)
             ->first();
 
@@ -240,7 +240,7 @@ class TransactionHistoryRepository
 
     public function pharmacySalesHistory($pharmacy_id)
     {
-        return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->orderBy('id','desc')->paginate(20);
+        return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->orderBy('id', 'desc')->paginate(20);
     }
 
     public function pharmacyTotalSale($pharmacy_id)
@@ -251,6 +251,17 @@ class TransactionHistoryRepository
     public function TotalPendingOrders($pharmacy_id)
     {
         return Order::where('pharmacy_id', $pharmacy_id)->where('status', 0)->get();
+    }
+
+    public function completeOrdersByMonth($pharmacy_id)
+    {
+        return Order::select(DB::raw("(SUM(amount)) as amount"),
+            DB::raw("MONTHNAME(created_at) as month_name"))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('month_name')
+            ->where('status', 3)
+            ->where('pharmacy_id', $pharmacy_id)
+            ->get();
     }
 
     public function storePharmacyTransaction($request, $pharmacy_id)
@@ -291,7 +302,7 @@ class TransactionHistoryRepository
     public function getPharmacyInfo($id)
     {
         return TransactionHistory::with([
-            'pharmacy.pharmacyOrder' =>  function ($query) use ($id) {
+            'pharmacy.pharmacyOrder' => function ($query) use ($id) {
                 $query->select(DB::raw('SUM(pharmacy_amount) as pharmacy_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->where('pharmacy_id', $id)
                     ->get();
             }])
