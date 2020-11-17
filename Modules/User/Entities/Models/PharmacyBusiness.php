@@ -59,9 +59,4 @@ class PharmacyBusiness extends Model
         return $this->hasMany(TransactionHistory::class, 'pharmacy_id', 'user_id');
     }
 
-//    public function pharmacyAddress()
-//    {
-//        return $this->belongsTo(Address::class, 'area_id', 'user_id');
-//    }
-
 }
