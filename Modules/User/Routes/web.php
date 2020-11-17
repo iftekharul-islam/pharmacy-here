@@ -14,11 +14,11 @@
 
 Route::group(['middleware' => ['web','role:admin']], function () {
 
-//    Route::get('home','HomeController@index');
-
-    Route::prefix('user')->group(function() {
+    Route::prefix('admin')->group(function () {
         Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
     });
+    Route::get('admin/profile', 'UserController@adminProfile')->name('admin.index');
+    Route::post('admin/profile-update/{id}', 'UserController@adminUpdate')->name('admin.update');
 
     Route::prefix('customers')->group(function() {
         Route::get('/', 'CustomerController@index')->name('customer.index');

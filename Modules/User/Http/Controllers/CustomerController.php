@@ -29,7 +29,6 @@ class CustomerController extends Controller
     public function index()
     {
     	$data = $this->repository->all();
-//    	return $data;
         return view('user::customer.index', compact('data'));
     }
 
@@ -83,37 +82,10 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return false;
+        $data = $this->repository->updateWeb($request, $id);
+        if ($data === false) {
+            return redirect()->route('customer.index')->with('failed', 'Customer not found');
         }
-
-        $data = $request->only(['name', 'email', 'phone_number', 'status']);
-
-        if (isset($request->name)) {
-            $user->name = $request->name;
-        }
-
-        if (isset($data['email'])) {
-            $user->email = $data['email'];
-        }
-
-        if (isset($data['phone_number'])) {
-            $user->phone_number = $data['phone_number'];
-        }
-        if (isset($data['phone_number'])) {
-            $user->phone_number = $data['phone_number'];
-        }
-        if (isset($data['status'])) {
-            $user->status = $data['status'];
-        }
-        $user->save();
-
-//           $data = $this->repository->updateWeb($id, $request);
-//           if ($data == false){
-//                return redirect()->route('customer.index')->with('failed', 'Customer not updated');
-//           }
         return redirect()->route('customer.index')->with('success', 'Customer successfully updated');
     }
 

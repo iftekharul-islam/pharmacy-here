@@ -188,7 +188,7 @@ return [
 
     'use_route_url' => false,
 
-    'dashboard_url' => 'user/dashboard',
+    'dashboard_url' => 'admin/dashboard',
 
     'logout_url' => 'admin/logout',
 
@@ -200,7 +200,7 @@ return [
 
     'password_email_url' => 'password/email',
 
-    'profile_url' => false,
+    'profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------

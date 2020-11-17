@@ -16,7 +16,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Name</label>
                         <div class="col-sm-8">
-                            <input type="text" name="name" value="" class="form-control" placeholder="name" required>
+                            <input type="text" name="name" value="{{ old('name') }}" class="form-control"
+                                   placeholder="name" required>
                             @if ($errors->has('name'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('name') }}</strong>
@@ -27,7 +28,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">E-mail</label>
                         <div class="col-sm-8">
-                            <input type="email" name="email" value="" class="form-control" placeholder="e-mail" required>
+                            <input type="email" name="email" value="{{ old('email') }}" class="form-control"
+                                   placeholder="e-mail" required>
                             @if ($errors->has('email'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('email') }}</strong>
@@ -38,32 +40,11 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Phone number</label>
                         <div class="col-sm-8">
-                            <input type="number" name="phone_number" value="" class="form-control" placeholder="phone-number" required>
+                            <input type="number" name="phone_number" value="{{ old('phone_number') }}"
+                                   class="form-control" placeholder="phone-number" required>
                             @if ($errors->has('phone_number'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('phone_number') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Password</label>
-                        <div class="col-sm-8">
-                            <input type="password" name="password" value="" class="form-control" placeholder="Enter password" required>
-                            @if ($errors->has('password'))
-                                <span class="text-danger">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Confirm Password</label>
-                        <div class="col-sm-8">
-                            <input type="password" name="password_confirmation" value="" class="form-control" placeholder="Confirm Password" required>
-                            @if ($errors->has('password_confirmation'))
-                                <span class="text-danger">
-                                <strong>{{ $errors->first('password_confirmation') }}</strong>
                             </span>
                             @endif
                         </div>
