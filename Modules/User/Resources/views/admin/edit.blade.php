@@ -10,13 +10,14 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('new.customer.update', $data->id) }}" method="POST">
+            <form role="form" action="{{ route('admin.update', $data->id ) }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Name</label>
                         <div class="col-sm-8">
-                            <input type="text" name="name" value="{{ $data->name }}" class="form-control" placeholder="name">
+                            <input type="text" name="name" value="{{ $data->name }}" class="form-control"
+                                   placeholder="name" readonly>
                             @if ($errors->has('name'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('name') }}</strong>
@@ -27,7 +28,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">E-mail</label>
                         <div class="col-sm-8">
-                            <input type="email" name="email" value="{{ $data->email }}" class="form-control" placeholder="e-mail">
+                            <input type="email" name="email" value="{{ $data->email }}" class="form-control"
+                                   placeholder="e-mail" readonly>
                             @if ($errors->has('email'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('email') }}</strong>
@@ -39,7 +41,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Phone number</label>
                         <div class="col-sm-8">
-                            <input type="number" name="phone_number" value="{{ $data->phone_number }}" class="form-control" placeholder="phone_number">
+                            <input type="number" name="phone_number" value="{{ $data->phone_number }}"
+                                   class="form-control" placeholder="phone_number" readonly>
                             @if ($errors->has('phone_number'))
                                 <span class="text-danger">
                                 <strong>{{ $errors->first('phone_number') }}</strong>
@@ -71,20 +74,6 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Status</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" name="status" id="status">
-                                <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive</option>
-                            </select>
-                            @if ($errors->has('status'))
-                                <span class="text-danger">
-                                <strong>{{ $errors->first('status') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                    </div>
 
                     <div class="card-footer">
                         <a href="{{ route('user.dashboard') }}" class="btn btn-danger">Back</a>
@@ -98,13 +87,11 @@
 
 @section('js')
     <script !src="">
-        function isNumber(evt)
-        {
+        function isNumber(evt) {
             // console.log (evt);
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
-            if (charCode == 13 || charCode == 46 || (charCode >= 48 && charCode <= 57))
-            {
+            if (charCode == 13 || charCode == 46 || (charCode >= 48 && charCode <= 57)) {
                 return true;
             }
             return false;

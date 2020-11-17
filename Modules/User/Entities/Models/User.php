@@ -75,7 +75,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function adminlte_profile_url()
     {
-        return 'profile/username';
+        return 'admin/profile';
     }
 
     public function address()

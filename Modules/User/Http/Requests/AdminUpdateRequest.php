@@ -3,8 +3,9 @@
 namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class CustomerCreateRequest extends FormRequest
+class adminUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,9 +15,7 @@ class CustomerCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string",
-            'email' => "required|email|unique:users,email",
-            'phone_number' => "required|unique:users,phone_number|integer",
+            'password' => "required|string|confirmed",
         ];
     }
 

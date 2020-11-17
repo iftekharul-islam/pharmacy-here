@@ -45,7 +45,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $data = $this->repository->userDetails(Auth::user()->id);
+        $data = $this->repository->findById(Auth::user()->id);
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $prescriptions = $this->prescriptionRepository->getCustomerPrescriptionWeb(Auth::user()->id);
         $orders = $this->orderRepository->orderListByUserWeb(Auth::user()->id);
