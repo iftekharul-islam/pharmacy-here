@@ -37,11 +37,13 @@ class NoticeController extends Controller
      */
     public function create(Request $request)
     {
-//        return $request->all();
+        $display_area = $request->area_id;
+        $display_thana = $request->thana_id;
+        $display_district = $request->district_id;
+
         $allLocations = $this->locationRepository->getLocation();
         $data = $this->repository->getUserList($request);
-//        return $data;
-        return view('notice::create',compact('allLocations', 'data'));
+        return view('notice::create', compact('allLocations', 'data', 'display_area', 'display_thana', 'display_district'));
     }
 
     /**

@@ -26,31 +26,35 @@ class NoticeRepository
         return Notice::find($id);
     }
 
-    public function showById($id) {
+    public function showById($id)
+    {
         return Notice::with('UserNotices', 'UserNotices.Pharmacy.area')->where('id', $id)->first();
     }
 
     public function getUserList($request)
     {
+        $data = PharmacyBusiness::query();
+
         if ($request->area_id !== null) {
-            return PharmacyBusiness::with('area')->whereHas('area', function ($query) use ($request) {
+            $data->whereHas('area', function ($query) use ($request) {
                 $query->where('area_id', $request->area_id);
-            })->paginate(10);
+            });
         }
-        if ($request->thana_id !== null) {
-            return PharmacyBusiness::with('area')->whereHas('area.thana', function ($query) use ($request) {
+        if ($request->thana_id !== null && $request->area_id == null) {
+            $data->whereHas('area.thana', function ($query) use ($request) {
                 $query->where('thana_id', $request->thana_id);
-            })->paginate(10);
+            });
         }
-        if ($request->district_id !== null) {
-            return PharmacyBusiness::with('area')->whereHas('area.thana.district', function ($query) use ($request) {
+        if ($request->district_id !== null && $request->thana_id == null && $request->area_id == null) {
+            $data->whereHas('area.thana.district', function ($query) use ($request) {
                 $query->where('district_id', $request->district_id);
-            })->paginate(10);
+            });
         }
-        return PharmacyBusiness::with('area')->paginate(10);
+        return $data->with('area')->paginate(config('subidha.item_per_page'));
     }
 
-    public function create($request) {
+    public function create($request)
+    {
 
         $data = new Notice();
         $request->type = 1;
@@ -69,7 +73,7 @@ class NoticeRepository
         }
         $data->save();
 
-        foreach ($request->pharmacy_id as $id){
+        foreach ($request->pharmacy_id as $id) {
             UserNotice::create([
                 'notice_id' => $data->id,
                 'pharmacy_id' => $id,
@@ -80,12 +84,11 @@ class NoticeRepository
         if ($request->sendNow) {
 
             if ($request->type == 1) {
-                $users = User::whereHas('roles' , function($q){
+                $users = User::whereHas('roles', function ($q) {
                     $q->where('name', 'pharmacy');
                 })->get()->pluck('id');
-            }
-            else {
-                $users = User::whereHas('roles' , function($q){
+            } else {
+                $users = User::whereHas('roles', function ($q) {
                     $q->where('name', 'customer');
                 })->get()->pluck('id');
             }
@@ -136,6 +139,6 @@ class NoticeRepository
 
     public function getLatestNotice($type)
     {
-        return Notice::where('status', true)->where('type', $type)->orderBy('id','desc')->first();
+        return Notice::where('status', true)->where('type', $type)->orderBy('id', 'desc')->first();
     }
 }

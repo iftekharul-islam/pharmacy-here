@@ -4,6 +4,11 @@
 @section('title', 'Pharmacy')
 
 @section('content_header')
+    <style>
+        .action-portion {
+            display: flex;
+        }
+    </style>
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -70,7 +75,7 @@
                     <th>Pharmacy Address</th>
                     <th>Phone</th>
                     <th>Email</th>
-                    <th>Created at</th>
+                    <th>joined at</th>
                     <th>status</th>
                     <th>Action</th>
                 </tr>
@@ -86,7 +91,7 @@
                                 , {{$item->pharmacyBusiness->area->thana->district->name}} @endisset</td>
                             <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
                             <td>@isset($item->email) {{ $item->email }} @endisset</td>
-                            <td>{{ isset($item->pharmacyBusiness->created_at) ? $item->pharmacyBusiness->created_at->diffForHumans() : '' }}</td>
+                            <td>{{ isset($item->created_at) ? $item->created_at->diffForHumans() : '' }}</td>
                             <td>
                                 @if($item->status == 1)
                                     <a href="javascript:void(0)" class="badge badge-primary">Active</a>
@@ -94,28 +99,31 @@
                                     <a href="javascript:void(0)" class="badge badge-danger">Inactive</a>
                                 @endif
                             </td>
-                            <td class="action-portion">
-                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success"
-                                        data-toggle="modal" data-target="#modal-default">
-                                    <i class="fa fa-eye"></i>
-                                </button>
-                                <a href="{{ route('pharmacy.edit', $item->id) }}" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-edit"></i> </a>
+                            <td>
+                                <div class="action-portion">
+                                    <button type="button" onclick="showProduct({{ $item }})"
+                                            class="btn btn-sm btn-success mr-2"
+                                            data-toggle="modal" data-target="#modal-default">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    <a href="{{ route('pharmacy.edit', $item->id) }}"
+                                       class="btn btn-sm btn-primary mr-2">
+                                        <i class="fa fa-edit"></i> </a>
 
-                                <form id="delete-form-{{ $loop->index }}"
-                                      action="{{ route('pharmacy.destroy', $item['id']) }}"
-                                      method="post"
-                                      class="form-horizontal d-inline">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <div class="btn-group">
-                                        <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </form>
-
+                                    <form id="delete-form-{{ $loop->index }}"
+                                          action="{{ route('pharmacy.destroy', $item['id']) }}"
+                                          method="post"
+                                          class="form-horizontal d-inline">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <div class="btn-group">
+                                            <button onclick="removeItem({{ $loop->index }})" type="button"
+                                                    class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

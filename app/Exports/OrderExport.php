@@ -88,8 +88,8 @@ class OrderExport implements FromCollection, WithHeadings, WithColumnWidths
         return [
             'Order Number',
             'Pharmacy Name',
-            'Amount',
             'Date',
+            'Amount',
         ];
     }
 
