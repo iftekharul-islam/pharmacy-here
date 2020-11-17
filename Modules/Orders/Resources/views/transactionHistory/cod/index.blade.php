@@ -30,7 +30,7 @@
                         <select name="district_id" class="form-control" id="selectDistrict" onchange="getThanas(value)">
                             <option value="" selected disabled>Select district</option>
                             @foreach($allLocations as $district)
-                                <option value="{{ $district->id }}" >{{ $district->name }}</option>
+                                <option value="{{ $district->id }}" @isset($district_new_id) {{ $district_new_id == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
