@@ -310,6 +310,11 @@ return [
                     'icon_color' => 'cyan',
                     'url'     => 'cod-transaction-history'
                 ],
+                [
+                    'text' => 'All transaction History',
+                    'icon_color' => 'cyan',
+                    'url' => 'all-transaction-history'
+                ],
             ],
         ],
         [

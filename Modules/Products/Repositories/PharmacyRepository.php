@@ -40,6 +40,7 @@ class PharmacyRepository
             });
         }
 
+        return $data->paginate(2);
         return $data->paginate(config('subidha.item_per_page'));
     }
 

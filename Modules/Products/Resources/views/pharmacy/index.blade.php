@@ -54,7 +54,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Pharmacies</h3> &nbsp;
-            <p class="badge badge-primary">{{ count($pharmacies) > 0 ? count($pharmacies)  : 0}}</p>
+            <p class="badge badge-primary">{{ $pharmacies->total()}}</p>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive mb-3">

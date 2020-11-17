@@ -103,7 +103,7 @@
                     @endforeach
                     </tbody>
                 </table>
-                {{ $data->appends(Request::all())->links() }}
+                {{ $item->appends(Request::all())->links() }}
             @else
                 <h3 class="text-center">No data found !!!</h3>
             @endif
