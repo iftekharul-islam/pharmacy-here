@@ -17,26 +17,20 @@
                             <option value="1">Pharmacy</option>
                             <option value="2" disabled>Customer</option>
                         </select>
-{{--                        <div class="col-3-xxxl col-lg-3 col-3" id="">--}}
-{{--                            @if ($errors->has('type'))--}}
-{{--                                <span class="text-danger">--}}
-{{--                                    <strong>{{ $errors->first('type') }}</strong>--}}
-{{--                                </span>--}}
-{{--                            @endif--}}
-{{--                        </div>--}}
                     </div>
                     <div class="col-3-xxxl col-lg-3 col-3 form-group">
                         <label>District</label>
                         <select name="district_id" class="form-control" id="selectDistrict" onchange="getThanas(value)">
                             <option value="" selected disabled>Select district</option>
                             @foreach($allLocations as $district)
-                                <option value="{{ $district->id }}" >{{ $district->name }}</option>
+                                <option
+                                    value="{{ $district->id }}" @isset($display_district) {{ $display_district == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-3-xxxl col-lg-3 col-3 form-group">
                         <label>Thana</label>
-                        <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()">
+                        <select name="thana_id" class="form-control" id="selectThana" onchange="getAreas()" disabled="">
 
                         </select>
                     </div>
@@ -83,10 +77,10 @@
                         </tbody>
                     @endforeach
                 </table>
+                {{ $data->appends(Request::all())->links() }}
             </div>
             <!-- /.card-body -->
         </div>
-        @endif
         <div class="col-md-6">
             <div class="card card-primary-outline">
                 <div class="card-header">
@@ -153,6 +147,13 @@
             </div>
         </div>
     </form>
+    @else
+        <div class="card">
+            <div class="card-body">
+                <h3 class="text-center">No data found !!!</h3>
+            </div>
+        </div>
+    @endif
 @endsection
 
 @section('js')
@@ -181,23 +182,52 @@
             return false;
         }
         var addresses = {!! json_encode($allLocations) !!};
+
+        var selectedDistrict = {!! json_encode( $display_district ?? null ) !!};
+        var selectedThana = {!! json_encode( $display_thana ?? null ) !!};
+        var selectedArea = {!! json_encode($display_area ?? null ) !!};
+
         var thanas = [];
         var areas = [];
 
+        window.onload = function () {
+            if (selectedDistrict != null) {
+                getThanas();
+                getAreas();
+            }
+        };
+
         function getThanas() {
             var districtId = $('#selectDistrict option:selected').val();
-
             var selectedDistrict = addresses.find(address => address.id == districtId);
-
             thanas = selectedDistrict.thanas;
-
             $('#selectThana').html('');
             $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
-            $.map(thanas, function(value) {
+            $.map(thanas, function (value) {
+                let selectedvalue = value.id == selectedThana ? true : false;
+                $('#selectThana').removeAttr('disabled');
                 $('#selectThana')
                     .append($("<option></option>")
-                        .attr("value",value.id)
+                        .attr("value", value.id)
+                        .prop('selected', selectedvalue)
+                        .text(value.name));
+            });
+
+        }
+
+        function getPharmacyThanas() {
+            var districtId = $('#selectPharmacyDistrict option:selected').val();
+            var selectedDistrict = addresses.find(address => address.id == districtId);
+            thanas = selectedDistrict.thanas;
+
+            $('#selectPharmacyThana').html('');
+            $('#selectPharmacyThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
+
+            $.map(thanas, function (value) {
+                $('#selectPharmacyThana')
+                    .append($("<option></option>")
+                        .attr("value", value.id)
                         .text(value.name));
             });
 
@@ -205,20 +235,29 @@
 
         function getAreas() {
             var areaId = $('#selectThana option:selected').val();
-            var selectedThana = thanas.find(thana => thana.id == areaId);
-            areas = selectedThana.areas;
+            var selectedThanaValue = thanas.find(thana => thana.id == areaId);
+            areas = selectedThanaValue.areas;
 
-            if ( areas.length === 0 ) {
+            if (areas.length === 0) {
                 $('#selectArea').attr('disabled', 'disabled');
+                $('#address').attr('disabled', 'disabled');
+                $('#submit').attr('disabled', 'disabled');
+                $('#selectArea').html('');
+                return;
             }
 
             $('#selectArea').html('');
-            $.map(areas, function(value) {
-                $('#selectArea').removeAttr('disabled');
 
+            $('#selectArea').removeAttr('disabled');
+            $('#address').removeAttr('disabled');
+            $('#submit').removeAttr('disabled');
+            $('#selectArea').append(`<option value="" selected disabled>Please Select a area</option>`);
+            $.map(areas, function (value) {
+                let selected = value.id == selectedArea ? true : false;
                 $('#selectArea')
                     .append($("<option></option>")
-                        .attr("value",value.id)
+                        .attr("value", value.id)
+                        .prop('selected', selectedArea)
                         .text(value.name));
             });
         }

@@ -203,7 +203,7 @@
                             <h2>{{ __('text.cart_list') }}</h2>
                         </div>
                     </div>
-                    <strong class="note-text text-danger d-none">Please add amount more than ৳100</strong>
+                    <strong class="note-text text-danger d-none">{{__('text.amount_notice')}}</strong>
                     <div class="order-summary">
                         <div class="table-responsive">
                             <table class="table">
