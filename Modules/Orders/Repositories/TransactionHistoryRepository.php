@@ -264,6 +264,17 @@ class TransactionHistoryRepository
         return Order::where('pharmacy_id', $pharmacy_id)->where('status', 0)->get();
     }
 
+    public function completeOrdersByMonth($pharmacy_id)
+    {
+        return Order::select(DB::raw("(SUM(pharmacy_amount)) as amount"),
+            DB::raw("MONTHNAME(created_at) as month_name"))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('month_name')
+            ->where('status', 3)
+            ->where('pharmacy_id', $pharmacy_id)
+            ->get();
+    }
+
     public function storePharmacyTransaction($request, $pharmacy_id)
     {
         $data = new TransactionHistory();
