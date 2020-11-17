@@ -65,6 +65,8 @@ class CustomerRepository
             $user->status = $data['status'];
         }
         $user->save();
+
+        return true;
     }
 
 
