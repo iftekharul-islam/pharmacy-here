@@ -29,9 +29,18 @@
             {{ session('failed') }}
         </div>
     @endif
-    <div class="card">
-        <div class="card-body">
-            <form action="{{ route('pharmacy.index') }}">
+    <form action="{{ route('pharmacy.index') }}">
+        <div class="card col-8-xxxl col-lg-8 col-8 pb-3">
+            <div class="card-body">
+                <div class="row">
+                    <label>Pharmacy Name</label>
+                    <input type="search" class="form-control" name="search" placeholder="Search pharmacy">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
                 <div class="row">
                     <div class="col-4-xxxl col-lg-4 col-4 form-group">
                         <label>District</label>
@@ -57,83 +66,86 @@
                         <button type="submit" class="btn btn-primary float-right">Search</button>
                     </div>
                 </div>
-            </form>
+                {{--            </form>--}}
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Pharmacies</h3> &nbsp;
-            <p class="badge badge-primary">{{ $pharmacies->total()}}</p>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body table-responsive mb-3">
-            <table id="example1" class="table">
-                <thead>
-                <tr>
-                    <th>Owner</th>
-                    <th>Pharmacy Name</th>
-                    <th>Pharmacy Address</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>joined at</th>
-                    <th>status</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @if($pharmacies->isNotEmpty())
-                    @foreach($pharmacies as $index => $item)
-                        <tr>
-                            <td>@isset($item->name) {{ $item->name }} @endisset</td>
-                            <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_name }} @endisset</td>
-                            <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_address }}
-                                ,{{$item->pharmacyBusiness->area->name}}, {{$item->pharmacyBusiness->area->thana->name}}
-                                , {{$item->pharmacyBusiness->area->thana->district->name}} @endisset</td>
-                            <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
-                            <td>@isset($item->email) {{ $item->email }} @endisset</td>
-                            <td>{{ isset($item->created_at) ? $item->created_at->diffForHumans() : '' }}</td>
-                            <td>
-                                @if($item->status == 1)
-                                    <a href="javascript:void(0)" class="badge badge-primary">Active</a>
-                                @else
-                                    <a href="javascript:void(0)" class="badge badge-danger">Inactive</a>
-                                @endif
-                            </td>
-                            <td>
-                                <div class="action-portion">
-                                    <button type="button" onclick="showProduct({{ $item }})"
-                                            class="btn btn-sm btn-success mr-2"
-                                            data-toggle="modal" data-target="#modal-default">
-                                        <i class="fa fa-eye"></i>
-                                    </button>
-                                    <a href="{{ route('pharmacy.edit', $item->id) }}"
-                                       class="btn btn-sm btn-primary mr-2">
-                                        <i class="fa fa-edit"></i> </a>
+        <div class="card">
+            {{--        <form action="{{ route('pharmacy-search') }}">--}}
+            {{--            @csrf--}}
+            <div class="card-header">
+                <h3 class="card-title">Pharmacies</h3> &nbsp;
+                <p class="badge badge-primary">{{ $pharmacies->total()}}</p>
+            </div>
+    </form>
+    <!-- /.card-header -->
+    <div class="card-body table-responsive mb-3">
+        <table id="example1" class="table">
+            <thead>
+            <tr>
+                <th>Owner</th>
+                <th>Pharmacy Name</th>
+                <th>Pharmacy Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>joined at</th>
+                <th>status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if($pharmacies->isNotEmpty())
+                @foreach($pharmacies as $index => $item)
+                    <tr>
+                        <td>@isset($item->name) {{ $item->name }} @endisset</td>
+                        <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_name }} @endisset</td>
+                        <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_address }}
+                            ,{{$item->pharmacyBusiness->area->name}}, {{$item->pharmacyBusiness->area->thana->name}}
+                            , {{$item->pharmacyBusiness->area->thana->district->name}} @endisset</td>
+                        <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
+                        <td>@isset($item->email) {{ $item->email }} @endisset</td>
+                        <td>{{ isset($item->created_at) ? $item->created_at->diffForHumans() : '' }}</td>
+                        <td>
+                            @if($item->status == 1)
+                                <a href="javascript:void(0)" class="badge badge-primary">Active</a>
+                            @else
+                                <a href="javascript:void(0)" class="badge badge-danger">Inactive</a>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="action-portion">
+                                <button type="button" onclick="showProduct({{ $item }})"
+                                        class="btn btn-sm btn-success mr-2"
+                                        data-toggle="modal" data-target="#modal-default">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <a href="{{ route('pharmacy.edit', $item->id) }}"
+                                   class="btn btn-sm btn-primary mr-2">
+                                    <i class="fa fa-edit"></i> </a>
 
-                                    <form id="delete-form-{{ $loop->index }}"
-                                          action="{{ route('pharmacy.destroy', $item['id']) }}"
-                                          method="post"
-                                          class="form-horizontal d-inline">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <div class="btn-group">
-                                            <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                    class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-12">
-            {{ $pharmacies->appends(Request::all())->links() }}
-        </div>
+                                <form id="delete-form-{{ $loop->index }}"
+                                      action="{{ route('pharmacy.destroy', $item['id']) }}"
+                                      method="post"
+                                      class="form-horizontal d-inline">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <div class="btn-group">
+                                        <button onclick="removeItem({{ $loop->index }})" type="button"
+                                                class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        {{ $pharmacies->appends(Request::all())->links() }}
+    </div>
     </div>
 
     @include('products::pharmacy.show')

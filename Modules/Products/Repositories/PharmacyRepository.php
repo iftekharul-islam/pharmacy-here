@@ -24,6 +24,11 @@ class PharmacyRepository
             ->where('is_pharmacy', 1)
             ->orderby('id', 'desc');
 
+        if ($request->search !== null){
+            $data->whereHas('pharmacyBusiness', function ($query) use ($request) {
+                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%") ;
+            });
+        }
         if ($area_id !== null) {
             $data->whereHas('pharmacyBusiness', function ($query) use ($area_id) {
                 $query->where('area_id', $area_id);
@@ -41,6 +46,16 @@ class PharmacyRepository
         }
 
         return $data->paginate(config('subidha.item_per_page'));
+    }
+
+    public function search($request)
+    {
+        return User::with('pharmacyBusiness', 'pharmacyBusiness.area', 'pharmacyBusiness.area.thana', 'pharmacyBusiness.area.thana.district', 'weekends')
+            ->where('is_pharmacy', 1)
+            ->whereHas('pharmacyBusiness', function ($query) use ($request) {
+                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%") ;
+            })
+            ->paginate(config('subidha.item_per_page'));
     }
 
     public function update($request, $id)

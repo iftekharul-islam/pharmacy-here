@@ -23,6 +23,11 @@
         color: #000;
         margin-left: 20px;
     }
+    .custom-control-input:checked ~ .custom-control-label::before {
+        color: #fff;
+        border-color: #00AE4D !important;
+        background-color: #00AE4D !important;
+    }
 </style>
 @section('content')
     @if(session('success'))
@@ -239,15 +244,15 @@
                                     <p id="grandTotal"></p>
                                 </li>
                                 <li>
-                                    <label for="">
-                                        <input type="checkbox" class="mr-2" name="agreement" required>
-                                        <b>{{ __('text.agreement') }}</b>
-                                    </label>
-                                    <div class="agreement">
+                                    <div class="custom-control custom-checkbox mr-sm-mb-2">
+                                        <input type="checkbox" class="custom-control-input" name="agreement" id="customControlAutosizing" required>
+                                        <label class="custom-control-label" for="customControlAutosizing"><b>{{ __('text.agreement') }}</b></label>
+                                    </div>
+                                    <div class="agreement mt-2">
                                         <ul>
-                                            <li><small><a href="{{ route('terms') }}">{{ __('text.Terms_of_use') }}</a></small></li>
-                                            <li><small><a href="{{ route('privacy.page') }}">{{ __('text.privacy_policy') }}</a></small></li>
-                                            <li><small><a href="{{ route('return.page') }}">{{ __('text.refund_and_return') }}</a></small></li>
+                                            <li><small><a href="{{ route('terms') }}" class="text-primary">{{ __('text.Terms_of_use') }}</a></small></li>
+                                            <li><small><a href="{{ route('privacy.page') }}" class="text-primary">{{ __('text.privacy_policy') }}</a></small></li>
+                                            <li><small><a href="{{ route('return.page') }}" class="text-primary">{{ __('text.refund_and_return') }}</a></small></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -496,6 +501,7 @@
 
             $('input[name="shipping_address_id"]').val(id);
             $('#shipping_address_id-error').addClass('d-none');
+            $('#pharmacy_search-error').addClass('d-none');
 
             $.ajax({
                 url: '{{ url('find-pharmacy') }}',

@@ -31,7 +31,26 @@ class ProductRepository
 
         if ($request->has('brand') && $request->get('brand')) {
             $brand = $request->get('brand');
-            $products->where('name', 'LIKE', "%$brand%");
+            $data = Product::where('name', 'LIKE', "%$brand%")->first();
+
+            $isAvaialable = Product::where('name', 'LIKE', "%$brand%")
+                ->where('purchase_price', '>', 0)
+                ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+                ->orderBy('name', 'ASC')
+                ->orderBy('purchase_price', 'DESC')
+                ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
+
+
+            if (count($isAvaialable) == 0) {
+                return $products->where('generic_id', $data->generic_id)
+                    ->where('purchase_price', '>', 0)
+                    ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+                    ->orderBy('name', 'ASC')
+                    ->orderBy('purchase_price', 'DESC')
+                    ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
+            }
+            return $isAvaialable ;
+
         }
 
         if ($request->has('generic') && $request->get('generic')) {
@@ -51,25 +70,6 @@ class ProductRepository
             ->orderBy('purchase_price', 'DESC')
             ->where('purchase_price', '>', 0)
             ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
-
-//        $nameSort =  $products
-//            ->orderBy('name', 'ASC')
-//            ->orderBy('purchase_price', 'ASC')
-//            ->where('purchase_price', '>', 0)
-//            ->get();
-////            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
-//        dd( $nameSort);
-//
-//        $priceSort = $products
-//            ->orderBy('name', 'ASC')
-//            ->where('purchase_price', '=', 0)
-//            ->get();
-//        dd( $priceSort);
-//
-//        $newProductList = $nameSort->merge($priceSort);
-//
-//        return $newProductList->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
-//            ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
     }
 
     public function searchByProductAmount($request)
@@ -356,8 +356,13 @@ class ProductRepository
     {
         $product = Product::find($id);
         $similar_products = Product::query();
-        $similar_products->where('id', '!=',  $product->id)->where('generic_id',  $product->generic_id);
-        return $similar_products->with('generic')->paginate(5);
+        $similar_products->where('id', '!=',  $product->id)
+            ->where('form_id', $product->form_id)
+            ->where('strength', $product->strength)
+            ->where('purchase_price', '>', 0)
+            ->where('generic_id',  $product->generic_id);
+
+        return $similar_products->with('generic', 'primaryUnit')->paginate(8);
     }
 
     public function getProductName($request)

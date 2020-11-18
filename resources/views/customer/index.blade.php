@@ -174,6 +174,11 @@
                 margin-top: -345px;
             }
         }
+        .prescription-image {
+            border: 1px solid #00CE5E ;
+            width: 86%;
+            height: 174px;
+        }
     </style>
 @endsection
 @section('content')
@@ -224,7 +229,6 @@
                                                 <td class="edit-value d-none"><input class="form-control" type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
                                                 <td><b>{{ __('text.gender') }}:</b></td>
                                                 <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
-{{--                                                <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>--}}
                                                 <td class="edit-value d-none">
                                                     <select class="form-control" name="gender" id="">
                                                         <option value="male" {{ $gender == 'male' ? 'selected' : '' }}>Male</option>

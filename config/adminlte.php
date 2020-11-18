@@ -232,8 +232,8 @@ return [
 
     'menu' => [
         [
-            'text' => 'search',
-            'search' => true,
+            'text' => 'search pharmacy',
+            'search' => false,
             'topnav' => true,
         ],
 //        [

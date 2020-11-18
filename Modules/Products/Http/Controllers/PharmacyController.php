@@ -66,6 +66,11 @@ class PharmacyController extends Controller
         return view('products::pharmacy.show');
     }
 
+    public function search(Request $request)
+    {
+        $data = $this->repository->search($request);
+    }
+
     /**
      * Show the form for editing the specified resource.
      * @param int $id
@@ -100,4 +105,5 @@ class PharmacyController extends Controller
         $pharmacy = $this->repository->delete($id);
         return redirect()->route('pharmacy.index');
     }
+
 }

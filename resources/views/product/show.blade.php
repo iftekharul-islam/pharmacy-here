@@ -127,7 +127,7 @@
                                             <span class=" mb-4"></span>
                                         @endif
                                         <h5 style="margin: 0px">{{ $product->name }}</h5>
-                                        <small>{{ $product->strength }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
+                                        <small>{{ $product->strength }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ $product->primaryUnit->name }}</small>
                                         <br>
                                         <small>{{ $product->generic->name }}</small>
                                         <p><small>{{ $product->company->name }}</small></p>
