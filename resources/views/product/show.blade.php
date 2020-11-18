@@ -73,9 +73,15 @@
                                     <th>{{ __('text.form') }}</th>
                                     <td>{{ $data->form->name }}</td>
                                 </tr>
+                                @if(!empty($data->strength))
+                                    <tr>
+                                        <th>{{ __('text.strength') }}</th>
+                                        <td>{{ $data->strength }}</td>
+                                    </tr>
+                                @endif
                             </table>
                         </div>
-                        <div class="product-details-btn">
+                    <div class="product-details-btn ml-2">
                             <a href="{{ route('product-list') }}" class="btn--edit mr-2">{{ __('text.back') }}</a>
                             @guest
                                 <a href="{{ route('customer.login', $data->id) }}" class="btn--primary"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>

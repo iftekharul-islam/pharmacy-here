@@ -38,7 +38,8 @@
                     <div class="footer-menu-list">
                         <a href="#">{{ __('text.social') }}</a>
                         <ul>
-                            <li><a href="https://www.facebook.com" target="tab"><i class="fab fa-facebook-square mr-2"></i>{{ __('text.facebook') }}</a></li>
+                            <li><a href="https://www.facebook.com/subidhabd" target="tab"><i
+                                        class="fab fa-facebook-square mr-2"></i>{{ __('text.facebook') }}</a></li>
                             <li><a href="https://twitter.com" target="tab"><i class="fab fa-twitter mr-2"></i>{{ __('text.twitter') }}</a></li>
                             <li><a href="https://www.instagram.com/?hl=en" target="tab"><i class="fab fa-instagram mr-2"></i>{{ __('text.instagram') }}</a></li>
                             <li><a href="https://www.youtube.com" target="tab"><i class="fab fa-youtube mr-2"></i>{{ __('text.youtube') }}</a></li>

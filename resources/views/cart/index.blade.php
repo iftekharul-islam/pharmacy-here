@@ -246,7 +246,7 @@
                                             <tr>
                                                 <td scope="row">
                                                     <div class="cart-product">
-                                                        <div class="cart-product-image">
+                                                        <div class="cart-product-image mr-2">
                                                             @if ($details->product->form->slug == 'tablet' || $details->product->form->name == 'capsul')
                                                                 <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
                                                             @elseif ($details->product->form->slug == 'syrup')

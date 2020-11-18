@@ -88,7 +88,7 @@
                     @foreach($data as $index => $item)
                         <tr>
                             <td>{{ $item->order_no }}</td>
-                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] }}</td>
+                            <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] ?? '' }}</td>
                             <td>{{ $item->amount }}</td>
                             <td>{{ $item->order_date }}</td>
                             <td>@include('orders::status', ['status' => $item->status])</td>

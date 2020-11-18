@@ -117,4 +117,5 @@ return [
     'submit' => 'Submit',
     'add_to_cart_message' => 'Product added to cart successfully !',
     'amount_notice' => 'Please add amount more than ৳100',
+    'strength' => 'Strength',
 ];
