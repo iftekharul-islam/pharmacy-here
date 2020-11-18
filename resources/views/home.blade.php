@@ -83,7 +83,7 @@
                         <div class="left">
                             <p class="text-resize">Prescription Holder</p>
                             <p>Keep your prescription here</p>
-                            <a href="{{ route('prescription.create') }}" class="btn--shop-now">Try now</a>
+                            <a href="{{ route('customer.details', '#v-pills-prescription') }}" class="btn--shop-now">Try now</a>
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/prescription.svg') }}" alt="card 1">

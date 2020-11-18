@@ -45,9 +45,6 @@ class PrescriptionController extends Controller
      */
     public function selectedId(PrescriptionSubmitRequest $request)
     {
-//        $request->validate([
-//            'prescription_id' => 'required',
-//        ]);
         session()->put('prescriptions', $request->prescription_id);
 
         return redirect()->route('checkout.preview');

@@ -487,23 +487,31 @@
 @endsection
 @section('js')
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-                localStorage.setItem('activeTab', $(e.target).attr('href'));
-            });
-
-            var activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                $('.nav-pills a[href="' + activeTab + '"]').tab('show');
-            }
-        });
+        // Javascript to enable link to tab
+        var url = document.location.toString();
+        if (url.match('#')) {
+            $('.nav-pills a[href="#' + url.split('#')[1] + '"]').tab('show');
+        }
+        // Change hash for page-reload
+        $('.nav-pills a').on('shown.bs.tab', function (e) {
+            window.location.hash = e.target.hash;
+        })
+        // $(document).ready(function() {
+        //     $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+        //         localStorage.setItem('activeTab', $(e.target).attr('href'));
+        //     });
+        //
+        //     var activeTab = localStorage.getItem('activeTab');
+        //     if (activeTab) {
+        //         $('.nav-pills a[href="' + activeTab + '"]').tab('show');
+        //     }
+        // });
 
         function input(){
             $(".save-value").addClass('d-none');
             $(".edit-value").removeClass('d-none');
             $(".save-profile-btn").removeClass('d-none');
             $(".my-edit-btn").addClass('d-none');
-
         };
 
         function removeItem(id) {

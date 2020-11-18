@@ -119,7 +119,6 @@ class CustomerController extends Controller
      */
     public function update (Request $request, $id)
     {
-//        return $request->all();
         $this->repository->userDetailsUpdate($request, $id);
         return redirect()->back()->with('success', 'User profile successfully updated');
     }

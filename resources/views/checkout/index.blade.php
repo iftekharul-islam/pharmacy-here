@@ -5,24 +5,30 @@
         background-color: #00CE5E;
         color: white;
     }
+
     .form-row {
         background-color: #fff;
         color: black;
     }
+
     .delivery-option {
         background-color: #fff;
         color: black;
     }
+
     .save-profile-btn {
         border: 1px solid #00ce5e;
     }
+
     .add-address {
-        padding: 41px!important;
+        padding: 41px !important;
     }
+
     .agreement ul li a {
         color: #000;
         margin-left: 20px;
     }
+
     .custom-control-input:checked ~ .custom-control-label::before {
         color: #fff;
         border-color: #00AE4D !important;
@@ -58,6 +64,7 @@
                             <input type="hidden" class="normal_delivery_time" name="normal_delivery_time" value="">
                             <input type="hidden" class="express_delivery_time" name="express_delivery_time" value="">
                             <input type="hidden" class="express_delivery_date" name="express_delivery_date" value="">
+                            <input type="hidden" class="delivery_duration" name="delivery_duration" value="">
                             <input type="hidden" name="order_items" value="{{ $data }}">
                             <input type="hidden" name="delivery_charge_amount" value="">
                             <input type="hidden" name="status" value="0">
@@ -68,13 +75,15 @@
                                         <div class="col-md-5 col-sm-5">
                                             <div class="address" id="myAddress">
                                                 @foreach($addresses as $item)
-                                                <div class="address-box mr-2 selectedAddress" onclick="getAddressId({{ $item['id'] }}, {{ $item['area_id'] }}, {{ $item['area']['thana_id'] }})">
-                                                    <address>
-                                                        {{ $item['address'] . ', ' . $item['area']['name'] . ', ' . $item['area']['thana']['name'] . ', ' . $item['area']['thana']['district']['name'] }}
-                                                    </address>
-                                                </div>
+                                                    <div class="address-box mr-2 selectedAddress"
+                                                         onclick="getAddressId({{ $item['id'] }}, {{ $item['area_id'] }}, {{ $item['area']['thana_id'] }})">
+                                                        <address>
+                                                            {{ $item['address'] . ', ' . $item['area']['name'] . ', ' . $item['area']['thana']['name'] . ', ' . $item['area']['thana']['district']['name'] }}
+                                                        </address>
+                                                    </div>
                                                 @endforeach
-                                                <a href="#" class="add-address" data-toggle="modal" data-target="#addressModal">
+                                                <a href="#" class="add-address" data-toggle="modal"
+                                                   data-target="#addressModal">
                                                     <i class="fas fa-plus-circle"></i>
                                                     <span>{{ __('text.address') }}</span>
                                                 </a>
@@ -84,7 +93,8 @@
                                     <div class="row">
                                         <div class="col-md-4 mt-2">
                                             <input type="text" class="d-none" name="shipping_address_id" value=""><br>
-                                            <input type="text" class="d-none" id="pharmacy_search" name="pharmacy_search_id" value="">
+                                            <input type="text" class="d-none" id="pharmacy_search"
+                                                   name="pharmacy_search_id" value="">
                                             @if ($errors->has('shipping_address_id'))
                                                 <span class="text-danger">
                                                     <strong>{{ $errors->first('shipping_address_id') }}</strong>
@@ -97,7 +107,10 @@
                                     <p>{{ __('text.phone_number') }}</p>
                                     <div class="row">
                                         <div class="col-md-4">
-                                                <input type="text" name="phone_number" class="form-control mb-2" onkeypress="return isNumber(event)" value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}" required>
+                                            <input type="text" name="phone_number" class="form-control mb-2"
+                                                   onkeypress="return isNumber(event)"
+                                                   value="{{ \Illuminate\Support\Facades\Auth::user()->phone_number }}"
+                                                   required>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -115,14 +128,15 @@
                                     <p>{{ __('text.payment_details') }}</p>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="d-flex align-items-center justify-content-between payment-method">
+                                            <div
+                                                class="d-flex align-items-center justify-content-between payment-method">
                                                 <label id="cod" class="custom-radio" onclick="getPayTypeValue(1)">
                                                     <input type="radio" checked="checked" name="payment_type" value="1">
                                                     <span class="checkmark"></span>
                                                     Cash on Delivery
                                                 </label>
                                                 <label class="custom-radio" onclick="getPayTypeValue(2)">
-                                                    <input type="radio" id="epay"  name="payment_type" value="2">
+                                                    <input type="radio" id="epay" name="payment_type" value="2">
                                                     <span class="checkmark"></span>
                                                     E - Payment
                                                 </label>
@@ -135,73 +149,96 @@
                                     <p>{{ __('text.delivery_option') }}</p>
                                     <ul class="nav nav-pills mb-3 delivery-option-tabs" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link active home-delivery" id="pills-delivery-tab" data-toggle="pill" href="#pills-delivery" role="tab" aria-controls="pills-delivery" aria-selected="true" onclick="getDeliveryType(1)">{{ __('text.home_delivery') }}</a>
+                                            <a class="nav-link active home-delivery" id="pills-delivery-tab"
+                                               data-toggle="pill" href="#pills-delivery" role="tab"
+                                               aria-controls="pills-delivery" aria-selected="true"
+                                               onclick="getDeliveryType(1)">{{ __('text.home_delivery') }}</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link pharmacy-delivery" id="pills-pharmacy-tab" data-toggle="pill" href="#pills-pharmacy" role="tab" aria-controls="pills-pharmacy" aria-selected="false" onclick="getDeliveryType(2)">{{ __('text.pickup_pharmacy') }}</a>
+                                            <a class="nav-link pharmacy-delivery" id="pills-pharmacy-tab"
+                                               data-toggle="pill" href="#pills-pharmacy" role="tab"
+                                               aria-controls="pills-pharmacy" aria-selected="false"
+                                               onclick="getDeliveryType(2)">{{ __('text.pickup_pharmacy') }}</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade home-delivery show active" id="pills-delivery" role="tabpanel" aria-labelledby="pills-delivery-tab">
+                                        <div class="tab-pane fade home-delivery show active" id="pills-delivery"
+                                             role="tabpanel" aria-labelledby="pills-delivery-tab">
                                             <div class="delivery-option">
-                                                 <label class="custom-radio" id="tab1" name="tab" onclick="getDeliveryChargeValue(1)">
-                                                    <input type="radio" checked="checked" name="delivery_charge" value="1">
+                                                <label class="custom-radio" id="tab1" name="tab"
+                                                       onclick="getDeliveryChargeValue(1)">
+                                                    <input type="radio" checked="checked" name="delivery_charge"
+                                                           value="1">
                                                     <span id="normal_delivery_charge" class="checkmark"></span>
-                                                  </label><br>
-                                                  <label class="custom-radio" id="tab2" name="tab" onclick="getDeliveryChargeValue(2)">
+                                                </label><br>
+                                                <label class="custom-radio" id="tab2" name="tab"
+                                                       onclick="getDeliveryChargeValue(2)">
                                                     <input type="radio" name="delivery_charge" value="2">
                                                     <span id="express_delivery_charge" class="checkmark"></span>
-                                                  </label>
+                                                </label>
                                                 @if ( $isPreOrderMedicine )
                                                     <div class="order-summary">
                                                         {{ __('text.checkout_pre_order_notice') }}
                                                     </div>
                                                 @else
-                                                <div class="tab-content express-content d-none" id="pills-tabContent">
-                                                    <div class="tab-pane fade show active" id="pills-normaldelivery" role="tabpanel" aria-labelledby="pills-normaldelivery-tab">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                                <label for="inputdate">Time Slot</label>
-                                                                <select class="form-control express_slot" id="expressTime">
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group col-md-6">
-                                                                <label for="inputtime">Delivery Time</label>
-                                                                <input type="text" class="form-control express_date" id="inputtime" value="" readonly>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="pills-expressdelivery" role="tabpanel" aria-labelledby="pills-expressdelivery-tab">...</div>
-                                                </div>
-                                                <div class="tab-content normal-content" id="pills-tabContent">
-                                                    <div class="tab-pane fade show active" id="pills-normaldelivery" role="tabpanel" aria-labelledby="pills-normaldelivery-tab">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                                <label for="inputdate">Delivery Time</label>
-                                                                <input type="text" class="form-control normal_date" id="inputdate" value="" readonly>
+                                                    <div class="tab-content express-content d-none"
+                                                         id="pills-tabContent">
+                                                        <div class="tab-pane fade show active" id="pills-normaldelivery"
+                                                             role="tabpanel" aria-labelledby="pills-normaldelivery-tab">
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="inputdate">Time Slot</label>
+                                                                    <select class="form-control express_slot"
+                                                                            id="expressTime">
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="inputtime">Delivery Time</label>
+                                                                    <input type="text" class="form-control express_date"
+                                                                           id="inputtime" value="" readonly>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <div class="tab-pane fade" id="pills-expressdelivery"
+                                                             role="tabpanel"
+                                                             aria-labelledby="pills-expressdelivery-tab">...
+                                                        </div>
                                                     </div>
-                                                    <div class="tab-pane fade" id="pills-expressdelivery" role="tabpanel" aria-labelledby="pills-expressdelivery-tab">...</div>
-                                                </div>
+                                                    <div class="tab-content normal-content" id="pills-tabContent">
+                                                        <div class="tab-pane fade show active" id="pills-normaldelivery"
+                                                             role="tabpanel" aria-labelledby="pills-normaldelivery-tab">
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="inputdate">Delivery Time</label>
+                                                                    <input type="text" class="form-control normal_date"
+                                                                           id="inputdate" value="" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade" id="pills-expressdelivery"
+                                                             role="tabpanel"
+                                                             aria-labelledby="pills-expressdelivery-tab">...
+                                                        </div>
+                                                    </div>
                                                 @endif
                                             </div>
 
                                         </div>
-                                        <div class="tab-pane fade pickup-pharmacy" id="pills-pharmacy" role="tabpanel" aria-labelledby="pills-pharmacy-tab">
+                                        <div class="tab-pane fade pickup-pharmacy" id="pills-pharmacy" role="tabpanel"
+                                             aria-labelledby="pills-pharmacy-tab">
                                             @if ( $isPreOrderMedicine )
                                                 <div class="order-summary">
                                                     {{ __('text.pre_order_text') }}
                                                 </div>
-                                                @else
+                                            @else
                                             @endif
                                         </div>
                                     </div>
-{{--                                    <div class="row">--}}
-{{--                                        <div class="col-md-4 mt-2">--}}
-{{--                                            --}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
+                                    {{--                                    <div class="row">--}}
+                                    {{--                                        <div class="col-md-4 mt-2">--}}
+                                    {{--                                            --}}
+                                    {{--                                        </div>--}}
+                                    {{--                                    </div>--}}
                                 </li>
                                 <li>
                                     <p>{{ __('text.order_summary') }}</p>
@@ -219,13 +256,16 @@
                                                 <?php $total = 0 ?>
                                                 @if($data)
                                                     @foreach ($data as $id => $details)
-                                                        <input type="hidden" name="cart_ids[]" value="{{ $details->id }}">
-                                                        <?php $total +=  $details['product']['purchase_price']  * $details['quantity'] ?>
+                                                        <input type="hidden" name="cart_ids[]"
+                                                               value="{{ $details->id }}">
+                                                        <?php $total += $details['product']['purchase_price'] * $details['quantity'] ?>
                                                         <tr>
                                                             <td scope="row">{{ $details['product']['name'] }}</td>
-                                                            <td>৳ {{ $details['product']['purchase_price'] }} / {{ __('text.piece') }}</td>
+                                                            <td>৳ {{ $details['product']['purchase_price'] }}
+                                                                / {{ __('text.piece') }}</td>
                                                             <td data-th="Quantity">{{ $details['quantity'] }}</td>
-                                                            <td data-th="Subtotal" class="text-center">৳ {{ $details['product']['purchase_price']  * $details->quantity }}</td>
+                                                            <td data-th="Subtotal" class="text-center">
+                                                                ৳ {{ $details['product']['purchase_price']  * $details->quantity }}</td>
                                                         </tr>
                                                     @endforeach
                                                 @endif
@@ -245,20 +285,34 @@
                                 </li>
                                 <li>
                                     <div class="custom-control custom-checkbox mr-sm-mb-2">
-                                        <input type="checkbox" class="custom-control-input" name="agreement" id="customControlAutosizing" required>
-                                        <label class="custom-control-label" for="customControlAutosizing"><b>{{ __('text.agreement') }}</b></label>
+                                        <input type="checkbox" class="custom-control-input" name="agreement"
+                                               id="customControlAutosizing" required>
+                                        <label class="custom-control-label"
+                                               for="customControlAutosizing"><b>{{ __('text.agreement') }}</b></label>
                                     </div>
                                     <div class="agreement mt-2">
                                         <ul>
-                                            <li><small><a href="{{ route('terms') }}" class="text-primary">{{ __('text.Terms_of_use') }}</a></small></li>
-                                            <li><small><a href="{{ route('privacy.page') }}" class="text-primary">{{ __('text.privacy_policy') }}</a></small></li>
-                                            <li><small><a href="{{ route('return.page') }}" class="text-primary">{{ __('text.refund_and_return') }}</a></small></li>
+                                            <li>
+                                                <small><a href="{{ route('terms') }}"
+                                                          class="text-primary">{{ __('text.Terms_of_use') }}</a></small>
+                                            </li>
+                                            <li>
+                                                <small><a href="{{ route('privacy.page') }}"
+                                                          class="text-primary">{{ __('text.privacy_policy') }}</a>
+                                                </small>
+                                            </li>
+                                            <li>
+                                                <small><a href="{{ route('return.page') }}"
+                                                          class="text-primary">{{ __('text.refund_and_return') }}</a>
+                                                </small>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
                             </ul>
                             <div class="col-md-3 mx-auto">
-                                <button type="submit" id="final-submit" class="btn--primary checkout-btn save-profile-btn d-block px-5">{{ __('text.proceed_to_checkout') }}</button>
+                                <button type="submit" id="final-submit"
+                                        class="btn--primary checkout-btn save-profile-btn d-block px-5">{{ __('text.proceed_to_checkout') }}</button>
                             </div>
                         </form>
                     </div>
@@ -268,7 +322,8 @@
     </section>
 
     <!-- Modal -->
-    <div class="modal fade" id="pharmacyModal" tabindex="-1" role="dialog" aria-labelledby="pharmacyModalLabel" aria-hidden="true">
+    <div class="modal fade" id="pharmacyModal" tabindex="-1" role="dialog" aria-labelledby="pharmacyModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -278,38 +333,42 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label for="district" class="col-form-label">{{ __('text.district') }}</label>
-                            <select class="form-control" id="selectPharmacyDistrict" onchange="getPharmacyThanas(value)">
-                                <option value="" disabled selected>{{ __('text.select_district') }}</option>
-                                @foreach($allLocations as $district)
-                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" >{{ $district->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="district" class="col-form-label">{{ __('text.district') }}</label>
+                        <select class="form-control" id="selectPharmacyDistrict" onchange="getPharmacyThanas(value)">
+                            <option value="" disabled selected>{{ __('text.select_district') }}</option>
+                            @foreach($allLocations as $district)
+                                <option value="{{ $district->id }}"
+                                        data-details="{{ $district->thanas }}">{{ $district->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="thana" class="col-form-label">{{ __('text.thana') }}</label>
-                            <select class="form-control" id="selectPharmacyThana" onchange="getPharmacy()">
+                    <div class="form-group">
+                        <label for="thana" class="col-form-label">{{ __('text.thana') }}</label>
+                        <select class="form-control" id="selectPharmacyThana" onchange="getPharmacy()">
 
-                            </select>
-                        </div>
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="area" class="col-form-label">{{ __('text.pharmacy') }}</label>
-                            <select class="form-control" id="selectPharmacy" name="select_pharamcy" disabled="">
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="area" class="col-form-label">{{ __('text.pharmacy') }}</label>
+                        <select class="form-control" id="selectPharmacy" name="select_pharamcy" disabled="">
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
-                    <button type="submit" class="btn btn-success" id="pharmacy-submit" disabled="">{{ __('text.save') }}</button>
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ __('text.cancel') }}</button>
+                    <button type="submit" class="btn btn-success" id="pharmacy-submit"
+                            disabled="">{{ __('text.save') }}</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -319,15 +378,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <form method="post" action="{{ route('customer.address.store') }}">
-                    @csrf
+                    <form method="post" action="{{ route('customer.address.store') }}">
+                        @csrf
 
                         <div class="form-group">
                             <label for="district" class="col-form-label">{{ __('text.district') }}</label>
                             <select class="form-control" id="selectDistrict" onchange="getThanas(value)">
-                                    <option value="" disabled selected>{{ __('text.select_district') }}</option>
+                                <option value="" disabled selected>{{ __('text.select_district') }}</option>
                                 @foreach($allLocations as $district)
-                                    <option value="{{ $district->id }}" data-details="{{ $district->thanas }}" >{{ $district->name }}</option>
+                                    <option value="{{ $district->id }}"
+                                            data-details="{{ $district->thanas }}">{{ $district->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -356,7 +416,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('text.cancel') }}</button>
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ __('text.cancel') }}</button>
                     <button type="submit" class="btn btn-success" id="submit" disabled="">{{ __('text.save') }}</button>
                 </div>
                 </form>
@@ -418,49 +479,47 @@
 
         // Loop through the buttons and add the active class to the current/clicked button
         for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function() {
+            btns[i].addEventListener("click", function () {
                 var current = document.getElementsByClassName("active");
                 current[0].className = current[0].className.replace(" active", "");
                 this.className += " active";
             });
         }
 
-        {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
-        let cashInNormalDeliveryValue = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+            {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
+        let cashInNormalDeliveryValue = parseFloat("<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g, '')) + parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInNormalDeliveryAmount = cashInNormalDeliveryValue.toFixed(2);
         let cashInNormalDelivery = parseFloat(cashInNormalDeliveryAmount);
 
-        {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
-        {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
-        {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
+            {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
+            {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
+            {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
 
-        let ecashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
-        let cashInExpressDeliveryValue = parseFloat( "<?php echo $delivery_charge['express_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        let ecashInNormalDelivery = parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let cashInExpressDeliveryValue = parseFloat("<?php echo $delivery_charge['express_delivery']['cash']?>".replace(/,/g, '')) + parseFloat("<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         let cashInExpressDeliveryAmount = cashInExpressDeliveryValue.toFixed(2);
         let cashInExpressDelivery = parseFloat(cashInExpressDeliveryAmount);
 
-        {{--let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
-        {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
-        {{--let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);--}}
+            {{--let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
+            {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
+            {{--let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);--}}
 
-        let ecashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        let ecashInExpressDelivery = parseFloat("<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
 
-        {{--let cashInCollectFromPharmacyD = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");--}}
+            {{--let cashInCollectFromPharmacyD = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");--}}
 
         let discount = "<?php echo $delivery_charge['collect_from_pharmacy']['discount'] ?>";
-        let cashInCollectFromPharmacy = parseFloat(discount.replace(/,/g,''));
+        let cashInCollectFromPharmacy = parseFloat(discount.replace(/,/g, ''));
 
-        {{--let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");--}}
+            {{--let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");--}}
 
-        let ecashNoramlCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
-        let ecashExpressCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
+        let ecashNoramlCharge = parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
+        let ecashExpressCharge = parseFloat("<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
 
         let customerAmount = parseFloat("<?php echo $amount ?>");
         let customerPayLimit = parseFloat("<?php echo $pay_limit ?>");
         console.log(customerAmount, 'customerAmount');
         console.log(customerPayLimit, 'customerPayLimit');
-
-
 
 
         // console.log(ecashInExpressDelivery, 'ecashInExpressDelivery')
@@ -481,13 +540,15 @@
 
         var deliveryType = 1;
 
-        (function() {
+        var PreOrderMedicine = "<?php echo $isPreOrderMedicine  ?>";
+
+        (function () {
             if (customerAmount > customerPayLimit) {
                 $('#cod').addClass('d-none');
                 $('#epay').attr('checked', true);
             }
-            var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
-            var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
+            var payTypeValue = parseInt($('input[name="payment_type"]:checked').val());
+            var deliveryCharge = parseInt($('input[name="delivery_charge"]:checked').val());
             $('input[name="delivery_type"]').val(deliveryType);
 
             getPayTypeValue(payTypeValue);
@@ -513,10 +574,8 @@
 
                         $('#pharmacy_search').val('1');
                         $('#insert_pharmacy_id').val('');
-                        console.log(id, 'hello :) its true')
 
                     } else {
-                        console.log('hello :) its false')
 
                         $('#pharmacy_search').val('');
                         $('#insert_pharmacy_id').val('');
@@ -532,8 +591,8 @@
         }
 
         function getDeliveryType(deliveryType) {
-            var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
-            var deliveryCharge =parseInt( $('input[name="delivery_charge"]:checked').val() );
+            var payTypeValue = parseInt($('input[name="payment_type"]:checked').val());
+            var deliveryCharge = parseInt($('input[name="delivery_charge"]:checked').val());
 
             $('input[name="delivery_type"]').val(deliveryType);
 
@@ -541,7 +600,7 @@
         }
 
         function getDeliveryChargeValue(deliveryCharge) {
-            var payTypeValue =parseInt( $('input[name="payment_type"]:checked').val() );
+            var payTypeValue = parseInt($('input[name="payment_type"]:checked').val());
 
             addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
 
@@ -554,79 +613,79 @@
                 var normal_time_slot = ["10:00 am-12:00 am", "7:00 pm-9:00 pm"];
 
                 var dt = new Date();
-                var month = dt.getMonth()+ 1;
-                var date = dt.getDate() + "-" + month  + "-" + dt.getFullYear()
+                var month = dt.getMonth() + 1;
+                var date = dt.getDate() + "-" + month + "-" + dt.getFullYear()
                 var next_date = (dt.getDate() + 1) + "-" + month + "-" + dt.getFullYear()
+                var after_four_date = (dt.getDate() + 5) + "-" + month + "-" + dt.getFullYear()
 
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
                 var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
-                // document.write(next_date);
 
-                // console.log(date, 'date')
-                // console.log(next_date, 'next_date')
-                // console.log(time, 'time')
-                // console.log(time_new, 'time_new')
-                // console.log(normal_start_time, 'normal_start_time')
-
-                if ( time_new < normal_start_time) {
-                    $(".normal_date").val("(" +normal_time_slot[0] + ")" + ", " + date);
+                console.log(PreOrderMedicine);
+                if (time_new < normal_start_time) {
+                    $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('10:00:00');
+                    $(".delivery_duration").val(normal_time_slot[0]);
 
-                } else if ( time_new > normal_start_time && time_new < normal_end_time) {
-                    $(".normal_date").val("(" +normal_time_slot[1] + ")" + ", " + date);
+                } else if (time_new > normal_start_time && time_new < normal_end_time) {
+                    $(".normal_date").val("(" + normal_time_slot[1] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('19:00:00');
+                    $(".delivery_duration").val(normal_time_slot[1]);
 
+                } else if (PreOrderMedicine !== '') {
+                    $(".normal_delivery_date").val(after_four_date);
+                    $(".normal_delivery_time").val('10:00:00');
+                    $(".delivery_duration").val(normal_time_slot[0]);
                 } else {
                     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
                     $(".normal_delivery_time").val('10:00:00');
+                    $(".delivery_duration").val(normal_time_slot[0]);
                 }
                 <!-- End of Normal delivery date calculation -->
 
                 $('.express-content').addClass('d-none');
                 $('.normal-content').removeClass('d-none');
-            }
-            else {
+            } else {
                 $('.express_slot').html('');
 
                 <!-- Express delivery date calculation -->
-                // var express_time = ['8:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '14:00', '16:00', '17:00', '18:00'];
                 var express_time_slot = [
-                                        '10:00 am - 11:00 am',
-                                        '11:01 am - 12:00 am',
-                                        '12:01 pm - 01:00 pm',
-                                        '01:01 pm - 02:00 pm',
-                                        '02:01 pm - 03:00 pm',
-                                        '03:01 pm - 04:00 pm',
-                                        '04:01 pm - 05:00 pm',
-                                        '05:01 pm - 06:00 pm',
-                                        '06:01 pm - 07:00 pm',
-                                        '07:01 pm - 08:00 pm'
-                                        ];
+                    '10:00 am - 11:00 am',
+                    '11:01 am - 12:00 am',
+                    '12:01 pm - 01:00 pm',
+                    '01:01 pm - 02:00 pm',
+                    '02:01 pm - 03:00 pm',
+                    '03:01 pm - 04:00 pm',
+                    '04:01 pm - 05:00 pm',
+                    '05:01 pm - 06:00 pm',
+                    '06:01 pm - 07:00 pm',
+                    '07:01 pm - 08:00 pm'
+                ];
                 var express_time_slot_insert = ['10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00',
-                                                '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
+                    '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
 
                 $('.express_slot').append(`<option value="" selected disabled>Please Select a slot</option>`);
 
                 var today_date = new Date();
                 var time_now = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds();
 
-                var available_time = null ;
+                var available_time = null;
 
-                $.each(express_time_slot, function(key) {
+                $.each(express_time_slot, function (key) {
                     if (express_time_slot_insert[key] >= time_now) {
-                        available_time = key+2 ;
+                        available_time = key + 2;
                         return false; // breaks
                     }
 
                 });
 
-                if ( available_time !== null) {
-                    $.each(express_time_slot, function(key, value) {
-                            if (key >= available_time) {
+                if (available_time !== null) {
+                    $.each(express_time_slot, function (key, value) {
+                        if (key >= available_time) {
                             $('.express_slot')
                                 .append($("<option></option>")
                                     .attr("value", express_time_slot_insert[key])
@@ -634,7 +693,7 @@
                         }
                     });
                 } else {
-                    $.each(express_time_slot, function(key, value) {
+                    $.each(express_time_slot, function (key, value) {
                         $('.express_slot')
                             .append($("<option></option>")
                                 .attr("value", express_time_slot_insert[key])
@@ -651,9 +710,12 @@
 
         $('#expressTime').on('change', function () {
             var time_slot = $('#expressTime option:selected').val()
+            var time_slot_duration = $('#expressTime option:selected').html();
+            console.log(time_slot_duration);
+
 
             var dt = new Date();
-            var month = dt.getMonth()+ 1;
+            var month = dt.getMonth() + 1;
 
             var date = dt.getDate() + "-" + month + "-" + dt.getFullYear()
             var next_date = dt.getDate() + 1 + "-" + month + "-" + dt.getFullYear()
@@ -666,14 +728,16 @@
             var show_time = moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A');
 
 
-            if ( time_new > check_time) {
+            if (time_new > check_time) {
                 $('.express_date').val(show_time + ", " + next_date);
                 $(".express_delivery_date").val(next_date);
                 $(".express_delivery_time").val(time_slot);
+                $(".delivery_duration").val(time_slot_duration);
             } else {
-                $('.express_date').val( moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A') + ", " + date);
+                $('.express_date').val(moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A') + ", " + date);
                 $(".express_delivery_date").val(date);
                 $(".express_delivery_time").val(time_slot);
+                $(".delivery_duration").val(time_slot_duration);
             }
 
         });
@@ -681,12 +745,7 @@
 
         function addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge) {
             let grandTotal = total;
-            // console.log(total, 'first total');
             $('input[name="delivery_charge_amount"]').prop('disabled', false);
-            // console.log('Add delivery total');
-            // console.log('Delivery type: ', deliveryType);
-            // console.log('pay type: ', payTypeValue);
-            // console.log('Delivery Charge: ', deliveryCharge);
 
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
                 grandTotalValue = total + cashInNormalDelivery;
@@ -703,7 +762,7 @@
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
                 console.log(ecashInNormalDelivery, 'e cash normal');
-                grandTotal = total + ecashInNormalDelivery ;
+                grandTotal = total + ecashInNormalDelivery;
                 $('input[name="delivery_charge_amount"]').val(ecashNoramlCharge);
                 // $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
@@ -713,42 +772,41 @@
                 $('input[name="delivery_charge_amount"]').val(ecashExpressCharge);
             }
 
-            if (deliveryType === 2 && payTypeValue === 1 ) {
+            if (deliveryType === 2 && payTypeValue === 1) {
                 grandTotal = total - cashInCollectFromPharmacy;
                 $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
-            if (deliveryType === 2 && payTypeValue === 2 ) {
+            if (deliveryType === 2 && payTypeValue === 2) {
                 console.log('deliveryType 2 and payTypeValue 2')
-                grandTotal = total ;
+                grandTotal = total;
                 $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
 
             var grandTotalView = '{{ __('text.grand_total') }} : ' + grandTotal;
 
-        if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
-            var grandTotalNormalDB = grandTotal - cashInNormalDelivery ;
-            console.log(grandTotalNormalDB, 'normal grandTotalDB');
-            $('input[name="amount"]').val(grandTotalNormalDB);
-        }else if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 2) {
-            var grandTotalExpressDB = grandTotal - cashInExpressDelivery ;
-            console.log(grandTotalExpressDB, 'normal grandTotalDB');
-            $('input[name="amount"]').val(grandTotalExpressDB);
-        }
-        else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
-            var egrandTotalNormalDB = grandTotal - ecashInNormalDelivery ;
-            console.log(grandTotal, 'normal e grandTotal');
-            console.log(ecashInNormalDelivery, 'normal e ecashInNormalDelivery');
-            console.log(egrandTotalNormalDB, 'normal e grandTotalDB');
-            $('input[name="amount"]').val(egrandTotalNormalDB);
+            if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
+                var grandTotalNormalDB = grandTotal - cashInNormalDelivery;
+                console.log(grandTotalNormalDB, 'normal grandTotalDB');
+                $('input[name="amount"]').val(grandTotalNormalDB);
+            } else if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 2) {
+                var grandTotalExpressDB = grandTotal - cashInExpressDelivery;
+                console.log(grandTotalExpressDB, 'normal grandTotalDB');
+                $('input[name="amount"]').val(grandTotalExpressDB);
+            } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
+                var egrandTotalNormalDB = grandTotal - ecashInNormalDelivery;
+                console.log(grandTotal, 'normal e grandTotal');
+                console.log(ecashInNormalDelivery, 'normal e ecashInNormalDelivery');
+                console.log(egrandTotalNormalDB, 'normal e grandTotalDB');
+                $('input[name="amount"]').val(egrandTotalNormalDB);
 
-        } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
-            var egrandTotalExpressDB = grandTotal - ecashInExpressDelivery ;
-            console.log(egrandTotalExpressDB, 'express e grandTotalDB');
-            $('input[name="amount"]').val(egrandTotalExpressDB);
+            } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
+                var egrandTotalExpressDB = grandTotal - ecashInExpressDelivery;
+                console.log(egrandTotalExpressDB, 'express e grandTotalDB');
+                $('input[name="amount"]').val(egrandTotalExpressDB);
 
-        } else {
-            $('input[name="amount"]').val(grandTotal);
-        }
+            } else {
+                $('input[name="amount"]').val(grandTotal);
+            }
 
             $('input[name="total"]').val(grandTotal);
 
@@ -758,29 +816,32 @@
 
 
         function getPayTypeValue(payTypeValue) {
-            var deliveryCharge = parseInt( $('input[name="delivery_charge"]:checked').val() );
-            var deliveryType = parseInt( $('input[name="delivery_type"]').val() );
+            var deliveryCharge = parseInt($('input[name="delivery_charge"]:checked').val());
+            var deliveryType = parseInt($('input[name="delivery_type"]').val());
 
             if (payTypeValue === 2) {
                 $('#normal_delivery_charge').html(showNormalDeliveryChargeInEpay());
                 $('#express_delivery_charge').html(showExpressDeliveryChargeInEpay());
                 addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
-            }
-            else {
+            } else {
                 $('#normal_delivery_charge').html(showNormalDeliveryChargeInCash());
                 $('#express_delivery_charge').html(showExpressDeliveryChargeInCash());
                 addDeliveryChargeToGrandTotal(deliveryType, payTypeValue, deliveryCharge);
             }
         }
+
         function showNormalDeliveryChargeInCash() {
             return 'Normal Delivery (Charge: TK ' + cashInNormalDelivery + ')'
         }
+
         function showExpressDeliveryChargeInCash() {
             return 'Express Delivery (Charge: TK ' + cashInExpressDelivery + ')'
         }
+
         function showNormalDeliveryChargeInEpay() {
             return 'Normal Delivery (Charge: TK ' + ecashInNormalDelivery + ') + E-payment charge';
         }
+
         function showExpressDeliveryChargeInEpay() {
             return 'Express Delivery (Charge: TK ' + ecashInExpressDelivery + ') + E-payment charge'
         }
@@ -794,15 +855,15 @@
 
             var selectedDistrict = addresses.find(address => address.id == districtId);
 
-             thanas = selectedDistrict.thanas;
+            thanas = selectedDistrict.thanas;
 
             $('#selectThana').html('');
             $('#selectThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
-            $.map(thanas, function(value) {
+            $.map(thanas, function (value) {
                 $('#selectThana')
                     .append($("<option></option>")
-                        .attr("value",value.id)
+                        .attr("value", value.id)
                         .text(value.name));
             });
 
@@ -818,10 +879,10 @@
             $('#selectPharmacyThana').html('');
             $('#selectPharmacyThana').append(`<option value="" selected disabled>Please Select a thana</option>`);
 
-            $.map(thanas, function(value) {
+            $.map(thanas, function (value) {
                 $('#selectPharmacyThana')
                     .append($("<option></option>")
-                        .attr("value",value.id)
+                        .attr("value", value.id)
                         .text(value.name));
             });
 
@@ -832,24 +893,25 @@
             var selectedThana = thanas.find(thana => thana.id == areaId);
             areas = selectedThana.areas;
 
-            if ( areas.length === 0 ) {
+            if (areas.length === 0) {
                 $('#selectArea').attr('disabled', 'disabled');
                 $('#address').attr('disabled', 'disabled');
                 $('#submit').attr('disabled', 'disabled');
             }
 
             $('#selectArea').html('');
-            $.map(areas, function(value) {
-                    $('#selectArea').removeAttr('disabled');
-                    $('#address').removeAttr('disabled');
-                    $('#submit').removeAttr('disabled');
+            $.map(areas, function (value) {
+                $('#selectArea').removeAttr('disabled');
+                $('#address').removeAttr('disabled');
+                $('#submit').removeAttr('disabled');
 
-                    $('#selectArea')
-                        .append($("<option></option>")
-                            .attr("value",value.id)
-                            .text(value.name));
+                $('#selectArea')
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.name));
             });
         }
+
         function getPharmacy() {
             var thanaId = $('#selectPharmacyThana option:selected').val();
             console.log(thanaId, 'thanaId');
@@ -861,13 +923,13 @@
                     var values = response;
                     console.log(values)
                     $('#selectPharmacy').html('');
-                    $.map(values, function(value) {
+                    $.map(values, function (value) {
                         $('#selectPharmacy').removeAttr('disabled');
                         $('#pharmacy-submit').removeAttr('disabled');
 
                         $('#selectPharmacy')
                             .append($("<option></option>")
-                                .attr("value",value.user_id)
+                                .attr("value", value.user_id)
                                 .text(value.pharmacy_name));
                     });
                 },

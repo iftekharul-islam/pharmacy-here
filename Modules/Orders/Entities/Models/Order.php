@@ -37,6 +37,7 @@ class Order extends Model
         'customer_amount',
         'point_amount',
         'points',
+        'delivery_duration'
     ];
 
     public function customer()
