@@ -33,11 +33,10 @@ class ProductsController extends BaseController
     {
         $productList = $this->repository->all($request);
 
-        if (! $productList) {
+        if (!$productList) {
             throw new NotFoundHttpException('Product List Not Found');
         }
 
-        return response()->json($productList);
         return $this->response->paginator($productList, new ProductTransformer());
     }
 
@@ -145,7 +144,7 @@ class ProductsController extends BaseController
     {
         $productList = $this->repository->search($request);
 
-        if (! $productList) {
+        if (!$productList) {
             throw new NotFoundHttpException('Search Product List Not Found');
         }
 
@@ -160,7 +159,7 @@ class ProductsController extends BaseController
     {
         $productList = $this->repository->searchByProductAmount($request);
 
-        if (! $productList) {
+        if (!$productList) {
             throw new NotFoundHttpException('Product List Not Found');
         }
 

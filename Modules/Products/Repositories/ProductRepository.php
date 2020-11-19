@@ -31,7 +31,6 @@ class ProductRepository
 
         if ($request->has('brand') && $request->get('brand')) {
             $brand = $request->get('brand');
-            $data = Product::where('name', 'LIKE', "%$brand%")->first();
 
             $isAvaialable = Product::where('name', 'LIKE', "%$brand%")
                 ->where('purchase_price', '>', 0)
@@ -42,6 +41,7 @@ class ProductRepository
 
 
             if (count($isAvaialable) == 0) {
+                $data = Product::where('name', 'LIKE', "%$brand%")->first();
                 return $products->where('generic_id', $data->generic_id)
                     ->where('purchase_price', '>', 0)
                     ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
@@ -49,6 +49,7 @@ class ProductRepository
                     ->orderBy('purchase_price', 'DESC')
                     ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
             }
+
             return $isAvaialable ;
 
         }
