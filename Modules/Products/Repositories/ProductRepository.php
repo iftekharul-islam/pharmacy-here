@@ -41,8 +41,8 @@ class ProductRepository
 
 
             if (count($isAvaialable) == 0) {
-                $data = Product::where('name', 'LIKE', "%$brand%")->first();
-                return $products->where('generic_id', $data->generic_id)
+                $data = Product::where('name', 'LIKE', "%$brand%")->pluck('generic_id');
+                return $products->whereIn('generic_id', $data)
                     ->where('purchase_price', '>', 0)
                     ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
                     ->orderBy('name', 'ASC')
