@@ -27,7 +27,6 @@ $api->version('v1', function ($api) use ($namespace) {
     $api->post('payment/cancel', $namespace . '\PaymentController@paymentCancel');
 
 
-
 });
 
 $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namespace) {
