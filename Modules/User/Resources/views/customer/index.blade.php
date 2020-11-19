@@ -34,7 +34,17 @@
     </section>
 @stop
 @section('content')
-    <div class="card">
+        <form action="{{ route('customer.index') }}">
+            <div class="card col-8-xxxl col-lg-8 col-8 pb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <label>Customer Name</label>
+                        <input type="search" class="form-control" name="search" placeholder="Search Customer here">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="card">
         <div class="card-header">
             <h3 class="card-title">Customers</h3>
         </div>

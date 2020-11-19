@@ -26,9 +26,9 @@ class CustomerController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-    	$data = $this->repository->all();
+    	$data = $this->repository->all($request);
         return view('user::customer.index', compact('data'));
     }
 

@@ -174,6 +174,11 @@
                 margin-top: -345px;
             }
         }
+        .prescription-image {
+            border: 1px solid #00CE5E ;
+            width: 86%;
+            height: 174px;
+        }
     </style>
 @endsection
 @section('content')
@@ -224,7 +229,6 @@
                                                 <td class="edit-value d-none"><input class="form-control" type="text" name="phone_number" value="{{ $data->phone_number }}"></td>
                                                 <td><b>{{ __('text.gender') }}:</b></td>
                                                 <td class="save-value">{{ $data->gender != null ? $data->gender : '' }}</td>
-{{--                                                <td class="edit-value d-none"><input type="text" name="gender" value="{{ $data->gender }}"></td>--}}
                                                 <td class="edit-value d-none">
                                                     <select class="form-control" name="gender" id="">
                                                         <option value="male" {{ $gender == 'male' ? 'selected' : '' }}>Male</option>
@@ -483,23 +487,31 @@
 @endsection
 @section('js')
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-                localStorage.setItem('activeTab', $(e.target).attr('href'));
-            });
-
-            var activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                $('.nav-pills a[href="' + activeTab + '"]').tab('show');
-            }
-        });
+        // Javascript to enable link to tab
+        var url = document.location.toString();
+        if (url.match('#')) {
+            $('.nav-pills a[href="#' + url.split('#')[1] + '"]').tab('show');
+        }
+        // Change hash for page-reload
+        $('.nav-pills a').on('shown.bs.tab', function (e) {
+            window.location.hash = e.target.hash;
+        })
+        // $(document).ready(function() {
+        //     $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+        //         localStorage.setItem('activeTab', $(e.target).attr('href'));
+        //     });
+        //
+        //     var activeTab = localStorage.getItem('activeTab');
+        //     if (activeTab) {
+        //         $('.nav-pills a[href="' + activeTab + '"]').tab('show');
+        //     }
+        // });
 
         function input(){
             $(".save-value").addClass('d-none');
             $(".edit-value").removeClass('d-none');
             $(".save-profile-btn").removeClass('d-none');
             $(".my-edit-btn").addClass('d-none');
-
         };
 
         function removeItem(id) {

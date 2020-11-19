@@ -3,9 +3,10 @@
     .my-next-button {
         width: 206px;
     }
-    .prescription-image {
+    .order-summary .prescription-image {
         border: 1px solid #00CE5E ;
-        width: 80%;
+        width: 86%;
+        height: 174px;
     }
     .prescription-checkbox {
         position: absolute;

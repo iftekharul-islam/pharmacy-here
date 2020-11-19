@@ -70,5 +70,6 @@ Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('pharmacies/{id}/edit', 'PharmacyController@edit')->name('pharmacy.edit');
     Route::put('pharmacies/{id}', 'PharmacyController@update')->name('pharmacy.update');
     Route::delete('pharmacies/{id}', 'PharmacyController@destroy')->name('pharmacy.destroy');
+    Route::delete('search-pharmacy', 'PharmacyController@search')->name('pharmacy-search');
 
 });

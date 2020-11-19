@@ -1,110 +1,97 @@
 @extends('layouts.app')
-<style>
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        opacity: 1;
-    }
+@section('style')
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
 
-    /**   **************  */
-    input[type="number"] {
-        -webkit-appearance: textfield;
-        -moz-appearance: textfield;
-        appearance: textfield;
-    }
+        /**   **************  */
+        input[type="number"] {
+            -webkit-appearance: textfield;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
 
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-    }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
 
-    .number-input {
-        display: inline-flex;
-    }
+        .number-input {
+            display: inline-flex;
+        }
 
-    .number-input,
-    .number-input * {
-        box-sizing: border-box;
-    }
+        .number-input,
+        .number-input * {
+            box-sizing: border-box;
+        }
 
-    .number-input button {
-        outline:none;
-        -webkit-appearance: none;
-        background-color: transparent;
-        align-items: center;
-        justify-content: center;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        border: 1px solid #00AE4D;
-        cursor: pointer;
-        margin: 0;
-        position: relative;
-    }
-    .number-input button:focus {
-        outline: none !important;
-    }
-    .number-input button:before,
-    .number-input button:after {
-        display: inline-block;
-        position: absolute;
-        content: '';
-        width: 1rem;
-        height: 2px;
-        background-color: #00AE4D;
-        transform: translate(-50%, -50%);
-    }
-    .number-input button.plus:after {
-        transform: translate(-50%, -50%) rotate(90deg);
-    }
+        .number-input button {
+            outline:none;
+            -webkit-appearance: none;
+            background-color: transparent;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 1px solid #00AE4D;
+            cursor: pointer;
+            margin: 0;
+            position: relative;
+        }
+        .number-input button:focus {
+            outline: none !important;
+        }
+        .number-input button:before,
+        .number-input button:after {
+            display: inline-block;
+            position: absolute;
+            content: '';
+            width: 1rem;
+            height: 2px;
+            background-color: #00AE4D;
+            transform: translate(-50%, -50%);
+        }
+        .number-input button.plus:after {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
 
-    .number-input input[type=number] {
-        font-family: sans-serif;
-        max-width: 4.25rem;
-        padding: .5rem;
-        border: none;
-        border-width: 0 5px;
-        font-size: 1.6rem;
-        height: 2rem;
-        font-weight: bold;
-        text-align: center;
-    }
-    .number-input input[type=number]:focus {
-        outline: none!important;
-    }
-    .count-style {
-        border: none;
-        height: 25px;
-        width: 64px;
-    }
-    .count-style:focus {
-        outline: none!important;
-    }
-    .my-header {
-        margin-bottom: 1px!important;
-    }
-    .my-header-search {
-        margin-bottom: 30px;
-        margin-right: 0px!important;
-        position: relative;
-    }
-    #searchResult {
-        /*padding-top: 8px;*/
-        position: absolute;
-        width: 94.5%;
-        z-index: 99;
-        border: 1px solid #ced4da;
-        margin-top: -11px;
-        background: white;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-        max-height:300px;
-        overflow-y:auto;
-    }
-    @media (max-width: 992px) {
+        .number-input input[type=number] {
+            font-family: sans-serif;
+            max-width: 4.25rem;
+            padding: .5rem;
+            border: none;
+            border-width: 0 5px;
+            font-size: 1.6rem;
+            height: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .number-input input[type=number]:focus {
+            outline: none!important;
+        }
+        .count-style {
+            border: none;
+            height: 25px;
+            width: 64px;
+        }
+        .count-style:focus {
+            outline: none!important;
+        }
+        .my-header {
+            margin-bottom: 1px!important;
+        }
+        .my-header-search {
+            margin-bottom: 30px;
+            margin-right: 0px!important;
+            position: relative;
+        }
         #searchResult {
             /*padding-top: 8px;*/
             position: absolute;
-            width: 91.5%;
+            width: 94.5%;
             z-index: 99;
             border: 1px solid #ced4da;
             margin-top: -11px;
@@ -114,30 +101,45 @@
             max-height:300px;
             overflow-y:auto;
         }
+        @media (max-width: 992px) {
+            #searchResult {
+                /*padding-top: 8px;*/
+                position: absolute;
+                width: 91.5%;
+                z-index: 99;
+                border: 1px solid #ced4da;
+                margin-top: -11px;
+                background: white;
+                border-bottom-left-radius: 15px;
+                border-bottom-right-radius: 15px;
+                max-height:300px;
+                overflow-y:auto;
+            }
 
-    }
-    #searchResult ul{
-        overflow: hidden;
-    }
-    #searchResult li {
-        padding-left: 2rem;
-        padding-top: 2px;
-        padding-bottom: 10px;
-        text-align: left;
-        cursor: pointer;
+        }
+        #searchResult ul{
+            overflow: hidden;
+        }
+        #searchResult li {
+            padding-left: 2rem;
+            padding-top: 2px;
+            padding-bottom: 10px;
+            text-align: left;
+            cursor: pointer;
 
-    }
-    #searchResult li:last-child {
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-    }
-    #searchResult li:hover {
-        background: #ddd;
-    }
-    #medicine_search {
-        z-index: 100;
-    }
-</style>
+        }
+        #searchResult li:last-child {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        #searchResult li:hover {
+            background: #ddd;
+        }
+        #medicine_search {
+            z-index: 100;
+        }
+    </style>
+@endsection
 @section('content')
     <section class="medicine-section">
         @if(session('success'))
@@ -212,7 +214,7 @@
                                             @endif
                                         @endforeach
                                         <div class="package d-flex justify-content-between">
-                                            <p id="item-price-show-{{ $item->id }}" class="{{$matchedItem ? 'd-none' : ''}}">৳ {{ $item->purchase_price }} / {{ __('text.piece') }}</p>
+                                            <p id="item-price-show-{{ $item->id }}" class="{{$matchedItem ? 'd-none' : ''}}">৳ {{ $item->purchase_price }} / {{ $item->primaryUnit->name }}</p>
                                             <input id="cart-price-show-{{ $item->id }}" class="countAmount-{{$item->id}} count-style {{$matchedItem ? '' : 'd-none'}}" style="color: #00CE5E;" value="৳ {{ $matchedItem ? $matchedItem->amount : '' }}" readonly>
                                             <p>{{ __('text.min_qty') }} ({{ $item->min_order_qty }})</p>
                                         </div>
@@ -222,7 +224,6 @@
                                             <p>{{ __('text.min_qty') }} ({{ $item->min_order_qty }})</p>
                                         </div>
                                     @endauth
-                                <p><strong>{{ __('text.packing_type') }} - <a class="badge-primary badge text-white">{{ $item->type }}</a></strong></p>
                                 <div class="medicine-details--footer d-flex justify-content-between align-items-center">
                                 @guest
                                         <a href="{{ route('customer.login') }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> {{ __('text.add_to_cart') }}t</a>

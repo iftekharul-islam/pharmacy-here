@@ -17,9 +17,15 @@ use Illuminate\Http\Request;
 
 class CustomerRepository
 {
-    public function all()
+    public function all($request)
     {
-        return User::where('is_pharmacy', 0)->where('is_admin', 0)->orderby('id', 'desc')->paginate(20);
+        $data = User::query();
+        $data->where('is_pharmacy', 0)->where('is_admin', 0);
+        if ($request->search !== null) {
+            $data->where('name', 'LIKE', "%{$request->search}%");
+        }
+
+        return $data->orderby('id', 'desc')->paginate(20);
     }
 
     public function create($request)
