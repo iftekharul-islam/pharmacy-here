@@ -82,7 +82,6 @@
                             $amount = $item->pharmacyTransaction[0]->amount ?? 0;
                             $payable = $subidha_amount + $amount;
                         @endphp
-                        @if(!empty($pharmacy_amount))
                             <tr>
                                 <td>{{ $item->pharmacy_name ?? '' }}</td>
                                 <td>{{ $pharmacy_amount }}</td>
@@ -102,7 +101,6 @@
                                     </a>
                                 </td>
                             </tr>
-                        @endif
                     @endforeach
                     </tbody>
                 </table>
