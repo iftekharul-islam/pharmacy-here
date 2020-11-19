@@ -84,7 +84,7 @@
                         @endphp
                         @if(!empty($pharmacy_amount))
                             <tr>
-                                <td>{{ $item->pharmacy_name }}</td>
+                                <td>{{ $item->pharmacy_name ?? '' }}</td>
                                 <td>{{ $pharmacy_amount }}</td>
                                 <td>{{ $subidha_amount }}</td>
                                 <td>{{ $amount }}</td>

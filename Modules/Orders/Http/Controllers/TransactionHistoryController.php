@@ -67,6 +67,7 @@ class TransactionHistoryController extends Controller
 
         $allLocations = $this->locationRepository->getLocation();
         $transactionHistories = $this->repository->getAllTransactionHistories($district_id, $thana_id, $area_id);
+        logger($transactionHistories);
 
         return view('orders::transactionHistory.all.index', compact('allLocations', 'transactionHistories',
             'area_id', 'thana_id', 'district_id'));
