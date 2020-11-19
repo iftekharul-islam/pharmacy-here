@@ -92,7 +92,6 @@
                             <td>{{ $item->customer_amount }}</td>
                             <td>{{ $item->order_date }}</td>
                             <td>@include('orders::status', ['status' => $item->status])</td>
-
                             <td>
                                 <a href="{{ route('orders.show', $item->id) }}" type="button"
                                    class="btn btn-sm btn-success">
@@ -189,7 +188,7 @@
                 $('#selectArea')
                     .append($("<option></option>")
                         .attr("value", value.id)
-                        .prop('selected', selectedArea)
+                        .prop('selected', selected)
                         .text(value.name));
             });
         }

@@ -185,7 +185,7 @@
                 $('#selectArea')
                     .append($("<option></option>")
                         .attr("value", value.id)
-                        .prop('selected', selectedArea)
+                        .prop('selected', selected)
                         .text(value.name));
             });
         }
