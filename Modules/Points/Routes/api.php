@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 //Route::middleware('auth:api')->get('/points', function (Request $request) {
 //    return $request->user();
 //});
+
+$namespace = 'Modules\Points\Http\Controllers\API';
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namespace) {
+    $api->post('playstore-rating', $namespace . '\PointsController@playstoreRating');
+});
