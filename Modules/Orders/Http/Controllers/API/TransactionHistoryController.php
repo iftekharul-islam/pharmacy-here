@@ -40,8 +40,6 @@ class TransactionHistoryController extends BaseController
 
         $data = $this->repository->getPharmacyTransactionAmount($user->id);
 
-//        return $data;
-
         return responsePreparedData($data);
     }
 

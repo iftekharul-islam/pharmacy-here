@@ -64,7 +64,7 @@
                                         <input type="hidden" name="_method" value="DELETE">
                                         <div class="btn-group">
                                             <button onclick="removeItem({{ $loop->index }})" type="button"
-                                                    class="btn btn-danger waves-effect waves-light d-flex align-items-center">
+                                                    class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>

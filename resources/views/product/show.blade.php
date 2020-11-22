@@ -95,6 +95,7 @@
                 @if (count($relatedProducts) > 0)
                     <div class="col-12 my-5">
                         <h3>{{ __('text.similar_product') }}</h3>
+                        <strong>{{ __('text.similar_title') }}</strong>
                         <hr class="fancy4">
                     </div>
                     <div class="col-md-12">

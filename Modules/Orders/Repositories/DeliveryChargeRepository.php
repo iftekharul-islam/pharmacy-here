@@ -56,6 +56,7 @@ class DeliveryChargeRepository
             'collect_from_pharmacy' => $collectFromPharmacy,
             'points' => Points::where('user_id', $customer_id)->sum('points'),
             'amount_per_point' => 0.01,
+            'point_redeem_discount_percentage' => config('subidha.point_redeem_discount_percentage'),
         ];
     }
 }
