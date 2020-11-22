@@ -237,6 +237,12 @@ class TransactionHistoryRepository
             ->where('pharmacy_id', $pharmacy_id)
             ->first();
 
+        $pharmacyAmount = DB::table('orders')
+            ->select(DB::raw('SUM(pharmacy_amount) as pharmacy_amount, pharmacy_id'))
+            ->where('pharmacy_id', $pharmacy_id)
+            ->where('status', 3)
+            ->first();
+
         $transactionHistory = DB::table('transaction_history')
             ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
             ->where('pharmacy_id', $pharmacy_id)
@@ -244,7 +250,7 @@ class TransactionHistoryRepository
 
         return [
             'order' => $order,
-            'transactionHistory' => $transactionHistory,
+            'pharmacyAmount' => $pharmacyAmount,
             'due' => ($pharmacy_epay_amount->total_amount - $subidha_cod_amount->total_amount) - $transactionHistory->amount,
         ];
     }
@@ -266,7 +272,7 @@ class TransactionHistoryRepository
 
     public function completeOrdersByMonth($pharmacy_id)
     {
-        return Order::select(DB::raw("(SUM(pharmacy_amount)) as amount"),
+        return Order::select(DB::raw("(SUM(customer_amount)) as amount"),
             DB::raw("MONTHNAME(created_at) as month_name"))
             ->whereYear('created_at', date('Y'))
             ->groupBy('month_name')

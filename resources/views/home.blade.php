@@ -47,8 +47,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto text-center">
-                    <h2>We Deliver Your Medication</h2>
-                    <p>Say goodbye to all your healthcare worries with us</p>
+                    <h2>{{ __('text.home_h1') }}</h2>
+                    <p>{{ __('text.home_h2') }}</p>
                     <label class="w-100 label-search">
                         <form id="form" action="{{ route('product-list') }}" method="GET">
                             <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="{{ __('text.search_medicine') }}">
@@ -68,9 +68,8 @@
                 <div class="col-md-6 col-lg-4 delivery-card">
                     <div class="card-item">
                         <div class="left">
-                            <p class="text-resize">Home Delivery</p>
-                            <p>With extra care we deliver
-                                your products.</p>
+                            <p class="text-resize">{{ __('text.home_delivery') }}</p>
+                            <p>{{ __('text.delivery_title') }}</p>
                             <a href="{{ route('product-list') }}" class="btn--shop-now">Shop Now</a>
                         </div>
                         <div class="right">
@@ -81,8 +80,8 @@
                 <div class="col-md-6 col-lg-4 delivery-card">
                     <div class="card-item">
                         <div class="left">
-                            <p class="text-resize">Prescription Holder</p>
-                            <p>Keep your prescription here</p>
+                            <p class="text-resize">{{ __('text.prescription_holder') }}</p>
+                            <p>{{ __('text.prescription_title') }}</p>
                             <a href="{{ route('customer.details', '#v-pills-prescription') }}" class="btn--shop-now">Try now</a>
                         </div>
                         <div class="right">
@@ -93,8 +92,8 @@
                 <div class="col-md-6 col-lg-4 delivery-card">
                     <div class="card-item">
                         <div class="left">
-                            <p class="text-resize">Medicine Alarm</p>
-                            <p>Install mobile app for this facilities</p>
+                            <p class="text-resize">{{ __('text.medicine_alarm') }}</p>
+                            <p>{{ __('text.alarm_title') }}</p>
                             <a href="https://play.google.com/store/apps/details?id=com.subidha.customer" target="_blank" class="btn--shop-now">Try now</a>
                         </div>
                         <div class="right">

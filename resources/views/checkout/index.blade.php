@@ -234,11 +234,6 @@
                                             @endif
                                         </div>
                                     </div>
-                                    {{--                                    <div class="row">--}}
-                                    {{--                                        <div class="col-md-4 mt-2">--}}
-                                    {{--                                            --}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </div>--}}
                                 </li>
                                 <li>
                                     <p>{{ __('text.order_summary') }}</p>
@@ -284,35 +279,37 @@
                                     <p id="grandTotal"></p>
                                 </li>
                                 <li>
-                                    <div class="custom-control custom-checkbox mr-sm-mb-2">
-                                        <input type="checkbox" class="custom-control-input" name="agreement"
-                                               id="customControlAutosizing" required>
-                                        <label class="custom-control-label"
-                                               for="customControlAutosizing"><b>{{ __('text.agreement') }}</b></label>
-                                    </div>
-                                    <div class="agreement mt-2">
-                                        <ul>
-                                            <li>
-                                                <small><a href="{{ route('terms') }}"
-                                                          class="text-primary">{{ __('text.Terms_of_use') }}</a></small>
-                                            </li>
-                                            <li>
-                                                <small><a href="{{ route('privacy.page') }}"
-                                                          class="text-primary">{{ __('text.privacy_policy') }}</a>
-                                                </small>
-                                            </li>
-                                            <li>
-                                                <small><a href="{{ route('return.page') }}"
-                                                          class="text-primary">{{ __('text.refund_and_return') }}</a>
-                                                </small>
-                                            </li>
-                                        </ul>
+                                    <div class="order-summary col-md-4">
+                                        <div class="custom-control custom-checkbox mr-sm-mb-2">
+                                            <input type="checkbox" class="custom-control-input" name="agreement"
+                                                   id="customControlAutosizing" required>
+                                            <label class="custom-control-label"
+                                                   for="customControlAutosizing"><b>{{ __('text.agreement') }}</b></label>
+                                        </div>
+                                        <div class="agreement mt-2 ml-2">
+                                            <ul>
+                                                <li>
+                                                    <small><a href="{{ route('terms') }}"
+                                                              class="text-primary">{{ __('text.Terms_of_use') }}</a></small>
+                                                </li>
+                                                <li>
+                                                    <small><a href="{{ route('privacy.page') }}"
+                                                              class="text-primary">{{ __('text.privacy_policy') }}</a>
+                                                    </small>
+                                                </li>
+                                                <li>
+                                                    <small><a href="{{ route('return.page') }}"
+                                                              class="text-primary">{{ __('text.refund_and_return') }}</a>
+                                                    </small>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
-                            <div class="col-md-3 mx-auto">
+                            <div class="col-md-12">
                                 <button type="submit" id="final-submit"
-                                        class="btn--primary checkout-btn save-profile-btn d-block px-5">{{ __('text.proceed_to_checkout') }}</button>
+                                        class="btn--primary checkout-btn save-profile-btn d-block px-5 mx-auto">{{ __('text.proceed_to_checkout') }}</button>
                             </div>
                         </form>
                     </div>
