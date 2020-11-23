@@ -26,7 +26,7 @@ class ProductRepository
 
         if ($request->has('medicine') && $request->get('medicine')) {
             $medicine = $request->get('medicine');
-            $products->where('name', 'LIKE', "%$medicine%")->orderBy('name', 'ASC');
+            $products->where('name', 'LIKE', "%$medicine%");
         }
 
         if ($request->has('brand') && $request->get('brand')) {
@@ -50,7 +50,7 @@ class ProductRepository
                     ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
             }
 
-            return $isAvaialable ;
+            return $isAvaialable;
 
         }
 
@@ -122,7 +122,7 @@ class ProductRepository
 
         $products = Product::query();
         return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
-            ->where('name', 'LIKE', $medicine. "%")
+            ->where('name', 'LIKE', $medicine . "%")
             ->orderBy('name', 'ASC')
             ->get();
     }
@@ -357,11 +357,11 @@ class ProductRepository
     {
         $product = Product::find($id);
         $similar_products = Product::query();
-        $similar_products->where('id', '!=',  $product->id)
+        $similar_products->where('id', '!=', $product->id)
             ->where('form_id', $product->form_id)
             ->where('strength', $product->strength)
             ->where('purchase_price', '>', 0)
-            ->where('generic_id',  $product->generic_id);
+            ->where('generic_id', $product->generic_id);
 
         return $similar_products->with('generic', 'primaryUnit')->paginate(8);
     }
@@ -370,8 +370,7 @@ class ProductRepository
     {
         $medicine = $request->get('medicine');
         return Product::with('form')
-            ->where('slug', 'LIKE', $medicine.'%' )
-            ->orWhere('slug', 'LIKE', '%'.$medicine)
+            ->where('name', 'LIKE', "%$medicine%")
             ->where('purchase_price', '>', 0)->get();
     }
 }

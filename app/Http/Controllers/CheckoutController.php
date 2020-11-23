@@ -509,7 +509,8 @@ class CheckoutController extends Controller
             'subidha_comission',
             'pharmacy_amount',
             'customer_amount',
-            'is_rated'
+            'is_rated',
+            'delivery_duration'
         ]);
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
         if ($request->delivery_charge == 1) {
