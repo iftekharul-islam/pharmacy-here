@@ -6,6 +6,7 @@ namespace Modules\Products\Repositories;
 
 use Dingo\Api\Exception\DeleteResourceFailedException;
 // use Modules\Products\Entities\Pharmacy;
+use Illuminate\Support\Facades\Storage;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
@@ -24,9 +25,9 @@ class PharmacyRepository
             ->where('is_pharmacy', 1)
             ->orderby('id', 'desc');
 
-        if ($request->search !== null){
+        if ($request->search !== null) {
             $data->whereHas('pharmacyBusiness', function ($query) use ($request) {
-                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%") ;
+                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%");
             });
         }
         if ($area_id !== null) {
@@ -53,7 +54,7 @@ class PharmacyRepository
         return User::with('pharmacyBusiness', 'pharmacyBusiness.area', 'pharmacyBusiness.area.thana', 'pharmacyBusiness.area.thana.district', 'weekends')
             ->where('is_pharmacy', 1)
             ->whereHas('pharmacyBusiness', function ($query) use ($request) {
-                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%") ;
+                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%");
             })
             ->paginate(config('subidha.item_per_page'));
     }
@@ -62,8 +63,8 @@ class PharmacyRepository
     {
         $pharmacy = PharmacyBusiness::where('user_id', $id)->first();
         $data = $request->only(['pharmacy_name', 'area_id', 'pharmacy_address', 'bank_account_name',
-                                'bank_account_number', 'bank_name', 'bank_brunch_name', 'bank_routing_number',
-                                'start_time', 'end_time', 'break_start_time', 'break_end_time']);
+            'bank_account_number', 'bank_name', 'bank_brunch_name', 'bank_routing_number',
+            'start_time', 'end_time', 'break_start_time', 'break_end_time', 'nid_img_path', 'trade_img_path', 'drug_img_path']);
 
         if (!$pharmacy) {
 
@@ -116,14 +117,61 @@ class PharmacyRepository
                 $pharmacyBusiness->break_end_time = $request->break_end_time;
             }
 
-            $pharmacyBusiness->user_id = $id;
+            if ($request->file('nid_img_path')) {
+                $image = $request->file('nid_img_path');
+                $link = Storage::disk('gcs');
+                $disk = $link->put('images/pharmacy/nid', $image);
+                $url = $link->url($disk);
+                $pharmacyBusiness->nid_img_path = $url;
+            }
 
+            if ($request->file('trade_img_path')) {
+                $image = $request->file('trade_img_path');
+                $link = Storage::disk('gcs');
+                $disk = $link->put('images/pharmacy/nid', $image);
+                $url = $link->url($disk);
+                $pharmacyBusiness->trade_img_path = $url;
+            }
+
+            if ($request->file('drug_img_path')) {
+                $image = $request->file('drug_img_path');
+                $link = Storage::disk('gcs');
+                $disk = $link->put('images/pharmacy/nid', $image);
+                $url = $link->url($disk);
+                $pharmacyBusiness->drug_img_path = $url;
+            }
+
+            $pharmacyBusiness->user_id = $id;
             $pharmacyBusiness->save();
 
             $user = User::find($id);
             $user->status = $request->status;
             $user->save();
             return $pharmacyBusiness;
+        }
+
+        if ($request->file('nid_img_path')) {
+            $image = $request->file('nid_img_path');
+            $link = Storage::disk('gcs');
+            $disk = $link->put('images/pharmacy/nid', $image);
+            $data['nid_img_path'] = $link->url($disk);
+            $pharmacy->nid_img_path = $data['nid_img_path'];
+        }
+
+        if ($request->file('trade_img_path')) {
+            $image = $request->file('trade_img_path');
+            $link = Storage::disk('gcs');
+            $disk = $link->put('images/pharmacy/trade_licence', $image);
+            $data['trade_img_path'] = $link->url($disk);
+            $pharmacy->trade_img_path = $data['trade_img_path'];
+        }
+
+        if ($request->file('drug_img_path')) {
+            $image = $request->file('drug_img_path');
+            $link = Storage::disk('gcs');
+            $disk = $link->put('images/pharmacy/drug_licence', $image);
+            $data['drug_img_path'] = $link->url($disk);
+            $pharmacy->drug_img_path = $data['drug_img_path'];
         }
 
         $pharmacy->update($data);
@@ -136,7 +184,7 @@ class PharmacyRepository
     /**
      * Find pharmacy by id
      * @param $id int
-    */
+     */
 
     public function findById($id)
     {
@@ -161,7 +209,7 @@ class PharmacyRepository
         $device_id = UserDeviceId::where('user_id', $id)->get();
 
         if ($device_id != null) {
-            foreach ($device_id as $id){
+            foreach ($device_id as $id) {
                 $id->delete();
             }
 
@@ -173,9 +221,9 @@ class PharmacyRepository
 
     public function get($id)
     {
-        $company =  PharmacyBusiness::find($id);
+        $company = PharmacyBusiness::find($id);
 
-        if (! $company) {
+        if (!$company) {
             throw new NotFoundHttpException('Pharmacy not found');
         }
 

@@ -3,10 +3,8 @@
 
 namespace Modules\Prescription\Repositories;
 
-use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Modules\Points\Entities\Models\Points;
 use Modules\Prescription\Entities\Models\Prescription;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -81,16 +79,12 @@ class PrescriptionRepository
         $link = Storage::disk('gcs');
         $disk = $link->put('images/customer/prescription', $image);
         $data['url'] = $link->url($disk);
-//        $data['url'] = 'test';
 
-//        $data['url']= Storage::disk('gcs')->put('images/customer/prescription', $request->file('url'));
         return Prescription::create($data);
     }
 
     public function findBySlug($slug)
     {
-        //$unit = Unit::where('slug', $slug)->first();
-
         return $slug;
     }
 

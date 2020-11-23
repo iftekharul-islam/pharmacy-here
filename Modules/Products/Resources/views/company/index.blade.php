@@ -12,7 +12,8 @@
                     <h1>Product Company</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a href="{{ route('company.create') }}" class="btn btn-lg btn-success float-right">Create Product Company</a>
+                    <a href="{{ route('company.create') }}" class="btn btn-lg btn-success float-right">Create Product
+                        Company</a>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -57,7 +58,6 @@
                                       action="{{ route('company.destroy', $item['id']) }}"
                                       method="post"
                                       class="form-horizontal">
-                                    {{--                            @method('DELETE')--}}
                                     {{ csrf_field() }}
                                     <input type="hidden" name="_method" value="DELETE">
                                     <div class="btn-group">
@@ -115,7 +115,8 @@
                 }
             })
         }
-        function checkStatus(status  = 0) {
+
+        function checkStatus(status = 0) {
             return status == 1 ?
                 '<button type="button" class="btn btn-success btn-sm-status waves-effect waves-light d-flex align-items-center"><i class="fa fa-check"></i></button>'
                 : '<button type="button" class="btn btn-danger btn-sm-status waves-effect waves-light d-flex align-items-center"><i class="fa fa-times"></i></button>';

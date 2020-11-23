@@ -2,7 +2,7 @@
 @extends('adminlte::page')
 @section('title', 'Create Notice')
 <style type="text/css">
-    .error{
+    .error {
         color: red;
     }
 </style>
@@ -13,9 +13,13 @@
                 <div class="row">
                     <div class="col-3-xxxl col-lg-3 col-3 form-group">
                         <label>User type</label>
-                        <select class="form-control" name="type" id="type">
-                            <option value="1">Pharmacy</option>
-                            <option value="2" disabled>Customer</option>
+                        <select class="form-control" name="type" onchange="userType(value)">
+                            <option value="1" @isset($userType) {{ $userType == 1 ? 'selected' : '' }} @endisset>
+                                Pharmacy
+                            </option>
+                            <option value="2" @isset($userType) {{ $userType == 2 ? 'selected' : '' }} @endisset>
+                                Customer
+                            </option>
                         </select>
                     </div>
                     <div class="col-3-xxxl col-lg-3 col-3 form-group">
@@ -47,51 +51,56 @@
         </div>
     </div>
     @if (count($data) > 0)
-    <!-- form start -->
-    <form role="form" id="form" action="{{ route('notice.store') }}" method="POST">
-        @csrf
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">User list</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body table-responsive">
-                <table id="example1" class="table  mb-3">
-                    <thead>
-                    <tr>
-                        <th>SL</th>
-                        <th>Name</th>
-                        <th>User Type</th>
-                        <th>Area</th>
-                    </tr>
-                    </thead>
-                    @foreach($data as $key=>$item)
-                        <input type="hidden" name="pharmacy_id[]" value="{{ $item->id }}">
-                        <tbody>
-                            <tr>
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $item->pharmacy_name }}</td>
-                                <td>Pharmacy</td>
-                                <td>{{ $item->area->name }}</td>
-                            </tr>
-                        </tbody>
-                    @endforeach
-                </table>
-                {{ $data->appends(Request::all())->links() }}
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <div class="col-md-6">
-            <div class="card card-primary-outline">
+        <!-- form start -->
+        <form role="form" id="form" action="{{ route('notice.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="type" value="{{ $userType ?? '' }}">
+            <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Create Notice</h3>
+                    <h3 class="card-title">User list</h3>
                 </div>
                 <!-- /.card-header -->
+                <div class="card-body table-responsive">
+                    <table id="example1" class="table  mb-3">
+                        <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Name</th>
+                            <th>User Type</th>
+                            <th>Area</th>
+                        </tr>
+                        </thead>
+                        @foreach($data as $key=>$item)
+                            <input type="hidden" name="user_id[]" value="{{ $item->id }}">
+                            <tbody>
+                            @php
+                                $customerAddress = isset($item->address) ? $item->address->address  : '';
+                            @endphp
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->pharmacy_name ?? $item->name }}</td>
+                                <td>{{ $item->pharmacy_name ? 'pharmacy' : 'Customer' }}</td>
+                                <td>{{ $item->area->name ??  $customerAddress }}</td>
+                            </tr>
+                            </tbody>
+                        @endforeach
+                    </table>
+                    {{ $data->appends(Request::all())->links() }}
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <div class="col-md-6">
+                <div class="card card-primary-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Create Notice</h3>
+                    </div>
+                    <!-- /.card-header -->
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="notice" class="col-sm-4 col-form-label">Notice</label>
                             <div class="col-sm-8" id="">
-                                <input type="text" name="notice" class="form-control" id="notice" placeholder="Notice" required>
+                                <input type="text" name="notice" class="form-control" id="notice" placeholder="Notice"
+                                       required>
                                 @if ($errors->has('notice'))
                                     <span class="text-danger">
                                         <strong>{{ $errors->first('notice') }}</strong>
@@ -102,7 +111,8 @@
                         <div class="form-group row">
                             <label for="bn_notice" class="col-sm-4 col-form-label">Notice(Bangla)</label>
                             <div class="col-sm-8  " id="name">
-                                <input type="text" name="bn_notice" class="form-control" id="bn_notice" placeholder="Notice(Bangla)" required>
+                                <input type="text" name="bn_notice" class="form-control" id="bn_notice"
+                                       placeholder="Notice(Bangla)" required>
                                 @if ($errors->has('bn_notice'))
                                     <span class="text-danger">
                                         <strong>{{ $errors->first('bn_notice') }}</strong>
@@ -130,7 +140,7 @@
                             <label for="type" class="col-sm-4 col-form-label">Send Now</label>
                             <div class="col-sm-8" id="">
                                 <select class="form-control" name="sendNow" id="sendNow">
-                                    <option value="0" selected >No</option>
+                                    <option value="0" selected>No</option>
                                     <option value="1">Yes</option>
                                 </select>
 
@@ -140,13 +150,13 @@
                     <!-- /.card-body -->
 
 
-                <div class="card-footer">
-                    <a href="{{ route('notice.index') }}" class="btn btn-danger">Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="card-footer">
+                        <a href="{{ route('notice.index') }}" class="btn btn-danger">Back</a>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
     @else
         <div class="card">
             <div class="card-body">
@@ -170,17 +180,17 @@
                 },
             }
         });
-        function isNumber(evt)
-        {
+
+        function isNumber(evt) {
             // console.log (evt);
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
-            if (charCode == 13 || charCode == 46 || (charCode >= 48 && charCode <= 57))
-            {
+            if (charCode == 13 || charCode == 46 || (charCode >= 48 && charCode <= 57)) {
                 return true;
             }
             return false;
         }
+
         var addresses = {!! json_encode($allLocations) !!};
 
         var selectedDistrict = {!! json_encode( $display_district ?? null ) !!};
@@ -191,11 +201,22 @@
         var areas = [];
 
         window.onload = function () {
+            // $("#selectDistrict").prop('disabled', false);
             if (selectedDistrict != null) {
                 getThanas();
                 getAreas();
             }
         };
+
+        function userType(value) {
+            console.log(value);
+
+            if (value == 2) {
+                console.log('hello');
+                $('#selectDistrict').attr('disabled');
+            }
+            $("#selectDistrict").removeAttr('disabled');
+        }
 
         function getThanas() {
             var districtId = $('#selectDistrict option:selected').val();

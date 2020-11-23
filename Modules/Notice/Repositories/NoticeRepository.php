@@ -28,36 +28,39 @@ class NoticeRepository
 
     public function showById($id)
     {
-        return Notice::with('UserNotices', 'UserNotices.Pharmacy.area')->where('id', $id)->first();
+        return Notice::with('UserNotices', 'UserNotices.User', 'UserNotices.Pharmacy.area')->where('id', $id)->first();
     }
 
     public function getUserList($request)
     {
-        $data = PharmacyBusiness::query();
+        if ($request->type == 2) {
+            return User::where('is_pharmacy', '!=', 1)->where('is_admin', '!=', 1)->where('status', 1)->paginate(config('subidha.item_per_page'));
+        } else {
+            $pharmacy = PharmacyBusiness::query();
 
-        if ($request->area_id !== null) {
-            $data->whereHas('area', function ($query) use ($request) {
-                $query->where('area_id', $request->area_id);
-            });
+            if ($request->area_id !== null) {
+                $pharmacy->whereHas('area', function ($query) use ($request) {
+                    $query->where('area_id', $request->area_id);
+                });
+            }
+            if ($request->thana_id !== null && $request->area_id == null) {
+                $pharmacy->whereHas('area.thana', function ($query) use ($request) {
+                    $query->where('thana_id', $request->thana_id);
+                });
+            }
+            if ($request->district_id !== null && $request->thana_id == null && $request->area_id == null) {
+                $pharmacy->whereHas('area.thana.district', function ($query) use ($request) {
+                    $query->where('district_id', $request->district_id);
+                });
+            }
+            return $pharmacy->with('area')->paginate(config('subidha.item_per_page'));
         }
-        if ($request->thana_id !== null && $request->area_id == null) {
-            $data->whereHas('area.thana', function ($query) use ($request) {
-                $query->where('thana_id', $request->thana_id);
-            });
-        }
-        if ($request->district_id !== null && $request->thana_id == null && $request->area_id == null) {
-            $data->whereHas('area.thana.district', function ($query) use ($request) {
-                $query->where('district_id', $request->district_id);
-            });
-        }
-        return $data->with('area')->paginate(config('subidha.item_per_page'));
     }
 
     public function create($request)
     {
 
         $data = new Notice();
-        $request->type = 1;
 
         if (isset($request->notice)) {
             $data->notice = $request->notice;
@@ -73,7 +76,7 @@ class NoticeRepository
         }
         $data->save();
 
-        foreach ($request->pharmacy_id as $id) {
+        foreach ($request->user_id as $id) {
             UserNotice::create([
                 'notice_id' => $data->id,
                 'pharmacy_id' => $id,

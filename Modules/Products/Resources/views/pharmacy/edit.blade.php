@@ -11,7 +11,8 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('pharmacy.update', $pharmacy->id) }}" method="POST">
+            <form role="form" action="{{ route('pharmacy.update', $pharmacy->id) }}" enctype="multipart/form-data"
+                  method="POST">
                 @method('PUT')
                 @csrf
                 <div class="card-body">
@@ -160,6 +161,51 @@
                             @if ($errors->has('break_end_time'))
                                 <span class="text-danger">
                                     <strong>{{ $errors->first('break_end_time') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nid_image" class="col-sm-4 col-form-label">NID Image</label>
+                        <div class="col-sm-8" id="nid_image">
+                            <input type="file" class="form-control" name="nid_img_path">
+                            @isset($pharmacy->PharmacyBusiness->nid_img_path)
+                                <a href="{{ $pharmacy->PharmacyBusiness->nid_img_path }}" class="badge badge-primary"
+                                   target="_blank">Exist image</a>
+                            @endisset
+                            @if ($errors->has('nid_img_path'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('nid_img_path') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="trade_licence" class="col-sm-4 col-form-label">Trade Licence Image</label>
+                        <div class="col-sm-8" id="trade_licence">
+                            <input type="file" class="form-control" name="trade_img_path">
+                            @isset($pharmacy->PharmacyBusiness->trade_img_path)
+                                <a href="{{ $pharmacy->PharmacyBusiness->trade_img_path }}" class="badge badge-primary"
+                                   target="_blank">Exist image</a>
+                            @endisset
+                            @if ($errors->has('trade_img_path'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('trade_img_path') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="drug_licence" class="col-sm-4 col-form-label">Drug Licence Image</label>
+                        <div class="col-sm-8" id="drug_licence">
+                            <input type="file" class="form-control" name="drug_img_path">
+                            @isset($pharmacy->PharmacyBusiness->drug_img_path)
+                                <a href="{{ $pharmacy->PharmacyBusiness->drug_img_path }}" class="badge badge-primary"
+                                   target="_blank">Exist image</a>
+                            @endisset
+                            @if ($errors->has('drug_img_path'))
+                                <span class="text-danger">
+                                    <strong>{{ $errors->first('drug_img_path') }}</strong>
                                 </span>
                             @endif
                         </div>

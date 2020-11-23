@@ -16,13 +16,8 @@
         </div>
         <div class="collapse navbar-collapse custom-collapse" id="navbarSupportedContent">
             <ul class="navbar-list ml-auto">
-{{--                <li>--}}
-{{--                    <a href="#">Offer</a>--}}
-{{--                    <a>Upcomming</a>--}}
-{{--                </li>--}}
                 <li>
                     <a href="{{ route('faq') }}">{{ __('text.need_help') }}?</a>
-{{--                    <a>Upcomming</a>--}}
                 </li>
                 <li class="language">
                     @if(app()->getLocale() == 'en')
@@ -36,7 +31,6 @@
                     @endif
                 </li>
                 <li>
-{{--                    <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>--}}
                     <a  class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-cart-plus"></i><span id="cartCount" class="badge badge-pill badge-danger">{{ session('cartCount')!= null ? session('cartCount') : '' }}</span></a>
                 </li>
                 @guest

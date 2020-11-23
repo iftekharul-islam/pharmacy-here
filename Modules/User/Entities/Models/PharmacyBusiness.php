@@ -26,7 +26,10 @@ class PharmacyBusiness extends Model
         'area_id',
         'bank_routing_number',
         'is_full_open',
-        'has_break_time'
+        'has_break_time',
+        'nid_img_path',
+        'trade_img_path',
+        'drug_img_path'
     ];
 
     public function user()

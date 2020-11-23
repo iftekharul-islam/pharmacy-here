@@ -16,20 +16,23 @@
                 <div class="card-body">
                     <div class="form-group row">
                         @php
-                            $payable = $data->pharmacyOrder[0]->subidha_amount + $data->pharmacyTransaction[0]->amount ?? 0;
+                            $subidha_amount = isset($data->pharmacyOrder[0]) ? $data->pharmacyOrder[0]->subidha_amount : 0;
+                            $pharmacy_amount = isset($data->pharmacyOrder[0]) ? $data->pharmacyOrder[0]->pharmacy_amount : 0;
+                            $amount = isset($data->pharmacyTransaction[0]) ? $data->pharmacyTransaction[0]->amount : 0;
+                            $payable = $subidha_amount + $amount ;
                         @endphp
-                        @if (isset($data->pharmacyOrder[0]->pharmacy_amount))
-                            @if ($data->pharmacyOrder[0]->pharmacy_amount > $payable)
+                        @if (isset($pharmacy_amount))
+                            @if ($pharmacy_amount > $payable)
                                 <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
                                 <div class="col-sm-8">
                                     <label
-                                        class="col-form-label">{{ $data->pharmacyOrder[0]->pharmacy_amount - $payable }}</label>
+                                        class="col-form-label">{{ $pharmacy_amount - $payable }}</label>
                                 </div>
                             @else
                                 <label for="due-amount" class="col-sm-4 col-form-label">Paid more amount</label>
                                 <div class="col-sm-8">
                                     <label
-                                        class="col-form-label">{{ $payable - $data->pharmacyOrder[0]->pharmacy_amount }}</label>
+                                        class="col-form-label">{{ $payable - $pharmacy_amount }}</label>
                                 </div>
 
                             @endif

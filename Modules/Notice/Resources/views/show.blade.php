@@ -53,12 +53,15 @@
                         </tr>
                         </thead>
                         @foreach($data->UserNotices as $key=>$item)
+                            @php
+                                $user = $item->user->name ?? '';
+                            @endphp
                             <tbody>
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->pharmacy->pharmacy_name }}</td>
-                                    <td>Pharmacy</td>
-                                    <td>{{ $item->pharmacy->area->name }}</td>
+                                    <td>{{ $item->pharmacy->pharmacy_name ?? $user }}</td>
+                                    <td>{{ $data->type == 1 ? 'Pharmacy' : 'Customer' }}</td>
+                                    <td>{{ $item->pharmacy->area->name ?? 'N/A' }}</td>
                                 </tr>
                             </tbody>
                         @endforeach

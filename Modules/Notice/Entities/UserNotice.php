@@ -4,6 +4,7 @@ namespace Modules\Notice\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\User\Entities\Models\PharmacyBusiness;
+use Modules\User\Entities\Models\User;
 
 class UserNotice extends Model
 {
@@ -11,6 +12,11 @@ class UserNotice extends Model
 
     public function Pharmacy()
     {
-        return $this->belongsTo(PharmacyBusiness::class , 'pharmacy_id', 'id');
+        return $this->belongsTo(PharmacyBusiness::class, 'pharmacy_id', 'user_id');
+    }
+
+    public function User()
+    {
+        return $this->belongsTo(User::class, 'pharmacy_id', 'id');
     }
 }
