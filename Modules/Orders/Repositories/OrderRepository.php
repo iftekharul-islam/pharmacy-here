@@ -678,8 +678,6 @@ class OrderRepository
         $order = Order::with('address')->find($order_id);
 
         if ($order->status == 8) {
-            $order->pharmacy_id = null;
-            $order->save();
             return responseData('Orphan order');
         }
 
@@ -772,6 +770,7 @@ class OrderRepository
 
         $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
         SendNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
+        $order->pharmacy_id = null;
         $order->status = 8;
         $order->save();
 
