@@ -26,7 +26,6 @@ class OtpController extends Controller
     public function createOtp(PhoneValidationRequest $request)
     {
         $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
-
         if (!$verifyNumber) {
             $data = $this->repository->createCustomerWeb($request);
         }

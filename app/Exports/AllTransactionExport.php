@@ -41,20 +41,18 @@ class AllTransactionExport implements FromCollection, WithHeadings, WithColumnWi
 
         $transactionCollection = new Collection();
         foreach ($allTransactionHistories as $allTransaction) {
-            $pharmacy_amount = $allTransaction->pharmacyOrder[0]->pharmacy_amount ?? 0;
-            $subidha_amount = $allTransaction->pharmacyOrder[0]->subidha_amount ?? 0;
-            $amount = $allTransaction->pharmacyTransaction[0]->amount ?? 0;
+            $subidha_amount = isset($allTransaction->pharmacyOrder[0]) ? $allTransaction->pharmacyOrder[0]->subidha_amount : 0;
+            $pharmacy_amount = isset($allTransaction->pharmacyOrder[0]) ? $allTransaction->pharmacyOrder[0]->pharmacy_amount : 0;
+            $amount = isset($allTransaction->pharmacyTransaction[0]) ? $allTransaction->pharmacyTransaction[0]->amount : 0;
             $payable = $subidha_amount + $amount;
 
-            if (!empty($pharmacy_amount)) {
-                $transactionCollection->push((object)[
-                    'pharmacy_name' => $allTransaction->pharmacy_name,
-                    'pharmacy_amount' => $pharmacy_amount,
-                    'subidha_amount' => $subidha_amount,
-                    'paid' => $amount,
-                    'payable_amount' => $payable - $pharmacy_amount,
-                ]);
-            }
+            $transactionCollection->push((object)[
+                'pharmacy_name' => $allTransaction->pharmacy_name,
+                'pharmacy_amount' => $pharmacy_amount,
+                'subidha_amount' => $subidha_amount,
+                'paid' => $amount,
+                'payable_amount' => $payable - $pharmacy_amount,
+            ]);
         }
         return $transactionCollection;
     }

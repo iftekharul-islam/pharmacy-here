@@ -40,10 +40,11 @@ class NoticeController extends Controller
         $display_area = $request->area_id;
         $display_thana = $request->thana_id;
         $display_district = $request->district_id;
+        $userType = $request->type;
 
         $allLocations = $this->locationRepository->getLocation();
         $data = $this->repository->getUserList($request);
-        return view('notice::create', compact('allLocations', 'data', 'display_area', 'display_thana', 'display_district'));
+        return view('notice::create', compact('allLocations', 'data', 'display_area', 'display_thana', 'display_district', 'userType'));
     }
 
     /**
@@ -65,7 +66,6 @@ class NoticeController extends Controller
     public function show($id)
     {
         $data = $this->repository->showById($id);
-//        return $data;
         return view('notice::show', compact('data'));
     }
 

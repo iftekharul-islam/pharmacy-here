@@ -35,6 +35,7 @@ class SendOtp implements ShouldQueue
      */
     public function handle()
     {
+        logger('In sms sent job');
 //        $base_url_non_masking = 'http://smscp.datasoftbd.com/smsapi/non-masking';
 //        $api_key = '$2y$10$nCixye2JmYu8p65XRv.yFeuMV4mc4BBko4KZ6XpmwEDiaEqfh1h2O';
 //        $message = "Your OTP code is " . $this->otp;
@@ -79,6 +80,7 @@ class SendOtp implements ShouldQueue
                 'otp' => $this->otp
             ]);
         } catch (GuzzleException $exception) {
+            logger($exception);
         }
 
         //             sslwireless sms configuration

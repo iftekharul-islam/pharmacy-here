@@ -16,7 +16,7 @@
 
 @section('content')
     <!-- @auth("web")
-{{ Auth::guard('web')->user()->can('create.user') }}
+        {{ Auth::guard('web')->user()->can('create.user') }}
 
     @endauth -->
 
@@ -29,7 +29,8 @@
                         <select name="district_id" class="form-control" id="selectDistrict" onchange="getThanas(value)">
                             <option value="" selected disabled>Select district</option>
                             @foreach($allLocations as $district)
-                                <option value="{{ $district->id }}" @isset($district_id) {{ $district_id == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
+                                <option
+                                    value="{{ $district->id }}" @isset($district_id) {{ $district_id == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -56,7 +57,8 @@
         <div class="card-header">
             <h3 class="card-title">Transactions of Pharmacy</h3>
             <a class="btn btn-success float-right"
-               href="{{ route('export.all.transaction', ['district' => $district_id, 'thana' => $thana_id, 'area' => $area_id]) }}">Export Transactions
+               href="{{ route('export.all.transaction', ['district' => $district_id, 'thana' => $thana_id, 'area' => $area_id]) }}">Export
+                Transactions
             </a>
         </div>
         <!-- /.card-header -->
@@ -82,27 +84,29 @@
                             $amount = $item->pharmacyTransaction[0]->amount ?? 0;
                             $payable = $subidha_amount + $amount;
                         @endphp
-                        @if(!empty($pharmacy_amount))
-                            <tr>
-                                <td>{{ $item->pharmacy_name }}</td>
-                                <td>{{ $pharmacy_amount }}</td>
-                                <td>{{ $subidha_amount }}</td>
-                                <td>{{ $amount }}</td>
-                                <td>
-                                    @if ($payable > $pharmacy_amount)
-                                        + {{ $payable - $pharmacy_amount }}
-                                    @else
-                                        {{ $payable - $pharmacy_amount }}
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('transactionHistory.create', $item->user_id) }}"
-                                       class="btn btn-sm btn-primary">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endif
+                        <tr>
+                            <td>{{ $item->pharmacy_name }}</td>
+                            <td>{{ $pharmacy_amount }}</td>
+                            <td>{{ $subidha_amount }}</td>
+                            <td>{{ $amount }}</td>
+                            <td>
+                                @if ($payable > $pharmacy_amount)
+                                    + {{ $payable - $pharmacy_amount }}
+                                @else
+                                    {{ $payable - $pharmacy_amount }}
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('transactionHistory.create', $item->user_id) }}"
+                                   class="btn btn-sm btn-primary">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="{{ route('transactionHistory.show', $item->user_id) }}" type="button"
+                                   class="btn btn-sm btn-success">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
                     @endforeach
                     </tbody>
                 </table>

@@ -137,7 +137,6 @@ class TransactionHistoryController extends Controller
     public function create($id)
     {
         $data = $this->repository->getPharmacyInfo($id);
-
         return view('orders::transactionHistory.epay.create', compact('data'));
     }
 
@@ -150,7 +149,7 @@ class TransactionHistoryController extends Controller
     {
         $data = $this->repository->store($request);
 
-        return redirect()->route('transactionHistory.index');
+        return redirect()->back();
     }
 
     /**
