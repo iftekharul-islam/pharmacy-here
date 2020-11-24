@@ -39,18 +39,24 @@ class ProductRepository
                 ->orderBy('purchase_price', 'DESC')
                 ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
 
-
             if (count($isAvaialable) == 0) {
                 $data = Product::where('name', 'LIKE', "%$brand%")->pluck('generic_id');
-                return $products->whereIn('generic_id', $data)
+                $values = $products->whereIn('generic_id', $data)
                     ->where('purchase_price', '>', 0)
                     ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
                     ->orderBy('name', 'ASC')
                     ->orderBy('purchase_price', 'DESC')
                     ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
-            }
 
-            return $isAvaialable;
+                return [
+                    'status' => false,
+                    'value' => $values
+                ];
+            }
+            return [
+                'status' => true,
+                'value' => $isAvaialable
+            ];
 
         }
 
