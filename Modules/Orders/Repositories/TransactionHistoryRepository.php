@@ -262,8 +262,18 @@ class TransactionHistoryRepository
 
     public function pharmacyTotalSale($pharmacy_id)
     {
+
+        return Order::select('pharmacy_id',
+            DB::raw('sum(case when payment_type = 1 then customer_amount END) as `cod_amount`'),
+            DB::raw('sum(case when payment_type = 2 then pharmacy_amount END) as `epay_amount`'))
+            ->where('pharmacy_id', $pharmacy_id)->where('status', 3)->first();
+    }
+
+    public function pharmacyOrders($pharmacy_id)
+    {
         return Order::where('pharmacy_id', $pharmacy_id)->where('status', 3)->get();
     }
+
 
     public function TotalPendingOrders($pharmacy_id)
     {
@@ -272,7 +282,8 @@ class TransactionHistoryRepository
 
     public function completeOrdersByMonth($pharmacy_id)
     {
-        return Order::select(DB::raw("(SUM(customer_amount)) as amount"),
+        return Order::select(DB::raw('sum(case when payment_type = 1 then customer_amount END) as `cod_amount`'),
+            DB::raw('sum(case when payment_type = 2 then pharmacy_amount END) as `epay_amount`'),
             DB::raw("MONTHNAME(created_at) as month_name"))
             ->whereYear('created_at', date('Y'))
             ->groupBy('month_name')
