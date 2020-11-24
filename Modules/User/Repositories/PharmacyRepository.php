@@ -57,7 +57,7 @@ class PharmacyRepository
     {
         $user = User::find($id);
 
-        if (! $user) {
+        if (!$user) {
             throw new NotFoundHttpException('Pharmacy Not Found');
         }
         $user->status = false;
@@ -162,20 +162,19 @@ class PharmacyRepository
     {
         $user = User::find($id);
 
-        if (! $user) {
+        if (!$user) {
             throw new NotFoundHttpException('Pharmacy user not found');
         }
 
         if (isset($request->pharmacy_name)) {
 
             $pharmacyBusinessInfo = PharmacyBusiness::where('user_id', $id)->first();
-            if (! $pharmacyBusinessInfo) {
+            if (!$pharmacyBusinessInfo) {
                 throw new NotFoundHttpException('Pharmacy Business information not found');
             }
             $pharmacyBusinessInfo->pharmacy_name = $request->pharmacy_name;
             $pharmacyBusinessInfo->save();
         }
-
 
 
         if (isset($request->name)) {
@@ -222,7 +221,7 @@ class PharmacyRepository
 
         $pharmacyBusinessInfo = PharmacyBusiness::where('user_id', $id)->first();
 
-        if (! $pharmacyBusinessInfo) {
+        if (!$pharmacyBusinessInfo) {
             throw new NotFoundHttpException('Pharmacy Business information not found');
         }
 
@@ -260,7 +259,8 @@ class PharmacyRepository
 
     }
 
-    public function checkPharmacyByArea($area_id) {
+    public function checkPharmacyByArea($area_id)
+    {
         $count = PharmacyBusiness::where('area_id', $area_id)->count();
         return $count > 0 ? true : false;
     }
@@ -269,9 +269,11 @@ class PharmacyRepository
     {
 
         $pharmacyList = PharmacyBusiness::with('area.thana')
-            ->whereHas('area.thana', function($q) use ($thana_id){
-            $q->where('id', $thana_id);
-        })->get();
+            ->whereHas('area.thana', function ($q) use ($thana_id) {
+                $q->where('id', $thana_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->get();
 
         return $pharmacyList;
     }
