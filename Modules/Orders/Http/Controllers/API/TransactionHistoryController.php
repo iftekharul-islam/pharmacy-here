@@ -10,6 +10,7 @@ use Modules\Orders\Http\Requests\CreateTransactionHistoryRequest;
 use Modules\Orders\Repositories\TransactionHistoryRepository;
 use Modules\Orders\Transformers\OrderTransformer;
 use Modules\Orders\Transformers\TransactionHistoryTransformer;
+use Nwidart\Modules\Collection;
 
 class TransactionHistoryController extends BaseController
 {
@@ -54,17 +55,25 @@ class TransactionHistoryController extends BaseController
 
     public function pharmacyTotalSale()
     {
-        $user = 1;
-        $pharmacySales = $this->repository->pharmacyTotalSale($user);
-        $pharmacyOrders = $this->repository->pharmacyOrders($user);
-        $pendingOrders = $this->repository->TotalPendingOrders($user);
-        $ordersByMonth = $this->repository->completeOrdersByMonth($user);
+        $user = Auth::user();
+        $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
+        $pharmacyOrders = $this->repository->pharmacyOrders($user->id);
+        $pendingOrders = $this->repository->TotalPendingOrders($user->id);
+        $ordersByMonth = $this->repository->completeOrdersByMonth($user->id);
+        $new = new Collection();
+
+        foreach ($ordersByMonth as $item) {
+            $new->push((object)[
+                'amount' => $item['cod_amount'] + $item['epay_amount'],
+                'month_name' => $item['month_name'],
+            ]);
+        }
 
         $data = [
             'total_sale' => $pharmacySales['cod_amount'] ?? 0 + $pharmacySales['epay_amount'] ?? 0,
             'sale_count' => count($pharmacyOrders),
             'pending_orders_count' => count($pendingOrders),
-            'orders_by_month' => $ordersByMonth
+            'orders_by_month' => $new,
         ];
 
         return responsePreparedData($data);
