@@ -54,23 +54,15 @@ class TransactionHistoryController extends BaseController
 
     public function pharmacyTotalSale()
     {
-        $user = Auth::user();
-        $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
-        $pendingOrders = $this->repository->TotalPendingOrders($user->id);
-        $ordersByMonth = $this->repository->completeOrdersByMonth($user->id);
-        $totalSale = 0;
-
-        foreach ($pharmacySales as $item) {
-            if ($item['payment_type'] == 2) {
-                $totalSale = $totalSale + $item['pharmacy_amount'];
-            } else {
-                $totalSale = $totalSale + $item['customer_amount'];
-            }
-        }
+        $user = 1;
+        $pharmacySales = $this->repository->pharmacyTotalSale($user);
+        $pharmacyOrders = $this->repository->pharmacyOrders($user);
+        $pendingOrders = $this->repository->TotalPendingOrders($user);
+        $ordersByMonth = $this->repository->completeOrdersByMonth($user);
 
         $data = [
-            'total_sale' => $totalSale,
-            'sale_count' => count($pharmacySales),
+            'total_sale' => $pharmacySales['cod_amount'] ?? 0 + $pharmacySales['epay_amount'] ?? 0,
+            'sale_count' => count($pharmacyOrders),
             'pending_orders_count' => count($pendingOrders),
             'orders_by_month' => $ordersByMonth
         ];
