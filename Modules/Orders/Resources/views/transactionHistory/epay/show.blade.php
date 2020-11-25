@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Payment History</h1>
+                    <h1>E-pay Order History</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -16,20 +16,21 @@
 
 @section('content')
     <!-- @auth("web")
-            {{ Auth::guard('web')->user()->can('create.user') }}
+        {{ Auth::guard('web')->user()->can('create.user') }}
     @endauth -->
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('transactionHistory.show', $userId) }}">
+            <form action="{{ route('epay.transactionHistory.show', $userId) }}">
                 <div class="row">
                     <div class="col-6-xxxl col-lg-6 col-6 form-group">
                         <label>Start date</label>
-                        <input name="start_date" type="date" class="form-control" value="{{ $startDate ?? '' }}">
+                        <input name="start_date" type="date" class="form-control"
+                               value="{{ $startDate ?? $startDate }}">
                     </div>
                     <div class="col-6-xxxl col-lg-6 col-6 form-group">
                         <label>End date</label>
-                        <input name="end_date" type="date" class="form-control" value="{{ $endDate ?? '' }}">
+                        <input name="end_date" type="date" class="form-control" value="{{ $endDate ?? $endDate }}">
                     </div>
                     <div class="col-12 form-group mg-t-2 float-right">
                         <button type="submit" class="btn btn-primary float-right">Search</button>
@@ -40,45 +41,41 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Payment History</h3>
+            <h3 class="card-title">Epay Payment History</h3>
             <a class="btn btn-success float-right"
-               href="{{ route('epay.export.transaction.history', [ 'toDate' => $startDate, 'endDate' => $endDate, 'userId' => $userId ]) }}">Export transaction
+               href="{{ route('cod.export.transaction.history', [ 'toDate' => $startDate, 'endDate' => $endDate, 'userId' => $userId ]) }}">Export
+                transaction
             </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
-            @if(count($data) > 0)
             <table id="example1" class="table  mb-3">
                 <thead>
                 <tr>
                     <th>SL</th>
                     <th>Date</th>
-                    <th>Transaction ID</th>
-                    <th>Payment Through</th>
-                    <th>Amount</th>
+                    <th>Order Amount</th>
+                    <th>Pharmacy Amount</th>
+                    <th>Subidha Amount</th>
                 </tr>
                 </thead>
                 <tbody>
+                @if($data->isNotEmpty())
                     @foreach($data as $index => $item)
                         <tr>
                             <td>{{ $data->firstItem() + $index }}</td>
-                            <td>{{ date('d F, Y', strtotime($item->date)) }}</td>
-                            <td>{{ $item->transaction_id }}</td>
-                            <td>{{ $item->payment_method }}</td>
-                            <td>{{ $item->amount }}</td>
+                            <td>{{ date('d F, Y', strtotime($item->order_date)) }}</td>
+                            <td>{{ $item->customer_amount }}</td>
+                            <td>{{ $item->pharmacy_amount }}</td>
+                            <td>{{ $item->subidha_comission }}</td>
                         </tr>
                     @endforeach
-
+                @endif
                 </tbody>
             </table>
             {{ $data->links() }}
-            @else
-            <h3 class="text-center">No data Found !!!</h3>
-            @endif
         </div>
         <!-- /.card-body -->
     </div>
 
 @endsection
-
-

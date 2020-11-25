@@ -43,19 +43,23 @@ class TransactionHistoryController extends Controller
         $area_new_id = $request->area_id;
         $transactionHistories = $this->repository->getEpayTransactionHistories($request);
 
+//        return $transactionHistories;
+
         $total_order = 0;
         $total_pharmacy_amount = 0;
         $total_paid_amount = 0;
+        $total_subidha_comission = 0;
         foreach ($transactionHistories as $totalAmount) {
             $total_order += isset($totalAmount->pharmacy->pharmacyOrder[0]->customer_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->customer_amount : 0;
             $total_pharmacy_amount += isset($totalAmount->pharmacy->pharmacyOrder[0]->pharmacy_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->pharmacy_amount : 0;
             $total_paid_amount += isset($totalAmount->amount) ? $totalAmount->amount : 0;
+            $total_subidha_comission += isset($totalAmount->pharmacy->pharmacyOrder[0]->subidha_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->subidha_amount : 0;
         }
         $allLocations = $this->locationRepository->getLocation();
 
         return view('orders::transactionHistory.epay.index',
             compact('transactionHistories', 'allLocations', 'total_order', 'total_pharmacy_amount',
-                'total_paid_amount', 'district_new_id', 'thana_new_id', 'area_new_id'));
+                'total_subidha_comission', 'total_paid_amount', 'district_new_id', 'thana_new_id', 'area_new_id'));
     }
 
 
@@ -104,14 +108,14 @@ class TransactionHistoryController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show(Request $request, $id)
+    public function showPayment(Request $request, $id)
     {
         $startDate = $request->start_date;
         $endDate = $request->end_date;
         $userId = $id;
 
-        $data = $this->repository->get($request, $id);
-        return view('orders::transactionHistory.epay.show', compact('data', 'userId', 'startDate', 'endDate'));
+        $data = $this->repository->getPayment($request, $id);
+        return view('orders::transactionHistory.show', compact('data', 'userId', 'startDate', 'endDate'));
     }
 
 
@@ -128,6 +132,21 @@ class TransactionHistoryController extends Controller
 
         $data = $this->repository->getCod($request, $id);
         return view('orders::transactionHistory.cod.show', compact('data', 'userId', 'startDate', 'endDate'));
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Factory|View
+     */
+    public function epayShow(Request $request, $id)
+    {
+        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
+        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+        $userId = $id;
+
+        $data = $this->repository->getEpay($request, $id);
+        return view('orders::transactionHistory.epay.show', compact('data', 'userId', 'startDate', 'endDate'));
     }
 
     /**
