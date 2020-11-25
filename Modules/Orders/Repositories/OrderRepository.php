@@ -749,9 +749,19 @@ class OrderRepository
         logger('Previous Pharmacies');
         logger($previousPharmacies);
         $previousPharmacies[] = $order->pharmacy_id;
-        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-            ->whereNotIn('user_id', $previousPharmacies)
-            ->inRandomOrder()->first();
+        $date = Carbon::today()->format('l');
+        $weekday = strtolower($date);
+        $availablePharmacy = Weekends::where('days', $weekday)->groupBy('user_id')->pluck('user_id');
+        if (!$availablePharmacy) {
+            $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+                ->whereNotIn('user_id', $previousPharmacies)
+                ->inRandomOrder()->first();
+        } else {
+            $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+                ->whereNotIn('user_id', $previousPharmacies)
+                ->whereNotIn('user_id', $availablePharmacy)
+                ->inRandomOrder()->first();
+        }
 
         logger('Nearest Pharmacy');
         logger($nearestPharmacy);
