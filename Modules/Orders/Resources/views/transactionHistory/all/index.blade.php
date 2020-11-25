@@ -19,7 +19,15 @@
         {{ Auth::guard('web')->user()->can('create.user') }}
 
     @endauth -->
-
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @elseif(session('failed'))
+        <div class="alert alert-danger">
+            {{ session('failed') }}
+        </div>
+    @endif
     <div class="card col-md-12">
         <div class="card-body">
             <form method="get" action="{{ route('transaction.all') }}">
@@ -91,9 +99,9 @@
                             <td>{{ $amount }}</td>
                             <td>
                                 @if ($payable > $pharmacy_amount)
-                                    + {{ $payable - $pharmacy_amount }}
+                                    + {{ number_format($payable - $pharmacy_amount, 2) }}
                                 @else
-                                    {{ $payable - $pharmacy_amount }}
+                                    {{ number_format($payable - $pharmacy_amount, 2) }}
                                 @endif
                             </td>
                             <td>
