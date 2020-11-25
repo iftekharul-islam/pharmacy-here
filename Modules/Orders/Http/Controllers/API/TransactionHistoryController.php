@@ -3,7 +3,6 @@
 namespace Modules\Orders\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Modules\Orders\Http\Requests\CreateTransactionHistoryRequest;
