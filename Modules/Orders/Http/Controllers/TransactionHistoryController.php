@@ -5,6 +5,7 @@ namespace Modules\Orders\Http\Controllers;
 use App\Exports\AllTransactionExport;
 use App\Exports\CodTransactionHistoryByIdExport;
 use App\Exports\CodTransactionExport;
+use App\Exports\EpayTransactionHistoryByIdExport;
 use App\Exports\TransactionExport;
 use App\Exports\TransactionHistoryByIdExport;
 use Carbon\Carbon;
@@ -115,6 +116,7 @@ class TransactionHistoryController extends Controller
         $userId = $id;
 
         $data = $this->repository->getPayment($request, $id);
+//        return $data;
         return view('orders::transactionHistory.show', compact('data', 'userId', 'startDate', 'endDate'));
     }
 
@@ -265,6 +267,22 @@ class TransactionHistoryController extends Controller
      * @param Request $request
      * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
+    public function epayExportPharmacyTransactionById(Request $request)
+    {
+        $toDate = $request->toDate;
+        $endDate = $request->endDate;
+        $userId = $request->userId;
+        $date = Carbon::now()->format('d-m-Y');
+        $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
+        $pharmacy = Str::slug($data->pharmacy_name);
+
+        return (new EpayTransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy . '-epay-' . time() . '-' . $date . '.xls');
+    }
+
+    /**
+     * @param Request $request
+     * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function codExportPharmacyTransactionById(Request $request)
     {
         $toDate = $request->toDate;
@@ -274,6 +292,7 @@ class TransactionHistoryController extends Controller
         $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
         $pharmacy = Str::slug($data->pharmacy_name);
 
-        return (new CodTransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy . '-' . time() . '-' . $date . '.xls');
+        return (new CodTransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy . '-cod-' . time() . '-' . $date . '.xls');
     }
+
 }
