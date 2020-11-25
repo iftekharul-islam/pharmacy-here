@@ -48,6 +48,7 @@
                     <div class="col-12-xxxl col-lg-12 col-12">
                         <span>Total order amount : <b>{{ $total_order }}</b></span><br>
                         <span>Total pharmacy amount : <b>{{ $total_pharmacy_amount }}</b></span><br>
+                        <span>Total subidha comission : <b>{{ $total_subidha_comission }}</b></span><br>
                         <span>Total paid amount : <b>{{ $total_paid_amount }}</b></span>
                     </div>
                 </div>
@@ -72,7 +73,8 @@
                     <th>Pharmacy Name</th>
                     <th>Order Amount</th>
                     <th>Pharmacy Amount</th>
-{{--                    <th>Paid Amount</th>--}}
+                    <th>Subidha Comission</th>
+                    <th>Paid Amount</th>
                     <th>Due Amount</th>
 {{--                    <th>Action</th>--}}
                 </tr>
@@ -85,7 +87,8 @@
                             <td>{{ $item->pharmacy->pharmacy_name }}</td>
                             <td>{{ $item->pharmacy->pharmacyOrder[0]->customer_amount ?? 0 }}</td>
                             <td>{{ $item->pharmacy->pharmacyOrder[0]->pharmacy_amount ?? 0 }}</td>
-{{--                            <td>{{ $item->amount }}</td>--}}
+                            <td>{{ $item->pharmacy->pharmacyOrder[0]->subidha_amount ?? 0 }}</td>
+                            <td>{{ $item->amount }}</td>
                             @if(isset($item->pharmacy->pharmacyOrder[0]->pharmacy_amount))
                                 @if ($item->pharmacy->pharmacyOrder[0]->pharmacy_amount > $item->amount)
                                     <td>{{ $item->amount - $item->pharmacy->pharmacyOrder[0]->pharmacy_amount  }}</td>
@@ -96,13 +99,14 @@
                                 <td>0</td>
                             @endif
 {{--                                if it need it can be used for show and create transaction--}}
-{{--                            <td>--}}
-{{--                                <a href="{{ route('transactionHistory.show', $item->pharmacy->user_id) }}" type="button"  class="btn btn-sm btn-success" >--}}
-{{--                                    <i class="fa fa-eye"></i>--}}
-{{--                                </a>--}}
+                            <td>
+                                <a href="{{ route('epay.transactionHistory.show', $item->pharmacy->user_id) }}"
+                                   type="button" class="btn btn-sm btn-success">
+                                    <i class="fa fa-eye"></i>
+                                </a>
 {{--                                <a href="{{ route('transactionHistory.create', $item->pharmacy_id) }}" class="btn btn-sm btn-primary">--}}
 {{--                                    <i class="fa fa-plus"></i> </a>--}}
-{{--                            </td>--}}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

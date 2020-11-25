@@ -65,7 +65,7 @@ class TransactionHistoryRepository
                 $query->select('user_id', 'pharmacy_name');
             },
                 'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
+                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
                 }])->whereHas('pharmacy.area', function ($query) use ($request) {
                 $query->where('area_id', $request->area_id);
             })
@@ -78,7 +78,7 @@ class TransactionHistoryRepository
                 $query->select('user_id', 'pharmacy_name');
             },
                 'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
+                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
                 }])->whereHas('pharmacy.area.thana', function ($query) use ($request) {
                 $query->where('thana_id', $request->thana_id);
             })
@@ -91,7 +91,7 @@ class TransactionHistoryRepository
                 $query->select('user_id', 'pharmacy_name');
             },
                 'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
+                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
                 }])->whereHas('pharmacy.area.thana.district', function ($query) use ($request) {
                 $query->where('district_id', $request->district_id);
             })
@@ -104,7 +104,7 @@ class TransactionHistoryRepository
             $query->select('user_id', 'pharmacy_name');
         },
             'pharmacy.pharmacyOrder' => function ($query) {
-                $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
+                $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
             }])
             ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
             ->groupBy('pharmacy_id')
@@ -159,7 +159,7 @@ class TransactionHistoryRepository
             ->get();
     }
 
-    public function get($request, $id)
+    public function getPayment($request, $id)
     {
         $startDate = $request->start_date;
         $endDate = $request->end_date;
@@ -175,15 +175,22 @@ class TransactionHistoryRepository
 
     public function getCod($request, $id)
     {
-        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
-        $endDate = $request->end_date ? $request->end_date : Carbon::today();
-
-        if ($startDate !== null || $endDate !== null) {
-            $TransactionHistories = Order::whereBetween('order_date', [$startDate, $endDate])->where('pharmacy_id', $id)->paginate(10);
+        if ($request->start_date !== null || $request->end_date !== null) {
+            $TransactionHistories = Order::whereBetween('order_date', [$request->start_date ?? Carbon::today()->subDays(30), $request->end_date ?? Carbon::today()])->where('pharmacy_id', $id)->where('payment_type', 1)->paginate(10);
             return $TransactionHistories;
         }
 
-        return Order::where('pharmacy_id', $id)
+        return Order::where('pharmacy_id', $id)->where('payment_type', 1)
+            ->paginate(10);
+    }
+
+    public function getEpay($request, $id)
+    {
+        if ($request->start_date !== null || $request->end_date !== null) {
+            return Order::whereBetween('order_date', [$request->start_date ?? Carbon::today()->subDays(30), $request->end_date ?? Carbon::today()])->where('pharmacy_id', $id)->where('payment_type', 2)->paginate(10);
+        }
+
+        return Order::where('pharmacy_id', $id)->where('payment_type', 2)
             ->paginate(10);
     }
 
