@@ -70,7 +70,7 @@ class TransactionHistoryController extends BaseController
         }
 
         $data = [
-            'total_sale' => $pharmacySales['cod_amount'] ?? 0 + $pharmacySales['epay_amount'] ?? 0,
+            'total_sale' => $pharmacySales['cod_amount'] + $pharmacySales['epay_amount'],
             'sale_count' => count($pharmacyOrders),
             'pending_orders_count' => count($pendingOrders),
             'orders_by_month' => $new,
