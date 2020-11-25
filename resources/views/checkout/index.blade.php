@@ -547,6 +547,9 @@
             var payTypeValue = parseInt($('input[name="payment_type"]:checked').val());
             var deliveryCharge = parseInt($('input[name="delivery_charge"]:checked').val());
             $('input[name="delivery_type"]').val(deliveryType);
+            if (PreOrderMedicine != '') {
+                $('#tab2').addClass('d-none');
+            }
 
             getPayTypeValue(payTypeValue);
             getDeliveryChargeValue(deliveryCharge);
@@ -620,7 +623,12 @@
                 var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
 
                 console.log(PreOrderMedicine);
-                if (time_new < normal_start_time) {
+                if (PreOrderMedicine !== '') {
+                    $(".normal_delivery_date").val(after_four_date);
+                    $(".normal_delivery_time").val('10:00:00');
+                    $(".delivery_duration").val(normal_time_slot[0]);
+
+                } else if (time_new < normal_start_time) {
                     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
                     $(".normal_delivery_time").val('10:00:00');
@@ -632,10 +640,6 @@
                     $(".normal_delivery_time").val('19:00:00');
                     $(".delivery_duration").val(normal_time_slot[1]);
 
-                } else if (PreOrderMedicine !== '') {
-                    $(".normal_delivery_date").val(after_four_date);
-                    $(".normal_delivery_time").val('10:00:00');
-                    $(".delivery_duration").val(normal_time_slot[0]);
                 } else {
                     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
@@ -723,7 +727,6 @@
 
             var check_time = moment.utc(time_slot, 'hh:mm:ss').add(-2, 'hour').format('HH:mm:ss');
             var show_time = moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A');
-
 
             if (time_new > check_time) {
                 $('.express_date').val(show_time + ", " + next_date);
