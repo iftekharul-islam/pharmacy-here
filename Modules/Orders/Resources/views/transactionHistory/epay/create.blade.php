@@ -26,13 +26,13 @@
                                 <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
                                 <div class="col-sm-8">
                                     <label
-                                        class="col-form-label">{{ $pharmacy_amount - $payable }}</label>
+                                        class="col-form-label">{{ number_format($pharmacy_amount - $payable, 2) }}</label>
                                 </div>
                             @else
                                 <label for="due-amount" class="col-sm-4 col-form-label">Paid more amount</label>
                                 <div class="col-sm-8">
                                     <label
-                                        class="col-form-label">{{ $payable - $pharmacy_amount }}</label>
+                                        class="col-form-label">{{ number_format($payable - $pharmacy_amount, 2) }}</label>
                                 </div>
 
                             @endif
@@ -46,7 +46,8 @@
                 <div class="form-group row">
                     <label for="amount" class="col-sm-4 col-form-label">Amount</label>
                     <div class="col-sm-8">
-                        <input type="number" name="amount" value="" class="form-control" min="0" id="amount" placeholder="Amount">
+                        <input type="number" step="0.01" name="amount" value="" class="form-control" min="0" id="amount"
+                               placeholder="Amount">
                         @if ($errors->has('amount'))
                             <span class="text-danger">
                                 <strong>{{ $errors->first('amount') }}</strong>

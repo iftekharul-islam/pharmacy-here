@@ -171,7 +171,7 @@ class TransactionHistoryController extends Controller
     {
         $data = $this->repository->store($request);
 
-        return redirect()->back();
+        return redirect()->route('transaction.all')->with('success', 'Payment Successful');
     }
 
     /**
