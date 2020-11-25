@@ -512,7 +512,7 @@ class CheckoutController extends Controller
             'is_rated',
             'delivery_duration'
         ]);
-        $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
+        $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
         if ($request->delivery_charge == 1) {
             $data['delivery_method'] = 'normal';
         } else {
@@ -1051,18 +1051,6 @@ class CheckoutController extends Controller
         $thana_id = $request->id;
         $availablePharmacyList = $this->pharmacyRepository->getAvailablePharmacyList($thana_id);
         return response()->json($availablePharmacyList);
-    }
-
-    /**
-     * @param $address_id
-     * @return string
-     */
-    public function getNearestPharmacyId($address_id)
-    {
-        $address = CustomerAddress::find($address_id);
-        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
-
-        return $pharmacy ? $pharmacy->user_id : '';
     }
 
 }
