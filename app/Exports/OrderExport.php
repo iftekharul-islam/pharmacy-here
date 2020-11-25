@@ -35,9 +35,10 @@ class OrderExport implements FromCollection, WithHeadings, WithColumnWidths
         $orderCollection = new Collection();
 
         foreach ($allOrders as $order) {
+            logger($order);
             $orderCollection->push((object)[
                 'order_no' => $order->order_no,
-                'pharmacy_name' => $order->pharmacy->pharmacyBusiness ? $order->pharmacy->pharmacyBusiness->pharmacy_name : '',
+                'pharmacy_name' => isset($order->pharmacy->pharmacyBusiness) ? $order->pharmacy->pharmacyBusiness->pharmacy_name : '',
                 'date' => $order->order_date,
                 'amount' => $order->pharmacy_amount,
             ]);

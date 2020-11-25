@@ -9,9 +9,8 @@ use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Modules\Orders\Entities\Models\Order;
-use Modules\Orders\Entities\Models\TransactionHistory;
 
-class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
+class EpayTransactionHistoryByIdExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
 {
     use Exportable;
     protected $endDate, $toDate, $userId;
@@ -22,23 +21,24 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
         $this->toDate = $toDate;
         $this->userId = $userId;
     }
+
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
 
-        $transaction =  Order::query();
+        $transaction = Order::query();
 
         $allTransactionHistories = $this->query($transaction);
 
         $transactionCollection = new Collection();
         foreach ($allTransactionHistories as $allTransaction) {
-            $transactionCollection->push((object) [
+            $transactionCollection->push((object)[
                 'order_date' => $allTransaction->order_date,
                 'customer_amount' => $allTransaction->customer_amount,
                 'pharmacy_amount' => $allTransaction->pharmacy_amount,
-                'subidha_comission'=> $allTransaction->subidha_comission,
+                'subidha_comission' => $allTransaction->subidha_comission,
             ]);
         }
         return $transactionCollection;
@@ -48,10 +48,10 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
     {
         if ($this->toDate !== null || $this->endDate !== null) {
             return $transaction->whereBetween('order_date', [$this->endDate, $this->toDate])
-                ->where('payment_type', 2)
+                ->where('payment_type', 1)
                 ->where('pharmacy_id', $this->userId)->get();
         }
-        return $transaction->where('pharmacy_id', $this->userId)->where('payment_type', 2)->get();
+        return $transaction->where('pharmacy_id', $this->userId)->where('payment_type', 1)->get();
 
     }
 
