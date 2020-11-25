@@ -57,6 +57,7 @@
                     <th>Order Amount</th>
                     <th>Pharmacy Amount</th>
                     <th>Subidha Amount</th>
+                    <th>Point Amount</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,6 +69,7 @@
                             <td>{{ $item->customer_amount }}</td>
                             <td>{{ $item->pharmacy_amount }}</td>
                             <td>{{ $item->subidha_comission }}</td>
+                            <td>{{ $item->point_amount ?? '-' }}</td>
                         </tr>
                     @endforeach
                 @endif
