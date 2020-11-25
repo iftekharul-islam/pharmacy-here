@@ -20,6 +20,7 @@ use Modules\Points\Entities\Models\Points;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\UserDeviceId;
+use Modules\User\Entities\Models\Weekends;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderRepository
@@ -78,7 +79,16 @@ class OrderRepository
     public function getNearestPharmacyId($address_id)
     {
         $address = CustomerAddress::find($address_id);
-        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
+        $date = Carbon::today()->format('l');
+        $weekday = strtolower($date);
+        $availablePharmacy = Weekends::where('days', $weekday)->groupBy('user_id')->pluck('user_id');
+        if (!$availablePharmacy) {
+            $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
+        } else {
+            $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
+                ->whereNotIn('user_id', $availablePharmacy)
+                ->inRandomOrder()->first();
+        }
 
         return $pharmacy ? $pharmacy->user_id : '';
     }

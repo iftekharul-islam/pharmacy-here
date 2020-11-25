@@ -4,6 +4,7 @@
 namespace Modules\User\Repositories;
 
 
+use Carbon\Carbon;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\Weekends;
@@ -267,13 +268,25 @@ class PharmacyRepository
 
     public function getAvailablePharmacyList($thana_id)
     {
-
-        $pharmacyList = PharmacyBusiness::with('area.thana')
-            ->whereHas('area.thana', function ($q) use ($thana_id) {
-                $q->where('id', $thana_id);
-            })->whereHas('user', function ($q) {
-                $q->where('status', 1);
-            })->get();
+        $date = Carbon::today()->format('l');
+        $weekday = strtolower($date);
+        $availablePharmacy = Weekends::where('days', $weekday)->groupBy('user_id')->pluck('user_id');
+        if (!$availablePharmacy) {
+            $pharmacyList = PharmacyBusiness::with('area.thana')
+                ->whereHas('area.thana', function ($q) use ($thana_id) {
+                    $q->where('id', $thana_id);
+                })->whereHas('user', function ($q) {
+                    $q->where('status', 1);
+                })->get();
+        } else {
+            $pharmacyList = PharmacyBusiness::with('area.thana')
+                ->whereNotIn('user_id', $availablePharmacy)
+                ->whereHas('area.thana', function ($q) use ($thana_id) {
+                    $q->where('id', $thana_id);
+                })->whereHas('user', function ($q) {
+                    $q->where('status', 1);
+                })->get();
+        }
 
         return $pharmacyList;
     }
