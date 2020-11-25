@@ -296,8 +296,8 @@ class OrderRepository
 
 
         if ($order->point_amount != null) {
-            $order->subidha_comission = $order->point_amount - $order->subidha_comission;
-            $order->customer_amount = $order->point_amount - $order->customer_amount;
+            $order->subidha_comission = $order->subidha_comission -$order->point_amount ;
+            $order->customer_amount = $order->customer_amount - $order->point_amount ;
         }
 
         logger($order);
