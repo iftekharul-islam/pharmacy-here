@@ -45,8 +45,13 @@
                             {{ $data->delivery_charge }}
                             <br>
                             <strong>Total Amount:</strong>
-                            {{ $data->delivery_charge + $data->amount }}
+                            {{ $data->customer_amount }}
                             <br>
+                            @isset($data->point_amount)
+                                <strong>Point Amount:</strong>
+                                {{ $data->point_amount }}
+                                <br>
+                            @endisset
                         </div>
                     </div>
 
