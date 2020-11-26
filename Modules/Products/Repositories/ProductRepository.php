@@ -42,15 +42,22 @@ class ProductRepository
 
             if (count($isAvaialable) == 0) {
                 $data = Product::where('name', 'LIKE', "%$brand%")->pluck('generic_id');
-                return $products->whereIn('generic_id', $data)
+                $value = $products->whereIn('generic_id', $data)
                     ->where('purchase_price', '>', 0)
                     ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
                     ->orderBy('name', 'ASC')
                     ->orderBy('purchase_price', 'DESC')
                     ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
-            }
 
-            return $isAvaialable;
+                return [
+                    'alterResult' => true,
+                    'value' => $value,
+                ];
+            }
+            return [
+                'alterResult' => false,
+                'value' => $isAvaialable,
+            ];
 
         }
 
@@ -66,13 +73,23 @@ class ProductRepository
             $products->whereIn('company_id', $company);
         }
 
-        return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
+        $value =  $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
             ->orderBy('name', 'ASC')
             ->orderBy('purchase_price', 'DESC')
             ->where('purchase_price', '>', 0)
             ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
+
+        return [
+            'alterResult' => false,
+            'value' => $value,
+        ];
+
     }
 
+    /**
+     * @param $request
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function searchByProductAmount($request)
     {
         $products = Product::query();

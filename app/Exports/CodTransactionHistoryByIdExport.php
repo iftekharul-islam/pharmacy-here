@@ -39,6 +39,7 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
                 'customer_amount' => $allTransaction->customer_amount,
                 'pharmacy_amount' => $allTransaction->pharmacy_amount,
                 'subidha_comission'=> $allTransaction->subidha_comission,
+                'point_amount' => $allTransaction->point_amount
             ]);
         }
         return $transactionCollection;
@@ -47,21 +48,23 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
     public function query($transaction)
     {
         if ($this->toDate !== null || $this->endDate !== null) {
-            return $transaction->whereBetween('order_date', [$this->endDate, $this->toDate])
-                ->where('payment_type', 2)
+            return $transaction->whereBetween('order_date', [$this->toDate, $this->endDate])
+                ->where('payment_type', 1)
+                ->where('status', 3)
                 ->where('pharmacy_id', $this->userId)->get();
         }
-        return $transaction->where('pharmacy_id', $this->userId)->where('payment_type', 2)->get();
+        return $transaction->where('pharmacy_id', $this->userId)->where('payment_type', 1)->where('status', 3)->get();
 
     }
 
     public function map($transactionCollection): array
     {
         return [
-            $transactionCollection->order_date ? $transactionCollection->order_date : '',
-            $transactionCollection->customer_amount ? $transactionCollection->customer_amount : '',
-            $transactionCollection->pharmacy_amount ? $transactionCollection->pharmacy_amount : '',
-            $transactionCollection->subidha_comission ? $transactionCollection->subidha_comission : '',
+            $transactionCollection->order_date ?? '',
+            $transactionCollection->customer_amount ?? '',
+            $transactionCollection->pharmacy_amount ?? '',
+            $transactionCollection->subidha_comission ??'',
+            $transactionCollection->point_amount ?? '',
         ];
     }
 
@@ -75,6 +78,7 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
             'Customer Amount',
             'Pharmacy Amount',
             'Subidha Amount',
+            'Point Amount'
         ];
     }
 
@@ -88,6 +92,7 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
             'B' => 20,
             'C' => 20,
             'D' => 20,
+            'E' => 10,
         ];
     }
 }
