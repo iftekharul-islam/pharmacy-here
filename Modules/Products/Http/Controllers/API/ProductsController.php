@@ -9,6 +9,7 @@ use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Modules\Products\Entities\Model\Product;
 use Modules\Products\Http\Requests\CreateProductRequest;
 use Modules\Products\Http\Requests\UpdateProductRequest;
@@ -37,7 +38,7 @@ class ProductsController extends BaseController
             throw new NotFoundHttpException('Product List Not Found');
         }
 
-        return $this->response->paginator($productList['value'], new ProductTransformer($productList['alterResult']));
+        return $this->response->paginator($productList['value'], new ProductTransformer())->setMeta(['result' => $productList['alterResult']]);
     }
 
     /**
