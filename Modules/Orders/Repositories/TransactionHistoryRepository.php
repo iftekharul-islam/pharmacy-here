@@ -60,55 +60,34 @@ class TransactionHistoryRepository
      */
     public function getEpayTransactionHistories($request)
     {
-        if ($request->area_id !== null) {
-            return TransactionHistory::with(['pharmacy' => function ($query) {
-                $query->select('user_id', 'pharmacy_name');
-            },
-                'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-                }])->whereHas('pharmacy.area', function ($query) use ($request) {
-                $query->where('area_id', $request->area_id);
-            })
-                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-                ->groupBy('pharmacy_id')
-                ->get();
-        }
-        if ($request->thana_id !== null) {
-            return TransactionHistory::with(['pharmacy' => function ($query) {
-                $query->select('user_id', 'pharmacy_name');
-            },
-                'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-                }])->whereHas('pharmacy.area.thana', function ($query) use ($request) {
-                $query->where('thana_id', $request->thana_id);
-            })
-                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-                ->groupBy('pharmacy_id')
-                ->get();
-        }
-        if ($request->district_id !== null) {
-            return TransactionHistory::with(['pharmacy' => function ($query) {
-                $query->select('user_id', 'pharmacy_name');
-            },
-                'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-                }])->whereHas('pharmacy.area.thana.district', function ($query) use ($request) {
-                $query->where('district_id', $request->district_id);
-            })
-                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-                ->groupBy('pharmacy_id')
-                ->get();
-        }
+        $order = Order::query();
 
-        return TransactionHistory::with(['pharmacy' => function ($query) {
-            $query->select('user_id', 'pharmacy_name');
-        },
-            'pharmacy.pharmacyOrder' => function ($query) {
-                $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-            }])
-            ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
+//        if ($request->area_id !== null) {
+//            $order->with('pharmacy.pharmacyBusiness')
+//                ->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($request) {
+//                    $query->where('area_id', $request->area_id);
+//                });
+//        }
+//        if ($request->thana_id !== null) {
+//            $order->with('pharmacy.pharmacyBusiness')
+//                ->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($request) {
+//                    $query->where('thana_id', $request->thana_id);
+//                });
+//        }
+//        if ($request->district_id !== null) {
+//            $order->with('pharmacy.pharmacyBusiness')
+//                ->whereHas('pharmacy.pharmacyBusiness.area.thana.district', function ($query) use ($request) {
+//                    $query->where('district_id', $request->district_id);
+//                });
+//        }
+
+        return $order->with('pharmacy.pharmacyBusiness')
+            ->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_comission, pharmacy_id'))
+            ->where('status', 3)
+            ->where('payment_type', 2)
             ->groupBy('pharmacy_id')
             ->get();
+
     }
 
     /**

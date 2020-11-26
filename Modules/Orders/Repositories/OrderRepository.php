@@ -369,7 +369,10 @@ class OrderRepository
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
         $data['notes'] = "Its a sample for epay";
         $data['is_rated'] = "no";
-        $data['delivery_charge'] = $request->delivery_charge_amount;
+        if ($request->delivery_charge_amount != null) {
+            $data['delivery_charge'] = $request->delivery_charge_amount;
+        }
+        $data['delivery_charge'] = 0;
 
         if ($request->delivery_charge == 1) {
             $data['delivery_method'] = 'normal';

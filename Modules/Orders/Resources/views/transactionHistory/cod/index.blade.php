@@ -30,7 +30,8 @@
                         <select name="district_id" class="form-control" id="selectDistrict" onchange="getThanas(value)">
                             <option value="" selected disabled>Select district</option>
                             @foreach($allLocations as $district)
-                                <option value="{{ $district->id }}" @isset($district_new_id) {{ $district_new_id == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
+                                <option
+                                    value="{{ $district->id }}" @isset($district_new_id) {{ $district_new_id == $district->id ? 'selected' : '' }} @endisset>{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -62,46 +63,49 @@
         <div class="card-header">
             <h3 class="card-title">Transactions of Pharmacy</h3>
             <a class="btn btn-success float-right"
-               href="{{ route('cod.export.transaction', ['district' => $district_new_id, 'thana' => $thana_new_id, 'area' => $area_new_id]) }}">Export pharmacy transaction
+               href="{{ route('cod.export.transaction', ['district' => $district_new_id, 'thana' => $thana_new_id, 'area' => $area_new_id]) }}">Export
+                pharmacy transaction
             </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
             @if (count($transactionHistories) > 0)
-            <table id="example1" class="table  mb-3">
-                <thead>
-                <tr>
-                    <th>SL</th>
-                    <th>Pharmacy Name</th>
-                    <th>Order Amount</th>
-                    <th>Pharmacy Amount</th>
-                    <th>Subidha Amount</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
+                <table id="example1" class="table  mb-3">
+                    <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Pharmacy Name</th>
+                        <th>Order Amount</th>
+                        <th>Pharmacy Amount</th>
+                        <th>Subidha Amount</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     @foreach($transactionHistories as $index => $item)
                         <?php $i = 1?>
                         <tr>
                             <td>{{ $i + $index }}</td>
-                            <td>{{ $item->pharmacy->pharmacyBusiness->pharmacy_name }}</td>
+                            <td>{{ $item->pharmacy->pharmacyBusiness->pharmacy_name ?? 'N/A' }}</td>
                             <td>{{ $item->customer_amount }}</td>
                             <td>{{ $item->pharmacy_amount }}</td>
                             <td>{{ $item->subidha_comission }}</td>
                             <td>
-                                <a href="{{ route('cod.transactionHistory.show', $item->pharmacy_id) }}" type="button"  class="btn btn-sm btn-success" >
-                                    <i class="fa fa-eye"></i>
-                                </a>
-
+                                @isset($item->pharmacy->pharmacyBusiness->pharmacy_name)
+                                    <a href="{{ route('cod.transactionHistory.show', $item->pharmacy_id) }}"
+                                       type="button" class="btn btn-sm btn-success">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                @endisset
                             </td>
                         </tr>
                     @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             @else
-            <h4 class="text-center">No data found !</h4>
+                <h4 class="text-center">No data found !</h4>
             @endif
-{{--            {{ $orders->links() }}--}}
+            {{--            {{ $orders->links() }}--}}
         </div>
         <!-- /.card-body -->
     </div>

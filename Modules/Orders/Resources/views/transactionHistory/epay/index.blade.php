@@ -16,7 +16,7 @@
 
 @section('content')
     <!-- @auth("web")
-{{ Auth::guard('web')->user()->can('create.user') }}
+        {{ Auth::guard('web')->user()->can('create.user') }}
 
     @endauth -->
     <div class="card">
@@ -28,7 +28,8 @@
                         <select name="district_id" class="form-control" id="selectDistrict" onchange="getThanas(value)">
                             <option value="" selected disabled>Select district</option>
                             @foreach($allLocations as $district)
-                                <option value="{{ $district->id }}" {{ $district_new_id == $district->id ? 'selected' : ''  }}>{{ $district->name }}</option>
+                                <option
+                                    value="{{ $district->id }}" {{ $district_new_id == $district->id ? 'selected' : ''  }}>{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -60,61 +61,49 @@
         <div class="card-header">
             <h3 class="card-title">Transactions of Pharmacy</h3>
             <a class="btn btn-success float-right"
-               href="{{ route('epay.export.transaction', ['district' => $district_new_id, 'thana' => $thana_new_id, 'area' => $area_new_id]) }}">Export pharmacy transaction
+               href="{{ route('epay.export.transaction', ['district' => $district_new_id, 'thana' => $thana_new_id, 'area' => $area_new_id]) }}">Export
+                pharmacy transaction
             </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive">
             @if (count($transactionHistories) > 0)
-            <table id="example1" class="table  mb-3">
-                <thead>
-                <tr>
-                    <th>SL</th>
-                    <th>Pharmacy Name</th>
-                    <th>Order Amount</th>
-                    <th>Pharmacy Amount</th>
-                    <th>Subidha Comission</th>
-                    {{--                    <th>Paid Amount</th>--}}
-                    {{--                    <th>Due Amount</th>--}}
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
+                <table id="example1" class="table  mb-3">
+                    <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Pharmacy Name</th>
+                        <th>Order Amount</th>
+                        <th>Pharmacy Amount</th>
+                        <th>Subidha Amount</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     @foreach($transactionHistories as $index => $item)
                         <?php $i = 1?>
                         <tr>
                             <td>{{ $i + $index }}</td>
-                            <td>{{ $item->pharmacy->pharmacy_name }}</td>
-                            <td>{{ $item->pharmacy->pharmacyOrder[0]->customer_amount ?? 0 }}</td>
-                            <td>{{ $item->pharmacy->pharmacyOrder[0]->pharmacy_amount ?? 0 }}</td>
-                            <td>{{ $item->pharmacy->pharmacyOrder[0]->subidha_amount ?? 0 }}</td>
-                            {{--                            <td>{{ $item->amount }}</td>--}}
-                            {{--                            @if(isset($item->pharmacy->pharmacyOrder[0]->pharmacy_amount))--}}
-                            {{--                                @if ($item->pharmacy->pharmacyOrder[0]->pharmacy_amount > $item->amount)--}}
-                            {{--                                    <td>{{ $item->amount - $item->pharmacy->pharmacyOrder[0]->pharmacy_amount  }}</td>--}}
-                            {{--                                @else--}}
-                            {{--                                    <td>{{ $item->pharmacy->pharmacyOrder[0]->pharmacy_amount - $item->amount }}</td>--}}
-                            {{--                                @endif--}}
-                            {{--                            @else--}}
-                            {{--                                <td>0</td>--}}
-                            {{--                            @endif--}}
-{{--                                if it need it can be used for show and create transaction--}}
+                            <td>{{ $item->pharmacy->pharmacyBusiness->pharmacy_name ?? 'N/A' }}</td>
+                            <td>{{ $item->customer_amount }}</td>
+                            <td>{{ $item->pharmacy_amount }}</td>
+                            <td>{{ $item->subidha_comission }}</td>
                             <td>
-                                <a href="{{ route('epay.transactionHistory.show', $item->pharmacy->user_id) }}"
-                                   type="button" class="btn btn-sm btn-success">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-{{--                                <a href="{{ route('transactionHistory.create', $item->pharmacy_id) }}" class="btn btn-sm btn-primary">--}}
-{{--                                    <i class="fa fa-plus"></i> </a>--}}
+                                @isset($item->pharmacy->pharmacyBusiness->pharmacy_name)
+                                    <a href="{{ route('epay.transactionHistory.show', $item->pharmacy_id) }}"
+                                       type="button" class="btn btn-sm btn-success">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                @endisset
                             </td>
                         </tr>
                     @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             @else
-            <h4 class="text-center">No data found !</h4>
+                <h4 class="text-center">No data found !</h4>
             @endif
-{{--            {{ $orders->links() }}--}}
+            {{--            {{ $orders->links() }}--}}
         </div>
         <!-- /.card-body -->
     </div>
@@ -201,7 +190,7 @@
                         .text(value.name));
             });
         }
-</script>
+    </script>
 @endsection
 
 
