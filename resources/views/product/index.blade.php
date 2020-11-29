@@ -168,7 +168,7 @@
                 </div>
             </div>
             @if (count($data) > 0)
-                @if ($data['alterResult'] === false)
+                @if ($data['alterResult'] === true)
                     <strong>{{ __('text.not_available') }}</strong><br>
                     <strong>{{ __('text.alternative_list') }}</strong><br><br>
                     <p>{{ __('text.alternative_note') }}</p>

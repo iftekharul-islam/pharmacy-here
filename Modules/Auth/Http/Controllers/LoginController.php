@@ -35,7 +35,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-//    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     private $repository;
 
@@ -74,7 +74,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-//        return redirect('/login');
         return redirect()->route('login');
     }
 
