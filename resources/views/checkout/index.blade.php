@@ -774,7 +774,7 @@
 
             if (deliveryType === 2 && payTypeValue === 1) {
                 grandTotal = total - cashInCollectFromPharmacy;
-                $('input[name="delivery_charge_amount"]').prop('disabled', true);
+                $('input[name="delivery_charge_amount"]').val(cashInCollectFromPharmacy);
             }
             if (deliveryType === 2 && payTypeValue === 2) {
                 console.log('deliveryType 2 and payTypeValue 2')
