@@ -22,26 +22,33 @@
                             @if ($data->cancelReason !== null)
                                 <strong>Cancel Reason : </strong> <span>{{ $data->cancelReason->reason}}</span><br>
                             @endif
+                            <strong>Delivery type:</strong>
                             @if ($data->delivery_type !== 2)
-                                <strong>Delivery type:</strong>
                                 @if ($data->delivery_method == 'express')
                                     Express Delivery
                                 @elseif ($data->delivery_method == 'normal')
                                     Normal Delivery
                                 @endif
-                            @endif
-                            <br>
-                            <strong>Payment Type:</strong>
-                            @if ($data->payment_type == 1)
-                                Cash on Delivery
+                                <br>
+                                @if ($data->payment_type === 1)
+                                    <strong>Payment Type:</strong>
+                                    Cash on Delivery
+                                @else
+                                    Online Payment
+                                    <br>
+                                @endif
                             @else
-                                Online Payment
+                                Pick up from Pharmacy
+                                <br>
                             @endif
-                            <br>
                             <strong>Delivery Time:</strong>
                             {{ $data->delivery_duration ?? 'N/A' }}
                             <br>
-                            <strong>Charge Amount:</strong>
+                            @if ($data->payment_type === 1 && $data->delivery_type === 2)
+                                <strong>Discount Amount:</strong>
+                            @else
+                                <strong>Charge Amount:</strong>
+                            @endif
                             {{ $data->delivery_charge }}
                             <br>
                             <strong>Total Amount:</strong>
@@ -82,7 +89,6 @@
                     <th>Medicine Name</th>
                     <th>Quantity</th>
                     <th>Amount</th>
-                    {{--                    <th>Action</th>--}}
                 </tr>
                 </thead>
                 <tbody>
@@ -93,25 +99,13 @@
                             <td>{{ $item->product['name'] }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ $item->quantity * $item->product->purchase_price }}</td>
-
-                            <td>
-                                {{--                                <button type="button" onclick="showProduct({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">--}}
-                                {{--                                    <i class="fa fa-eye"></i>--}}
-                                {{--                                </button>--}}
-                                {{--                                <a href="{{ route('transactionHistory.create', $item['id']) }}" class="btn btn-sm btn-primary">--}}
-                                {{--                                    <i class="fa fa-edit"></i> </a>--}}
-
-                            </td>
                         </tr>
                     @endforeach
                 @endif
                 </tbody>
             </table>
-            {{--            {{ $data->links() }}--}}
         </div>
         <!-- /.card-body -->
     </div>
 
 @endsection
-
-
