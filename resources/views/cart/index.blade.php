@@ -142,6 +142,7 @@
             position: absolute;
             margin-right: -216px;
             font-size: 13px;
+            margin-bottom: 35px;
         }
         .grand-total-final input {
             position: absolute;
