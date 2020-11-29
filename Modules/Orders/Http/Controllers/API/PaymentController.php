@@ -103,13 +103,8 @@ class PaymentController extends BaseController
         $post_data['store_id'] = env('SSL_STORE_ID');
         $post_data['store_passwd'] = env('SSL_STORE_PASSWORD');
 //        $post_data['total_amount'] = round($productDetail['totalAmount']+$deliveryCharge, 2);
-        if ($requestData['point_amount'] != null) {
-            $post_data['amount'] = $requestData['total_amount'] - $requestData['point_amount'];
-            $post_data['total_amount'] = $requestData['total_amount'] - $requestData['point_amount'];
-        } else {
-            $post_data['amount'] = $requestData['total_amount'];
-            $post_data['total_amount'] = $requestData['total_amount'];
-        }
+        $post_data['amount'] = $requestData['total_amount'];
+        $post_data['total_amount'] = $requestData['total_amount'];
         $post_data['currency'] = "BDT";
 //        $post_data['tran_id'] = $tranId;
 

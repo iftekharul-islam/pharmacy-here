@@ -129,5 +129,9 @@ return [
     'medicine_alarm' => 'Medicine Alarm',
     'alarm_title' => 'Install mobile app for this facilities',
     'delivery_title' => 'With extra care we deliver your products.',
-    'play_store_link' => 'Google Play'
+    'play_store_link' => 'Google Play',
+    'not_available' => 'Product is not available !!!',
+    'alternative_list' => 'Choose from alternative products',
+    'alternative_note' => 'Note : Prior to take any other brand different from your prescription, make sure your prescriber has consent.',
+
 ];

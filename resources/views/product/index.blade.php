@@ -152,7 +152,7 @@
             </div>
         @endif
         <div class="container">
-            <div class="row mb-5">
+            <div class="row">
                 <div class="col-md-4 text-left">
                     <h2 class="my-header">{{ trans_choice('text.medicine', 10) }}</h2>
                 </div>
@@ -168,8 +168,13 @@
                 </div>
             </div>
             @if (count($data) > 0)
-                <div class="row mb-5">
-                    @foreach($data as $index=>$item)
+                @if ($data['alterResult'] === false)
+                    <strong>{{ __('text.not_available') }}</strong><br>
+                    <strong>{{ __('text.alternative_list') }}</strong><br><br>
+                    <p>{{ __('text.alternative_note') }}</p>
+                @endif
+                <div class="row mb-5 mt-5">
+                    @foreach($data['value'] as $index=>$item)
                         <div class="col-sm-6 col-lg-3 mb-3">
                             <div href="#" class="medicine-details">
                                 @if ($item->is_prescripted == 1)
@@ -243,7 +248,7 @@
                         </div>
                     @endforeach
                 </div>
-                {{ $data->links() }}
+                {{ $data['value']->links() }}
             @else
                 <h4 class="text-center">No Medicine Found!</h4>
             @endif
