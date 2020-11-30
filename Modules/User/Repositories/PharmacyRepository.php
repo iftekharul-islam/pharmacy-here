@@ -262,7 +262,10 @@ class PharmacyRepository
 
     public function checkPharmacyByArea($area_id)
     {
-        $count = PharmacyBusiness::where('area_id', $area_id)->count();
+        $count = PharmacyBusiness::where('area_id', $area_id)
+            ->whereHas('user', function ($query) {
+                $query->where('status', 1);
+            })->count();
         return $count > 0 ? true : false;
     }
 
