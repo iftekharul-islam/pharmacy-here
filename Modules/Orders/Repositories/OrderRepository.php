@@ -68,7 +68,7 @@ class OrderRepository
 
     public function orderListByUserWeb($id)
     {
-        return Order::where('customer_id', $id)->orderBy('created_at', 'desc')->paginate(10);
+        return Order::where('customer_id', $id)->orderBy('id', 'desc')->paginate(10);
     }
 
     public function get($id)
@@ -359,7 +359,8 @@ class OrderRepository
             'subidha_comission',
             'pharmacy_amount',
             'customer_amount',
-            'delivery_duration'
+            'delivery_duration',
+            'point_amount'
 
         ]);
 
@@ -369,6 +370,7 @@ class OrderRepository
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
         $data['notes'] = "Its a sample for epay";
         $data['is_rated'] = "no";
+        $data['point_amount'] = 0;
         if ($request->delivery_charge_amount != null) {
             $data['delivery_charge'] = $request->delivery_charge_amount;
         } else {

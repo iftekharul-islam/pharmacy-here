@@ -71,7 +71,7 @@
                         <tr>
                             <th>{{ __('text.payment_type') }}:</th>
                             <td>
-                                @if ($data->payment_type == 1)
+                                @if ($data->payment_type === 1)
                                     Cash on Delivery
                                 @else
                                     Online Payment
@@ -139,7 +139,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td><strong>{{ __('text.grand_total') }} : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
+                                    <td><strong>{{ __('text.grand_total') }} : </strong>৳  {{ $data->customer_amount }}</td>
                                 </tr>
                             </tfooter>
                         </table>

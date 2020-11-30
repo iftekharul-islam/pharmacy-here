@@ -510,7 +510,8 @@ class CheckoutController extends Controller
             'pharmacy_amount',
             'customer_amount',
             'is_rated',
-            'delivery_duration'
+            'delivery_duration',
+            'point_amount',
         ]);
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
         if ($request->delivery_charge == 1) {
@@ -786,6 +787,7 @@ class CheckoutController extends Controller
                 'pharmacy_amount' => $data['pharmacy_amount'],
                 'customer_amount' => $data['customer_amount'],
                 'delivery_duration' => $data['delivery_duration'],
+                'point_amount' => 0,
             ]);
         $order = DB::table('orders')
             ->where('customer_id', Auth::user()->id)
