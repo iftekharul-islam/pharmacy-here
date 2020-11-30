@@ -30,10 +30,10 @@ class PointRepository
 
     public function alarmPoint($user_id)
     {
-        $first_day = date('Y-m-01 00:00:00');
+        $first_day = date('Y-m-01');
 
-        if ($first_day === Carbon::today()) {
-            $existAlarm = Points::where('user_id', $user_id)->where('type', 'alarm')->where('created_at', $first_day)->first();
+        if ($first_day === Carbon::now()->toDateString()) {
+            $existAlarm = Points::where('user_id', $user_id)->where('type', 'alarm')->whereDate('created_at', $first_day)->first();
 
             if (!$existAlarm) {
                 $data = Points::create([
