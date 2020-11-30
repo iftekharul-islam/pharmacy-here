@@ -159,7 +159,7 @@
                 <div class="my-header-search col-md-6 ml-auto">
                     <label class="w-100 label-search">
                         <form id="form" action="{{ route('product-list') }}" method="GET">
-                            <input type="text" id="medicine_search" class="form-control" name="medicine" placeholder="{{ __('text.search_medicine') }}">
+                            <input type="text" id="medicine_search" class="form-control" name="brand" placeholder="{{ __('text.search_medicine') }}">
                             <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
                         </form>
                     </label>
