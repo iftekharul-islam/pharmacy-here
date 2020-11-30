@@ -36,13 +36,14 @@
                                 @elseif ($data->delivery_method == 'normal')
                                     Normal Delivery
                                 @endif
-                                <br>
                             @else
                                 Pick up from Pharmacy
-                                <br>
                             @endif
+                            <br>
                             <strong>Delivery Time:</strong>
                             {{ $data->delivery_duration ?? 'N/A' }}
+                            <strong>Delivery Date:</strong>
+                            {{ $data->order_date ?? 'N/A' }}
                             <br>
                             @if ($data->payment_type === 1 && $data->delivery_type === 2)
                                 <strong>Discount Amount:</strong>
