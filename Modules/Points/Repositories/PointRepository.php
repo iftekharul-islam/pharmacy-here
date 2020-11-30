@@ -4,6 +4,7 @@
 namespace Modules\Points\Repositories;
 
 
+use Carbon\Carbon;
 use Modules\Points\Entities\Models\Points;
 
 class PointRepository
@@ -24,6 +25,22 @@ class PointRepository
             'points' => $request->point,
             'type' => 'manual',
         ]);
+    }
+
+    public function alarmPoint($user_id)
+    {
+        $existAlarm = Points::where('user_id', $user_id)->where('type', 'alarm')->where('created_at', Carbon::today())->first();
+
+        if (!$existAlarm) {
+            $data = Points::create([
+                'user_id' => $user_id,
+                'points' => config('subidha.point_on_first_use'),
+                'type' => 'alarm',
+            ]);
+
+            return $data;
+        }
+        return false;
     }
 
 }

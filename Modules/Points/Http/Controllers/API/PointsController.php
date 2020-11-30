@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Modules\Points\Entities\Models\Points;
 use Modules\Points\Repositories\PointRepository;
 
 class PointsController extends Controller
@@ -74,5 +75,20 @@ class PointsController extends Controller
     {
         $rating = $this->repository->playstoreRating(Auth::guard('api')->user()->id);
         return responsePreparedData($rating);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function alarmPoint()
+    {
+        $data = $this->repository->alarmPoint(Auth::guard('api')->user()->id);
+
+        if ($data !== false) {
+            return responsePreparedData($data);
+        }
+
+        return responsePreparedData('Point is already given');
+
     }
 }

@@ -16,8 +16,6 @@ class AlarmRepository
 
     public function create($request, $customer_id)
     {
-        $isFirstAlarm = Alarm::where('customer_id', $customer_id)->first();
-
         $data = new Alarm();
 
         if ($request->has('alarm_id') && $request->get('alarm_id')) {
@@ -38,15 +36,6 @@ class AlarmRepository
 
         $data->customer_id = $customer_id;
         $data->save();
-
-        if (!$isFirstAlarm) {
-            Points::create([
-                'user_id' => $customer_id,
-                'points' => config('subidha.point_on_first_use'),
-                'type' => 'alarm',
-                'type_id' => $data->id,
-            ]);
-        }
 
         return $data;
     }
