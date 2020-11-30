@@ -49,6 +49,7 @@ class CustomerController extends Controller
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $prescriptions = $this->prescriptionRepository->getCustomerPrescriptionWeb(Auth::user()->id);
         $orders = $this->orderRepository->orderListByUserWeb(Auth::user()->id);
+//        return $orders;
         $allLocations = $this->locationRepository->getLocation();
 
         return view('customer.index', compact('data', 'addresses', 'prescriptions', 'orders', 'allLocations'));

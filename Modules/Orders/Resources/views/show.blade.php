@@ -22,6 +22,13 @@
                             @if ($data->cancelReason !== null)
                                 <strong>Cancel Reason : </strong> <span>{{ $data->cancelReason->reason}}</span><br>
                             @endif
+                            <strong>Payment Type:</strong>
+                            @if ($data->payment_type === 1)
+                                Cash on Delivery
+                            @else
+                                Online Payment
+                                <br>
+                            @endif
                             <strong>Delivery type:</strong>
                             @if ($data->delivery_type !== 2)
                                 @if ($data->delivery_method == 'express')
@@ -30,13 +37,6 @@
                                     Normal Delivery
                                 @endif
                                 <br>
-                                @if ($data->payment_type === 1)
-                                    <strong>Payment Type:</strong>
-                                    Cash on Delivery
-                                @else
-                                    Online Payment
-                                    <br>
-                                @endif
                             @else
                                 Pick up from Pharmacy
                                 <br>
