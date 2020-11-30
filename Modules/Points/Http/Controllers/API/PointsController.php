@@ -84,11 +84,12 @@ class PointsController extends Controller
     {
         $data = $this->repository->alarmPoint(Auth::guard('api')->user()->id);
 
-        if ($data !== false) {
+        if ($data !== true && $data !== false) {
             return responsePreparedData($data);
+        } elseif ($data !== false) {
+            return responsePreparedData('Point is already given');
         }
 
-        return responsePreparedData('Point is already given');
-
+        return responsePreparedData('Today is not first date of month');
     }
 }
