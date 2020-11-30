@@ -770,7 +770,7 @@ class CheckoutController extends Controller
                 'delivery_type' => $data['delivery_type'],
                 'status' => 0,
                 'amount' => $data['amount'],
-                'delivery_charge' => $request->delivery_charge_amount,
+                'delivery_charge' => $request->delivery_charge_amount ?? 0,
                 'order_date' => Carbon::today(),
                 'notes' => 'its test from epay',
                 'order_no' => $post_data['tran_id'],

@@ -371,8 +371,9 @@ class OrderRepository
         $data['is_rated'] = "no";
         if ($request->delivery_charge_amount != null) {
             $data['delivery_charge'] = $request->delivery_charge_amount;
+        } else {
+            $data['delivery_charge'] = 0;
         }
-        $data['delivery_charge'] = 0;
 
         if ($request->delivery_charge == 1) {
             $data['delivery_method'] = 'normal';
