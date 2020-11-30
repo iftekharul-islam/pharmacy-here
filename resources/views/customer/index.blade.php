@@ -470,7 +470,7 @@
                                                 <tr class="text-center">
                                                     <td scope="row">#{{ $order->order_no }}</td>
                                                     <td>{{ date('d F Y', strtotime($order->order_date)) }}</td>
-                                                    <td>৳ {{ $order->amount + $order->delivery_charge }}</td>
+                                                    <td>৳ {{ $order->customer_amount }}</td>
                                                     <td>
                                                         @if ($order->status == 0)
                                                             <span class="badge badge-danger">Pending</span>
