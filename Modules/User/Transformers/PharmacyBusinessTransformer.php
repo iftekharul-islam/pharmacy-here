@@ -17,6 +17,7 @@ class PharmacyBusinessTransformer extends TransformerAbstract
     {
         return [
             'id'                        => $item->id,
+            'user_id'                   => $item->user_id,
             'pharmacy_name'             => $item->pharmacy_name,
             'pharmacy_address'          => $item->pharmacy_address,
             'bank_account_name'         => $item->bank_account_name,
