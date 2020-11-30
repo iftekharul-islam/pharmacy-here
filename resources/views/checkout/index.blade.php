@@ -805,8 +805,8 @@
                 $('input[name="amount"]').val(egrandTotalExpressDB);
 
             }else if (deliveryType === 2 && payTypeValue === 1) {
-                var egrandTotalExpressDB = grandTotal + cashInCollectFromPharmacy;
-                $('input[name="amount"]').val(egrandTotalExpressDB);
+                var pickUpFromPharmacy = grandTotal + cashInCollectFromPharmacy;
+                $('input[name="amount"]').val(pickUpFromPharmacy);
 
             } else {
                 $('input[name="amount"]').val(grandTotal);
