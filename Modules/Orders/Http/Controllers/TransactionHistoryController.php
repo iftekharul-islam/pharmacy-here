@@ -44,8 +44,6 @@ class TransactionHistoryController extends Controller
         $area_new_id = $request->area_id;
         $transactionHistories = $this->repository->getEpayTransactionHistories($request);
 
-//        return $transactionHistories;
-
         $total_order = 0;
         $total_pharmacy_amount = 0;
         $total_paid_amount = 0;
@@ -89,6 +87,7 @@ class TransactionHistoryController extends Controller
         $area_new_id = $request->area_id;
 
         $transactionHistories = $this->repository->getCodTransactionHistories($request);
+
         $total_customer_amount = 0;
         $total_pharmacy_amount = 0;
         $total_subidha_comission = 0;
@@ -116,7 +115,6 @@ class TransactionHistoryController extends Controller
         $userId = $id;
 
         $data = $this->repository->getPayment($request, $id);
-//        return $data;
         return view('orders::transactionHistory.show', compact('data', 'userId', 'startDate', 'endDate'));
     }
 
