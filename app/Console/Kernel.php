@@ -16,8 +16,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Modules\Locations\Console\ImportLocationsCommand::class,
-    \App\Console\Commands\ImportProducts::class,
+        \App\Console\Commands\ImportProducts::class,
         Commands\PurchaseReminder::class,
+        Commands\ForwardPendingOrders::class,
 
 
     ];
@@ -25,7 +26,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -33,9 +34,9 @@ class Kernel extends ConsoleKernel
 
         // $schedule->command('inspire')->hourly();
         $schedule->command('sent:reminder')->dailyAt('11:00');
-
         $schedule->command('backup:clean')->quarterly();
         $schedule->command('backup:run')->dailyAt('00:00');
+        $schedule->command('run:pending-order-Forward')->hourly();
     }
 
     /**
@@ -45,7 +46,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

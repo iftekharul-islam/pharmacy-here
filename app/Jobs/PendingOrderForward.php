@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Jobs;
+
+use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\OrderHistory;
+use Modules\User\Entities\Models\PharmacyBusiness;
+use Modules\User\Entities\Models\UserDeviceId;
+
+class PendingOrderForward implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $orders = Order::whereIn('status', [0, 5, 6])->whereDate('updated_at', Carbon::today())->where('pharmacy_id', '!=', null)->get();
+        foreach ($orders as $order) {
+
+            logger('Order time');
+            logger($order->updated_at->format('H:i'));
+            logger('Checking Time');
+            logger(Carbon::now()->subHour(1)->format('H:i'));
+
+            if (Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+
+                logger('Order found');
+                logger('order id');
+                logger($order->id);
+
+                $previousPharmacies = OrderHistory::where('order_id', $order->id)->where('status', '!=', 8)->pluck('user_id');
+                $previousPharmacies[] = $order->pharmacy_id;
+
+                logger('$previousPharmacies');
+                logger($previousPharmacies);
+
+                $date = Carbon::today()->format('l');
+                $Holiday = strtolower($date);
+
+                $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+                    ->whereHas('weekends', function ($query) use ($Holiday) {
+                        $query->where('days', '!=', $Holiday);
+                    })
+                    ->whereNotIn('user_id', $previousPharmacies)
+                    ->inRandomOrder()->first();
+
+                if ($nearestPharmacy) {
+
+                    logger("nearest Pharmacy found");
+                    logger($nearestPharmacy->pharmacy_name);
+
+                    $orderHistory = new OrderHistory();
+                    $orderHistory->order_id = $order->id;
+                    $orderHistory->user_id = $nearestPharmacy->user_id;
+                    $orderHistory->status = 6;
+                    $orderHistory->save();
+
+                    $order->pharmacy_id = $nearestPharmacy->user_id;
+                    $order->save();
+
+                    $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->get();
+                    $title = 'New Order Available';
+                    $message = 'You have a new order from Subidha. Please check.';
+
+                    foreach ($deviceIds as $deviceId) {
+                        sendPushNotification($deviceId->device_id, $title, $message, $id = "");
+                    }
+
+                    return responseData('Order status updated');
+                }
+                logger("nearest Pharmacy not found");
+
+                $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
+                SendNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
+                $order->pharmacy_id = null;
+                $order->status = 8;
+                $order->save();
+
+                $orderHistory = new OrderHistory();
+                $orderHistory->order_id = $order->id;
+                $orderHistory->user_id = 0;
+                $orderHistory->status = 8;
+                $orderHistory->save();
+
+                logger('Order is Orphaned');
+                return responseData('Order is Orphaned');
+            }
+        }
+        logger('Order Not found');
+    }
+}

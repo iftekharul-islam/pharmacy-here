@@ -272,24 +272,36 @@ class PharmacyRepository
     public function getAvailablePharmacyList($thana_id)
     {
         $date = Carbon::today()->format('l');
-        $weekday = strtolower($date);
-        $availablePharmacy = Weekends::where('days', $weekday)->groupBy('user_id')->pluck('user_id');
-        if (!$availablePharmacy) {
-            $pharmacyList = PharmacyBusiness::with('area.thana')
-                ->whereHas('area.thana', function ($q) use ($thana_id) {
-                    $q->where('id', $thana_id);
-                })->whereHas('user', function ($q) {
-                    $q->where('status', 1);
-                })->get();
-        } else {
-            $pharmacyList = PharmacyBusiness::with('area.thana')
-                ->whereNotIn('user_id', $availablePharmacy)
-                ->whereHas('area.thana', function ($q) use ($thana_id) {
-                    $q->where('id', $thana_id);
-                })->whereHas('user', function ($q) {
-                    $q->where('status', 1);
-                })->get();
-        }
+        $Holiday = strtolower($date);
+
+        $pharmacyList = PharmacyBusiness::with('area.thana')
+            ->whereHas('weekends', function ($query) use ($Holiday) {
+                $query->where('days', '!=', $Holiday);
+            })
+            ->where(function ($query) {
+                $query->Where('is_full_open', 1)
+                        ->orWhere(function($q) {
+                            $q->whereBetween('start_time', Carbon::now()->format('H:i:s'))
+                                ->orWhereBetween('end_time', Carbon::now()->format('H:i:s'))
+                                ->orWhere(function($q) {
+                                    $q->where('time_start', '<', Carbon::now()->format('H:i:s'))
+                                        ->where('time_end', '>', Carbon::now()->format('H:i:s'));
+                                });
+                        })
+                        ->orWhere(function($q) {
+                            $q->whereBetween('break_start_time', Carbon::now()->format('H:i:s'))
+                                ->orWhereBetween('break_end_time', Carbon::now()->format('H:i:s'))
+                                ->orWhere(function($q) {
+                                    $q->where('break_start_time', '<', Carbon::now()->format('H:i:s'))
+                                        ->where('break_end_time', '>', Carbon::now()->format('H:i:s'));
+                                });
+                        });
+            })
+            ->whereHas('area.thana', function ($q) use ($thana_id) {
+                $q->where('id', $thana_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->get();
 
         return $pharmacyList;
     }

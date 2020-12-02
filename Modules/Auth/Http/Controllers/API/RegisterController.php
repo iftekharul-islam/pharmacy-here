@@ -120,6 +120,7 @@ class RegisterController extends Controller
         if (! $responseInfo) {
             throw new StoreResourceFailedException('Failed to create OTP');
         }
+        $storeDevice = $this->repository->deviceStore($request);
 
         return responseData('Otp creation successful');
     }
