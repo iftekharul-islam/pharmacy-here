@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Http\Requests\LoginValidationRequest;
 use Modules\Auth\Http\Requests\PhoneValidationRequest;
 use Modules\Auth\Repositories\AuthRepository;
+use Modules\User\Entities\Models\UserDeviceId;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
@@ -48,11 +49,11 @@ class LoginController extends Controller
         $this->repository = $repository;
     }
 
-	/**
-	 * @param LoginValidationRequest $request
-	 *
-	 * @return \Illuminate\Http\JsonResponse
-	 */
+    /**
+     * @param LoginValidationRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginValidationRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -61,20 +62,20 @@ class LoginController extends Controller
             return $this->respondWithToken($token);
         }
 
-        throw new UnauthorizedHttpException('','Unauthorized User');
+        throw new UnauthorizedHttpException('', 'Unauthorized User');
     }
 
-	/**
-	 * @param $token
-	 *
-	 * @return \Illuminate\Http\JsonResponse
-	 */
+    /**
+     * @param $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function respondWithToken($token)
     {
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => $this->guard()->factory()->getTTL()
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL()
         ]);
     }
 
@@ -92,14 +93,14 @@ class LoginController extends Controller
 //        }
         $verifyNumber = $this->repository->checkPhoneNumber($request->phone_number);
 
-        if (! $verifyNumber) {
+        if (!$verifyNumber) {
             throw new UnauthorizedHttpException('', 'Phone Number is not registered');
         }
 
         $otp = $this->repository->createOtp($request);
 
 
-        if (! $otp) {
+        if (!$otp) {
             throw new StoreResourceFailedException('Failed to create OTP');
         }
 
@@ -112,14 +113,14 @@ class LoginController extends Controller
         $user_state = 0;
         $otpResponse = $this->repository->verifyOtp($request);
 
-        if (! $otpResponse) {
+        if (!$otpResponse) {
             throw new StoreResourceFailedException('Failed to verify OTP');
         }
 
 
         $token = $this->repository->loginWithPhone($request->phone_number);
 
-        if (! $token) {
+        if (!$token) {
             throw new StoreResourceFailedException('Failed to verify OTP');
         }
 
@@ -129,6 +130,7 @@ class LoginController extends Controller
             $user_state = $this->repository->getUserState($user);
         }
 //        return $user;
+        $storeDevice = $this->repository->deviceStore($request);
 
         return $this->respondWithTokenAndName($token, $user, $user_state);
 
@@ -139,8 +141,8 @@ class LoginController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'bearer',
-            'user_state'   => $user_state,
+            'token_type' => 'bearer',
+            'user_state' => $user_state,
             // 'expires_in'   => $this->guard()->factory()->getTTL(),
             'user' => $user,
         ]);

@@ -100,6 +100,23 @@ class AuthRepository
         return $otp;
     }
 
+    /**
+     * @param $request
+     * @return bool
+     */
+    public function deviceStore($request)
+    {
+        $user_id = User::where('phone_number', $request->phone_number)->first();
+        if ($user_id) {
+            UserDeviceId::create([
+                'user_id' => $user_id,
+                'device_id' => $request->device_token,
+            ]);
+            return true;
+        }
+        return false;
+    }
+
     public function createOtpWeb($request)
     {
         $otp = rand(1000, 9999);

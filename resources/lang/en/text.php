@@ -133,5 +133,5 @@ return [
     'not_available' => 'Product is not available !!!',
     'alternative_list' => 'Choose from alternative products',
     'alternative_note' => 'Note : Prior to take any other brand different from your prescription, make sure your prescriber has consent.',
-
+    'login' => 'Login',
 ];

@@ -25,7 +25,7 @@
                             @enderror
                         </div>
                         <button id="submit" onclick="savePhoneNumber()" type="submit" class="btn--sign-in">
-                            {{ __('Create OTP') }}
+                            {{ __('text.login') }}
                         </button>
                     </form>
                 </div>
