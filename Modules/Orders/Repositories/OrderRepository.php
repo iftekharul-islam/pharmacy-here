@@ -82,13 +82,10 @@ class OrderRepository
         $date = Carbon::today()->format('l');
         $weekday = strtolower($date);
         $availablePharmacy = Weekends::where('days', $weekday)->groupBy('user_id')->pluck('user_id');
-        if (!$availablePharmacy) {
-            $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)->inRandomOrder()->first();
-        } else {
-            $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
-                ->whereNotIn('user_id', $availablePharmacy)
-                ->inRandomOrder()->first();
-        }
+        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
+            ->whereNotIn('user_id', $availablePharmacy)
+            ->inRandomOrder()->first();
+
 
         return $pharmacy ? $pharmacy->user_id : '';
     }
@@ -764,13 +761,11 @@ class OrderRepository
 
         $date = Carbon::today()->format('l');
         $Holiday = strtolower($date);
-
-            $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                ->whereHas('weekends', function ($query) use ($Holiday) {
-                    $query->where('days', '!=', $Holiday);
-                })
-                ->whereNotIn('user_id', $previousPharmacies)
-                ->inRandomOrder()->first();
+        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
+        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+            ->whereNotIn('user_id', $isAvailable)
+            ->whereNotIn('user_id', $previousPharmacies)
+            ->inRandomOrder()->first();
 
 
         logger('Nearest Pharmacy');
