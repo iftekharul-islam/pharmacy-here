@@ -273,30 +273,21 @@ class PharmacyRepository
     {
         $date = Carbon::today()->format('l');
         $Holiday = strtolower($date);
-
+        $time = Carbon::now()->format('H:i:s');
+        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $pharmacyList = PharmacyBusiness::with('area.thana')
-            ->whereHas('weekends', function ($query) use ($Holiday) {
-                $query->where('days', '!=', $Holiday);
-            })
-            ->where(function ($query) {
+            ->whereNotIn('user_id', $isAvailable)
+            ->where(function ($query) use ($time) {
                 $query->Where('is_full_open', 1)
-                        ->orWhere(function($q) {
-                            $q->whereBetween('start_time', Carbon::now()->format('H:i:s'))
-                                ->orWhereBetween('end_time', Carbon::now()->format('H:i:s'))
-                                ->orWhere(function($q) {
-                                    $q->where('time_start', '<', Carbon::now()->format('H:i:s'))
-                                        ->where('time_end', '>', Carbon::now()->format('H:i:s'));
-                                });
-                        })
-                        ->orWhere(function($q) {
-                            $q->whereBetween('break_start_time', Carbon::now()->format('H:i:s'))
-                                ->orWhereBetween('break_end_time', Carbon::now()->format('H:i:s'))
-                                ->orWhere(function($q) {
-                                    $q->where('break_start_time', '<', Carbon::now()->format('H:i:s'))
-                                        ->where('break_end_time', '>', Carbon::now()->format('H:i:s'));
-                                });
-                        });
-            })
+                        ->orWhere(function ($q) use ($time) {
+                            $q->where('start_time', '<', $time)
+                                ->Where('end_time', '>', $time);
+                                })
+                            ->orWhere(function ($q) use ($time) {
+                                $q->Where('break_start_time', '>', $time)
+                                    ->orWhere('break_end_time', '<', $time);
+                            });
+                    })
             ->whereHas('area.thana', function ($q) use ($thana_id) {
                 $q->where('id', $thana_id);
             })->whereHas('user', function ($q) {

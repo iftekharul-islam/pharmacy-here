@@ -12,6 +12,7 @@ use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\UserDeviceId;
+use Modules\User\Entities\Models\Weekends;
 
 class PendingOrderForward implements ShouldQueue
 {
@@ -56,11 +57,9 @@ class PendingOrderForward implements ShouldQueue
 
                 $date = Carbon::today()->format('l');
                 $Holiday = strtolower($date);
-
+                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
                 $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                    ->whereHas('weekends', function ($query) use ($Holiday) {
-                        $query->where('days', '!=', $Holiday);
-                    })
+                    ->whereNotIn('user_id', $isAvailable)
                     ->whereNotIn('user_id', $previousPharmacies)
                     ->inRandomOrder()->first();
 
