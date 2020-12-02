@@ -106,10 +106,10 @@ class AuthRepository
      */
     public function deviceStore($request)
     {
-        $user_id = User::where('phone_number', $request->phone_number)->first();
-        if ($user_id) {
+        $user = User::where('phone_number', $request->phone_number)->first();
+        if ($user) {
             UserDeviceId::create([
-                'user_id' => $user_id,
+                'user_id' => $user->id,
                 'device_id' => $request->device_token,
             ]);
             return true;
