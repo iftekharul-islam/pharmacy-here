@@ -674,7 +674,7 @@ class OrderRepository
             return $orderNo;
         }
 
-        return date('Y') . '-' . date('m') . '-001';
+        return 'SBD-' . date('Y') . date('m') . '-001';
     }
 
     public function storeAssociateProducts($items, $order_id)
