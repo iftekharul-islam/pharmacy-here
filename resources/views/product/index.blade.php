@@ -233,7 +233,7 @@
                                     @endauth
                                 <div class="medicine-details--footer d-flex justify-content-between align-items-center">
                                 @guest
-                                        <a href="{{ route('customer.login') }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> {{ __('text.add_to_cart') }}t</a>
+                                        <a href="{{ route('customer.login') }}" id="show-cart-{{ $item->id }}" class="btn--add-to-cart"><i class="fas fa-cart-plus"></i> {{ __('text.add_to_cart') }}</a>
                                 @else
                                         <div class="number-input {{ $matchedItem ? 'block' : 'd-none'}}" id="show-button-{{ $item->id }}">
                                             <button id="decrease-{{$item->id }}" onclick="newItemdec(this, {{ $item->min_order_qty }}, {{ $item->purchase_price }}, {{ $item->id }} {{ $matchedItem ?  ',' .$matchedItem->id : ''}});" class="{{$matchedItem ? '' : 'disabled'}}"></button>
