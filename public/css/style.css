@@ -16988,7 +16988,9 @@ html {
 .download h2 {
   margin-bottom: 10px;
 }
-
+.download .right {
+    display: flex;
+}
 .download .right a {
   margin-right: 20px;
 }
