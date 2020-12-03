@@ -80,11 +80,27 @@ class OrderRepository
     {
         $address = CustomerAddress::find($address_id);
         $date = Carbon::today()->format('l');
-        $weekday = strtolower($date);
-        $availablePharmacy = Weekends::where('days', $weekday)->groupBy('user_id')->pluck('user_id');
+        $holiday = strtolower($date);
+        $time = Carbon::now()->format('H:i:s');
+        $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
         $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
             ->whereNotIn('user_id', $availablePharmacy)
-            ->inRandomOrder()->first();
+            ->where(function ($query) use ($time) {
+                $query->Where('is_full_open', 1)
+                    ->orWhere(function ($q) use ($time) {
+                        $q->where(function ($q) use ($time) {
+                            $q->where('start_time', '<', $time)
+                                ->Where('end_time', '>', $time);
+                        });
+//                            ->Where(function ($q) use ($time) {
+//                                $q->Where('break_start_time', '>', $time)
+//                                    ->orWhere('break_end_time', '<', $time);
+//                            });
+                    });
+
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
 
 
         return $pharmacy ? $pharmacy->user_id : '';
@@ -761,11 +777,27 @@ class OrderRepository
 
         $date = Carbon::today()->format('l');
         $Holiday = strtolower($date);
+        $time = Carbon::now()->format('H:i:s');
         $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
             ->whereNotIn('user_id', $isAvailable)
             ->whereNotIn('user_id', $previousPharmacies)
-            ->inRandomOrder()->first();
+            ->where(function ($query) use ($time) {
+                $query->Where('is_full_open', 1)
+                    ->orWhere(function ($q) use ($time) {
+                        $q->where(function ($q) use ($time) {
+                            $q->where('start_time', '<', $time)
+                                ->Where('end_time', '>', $time);
+                        });
+//                            ->Where(function ($q) use ($time) {
+//                                $q->Where('break_start_time', '>', $time)
+//                                    ->orWhere('break_end_time', '<', $time);
+//                            });
+                    });
+
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
 
 
         logger('Nearest Pharmacy');
