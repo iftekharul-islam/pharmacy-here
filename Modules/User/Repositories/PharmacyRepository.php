@@ -274,21 +274,23 @@ class PharmacyRepository
         $date = Carbon::today()->format('l');
         $Holiday = strtolower($date);
         $time = Carbon::now()->format('H:i:s');
-//        $time = '19:57:30';
         $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $pharmacyList = PharmacyBusiness::with('area.thana')
             ->whereNotIn('user_id', $isAvailable)
             ->where(function ($query) use ($time) {
                 $query->Where('is_full_open', 1)
-                        ->orWhere(function ($q) use ($time) {
+                    ->orWhere(function ($q) use ($time) {
+                        $q->where(function ($q) use ($time) {
                             $q->where('start_time', '<', $time)
                                 ->Where('end_time', '>', $time);
-                                });
-//                            ->orWhere(function ($q) use ($time) {
-//                                $q->orWhere('break_start_time', '>', $time)
+                        });
+//                            ->Where(function ($q) use ($time) {
+//                                $q->Where('break_start_time', '>', $time)
 //                                    ->orWhere('break_end_time', '<', $time);
 //                            });
-                    })
+                    });
+
+            })
             ->whereHas('area.thana', function ($q) use ($thana_id) {
                 $q->where('id', $thana_id);
             })->whereHas('user', function ($q) {
