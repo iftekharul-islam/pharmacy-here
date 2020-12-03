@@ -44,21 +44,19 @@ class TransactionHistoryController extends Controller
         $area_new_id = $request->area_id;
         $transactionHistories = $this->repository->getEpayTransactionHistories($request);
 
-        $total_order = 0;
+        $total_customer_amount = 0;
         $total_pharmacy_amount = 0;
-        $total_paid_amount = 0;
         $total_subidha_comission = 0;
         foreach ($transactionHistories as $totalAmount) {
-            $total_order += isset($totalAmount->pharmacy->pharmacyOrder[0]->customer_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->customer_amount : 0;
-            $total_pharmacy_amount += isset($totalAmount->pharmacy->pharmacyOrder[0]->pharmacy_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->pharmacy_amount : 0;
-            $total_paid_amount += isset($totalAmount->amount) ? $totalAmount->amount : 0;
-            $total_subidha_comission += isset($totalAmount->pharmacy->pharmacyOrder[0]->subidha_amount) ? $totalAmount->pharmacy->pharmacyOrder[0]->subidha_amount : 0;
+            $total_customer_amount += isset($totalAmount->customer_amount) ? $totalAmount->customer_amount : 0;
+            $total_pharmacy_amount += isset($totalAmount->pharmacy_amount) ? $totalAmount->pharmacy_amount : 0;
+            $total_subidha_comission += isset($totalAmount->subidha_comission) ? $totalAmount->subidha_comission : 0;
         }
         $allLocations = $this->locationRepository->getLocation();
 
         return view('orders::transactionHistory.epay.index',
-            compact('transactionHistories', 'allLocations', 'total_order', 'total_pharmacy_amount',
-                'total_subidha_comission', 'total_paid_amount', 'district_new_id', 'thana_new_id', 'area_new_id'));
+            compact('transactionHistories', 'allLocations', 'total_customer_amount', 'total_pharmacy_amount',
+                'total_subidha_comission', 'district_new_id', 'thana_new_id', 'area_new_id'));
     }
 
 
