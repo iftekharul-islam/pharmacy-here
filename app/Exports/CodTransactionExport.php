@@ -34,7 +34,7 @@ class CodTransactionExport implements FromCollection, WithHeadings, WithMapping,
 
         foreach ($allTransactionHistories as $allTransaction) {
             $transactionCollection->push((object)[
-                'pharmacy_name' => $allTransaction->pharmacy->pharmacyBusiness->pharmacy_name,
+                'pharmacy_name' => $allTransaction->pharmacy->pharmacyBusiness->pharmacy_name ?? 'N/A',
                 'customer_amount' => $allTransaction->customer_amount,
                 'pharmacy_amount' => $allTransaction->pharmacy_amount,
                 'subidha_comission' => $allTransaction->subidha_comission,

@@ -83,6 +83,8 @@
             background: #25282B;
             color: #fff!important;
         }
+
+        .
     </style>
     @yield('style')
 </head>

@@ -34,10 +34,9 @@ class TransactionHistoryByIdExport implements FromCollection, WithHeadings, With
         $transactionCollection = new Collection();
         foreach ($allTransactionHistories as $allTransaction) {
             $transactionCollection->push((object) [
-                'pharmacy_name' => $allTransaction->pharmacy->pharmacy_name,
                 'date' => $allTransaction->date,
                 'transaction_id' => $allTransaction->transaction_id,
-                'bank_name' => $allTransaction->bank_name,
+                'bank_name' => $allTransaction->payment_method,
                 'amount'=> $allTransaction->amount,
             ]);
         }

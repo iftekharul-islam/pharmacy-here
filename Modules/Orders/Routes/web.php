@@ -22,7 +22,7 @@ Route::group(["middleware" => ["web", "role:admin"]], function() {
 
     Route::get('transaction-history', 'TransactionHistoryController@index')->name('transactionHistory.index');
     Route::get('epay-transaction-history/{trans_id}', 'TransactionHistoryController@epayShow')->name('epay.transactionHistory.show');
-    Route::get('epay-export-pharmacy-transaction-history', 'TransactionHistoryController@codExportPharmacyTransactionById')->name('epay.export.transaction.history');
+    Route::get('epay-export-pharmacy-transaction-history', 'TransactionHistoryController@epayExportPharmacyTransactionById')->name('epay.export.transaction.history');
     Route::get('export-pharmacy-transaction', 'TransactionHistoryController@exportPharmacyTransaction')->name('epay.export.transaction');
     Route::get('export-pharmacy-transaction-history', 'TransactionHistoryController@exportPharmacyTransactionById')->name('export.transaction.history');
     Route::get('cod-export-pharmacy-transaction', 'TransactionHistoryController@codExportPharmacyTransaction')->name('cod.export.transaction');
