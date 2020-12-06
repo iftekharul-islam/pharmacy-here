@@ -30,9 +30,10 @@ class EpayTransactionHistoryByIdExport implements FromCollection, WithHeadings, 
 
         $transaction = Order::query();
 
-        $allTransactionHistories = $this->query($transaction);
+        $allTransactionHistories = $this->dataQuery($transaction);
 
         $transactionCollection = new Collection();
+
         foreach ($allTransactionHistories as $allTransaction) {
             $transactionCollection->push((object)[
                 'order_date' => $allTransaction->order_date,
@@ -45,7 +46,7 @@ class EpayTransactionHistoryByIdExport implements FromCollection, WithHeadings, 
         return $transactionCollection;
     }
 
-    public function query($transaction)
+    public function dataQuery($transaction)
     {
         if ($this->toDate !== null || $this->endDate !== null) {
             return $transaction->whereBetween('order_date', [$this->toDate, $this->endDate])
@@ -92,7 +93,7 @@ class EpayTransactionHistoryByIdExport implements FromCollection, WithHeadings, 
             'B' => 20,
             'C' => 20,
             'D' => 20,
-            'E' => 10,
+            'E' => 15,
         ];
     }
 }

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Modules\Orders\Entities\Models\TransactionHistory;
+use Modules\Orders\Entities\Models\Order;
 
 class TransactionExport implements FromCollection, WithHeadings, WithMapping, WithColumnWidths
 {
@@ -31,72 +31,49 @@ class TransactionExport implements FromCollection, WithHeadings, WithMapping, Wi
 
     public function collection()
     {
-        $transaction = TransactionHistory::query();
-        $allTransactionHistories = $this->query($transaction);
+        $transaction = Order::query();
+        $allTransactionHistories = $this->dataQuery($transaction);
+
+//        logger($allTransactionHistories);
+//        die();
 
         $transactionCollection = new Collection();
         foreach ($allTransactionHistories as $allTransaction) {
             $transactionCollection->push((object)[
-                'pharmacy_name' => $allTransaction->pharmacy->pharmacy_name,
-                'customer_amount' => $allTransaction->pharmacy->pharmacyOrder[0]->customer_amount,
-                'pharmacy_amount' => $allTransaction->pharmacy->pharmacyOrder[0]->pharmacy_amount,
-                'amount' => $allTransaction->amount,
+                'pharmacy_name' => $allTransaction->pharmacy->pharmacyBusiness->pharmacy_name ?? 'N/A',
+                'customer_amount' => $allTransaction->customer_amount,
+                'pharmacy_amount' => $allTransaction->pharmacy_amount,
+                'subidha_comission' => $allTransaction->subidha_comission,
             ]);
         }
         return $transactionCollection;
     }
 
-    public function query($transaction)
+    public function dataQuery($transaction)
     {
-        if ($this->district !== null) {
-            $allTransactionHistories = $transaction->with(['pharmacy' => function ($query) {
-                $query->select('user_id', 'pharmacy_name');
-            },
-                'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-                }])->whereHas('pharmacy.area', function ($query) {
-                $query->where('area_id', $this->district);
-            })
-                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-                ->groupBy('pharmacy_id')
-                ->get();
-        } elseif ($this->thana !== null) {
-            $allTransactionHistories = $transaction->with(['pharmacy' => function ($query) {
-                $query->select('user_id', 'pharmacy_name');
-            },
-                'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-                }])->whereHas('pharmacy.area.thana', function ($query) {
+        if ($this->area !== null) {
+            $transaction->whereHas('pharmacy.pharmacyBusiness.area', function ($query) {
+                $query->where('area_id', $this->area);
+            });
+        }
+        if ($this->thana !== null && $this->area == null) {
+            $transaction->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) {
                 $query->where('thana_id', $this->thana);
-            })
-                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-                ->groupBy('pharmacy_id')
-                ->get();
-        } elseif ($this->area !== null) {
-            $allTransactionHistories = $transaction->with(['pharmacy' => function ($query) {
-                $query->select('user_id', 'pharmacy_name');
-            },
-                'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount,  pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-                }])->whereHas('pharmacy.area.thana.district', function ($query) {
-                $query->where('district_id', $this->area);
-            })
-                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-                ->groupBy('pharmacy_id')
-                ->get();
-        } else {
-            $allTransactionHistories = $transaction->with(['pharmacy' => function ($query) {
-                $query->select('user_id', 'pharmacy_name');
-            },
-                'pharmacy.pharmacyOrder' => function ($query) {
-                    $query->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, pharmacy_id'))->where('status', 3)->where('payment_type', 2)->groupBy('pharmacy_id')->get();
-                }])
-                ->select(DB::raw('SUM(amount) as amount, pharmacy_id'))
-                ->groupBy('pharmacy_id')
-                ->get(['pharmacy_name', 'customer_amount', 'pharmacy_amount', 'amount']);
+            });
+        }
+        if ($this->district !== null && $this->thana == null && $this->area == null) {
+            $transaction->whereHas('pharmacy.pharmacyBusiness.area.thana.district', function ($query) {
+                $query->where('district_id', $this->district);
+            });
         }
 
-        return $allTransactionHistories;
+        return $transaction->with('pharmacy.pharmacyBusiness')
+            ->select(DB::raw('SUM(customer_amount) as customer_amount, SUM(pharmacy_amount) as pharmacy_amount, SUM(subidha_comission) as subidha_comission, pharmacy_id'))
+            ->where('status', 3)
+            ->where('payment_type', 2)
+            ->groupBy('pharmacy_id')
+            ->get();
+
     }
 
     public function map($transactionCollection): array
@@ -105,7 +82,7 @@ class TransactionExport implements FromCollection, WithHeadings, WithMapping, Wi
             $transactionCollection->pharmacy_name ? $transactionCollection->pharmacy_name : '',
             $transactionCollection->customer_amount ? $transactionCollection->customer_amount : '',
             $transactionCollection->pharmacy_amount ? $transactionCollection->pharmacy_amount : '',
-            $transactionCollection->amount ? $transactionCollection->amount : '',
+            $transactionCollection->subidha_comission ? $transactionCollection->subidha_comission : '',
         ];
     }
 
@@ -118,7 +95,7 @@ class TransactionExport implements FromCollection, WithHeadings, WithMapping, Wi
             'Pharmacy Name',
             'Order Amount',
             'Pharmacy Amount',
-            'Paid Amount',
+            'Subidha Comission',
         ];
     }
 

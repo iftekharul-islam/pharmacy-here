@@ -60,20 +60,24 @@ class TransactionHistoryRepository
      */
     public function getEpayTransactionHistories($request)
     {
+        $district_id = $request->district_id;
+        $thana_id = $request->thana_id;
+        $area_id = $request->area_id;
+
         $data = Order::query();
-        if ($request->area_id !== null) {
-            $data->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($request) {
-                $query->where('area_id', $request->area_id);
+        if ($area_id !== null) {
+            $data->whereHas('pharmacy.pharmacyBusiness.area', function ($query) use ($area_id) {
+                $query->where('area_id', $area_id);
             });
         }
-        if ($request->thana_id !== null) {
-            $data->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($request) {
-                $query->where('thana_id', $request->thana_id);
+        if ($thana_id !== null && $area_id == null) {
+            $data->whereHas('pharmacy.pharmacyBusiness.area.thana', function ($query) use ($thana_id) {
+                $query->where('thana_id', $thana_id);
             });
         }
-        if ($request->district_id !== null) {
-            $data->whereHas('pharmacy.pharmacyBusiness.area.thana.district', function ($query) use ($request) {
-                $query->where('district_id', $request->district_id);
+        if ($district_id !== null && $thana_id == null && $area_id == null) {
+            $data->whereHas('pharmacy.pharmacyBusiness.area.thana.district', function ($query) use ($district_id) {
+                $query->where('district_id', $district_id);
             });
         }
 
