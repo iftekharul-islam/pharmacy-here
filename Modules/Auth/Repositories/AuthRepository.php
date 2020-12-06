@@ -193,6 +193,8 @@ class AuthRepository
             $user->is_pharmacy = true;
         }
 
+        $user->referral_code = Str::random(7);
+
         $user->status = true;
 
         $user->save();
