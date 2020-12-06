@@ -710,6 +710,19 @@ class OrderRepository
 
         $order = Order::with('address')->find($order_id);
 
+        if ($order->status == 3) {
+            logger('Order status 3 , completed section');
+            $deviceIds = UserDeviceId::where('user_id', $order['customer_id'])->get();
+            logger($deviceIds);
+            $title = 'Your order is Delivered';
+            $message = 'You have a new order notification from Subidha. Please check.';
+
+            foreach ($deviceIds as $deviceId) {
+                logger('sendPushNotification foreach in');
+                sendPushNotification($deviceId->device_id, $title, $message, $id = "");
+            }
+        }
+
         if ($order->status == 8) {
             return responseData('Orphan order');
         }
