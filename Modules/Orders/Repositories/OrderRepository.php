@@ -710,7 +710,7 @@ class OrderRepository
 
         $order = Order::with('address')->find($order_id);
 
-        if ($order->status == 3) {
+        if ($status_id === 3) {
             logger('Order status 3 , completed section');
             $deviceIds = UserDeviceId::where('user_id', $order['customer_id'])->get();
             logger($deviceIds);
