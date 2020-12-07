@@ -12,35 +12,37 @@
 </head>
 <body>
 
-    <p>Dear Subidha</p>
-@if($isCancel == true)
-    <p>An order ID: {{ $order->order_no }} has been canceled from {{ $order->pharmacy->name }}</p>
+    <p>Dear Subidha ,</p>
+@if($isCancel === true)
+    <textarea>An order ID: {{ $order->order_no }} has been canceled from {{ $order->pharmacy->name }}</textarea>
+    <br>
     <p>Ordered by:</p>
-    <p>Order ID: {{ $order->order_no }}</p>
-    <p>Order Amount: {{ $order->customer_amount }} tk</p>
-    <p>Customer Name: {{ $order->customer->name }}</p>
-
+    <textarea>Order ID: {{ $order->order_no }}</textarea><br>
+    <textarea>Order Amount: {{ $order->customer_amount }} tk</textarea><br>
+    <textarea>Customer Name: {{ $order->customer->name }}</textarea>
+    <br>
+    <br>
     <p>Order Cancel from:</p>
-    <p>Pharmacy name: {{ $order->pharmacy->name }}</p>
-    <p>
+    <textarea>Pharmacy name: {{ $order->pharmacy->name }}</textarea><br>
+    <textarea>
         Cancel From:
         {{ $order->status === 0 ? 'pending' : 'On processing' }}
-    </p>
-
+    </textarea>
+    <br>
     @else
 
     <p>An order ID: {{ $order->order_no }} has been Orphaned</p>
     <p>Ordered by:</p>
-    <p>Order ID: {{ $order->order_no }}</p>
-    <p>order Amount: {{ $order->amount }}</p>
-    <p>Customer Name: {{ $order->customer->name }}</p>
+    <textarea>Order ID: {{ $order->order_no }}</textarea><br>
+    <textarea>order Amount: {{ $order->amount }}</textarea><br>
+    <textarea>Customer Name: {{ $order->customer->name }}</textarea>
+    <br>
+    <br>
 @endif
 
-    <a href="" class="btn btn-primary btn-sm">View Order</a>
-{{--    <p>{{ $msg }}</p>--}}
     <p>Thank You</p>
 
-    <p>Disclaimer Message</p>
-    <p>This is automatic generated email, please do not reply.</p>
+    <textarea>Disclaimer Message</textarea><br>
+    <textarea>This is automatic generated email, please do not reply.</textarea>
 </body>
 </html>
