@@ -51,7 +51,7 @@ class PurchaseReminder extends Command
 //            $orderDate = $order->created_at->addMinutes(5);
             $value = Carbon::parse($order->created_at)->format('H:i');
 //            $values = Carbon::parse($order->created_at)->format('H:i');
-            $now = Carbon::now()->format('H:i')->subMinute(5);
+            $now = Carbon::now()->subMinute(5)->format('H:i');
             logger('Order details');
             logger($orders);
             logger('Order time');
