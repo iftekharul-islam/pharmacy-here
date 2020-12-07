@@ -248,7 +248,7 @@
                         </div>
                     @endforeach
                 </div>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center pagination-sm">
                         {{ $data['value']->links() }}
                     </div>
             @else
