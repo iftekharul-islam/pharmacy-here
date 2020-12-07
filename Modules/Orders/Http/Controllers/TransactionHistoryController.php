@@ -124,10 +124,9 @@ class TransactionHistoryController extends Controller
      */
     public function codShow(Request $request, $id)
     {
-        $startDate = $request->start_date ? $request->start_date : Carbon::today()->subDays(30);
-        $endDate = $request->end_date ? $request->end_date : Carbon::today();
+        $startDate = $request->start_date ?? '';
+        $endDate = $request->end_date ?? '';
         $userId = $id;
-
         $data = $this->repository->getCod($request, $id);
         return view('orders::transactionHistory.cod.show', compact('data', 'userId', 'startDate', 'endDate'));
     }
