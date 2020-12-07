@@ -262,11 +262,32 @@ class PharmacyRepository
 
     public function checkPharmacyByArea($area_id)
     {
-        $count = PharmacyBusiness::where('area_id', $area_id)
-            ->whereHas('user', function ($query) {
-                $query->where('status', 1);
+        $date = Carbon::today()->format('l');
+        $Holiday = strtolower($date);
+        $time = Carbon::now()->format('H:i:s');
+        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
+        $pharmacyList = PharmacyBusiness::whereNotIn('user_id', $isAvailable)
+            ->where(function ($query) use ($time) {
+                $query->Where('is_full_open', 1)
+                    ->orWhere(function ($q) use ($time) {
+                        $q->where(function ($q) use ($time) {
+                            $q->where('start_time', '<', $time)
+                                ->Where('end_time', '>', $time);
+                        });
+//                            ->Where(function ($q) use ($time) {
+//                                $q->Where('break_start_time', '>', $time)
+//                                    ->orWhere('break_end_time', '<', $time);
+//                            });
+                    });
+
+            })
+            ->whereHas('area', function ($q) use ($area_id) {
+                $q->where('id', $area_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
             })->count();
-        return $count > 0 ? true : false;
+
+        return $pharmacyList > 0 ? true : false;
     }
 
     public function getAvailablePharmacyList($thana_id)
