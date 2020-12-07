@@ -17,7 +17,7 @@
     <p>An order ID: {{ $order->order_no }} has been canceled from {{ $order->pharmacy->name }}</p>
     <p>Ordered by:</p>
     <p>Order ID: {{ $order->order_no }}</p>
-    <p>Order Amount: {{ $order->amount }} tk</p>
+    <p>Order Amount: {{ $order->customer_amount }} tk</p>
     <p>Customer Name: {{ $order->customer->name }}</p>
 
     <p>Order Cancel from:</p>

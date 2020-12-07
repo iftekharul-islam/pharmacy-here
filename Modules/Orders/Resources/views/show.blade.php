@@ -27,8 +27,8 @@
                                 Cash on Delivery
                             @else
                                 Online Payment
-                                <br>
                             @endif
+                            <br>
                             <strong>Delivery type:</strong>
                             @if ($data->delivery_type !== 2)
                                 @if ($data->delivery_method == 'express')
@@ -42,6 +42,7 @@
                             <br>
                             <strong>Delivery Time:</strong>
                             {{ $data->delivery_duration ?? 'N/A' }}
+                            <br>
                             <strong>Delivery Date:</strong>
                             {{ $data->order_date ?? 'N/A' }}
                             <br>
