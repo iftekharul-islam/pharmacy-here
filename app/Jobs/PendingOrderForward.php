@@ -43,7 +43,8 @@ class PendingOrderForward implements ShouldQueue
             logger('Checking Time');
             logger(Carbon::now()->subHour(5)->format('H:i'));
 
-            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+//            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+            if ($order->updated_at->format('H:i') >= Carbon::now()->subMinute(5)->format('H:i')) {
 
                 logger('Order found');
                 logger('order id');
