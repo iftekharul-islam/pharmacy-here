@@ -258,6 +258,11 @@
             width: 86%;
             height: 174px;
         }
+        .image-upload {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 @endsection
 @section('content')
@@ -575,7 +580,7 @@
                                                     <label for="message-text"
                                                            class="col-form-label">{{ __('text.prescription_image') }}
                                                         :</label>
-                                                    <input type="file" name="url" required>
+                                                    <input type="file" class="image-upload" name="url" required>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

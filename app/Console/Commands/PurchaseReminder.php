@@ -42,11 +42,24 @@ class PurchaseReminder extends Command
      */
     public function handle()
     {
+        logger('In purchase reminder');
         $orders = Order::where('status', 3)->get();
 
         foreach ($orders as $order) {
-            $orderDate = $order->created_at->addDays(28);
-            if (Carbon::today() == $orderDate ){
+            logger('In purchase reminder loop');
+//            $orderDate = $order->created_at->addDays(28);
+//            $orderDate = $order->created_at->addMinutes(5);
+            $value = Carbon::parse($order->created_at)->format('H:i');
+//            $values = Carbon::parse($order->created_at)->format('H:i');
+            $now = Carbon::now()->format('H:i')->subMinute(5);
+            logger('Order details');
+            logger($orders);
+            logger('Order time');
+            logger($value);
+            logger('time now sub by 5 min');
+            logger($now);
+//            if (Carbon::today() == $orderDate ){
+            if ( $value >= $now ){
                 logger('Notification will sent');
 
                 $deviceIds = UserDeviceId::where('user_id',$order->customer_id)->get();
@@ -65,5 +78,6 @@ class PurchaseReminder extends Command
             }
 
         }
+        logger('End purchase reminder');
     }
 }
