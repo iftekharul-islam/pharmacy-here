@@ -239,7 +239,7 @@ class TransactionHistoryController extends Controller
         $endDate = $request->endDate;
         $userId = $request->userId;
         $date = Carbon::now()->format('d-m-Y');
-        $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
+        $data = PharmacyBusiness::where('user_id', $userId)->select('pharmacy_name')->first();
         $pharmacy = Str::slug($data->pharmacy_name);
 
         return (new TransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy . '-' . time() . '-' . $date . '.xls');
@@ -269,7 +269,7 @@ class TransactionHistoryController extends Controller
         $endDate = $request->endDate;
         $userId = $request->userId;
         $date = Carbon::now()->format('d-m-Y');
-        $data = PharmacyBusiness::where('user_id', Auth::user()->id)->select('pharmacy_name')->first();
+        $data = PharmacyBusiness::where('user_id', $userId)->select('pharmacy_name')->first();
         $pharmacy = Str::slug($data->pharmacy_name);
 
         return (new EpayTransactionHistoryByIdExport($toDate, $endDate, $userId))->download($pharmacy . '-epay-' . time() . '-' . $date . '.xls');

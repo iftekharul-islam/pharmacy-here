@@ -27,11 +27,16 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
     */
     public function collection()
     {
+        logger($this->toDate);
+        logger($this->endDate);
+        logger($this->userId);
 
         $transaction =  Order::query();
 
         $allTransactionHistories = $this->query($transaction);
 
+        logger('$allTransactionHistories');
+        logger($allTransactionHistories);
         $transactionCollection = new Collection();
         foreach ($allTransactionHistories as $allTransaction) {
             $transactionCollection->push((object) [
@@ -39,19 +44,19 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
                 'customer_amount' => $allTransaction->customer_amount,
                 'pharmacy_amount' => $allTransaction->pharmacy_amount,
                 'subidha_comission'=> $allTransaction->subidha_comission,
-                'point_amount' => $allTransaction->point_amount
+                'point_amount' => $allTransaction->point_amount ?? ''
             ]);
         }
+        logger('$transactionCollection');
+        logger($transactionCollection);
         return $transactionCollection;
     }
 
     public function query($transaction)
     {
         if ($this->toDate !== null || $this->endDate !== null) {
-            return $transaction->whereBetween('order_date', [$this->toDate, $this->endDate])
-                ->where('payment_type', 1)
-                ->where('status', 3)
-                ->where('pharmacy_id', $this->userId)->get();
+            logger('in the date section in cod');
+            $transaction->whereBetween('order_date', [$this->toDate, $this->endDate]);
         }
         return $transaction->where('pharmacy_id', $this->userId)->where('payment_type', 1)->where('status', 3)->get();
 
