@@ -248,7 +248,9 @@
                         </div>
                     @endforeach
                 </div>
-                {{ $data['value']->links() }}
+                    <div class="d-flex justify-content-center">
+                        {{ $data['value']->links() }}
+                    </div>
             @else
                 <h4 class="text-center">No Medicine Found!</h4>
             @endif

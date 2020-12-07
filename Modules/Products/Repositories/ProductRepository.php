@@ -387,7 +387,7 @@ class ProductRepository
     {
         $medicine = $request->get('medicine');
         return Product::with('form')
-            ->where('name', 'LIKE', "%$medicine%")
+            ->where('slug', 'LIKE', "{$medicine}%")
             ->where('purchase_price', '>', 0)->get();
     }
 }
