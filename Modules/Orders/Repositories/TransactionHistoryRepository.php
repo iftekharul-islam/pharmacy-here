@@ -143,7 +143,7 @@ class TransactionHistoryRepository
     public function getCod($request, $id)
     {
         $data = Order::query();
-        if ($request->start_date !== null || $request->end_date !== null) {
+        if ($request->start_date != null || $request->end_date != null) {
             $data->whereBetween('order_date', [$request->start_date ?? Carbon::today()->subDays(30), $request->end_date ?? Carbon::today()]);
 
         }
