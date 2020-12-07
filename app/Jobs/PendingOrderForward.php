@@ -107,7 +107,7 @@ class PendingOrderForward implements ShouldQueue
                 logger("nearest Pharmacy not found");
 
                 $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
-                SendNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
+                SendNotificationToAdmin::dispatch($order, $subject, $isCancel = false);
                 $order->pharmacy_id = null;
                 $order->status = 8;
                 $order->save();
