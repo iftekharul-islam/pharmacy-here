@@ -54,7 +54,7 @@ class CodTransactionHistoryByIdExport implements FromCollection, WithHeadings, W
 
     public function query($transaction)
     {
-        if ($this->toDate !== null || $this->endDate !== null) {
+        if ($this->toDate != null || $this->endDate != null) {
             logger('in the date section in cod');
             $transaction->whereBetween('order_date', [$this->toDate, $this->endDate]);
         }
