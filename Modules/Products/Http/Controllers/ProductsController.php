@@ -38,7 +38,8 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
-        $productList = $this->repository->all($request);
+        $data = $this->repository->all($request);
+        $productList = $data['value'];
 
         if (! $productList) {
             throw new NotFoundHttpException('Product List Not Found');

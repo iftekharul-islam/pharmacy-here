@@ -35,7 +35,7 @@
         </div>
 
         <div class="card-body table-responsive mb-3">
-            @if($productList->isNotEmpty())
+            @if(count($productList) > 0)
             <table id="example1" class="table data-table">
                 <thead>
                 <tr>

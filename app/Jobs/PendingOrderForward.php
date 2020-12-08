@@ -35,16 +35,18 @@ class PendingOrderForward implements ShouldQueue
      */
     public function handle()
     {
+        logger('in the forward job');
         $orders = Order::with('address')->whereIn('status', [0, 5, 6])->whereDate('updated_at', Carbon::today())->where('pharmacy_id', '!=', null)->get();
+        logger('order list');
+        logger($orders);
         foreach ($orders as $order) {
-
             logger('Order time');
             logger($order->updated_at->format('H:i'));
             logger('Checking Time');
-            logger(Carbon::now()->subHour(5)->format('H:i'));
+            logger(Carbon::now()->subMinute(5)->format('H:i'));
 
 //            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
-            if ($order->updated_at->format('H:i') >= Carbon::now()->subMinute(5)->format('H:i')) {
+            if ($order->created_at->format('H:i') >= Carbon::now()->subMinute(5)->format('H:i')) {
 
                 logger('Order found');
                 logger('order id');
@@ -80,7 +82,7 @@ class PendingOrderForward implements ShouldQueue
                         $q->where('status', 1);
                     })->inRandomOrder()->first();
 
-                if ($nearestPharmacy) {
+                if ($nearestPharmacy != null) {
 
                     logger("nearest Pharmacy found");
                     logger($nearestPharmacy->pharmacy_name);
@@ -122,6 +124,6 @@ class PendingOrderForward implements ShouldQueue
                 return responseData('Order is Orphaned');
             }
         }
-        logger('Order Not found');
+        logger('Order Not found to forward');
     }
 }
