@@ -42,10 +42,11 @@ class SendOrderStatusEmail extends Mailable
         $isCancel = $this->isCancel;
 //        $sub = $this->subject;
         logger($order);
-        logger('Order logger');
+        logger('Order mail sent');
 //        if ($this->isCancel == true) {
             return $this->subject($this->subject)->view(' orders::emails.orderMail')->with(['order' => $order, 'isCancel' => $isCancel]);;
 //        }
+        logger('End of Order mail sent');
 //        return $this->subject($this->subject)->view(' orders::emails.orderMail')->with(['order' => $order]);;
     }
 }
