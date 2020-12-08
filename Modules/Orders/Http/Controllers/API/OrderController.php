@@ -6,10 +6,12 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Http\Requests\CreateOrderCancelRequest;
 use Modules\Orders\Http\Requests\CreateOrderRrequest;
 use Modules\Orders\Repositories\OrderRepository;
 use Modules\Orders\Transformers\OrderTransformer;
+use Modules\User\Entities\Models\PharmacyBusiness;
 
 class OrderController extends BaseController
 {

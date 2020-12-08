@@ -804,6 +804,8 @@ class OrderRepository
         $time = Carbon::now()->format('H:i:s');
 //        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $previousPharmacies[] = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
+        logger('$previousPharmacies');
+        logger($previousPharmacies);
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
 //            ->whereNotIn('user_id', $isAvailable)
             ->whereNotIn('user_id', $previousPharmacies)
@@ -824,7 +826,10 @@ class OrderRepository
                 $q->where('status', 1);
             })->inRandomOrder()->first();
 
-        if ($nearestPharmacy) {
+        logger('$nearestPharmacy');
+        logger($nearestPharmacy);
+
+        if ($nearestPharmacy ?? false) {
             logger('Nearest Pharmacy found');
             logger($nearestPharmacy);
 
