@@ -36,7 +36,7 @@ class PendingOrderForward implements ShouldQueue
     public function handle()
     {
         logger('in the forward job');
-        $orders = Order::with('address')->whereIn('status', [0, 5, 6])->whereDate('updated_at', Carbon::today())->where('pharmacy_id', '!=', null)->get();
+        $orders = Order::with('address')->whereIn('status', [0, 5, 6])->where('pharmacy_id', '!=', null)->get();
         logger('order list');
         logger($orders);
         foreach ($orders as $order) {
@@ -61,9 +61,10 @@ class PendingOrderForward implements ShouldQueue
                 $date = Carbon::today()->format('l');
                 $Holiday = strtolower($date);
                 $time = Carbon::now()->format('H:i:s');
-                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
+//                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
+                $previousPharmacies[] = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
                 $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                    ->whereNotIn('user_id', $isAvailable)
+//                    ->whereNotIn('user_id', $isAvailable)
                     ->whereNotIn('user_id', $previousPharmacies)
                     ->where(function ($query) use ($time) {
                         $query->Where('is_full_open', 1)
