@@ -793,7 +793,7 @@ class OrderRepository
         $previousPharmacyOrderHistory->status = $status_id;
         $previousPharmacyOrderHistory->save();
 
-        $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
+        $previousPharmacies = OrderHistory::where('order_id', $order->id)->where('status', '!=', 8)->pluck('user_id');
         logger('Previous Pharmacies');
         logger($previousPharmacies);
 
@@ -803,12 +803,13 @@ class OrderRepository
         $Holiday = strtolower($date);
         $time = Carbon::now()->format('H:i:s');
 //        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-        $previousPharmacies[] = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-        logger('$previousPharmacies');
-        logger($previousPharmacies);
+        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
+        $data = array_merge($previousPharmacies, $isAvailable);
+        logger('$data');
+        logger($data);
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
 //            ->whereNotIn('user_id', $isAvailable)
-            ->whereNotIn('user_id', $previousPharmacies)
+            ->whereNotIn('user_id', $data)
             ->where(function ($query) use ($time) {
                 $query->Where('is_full_open', 1)
                     ->orWhere(function ($q) use ($time) {
