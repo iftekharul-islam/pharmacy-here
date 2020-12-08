@@ -857,7 +857,7 @@ class OrderRepository
 
         $orderHistory = new OrderHistory();
         $orderHistory->order_id = $order->id;
-        $orderHistory->user_id = $order->pharmacy_id;
+        $orderHistory->user_id = 0 ;
         $orderHistory->status = $status_id;
         $orderHistory->save();
 
