@@ -10,6 +10,8 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Repositories\AuthRepository;
+use Modules\Orders\Entities\Models\Order;
+use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Http\Requests\CreateWeekendsAndWorkingHourRequest;
 use Modules\User\Http\Requests\PharmacyBusinessRequest;
 use Modules\User\Http\Requests\UpdatePharmacyBankInfoRequest;
@@ -223,6 +225,8 @@ class UserPharmacyController extends BaseController
 
     public function availablePharmacyList($thana_id)
     {
+        return $order = Order::with('address')->find(267);
+        return $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)->first();
 //        return responsePreparedData(Carbon::now()->format('H:i:s'));
         $availablePharmacyList = $this->repository->getAvailablePharmacyList($thana_id);
 

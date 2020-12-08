@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->quarterly();
         $schedule->command('backup:run')->dailyAt('00:00');
 //        $schedule->command('run:pending-order-Forward')->hourly();
-        $schedule->command('run:pending-order-Forward')->everyFiveMinutes();
+//        $schedule->command('run:pending-order-Forward')->everyFiveMinutes();
     }
 
     /**
