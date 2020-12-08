@@ -35,7 +35,7 @@ class PendingOrderForward implements ShouldQueue
      */
     public function handle()
     {
-        $orders = Order::whereIn('status', [0, 5, 6])->whereDate('updated_at', Carbon::today())->where('pharmacy_id', '!=', null)->get();
+        $orders = Order::with('address')->whereIn('status', [0, 5, 6])->whereDate('updated_at', Carbon::today())->where('pharmacy_id', '!=', null)->get();
         foreach ($orders as $order) {
 
             logger('Order time');

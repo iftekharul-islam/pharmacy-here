@@ -34,7 +34,7 @@
     <p>An order ID: {{ $order->order_no }} has been Orphaned</p>
     <p>Ordered by:</p>
     <span>Order ID: {{ $order->order_no }}</span><br>
-    <span>order Amount: {{ $order->amount }}</span><br>
+    <span>order Amount: {{ $order->customer_amount }}</span><br>
     <span>Customer Name: {{ $order->customer->name }}</span>
     <br>
     <br>
