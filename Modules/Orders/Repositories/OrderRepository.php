@@ -804,9 +804,13 @@ class OrderRepository
         $time = Carbon::now()->format('H:i:s');
 //        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-        $data = array_merge($previousPharmacies, $isAvailable);
+        logger($previousPharmacies);
+        logger($isAvailable);
+//        $data = $previousPharmacies + $isAvailable;
+        $data = array_merge(json_decode($previousPharmacies),json_decode($isAvailable));
         logger('$data');
         logger($data);
+//        die();
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
 //            ->whereNotIn('user_id', $isAvailable)
             ->whereNotIn('user_id', $data)
