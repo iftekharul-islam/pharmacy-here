@@ -85,6 +85,12 @@ class OrderRepository
         $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
         $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
             ->whereNotIn('user_id', $availablePharmacy)
+            ->Where('is_full_open', 1)
+            ->orWhere(function ($q) use ($time) {
+                        $q->where(function ($q) use ($time) {
+                            $q->where('start_time', '<', $time)
+                                ->Where('end_time', '>', $time);
+                        });
 //            ->where(function ($query) use ($time) {
 //                $query->Where('is_full_open', 1)
 //                    ->orWhere(function ($q) use ($time) {
@@ -98,7 +104,7 @@ class OrderRepository
 //                            });
 //                    });
 
-//            })
+            })
             ->whereHas('user', function ($q) {
                 $q->where('status', 1);
             })->inRandomOrder()->first();
@@ -742,7 +748,7 @@ class OrderRepository
         if ($status_id == 5 || $status_id == 6) {
 
             $user = Auth::user();
-            $pharmacy_id = Order::where('pharmacy_id', $user->id)->where('id', $order_id)->first();
+            $pharmacy_id = Order::where('pharmacy_id', 11)->where('id', $order_id)->first();
 
             if (!$pharmacy_id) {
                 return responsePreparedData([
@@ -817,6 +823,7 @@ class OrderRepository
         logger('$data');
         logger($data);
 //        die();
+        DB::enableQueryLog();
         $pharmacy = PharmacyBusiness::query();
         $pharmacy->whereNotIn('user_id', $isAvailable);
         $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
@@ -838,7 +845,8 @@ class OrderRepository
             })->whereHas('user', function ($q) {
                 $q->where('status', 1);
             })->inRandomOrder()->first();
-
+        logger(DB::getQueryLog());
+//        die();
         logger('$nearestPharmacy');
         logger($nearestPharmacy);
 
