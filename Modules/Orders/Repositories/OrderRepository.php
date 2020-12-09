@@ -816,7 +816,9 @@ class OrderRepository
         logger('$data');
         logger($data);
 //        die();
-        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+        $pharmacy = PharmacyBusiness::query();
+        $pharmacy->whereNotIn('user_id', $isAvailable);
+        $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
 //            ->whereNotIn('user_id', $isAvailable)
             ->whereNotIn('user_id', $previousPharmacies)
             ->where(function ($query) use ($time) {
