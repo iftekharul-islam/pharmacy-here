@@ -62,7 +62,7 @@ class PurchaseReminder extends Command
             if ( $value >= $now ){
                 logger('Notification will sent');
 
-                $deviceIds = UserDeviceId::where('user_id',$order->customer_id)->get();
+                $deviceIds = UserDeviceId::where('user_id',$order->customer_id)->groupBy('device_id')->get();
                 $title = 'Order Reminder';
                 $message = 'You can order your medicine from subidha from any where.thanks';
 
