@@ -43,10 +43,11 @@ class PendingOrderForward implements ShouldQueue
             logger('Order time');
             logger($order->updated_at->format('H:i'));
             logger('Checking Time');
+            logger(Carbon::now()->format('H:i'));
             logger(Carbon::now()->subMinute(5)->format('H:i'));
 
 //            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
-            if ($order->created_at->format('H:i') >= Carbon::now()->subMinute(5)->format('H:i')) {
+            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
 
                 logger('Order found');
                 logger('order id');
@@ -62,22 +63,20 @@ class PendingOrderForward implements ShouldQueue
                 $Holiday = strtolower($date);
                 $time = Carbon::now()->format('H:i:s');
 //                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-                $previousPharmacies[] = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-                $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-//                    ->whereNotIn('user_id', $isAvailable)
+                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
+                $pharmacy = PharmacyBusiness::query();
+                $pharmacy->whereNotIn('user_id', $isAvailable);
+                $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
                     ->whereNotIn('user_id', $previousPharmacies)
-                    ->where(function ($query) use ($time) {
-                        $query->Where('is_full_open', 1)
-                            ->orWhere(function ($q) use ($time) {
-                                $q->where(function ($q) use ($time) {
+                    ->Where('is_full_open', 1)
+                    ->orWhere(function ($q) use ($time) {
                                     $q->where('start_time', '<', $time)
                                         ->Where('end_time', '>', $time);
-                                });
+//                                });
 //                            ->Where(function ($q) use ($time) {
 //                                $q->Where('break_start_time', '>', $time)
 //                                    ->orWhere('break_end_time', '<', $time);
 //                            });
-                            });
 
                     })->whereHas('user', function ($q) {
                         $q->where('status', 1);
@@ -97,7 +96,7 @@ class PendingOrderForward implements ShouldQueue
                     $order->pharmacy_id = $nearestPharmacy->user_id;
                     $order->save();
 
-                    $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->get();
+                    $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->groupBy('device_id')->get();
                     $title = 'New Order Available';
                     $message = 'You have a new order from Subidha. Please check.';
 
