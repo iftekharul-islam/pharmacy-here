@@ -807,13 +807,18 @@ class OrderRepository
         logger($previousPharmacies);
         logger($isAvailable);
 //        $data = $previousPharmacies + $isAvailable;
+        logger('gettype');
+        logger(gettype($previousPharmacies));
         $data = array_merge(json_decode($previousPharmacies),json_decode($isAvailable));
+        $value = json_encode($data);
+        logger('v');
+        logger($value);
         logger('$data');
         logger($data);
 //        die();
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
 //            ->whereNotIn('user_id', $isAvailable)
-            ->whereNotIn('user_id', $data)
+            ->whereNotIn('user_id', json_encode($value))
             ->where(function ($query) use ($time) {
                 $query->Where('is_full_open', 1)
                     ->orWhere(function ($q) use ($time) {
