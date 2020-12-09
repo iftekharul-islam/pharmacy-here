@@ -656,7 +656,7 @@ class OrderRepository
         session()->forget('cartCount');
 
         logger($data['pharmacy_id']);
-        $deviceIds = UserDeviceId::where('user_id', $data['pharmacy_id'])->get();
+        $deviceIds = UserDeviceId::where('user_id', $data['pharmacy_id'])->groupBy('device_id')->get();
         logger($deviceIds);
         $title = 'New Order Available';
         $message = 'You have a new order from Subidha. Please check.';
@@ -848,7 +848,7 @@ class OrderRepository
             $order->status = 0;
             $order->save();
 
-            $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->get();
+            $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->groupBy('device_id')->get();
             $title = 'New Order Available';
             $message = 'You have a new order from Subidha. Please check.';
 
