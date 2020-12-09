@@ -87,10 +87,10 @@ class OrderRepository
             ->whereNotIn('user_id', $availablePharmacy)
             ->Where('is_full_open', 1)
             ->orWhere(function ($q) use ($time) {
-                        $q->where(function ($q) use ($time) {
+//                        $q->where(function ($q) use ($time) {
                             $q->where('start_time', '<', $time)
                                 ->Where('end_time', '>', $time);
-                        });
+//                        });
 //            ->where(function ($query) use ($time) {
 //                $query->Where('is_full_open', 1)
 //                    ->orWhere(function ($q) use ($time) {
@@ -829,18 +829,17 @@ class OrderRepository
         $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
 //            ->whereNotIn('user_id', $isAvailable)
             ->whereNotIn('user_id', $previousPharmacies)
-            ->where(function ($query) use ($time) {
-                $query->Where('is_full_open', 1)
-                    ->orWhere(function ($q) use ($time) {
-                        $q->where(function ($q) use ($time) {
-                            $q->where('start_time', '<', $time)
-                                ->Where('end_time', '>', $time);
-                        });
+            ->Where('is_full_open', 1)
+            ->orWhere(function ($q) use ($time) {
+//                $q->where(function ($q) use ($time) {
+                    $q->where('start_time', '<', $time)
+                        ->Where('end_time', '>', $time);
+//                });
 //                            ->Where(function ($q) use ($time) {
 //                                $q->Where('break_start_time', '>', $time)
 //                                    ->orWhere('break_end_time', '<', $time);
 //                            });
-                    });
+//                    });
 
             })->whereHas('user', function ($q) {
                 $q->where('status', 1);
