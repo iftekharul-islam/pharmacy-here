@@ -779,7 +779,7 @@ class OrderRepository
 
     public function forwardOrder($order_id, $status_id)
     {
-        $order = Order::with('address')->find($order_id);
+        $order = Order::with('address')->where('id', $order_id)->first();
         logger('Order');
         logger($order);
         logger('Status');
@@ -800,7 +800,7 @@ class OrderRepository
         $previousPharmacyOrderHistory->status = $status_id;
         $previousPharmacyOrderHistory->save();
 
-        $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
+        $previousPharmacies = OrderHistory::where('order_id', $order_id)->pluck('user_id');
         logger('Previous Pharmacies');
         logger($previousPharmacies);
 
@@ -832,7 +832,6 @@ class OrderRepository
         $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
 //            ->whereIn('user_id', '!=', $isAvailable)
 //            ->whereNotIn('user_id', $previousPharmacies)
-            ->whereNotIn('user_id', $data)
             ->Where('is_full_open', 1)
             ->orWhere(function ($q) use ($time) {
 //                $q->where(function ($q) use ($time) {
@@ -847,7 +846,9 @@ class OrderRepository
 
             })->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })->inRandomOrder()->first();
+            })
+            ->whereNotIn('user_id', $data)
+            ->inRandomOrder()->first();
         logger(DB::getQueryLog());
 //        die();
         logger('$nearestPharmacy');
@@ -887,7 +888,7 @@ class OrderRepository
         $orderHistory = new OrderHistory();
         $orderHistory->order_id = $order->id;
         $orderHistory->user_id = 0 ;
-        $orderHistory->status = $status_id;
+        $orderHistory->status = 8;
         $orderHistory->save();
 
 //        $emailMessage = $order->order_no . ' Order status is orphan, please take action immediately.';

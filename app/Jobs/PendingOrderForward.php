@@ -65,7 +65,6 @@ class PendingOrderForward implements ShouldQueue
                 $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
                 $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
                 $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                    ->whereNotIn('user_id', $data)
                     ->Where('is_full_open', 1)
                     ->orWhere(function ($q) use ($time) {
                                     $q->where('start_time', '<', $time)
@@ -78,7 +77,8 @@ class PendingOrderForward implements ShouldQueue
 
                     })->whereHas('user', function ($q) {
                         $q->where('status', 1);
-                    })->inRandomOrder()->first();
+                    })->whereNotIn('user_id', $data)
+                    ->inRandomOrder()->first();
 
                 if ($nearestPharmacy != null) {
 
