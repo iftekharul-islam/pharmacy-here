@@ -142,7 +142,7 @@ class OrderRepository
         $order->points = $request->get('points');
         $order->delivery_duration = $request->get('delivery_duration');
 
-        $ssl_charge = '';
+        $ssl_value = '';
 
         if ($order->delivery_type == config('subidha.home_delivery')) {
 
