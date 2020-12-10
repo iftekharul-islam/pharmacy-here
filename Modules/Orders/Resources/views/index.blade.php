@@ -100,15 +100,15 @@
                             <td>{{ $item->order_no }}</td>
                             <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] ?? '' }}</td>
                             <td>
-                                @if($item->status == 8)
-                                    {{ $item->orderHistory->pharmacy->pharmacy_name }}
+                                @if($item->status == 8 && isset($item->orderHistory->pharmacy->pharmacy_name))
+                                    {{ $item->orderHistory->pharmacy->pharmacy_name ?? '' }}
                                 @endif
                             </td>
                             <td>{{ $item->customer_amount }}</td>
                             <td>{{ $item->order_date }}</td>
                             <td>@include('orders::status', ['status' => $item->status])</td>
                             <td>
-                                @if($item->status == 8)
+                                @if($item->status == 8 && isset($item->orderHistory->pharmacy->pharmacy_name))
                                     <a href="{{ route('active.order',[ 'order_id' => $item->id , 'history_id' => $item->orderHistory->id, 'pharmacy_id' => $item->orderHistory->pharmacy->user_id ]) }}" type="button"
                                        class="btn btn-sm btn-success">
                                        Active
