@@ -512,6 +512,7 @@ class CheckoutController extends Controller
             'is_rated',
             'delivery_duration',
             'point_amount',
+            'ssl_charge',
         ]);
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->orderRepository->getNearestPharmacyId($data['shipping_address_id']);
         if ($request->delivery_charge == 1) {
@@ -718,11 +719,17 @@ class CheckoutController extends Controller
                 $data['customer_amount'] = round(($request->get('amount')), 2);
             }
         }
+        $data['subidha_comission'] = round($data['subidha_comission'], 2);
+        $data['customer_amount'] = round($data['customer_amount'], 2);
+
+        $data['ssl_charge'] = $ssl_value;
+        if ($data['ssl_charge'] != null){
+            $data['subidha_comission'] = $data['subidha_comission'] - $data['ssl_charge'];
+            $data['customer_amount'] = $data['customer_amount'] - $data['ssl_charge'];
+        }
 
         $data['amount'] = round($request->amount, 2);
-        $data['subidha_comission'] = round($data['subidha_comission'], 2);
         $data['pharmacy_amount'] = round($data['pharmacy_amount'], 2);
-        $data['customer_amount'] = round($data['customer_amount'], 2);
 
         # Here you have to receive all the order data to initate the payment.
         # Let's say, your oder transaction informations are saving in a table called "orders"
@@ -793,6 +800,7 @@ class CheckoutController extends Controller
                 'customer_amount' => $data['customer_amount'],
                 'delivery_duration' => $data['delivery_duration'],
                 'point_amount' => 0,
+                'ssl_charge' => $data['ssl_charge'],
             ]);
         $order = DB::table('orders')
             ->where('customer_id', Auth::user()->id)
