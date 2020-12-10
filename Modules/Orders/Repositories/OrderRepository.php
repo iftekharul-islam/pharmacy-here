@@ -800,7 +800,7 @@ class OrderRepository
         $previousPharmacyOrderHistory->status = $status_id;
         $previousPharmacyOrderHistory->save();
 
-        $previousPharmacies = OrderHistory::where('order_id', $order->id)->where('status', '!=', 8)->pluck('user_id');
+        $previousPharmacies = OrderHistory::where('order_id', $order->id)->pluck('user_id');
         logger('Previous Pharmacies');
         logger($previousPharmacies);
 
@@ -811,24 +811,28 @@ class OrderRepository
         $time = Carbon::now()->format('H:i:s');
 //        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-        logger($previousPharmacies);
+        logger(gettype($previousPharmacies));
+        logger('$isAvailable');
         logger($isAvailable);
 //        $data = $previousPharmacies + $isAvailable;
 //        logger('gettype');
 //        logger(gettype($previousPharmacies));
-        $data = array_merge(json_decode($previousPharmacies),json_decode($isAvailable));
+//        $data = array_merge(json_decode($previousPharmacies),json_decode($isAvailable));
+        $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
 //        logger('$value');
 //        logger(gettype($value));
 //        logger($value);
         logger('$data');
         logger($data);
+        logger(json_encode($data));
 //        die();
         DB::enableQueryLog();
         $pharmacy = PharmacyBusiness::query();
-        $pharmacy->whereNotIn('user_id', $isAvailable);
+//        $pharmacy->whereNotIn('user_id', $isAvailable);
         $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
-//            ->whereNotIn('user_id', $isAvailable)
-            ->whereNotIn('user_id', $previousPharmacies)
+//            ->whereIn('user_id', '!=', $isAvailable)
+//            ->whereNotIn('user_id', $previousPharmacies)
+            ->whereNotIn('user_id', $data)
             ->Where('is_full_open', 1)
             ->orWhere(function ($q) use ($time) {
 //                $q->where(function ($q) use ($time) {

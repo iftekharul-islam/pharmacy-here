@@ -62,12 +62,10 @@ class PendingOrderForward implements ShouldQueue
                 $date = Carbon::today()->format('l');
                 $Holiday = strtolower($date);
                 $time = Carbon::now()->format('H:i:s');
-//                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
                 $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-                $pharmacy = PharmacyBusiness::query();
-                $pharmacy->whereNotIn('user_id', $isAvailable);
-                $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
-                    ->whereNotIn('user_id', $previousPharmacies)
+                $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
+                $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+                    ->whereNotIn('user_id', $data)
                     ->Where('is_full_open', 1)
                     ->orWhere(function ($q) use ($time) {
                                     $q->where('start_time', '<', $time)
