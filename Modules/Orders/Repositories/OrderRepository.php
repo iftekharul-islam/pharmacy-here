@@ -881,15 +881,16 @@ class OrderRepository
 
         $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
         SendNotificationToAdmin::dispatch($order, $subject, $isCancel = false);
-        $order->pharmacy_id = null;
-        $order->status = 8;
-        $order->save();
 
         $orderHistory = new OrderHistory();
         $orderHistory->order_id = $order->id;
-        $orderHistory->user_id = 0 ;
+        $orderHistory->user_id = $order->pharmacy_id ;
         $orderHistory->status = 8;
         $orderHistory->save();
+
+        $order->pharmacy_id = null;
+        $order->status = 8;
+        $order->save();
 
 //        $emailMessage = $order->order_no . ' Order status is orphan, please take action immediately.';
 //        sendOrderStatusEmail($emailMessage);
@@ -969,7 +970,7 @@ class OrderRepository
         $endDate = $request->end_date;
 
         $data = Order::query();
-        $data->with(['pharmacy.pharmacyBusiness'])->orderBy('id', 'desc');
+        $data->with('pharmacy.pharmacyBusiness', 'orderHistory', 'orderHistory.pharmacy')->orderBy('id', 'desc');
 
         if ($area_id !== null) {
             $data->whereHas('pharmacy.pharmacyBusiness', function ($query) use ($area_id) {
@@ -1003,5 +1004,26 @@ class OrderRepository
             ->where('id', $id)
             ->first();
 
+    }
+
+    public function activeOrphanOrder($order_id, $history_id,$pharmacy_id)
+    {
+        $order = Order::find($order_id);
+        if (!$order){
+            return false;
+        }
+        $order->status = 0;
+        $order->pharmacy_id = $pharmacy_id;
+        $order->save();
+
+        $orderHistory = OrderHistory::find($history_id);
+
+        if (!$orderHistory){
+            return false;
+        }
+        $orderHistory->status = 0;
+        $orderHistory->save();
+
+        return true;
     }
 }

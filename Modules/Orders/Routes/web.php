@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 //Route::prefix('orders')->group(function() {
 //    Route::get('orders', 'OrdersController@index');
 //});
+Route::get('active-orphan-order', 'OrdersController@activeOrder')->name('active.order');
 Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('orders', 'OrdersController@index')->name('orders.index');
     Route::get('export-orders', 'OrdersController@exportOrder')->name('export.orders');

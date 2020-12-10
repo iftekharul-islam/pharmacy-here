@@ -1,6 +1,15 @@
 @extends('adminlte::page')
 @section('title', 'Orders')
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @elseif(session('failed'))
+        <div class="alert alert-danger">
+            {{ session('failed') }}
+        </div>
+    @endif
     <!-- @auth("web")
         <h1>Hello world</h1>
 {{ Auth::guard('web')->user()->can('create.user') }}
@@ -78,6 +87,7 @@
                     <tr>
                         <th>Order No</th>
                         <th>Pharmacy Name</th>
+                        <th>Last pharmacy</th>
                         <th>Amount</th>
                         <th>Date</th>
                         <th>Status</th>
@@ -89,10 +99,21 @@
                         <tr>
                             <td>{{ $item->order_no }}</td>
                             <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] ?? '' }}</td>
+                            <td>
+                                @if($item->status == 8)
+                                    {{ $item->orderHistory->pharmacy->pharmacy_name }}
+                                @endif
+                            </td>
                             <td>{{ $item->customer_amount }}</td>
                             <td>{{ $item->order_date }}</td>
                             <td>@include('orders::status', ['status' => $item->status])</td>
                             <td>
+                                @if($item->status == 8)
+                                    <a href="{{ route('active.order',[ 'order_id' => $item->id , 'history_id' => $item->orderHistory->id, 'pharmacy_id' => $item->orderHistory->pharmacy->user_id ]) }}" type="button"
+                                       class="btn btn-sm btn-success">
+                                       Active
+                                    </a>
+                                @endif
                                 <a href="{{ route('orders.show', $item->id) }}" type="button"
                                    class="btn btn-sm btn-success">
                                     <i class="fa fa-eye"></i>
