@@ -61,6 +61,11 @@
                                 {{ $data->point_amount }}
                                 <br>
                             @endisset
+                            @isset($data->ssl_charge)
+                                <strong>SSL Amount:</strong>
+                                {{ $data->ssl_charge }}
+                                <br>
+                            @endisset
                         </div>
                     </div>
 
