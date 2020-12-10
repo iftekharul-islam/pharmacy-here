@@ -88,8 +88,8 @@ class OrderRepository
             ->Where('is_full_open', 1)
             ->orWhere(function ($q) use ($time) {
 //                        $q->where(function ($q) use ($time) {
-                            $q->where('start_time', '<', $time)
-                                ->Where('end_time', '>', $time);
+                $q->where('start_time', '<', $time)
+                    ->Where('end_time', '>', $time);
 //                        });
 //            ->where(function ($query) use ($time) {
 //                $query->Where('is_full_open', 1)
@@ -141,6 +141,8 @@ class OrderRepository
         $order->point_amount = round($request->get('point_amount'), 2);
         $order->points = $request->get('points');
         $order->delivery_duration = $request->get('delivery_duration');
+
+        $ssl_charge = '';
 
         if ($order->delivery_type == config('subidha.home_delivery')) {
 
@@ -321,8 +323,15 @@ class OrderRepository
         }
 
         if ($order->point_amount != null) {
-            $order->pharmacy_amount = $order->pharmacy_amount - $order->point_amount;
+            $order->subidha_comission = $order->subidha_comission - $order->point_amount;
             $order->customer_amount = $order->customer_amount - $order->point_amount;
+        }
+        $ssl_charge = $ssl_value;
+
+        if ($ssl_charge != null) {
+            $order->subidha_comission = $order->subidha_comission - $ssl_charge;
+            $order->customer_amount = $order->customer_amount - $ssl_charge;
+            $order->ssl_charge = $ssl_charge;
         }
 
         logger($order);
@@ -835,8 +844,8 @@ class OrderRepository
             ->Where('is_full_open', 1)
             ->orWhere(function ($q) use ($time) {
 //                $q->where(function ($q) use ($time) {
-                    $q->where('start_time', '<', $time)
-                        ->Where('end_time', '>', $time);
+                $q->where('start_time', '<', $time)
+                    ->Where('end_time', '>', $time);
 //                });
 //                            ->Where(function ($q) use ($time) {
 //                                $q->Where('break_start_time', '>', $time)
@@ -884,7 +893,7 @@ class OrderRepository
 
         $orderHistory = new OrderHistory();
         $orderHistory->order_id = $order->id;
-        $orderHistory->user_id = $order->pharmacy_id ;
+        $orderHistory->user_id = $order->pharmacy_id;
         $orderHistory->status = 8;
         $orderHistory->save();
 
@@ -1006,10 +1015,10 @@ class OrderRepository
 
     }
 
-    public function activeOrphanOrder($order_id, $history_id,$pharmacy_id)
+    public function activeOrphanOrder($order_id, $history_id, $pharmacy_id)
     {
         $order = Order::find($order_id);
-        if (!$order){
+        if (!$order) {
             return false;
         }
         $order->status = 0;
@@ -1018,7 +1027,7 @@ class OrderRepository
 
         $orderHistory = OrderHistory::find($history_id);
 
-        if (!$orderHistory){
+        if (!$orderHistory) {
             return false;
         }
         $orderHistory->status = 0;
