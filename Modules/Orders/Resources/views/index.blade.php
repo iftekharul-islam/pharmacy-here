@@ -101,7 +101,7 @@
                             <td>{{ $item->pharmacy->pharmacyBusiness['pharmacy_name'] ?? '' }}</td>
                             <td>
                                 @if($item->status == 8)
-                                    {{ $item->orderHistory->pharmacy->pharmacy_name }}
+                                    {{ $item->orderHistory->pharmacy->pharmacy_name ?? '' }}
                                 @endif
                             </td>
                             <td>{{ $item->customer_amount }}</td>
