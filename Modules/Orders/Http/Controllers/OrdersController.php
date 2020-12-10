@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Locations\Repositories\LocationRepository;
+use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\Orders\Repositories\OrderRepository;
 
 class OrdersController extends Controller
@@ -34,6 +36,7 @@ class OrdersController extends Controller
         $status = $request->status;
 
         $data = $this->repository->ordersByStatus($request);
+//        return $data;
         $allLocations = $this->locationRepository->getLocation();
         return view('orders::index', compact('data', 'display_Sdate','display_Edate', 'status', 'allLocations',
                                                             'display_area', 'display_thana', 'display_district'));
@@ -111,5 +114,20 @@ class OrdersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function activeOrder(Request $request)
+    {
+        $order_id = $request->order_id;
+        $history_id = $request->history_id;
+        $pharmacy_id = $request->pharmacy_id;
+        $data = $this->repository->activeOrphanOrder($order_id, $history_id, $pharmacy_id);
+
+        if ($data == false){
+            return redirect()->back()->with('failed', 'Order reverse is not successful');
+        }
+
+        return redirect()->back()->with('success', 'Order reverse successful');
+
     }
 }

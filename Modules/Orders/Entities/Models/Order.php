@@ -86,5 +86,10 @@ class Order extends Model
         return $this->belongsTo(OrderCancelReason::class, 'id', 'order_id');
     }
 
+    public function orderHistory()
+    {
+        return $this->belongsTo(OrderHistory::class, 'id', 'order_id')->orderBy('created_at', 'asc');
+    }
+
 }
 
