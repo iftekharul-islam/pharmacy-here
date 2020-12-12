@@ -84,7 +84,6 @@ class OrderRepository
         $time = Carbon::now()->format('H:i:s');
         $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
         $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
-            ->whereNotIn('user_id', $availablePharmacy)
             ->Where('is_full_open', 1)
             ->orWhere(function ($q) use ($time) {
 //                        $q->where(function ($q) use ($time) {
@@ -107,7 +106,7 @@ class OrderRepository
             })
             ->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })->inRandomOrder()->first();
+            })->whereNotIn('user_id', $availablePharmacy)->inRandomOrder()->first();
 
 
         return $pharmacy ? $pharmacy->user_id : '';
