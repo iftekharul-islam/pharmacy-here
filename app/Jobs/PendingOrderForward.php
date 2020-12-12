@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\User\Entities\Models\PharmacyBusiness;
@@ -64,6 +65,7 @@ class PendingOrderForward implements ShouldQueue
                 $time = Carbon::now()->format('H:i:s');
                 $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
                 $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
+                DB::enableQueryLog();
                 $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
                     ->Where('is_full_open', 1)
                     ->orWhere(function ($q) use ($time) {
@@ -80,6 +82,7 @@ class PendingOrderForward implements ShouldQueue
                     })->whereNotIn('user_id', $data)
                     ->inRandomOrder()->first();
 
+                logger(DB::getQueryLog());
                 if ($nearestPharmacy != null) {
 
                     logger("nearest Pharmacy found");
@@ -108,15 +111,15 @@ class PendingOrderForward implements ShouldQueue
 
                 $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
                 SendNotificationToAdmin::dispatch($order, $subject, $isCancel = false);
+                $orderHistory = new OrderHistory();
+                $orderHistory->order_id = $order->id;
+                $orderHistory->user_id = $order->pharmacy_id;
+                $orderHistory->status = 8;
+                $orderHistory->save();
+
                 $order->pharmacy_id = null;
                 $order->status = 8;
                 $order->save();
-
-                $orderHistory = new OrderHistory();
-                $orderHistory->order_id = $order->id;
-                $orderHistory->user_id = 0;
-                $orderHistory->status = 8;
-                $orderHistory->save();
 
                 logger('Order is Orphaned');
                 return responseData('Order is Orphaned');
