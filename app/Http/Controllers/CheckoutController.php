@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\Address\Repositories\AddressRepository;
+use Modules\Delivery\Repositories\DeliveryTimeRepository;
 use Modules\Locations\Repositories\LocationRepository;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderHistory;
@@ -34,13 +35,15 @@ class CheckoutController extends Controller
     private $locationRepository;
     private $orderRepository;
     private $pharmacyRepository;
+    private $deliveryTimeReposiitory;
 
     public function __construct(CartRepository $cartRepository,
                                 AddressRepository $addressRepository,
                                 DeliveryChargeRepository $deliveryRepository,
                                 LocationRepository $locationRepository,
                                 OrderRepository $orderRepository,
-                                PharmacyRepository $pharmacyRepository)
+                                PharmacyRepository $pharmacyRepository,
+                                DeliveryTimeRepository $deliveryTimeReposiitory)
     {
         $this->cartRepository = $cartRepository;
         $this->addressRepository = $addressRepository;
@@ -48,6 +51,7 @@ class CheckoutController extends Controller
         $this->locationRepository = $locationRepository;
         $this->orderRepository = $orderRepository;
         $this->pharmacyRepository = $pharmacyRepository;
+        $this->deliveryTimeReposiitory = $deliveryTimeReposiitory;
     }
 
     /**
@@ -72,11 +76,17 @@ class CheckoutController extends Controller
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
         $allLocations = $this->locationRepository->getLocation();
         $user = User::find(Auth::guard('web')->user()->id);
+        $month = Carbon::now()->month;
+        $delivery_time = [
+            'normal_delivery_time'  => $this->deliveryTimeReposiitory->getTimeList($month, 1),
+            'express_delivery_time' => $this->deliveryTimeReposiitory->getTimeList($month, 2)
+        ];
+//        return $delivery_time;
 
         $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
         session()->put('cartCount', count($data) ?? '');
 
-        return view('checkout.index', compact('data', 'user', 'addresses', 'amount', 'pay_limit', 'delivery_charge', 'isPreOrderMedicine', 'allLocations'));
+        return view('checkout.index', compact('data', 'user', 'addresses', 'amount', 'pay_limit', 'delivery_charge', 'isPreOrderMedicine', 'allLocations', 'delivery_time'));
     }
 
     private function isPreOrderMedicine($medicines)
@@ -723,7 +733,7 @@ class CheckoutController extends Controller
         $data['customer_amount'] = round($data['customer_amount'], 2);
 
         $data['ssl_charge'] = $ssl_value;
-        if ($data['ssl_charge'] != null){
+        if ($data['ssl_charge'] != null && $data['payment_type'] == 2 && $data['delivery_method'] != 2){
             $data['subidha_comission'] = $data['subidha_comission'] - $data['ssl_charge'];
             $data['customer_amount'] = $data['customer_amount'] - $data['ssl_charge'];
         }
