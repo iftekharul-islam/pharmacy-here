@@ -773,10 +773,9 @@ class OrderRepository
             SendNotificationToAdmin::dispatch($order, $subject, $isCancel = true);
             logger('Status id');
             logger($status_id);
-            $order->status = $status_id;
-            $order->save();
+            logger('Order status canceled');
 
-            return responseData('Order status canceled');
+            return $this->forwardOrder($order_id, $status_id);
         }
 
         $order->status = $status_id;
@@ -817,29 +816,13 @@ class OrderRepository
         $date = Carbon::today()->format('l');
         $Holiday = strtolower($date);
         $time = Carbon::now()->format('H:i:s');
-//        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         logger(gettype($previousPharmacies));
         logger('$isAvailable');
         logger($isAvailable);
-//        $data = $previousPharmacies + $isAvailable;
-//        logger('gettype');
-//        logger(gettype($previousPharmacies));
-//        $data = array_merge(json_decode($previousPharmacies),json_decode($isAvailable));
         $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
-//        logger('$value');
-//        logger(gettype($value));
-//        logger($value);
-        logger('$data');
-        logger($data);
-        logger(json_encode($data));
-//        die();
         DB::enableQueryLog();
-        $pharmacy = PharmacyBusiness::query();
-//        $pharmacy->whereNotIn('user_id', $isAvailable);
-        $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
-//            ->whereIn('user_id', '!=', $isAvailable)
-//            ->whereNotIn('user_id', $previousPharmacies)
+        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
             ->orWhere(function ($q) use ($time) {
                 $q->where('is_full_open', 1)
                     ->orWhere(function ($q2) use ($time) {
@@ -858,7 +841,6 @@ class OrderRepository
             ->whereNotIn('user_id', $data)
             ->inRandomOrder()->first();
         logger(DB::getQueryLog());
-//        die();
         logger('$nearestPharmacy');
         logger($nearestPharmacy);
 
