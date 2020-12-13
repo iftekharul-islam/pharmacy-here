@@ -822,13 +822,15 @@ class OrderRepository
         logger($isAvailable);
         $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
         DB::enableQueryLog();
-        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-            ->where(function ($q) use ($time) {
-                $q->where('is_full_open', 1)
-                    ->orWhere(function ($q2) use ($time) {
-                        $q2->where('start_time', '<', $time)
-                            ->Where('end_time', '>', $time);
-                    });
+        $pharmacy = PharmacyBusiness::query();
+//        $pharmacy->whereNotIn('user_id', $isAvailable);
+        $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
+            ->Where('is_full_open', 1)
+            ->orWhere(function ($q) use ($time) {
+//                $q->where(function ($q) use ($time) {
+                $q->where('start_time', '<', $time)
+                    ->Where('end_time', '>', $time);
+//                });
 //                            ->Where(function ($q) use ($time) {
 //                                $q->Where('break_start_time', '>', $time)
 //                                    ->orWhere('break_end_time', '<', $time);
