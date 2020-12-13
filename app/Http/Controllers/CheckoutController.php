@@ -71,6 +71,7 @@ class CheckoutController extends Controller
         }
 
         $delivery_charge = $this->deliveryRepository->deliveryCharge($data->sum('amount'));
+//        return $delivery_charge;
         $pay_limit = config('subidha.ecash_payment_limit');
         $addresses = $this->addressRepository->getCustomerAddress(Auth::user()->id);
         $isPreOrderMedicine = $this->isPreOrderMedicine($data);
@@ -579,8 +580,8 @@ class CheckoutController extends Controller
 
                         $data['subidha_comission'] = round(($amount_value + $delivery_value), 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge') - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge')), 2);
-//                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
+//                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge')), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
                     }
                 }
 
@@ -618,8 +619,8 @@ class CheckoutController extends Controller
 
                         $data['subidha_comission'] = number_format(($amount_value + $delivery_value), 2);
                         $data['pharmacy_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-//                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+//                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
+                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
                     }
                 }
 
@@ -651,8 +652,8 @@ class CheckoutController extends Controller
 
                         $data['subidha_comission'] = round($amount_value, 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = round((($request->get('amount'))), 2);
-//                        $data['customer_amount'] = round((($request->get('amount')) + $ssl_value), 2);
+//                        $data['customer_amount'] = round((($request->get('amount'))), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + $ssl_value), 2);
                     }
                 }
 
@@ -692,8 +693,8 @@ class CheckoutController extends Controller
 
                         $data['subidha_comission'] = round(($amount_value + $delivery_value), 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-//                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+//                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
                         logger('8 done');
                     }
                 }
@@ -724,8 +725,8 @@ class CheckoutController extends Controller
                 $ssl_value = round(($request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
                 $data['subidha_comission'] = round($amount_value, 2);
-                $data['pharmacy_amount'] = round(($request->get('amount') - ( $data['subidha_comission'])), 2);
-//                $data['pharmacy_amount'] = round(($request->get('amount') - ($ssl_value + $data['subidha_comission'])), 2);
+//                $data['pharmacy_amount'] = round(($request->get('amount') - ( $data['subidha_comission'])), 2);
+                $data['pharmacy_amount'] = round(($request->get('amount') - ($ssl_value + $data['subidha_comission'])), 2);
                 $data['customer_amount'] = round(($request->get('amount')), 2);
             }
         }
@@ -733,10 +734,10 @@ class CheckoutController extends Controller
         $data['customer_amount'] = round($data['customer_amount'], 2);
 
         $data['ssl_charge'] = $ssl_value;
-        if ($data['ssl_charge'] != null && $data['payment_type'] == 2 && $data['delivery_method'] != 2){
-            $data['subidha_comission'] = $data['subidha_comission'] - $data['ssl_charge'];
-            $data['customer_amount'] = $data['customer_amount'] - $data['ssl_charge'];
-        }
+//        if ($data['ssl_charge'] != null && $data['payment_type'] == 2 && $data['delivery_method'] != 2){
+//            $data['subidha_comission'] = $data['subidha_comission'] - $data['ssl_charge'];
+////            $data['customer_amount'] = $data['customer_amount'] - $data['ssl_charge'];
+//        }
 
         $data['amount'] = round($request->amount, 2);
         $data['pharmacy_amount'] = round($data['pharmacy_amount'], 2);
