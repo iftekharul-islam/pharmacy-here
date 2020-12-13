@@ -826,14 +826,14 @@
                 console.log(grandTotalExpressDB, 'normal grandTotalDB');
                 $('input[name="amount"]').val(grandTotalExpressDB);
             } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
-                var egrandTotalNormalDB = grandTotal - ecashInNormalDelivery;
+                var egrandTotalNormalDB = grandTotal - ecashInNormalDelivery - eamountInNormalDelivery;
                 console.log(grandTotal, 'normal e grandTotal');
                 console.log(ecashInNormalDelivery, 'normal e ecashInNormalDelivery');
                 console.log(egrandTotalNormalDB, 'normal e grandTotalDB');
                 $('input[name="amount"]').val(egrandTotalNormalDB);
 
             } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
-                var egrandTotalExpressDB = grandTotal - ecashInExpressDelivery;
+                var egrandTotalExpressDB = grandTotal - ecashInExpressDelivery - eamountInExpressDelivery;
                 console.log(egrandTotalExpressDB, 'express e grandTotalDB');
                 $('input[name="amount"]').val(egrandTotalExpressDB);
 
