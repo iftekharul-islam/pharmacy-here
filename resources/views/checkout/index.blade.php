@@ -484,7 +484,9 @@
             });
         }
         let ExpressDeliveryTime = {!! json_encode($delivery_time['express_delivery_time']) !!};
+        let NormalDeliveryTime = {!! json_encode($delivery_time['normal_delivery_time']) !!};
         console.log(ExpressDeliveryTime);
+        console.log(NormalDeliveryTime);
             {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         let cashInNormalDeliveryValue = parseFloat("<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g, '')) + parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInNormalDeliveryAmount = cashInNormalDeliveryValue.toFixed(2);
@@ -616,40 +618,88 @@
 
                 var normal_time_slot = ["10:00 am-12:00 am", "7:00 pm-9:00 pm"];
 
+                var tm = new Date();
+                var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
+                var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
+
+                var time_now = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
+                var check_start_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
+                var check_end_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
+                var first_time_duration = NormalDeliveryTime[0].start_time + '' + NormalDeliveryTime[0].end_time;
+                var last_time_duration = NormalDeliveryTime[1].start_time + '' + NormalDeliveryTime[1].end_time;
+                console.log('check_time');
+                console.log(check_start_time);
+                console.log('check_end_time');
+                console.log(check_end_time);
+                console.log('time now');
+                console.log(time_now);
+
+                if (check_start_time > time_now) {
+                    console.log('hello in 1')
+                } else if ( time_now < check_end_time) {
+                    console.log('hello in 2')
+                } else {
+                    console.log('hello in 3')
+                }
+
                 var dt = new Date();
                 var month = dt.getMonth() + 1;
                 var date = dt.getDate() + "-" + month + "-" + dt.getFullYear()
                 var next_date = (dt.getDate() + 1) + "-" + month + "-" + dt.getFullYear()
                 var after_four_date = (dt.getDate() + 3) + "-" + month + "-" + dt.getFullYear()
 
-                var tm = new Date();
-                var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-                var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
-
                 console.log(PreOrderMedicine);
                 if (PreOrderMedicine !== '') {
                     $(".normal_delivery_date").val(after_four_date);
-                    $(".normal_delivery_time").val('10:00:00');
-                    $(".delivery_duration").val(normal_time_slot[0]);
+                    $(".normal_delivery_time").val(NormalDeliveryTime[0].start_time);
+                    $(".delivery_duration").val(first_time_duration);
 
-                } else if (time_new < normal_start_time) {
-                    $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + date);
+                }
+                else if (time_now < check_start_time) {
+                    $(".normal_date").val("(" + first_time_duration + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
-                    $(".normal_delivery_time").val('10:00:00');
-                    $(".delivery_duration").val(normal_time_slot[0]);
+                    $(".normal_delivery_time").val(NormalDeliveryTime[0].start_time);
+                    $(".delivery_duration").val(first_time_duration);
 
-                } else if (time_new > normal_start_time && time_new < normal_end_time) {
-                    $(".normal_date").val("(" + normal_time_slot[1] + ")" + ", " + date);
+                }
+                else if (time_now > check_start_time && time_now < check_end_time) {
+                    $(".normal_date").val("(" + last_time_duration + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
-                    $(".normal_delivery_time").val('19:00:00');
-                    $(".delivery_duration").val(normal_time_slot[1]);
+                    $(".normal_delivery_time").val(NormalDeliveryTime[1].start_time);
+                    $(".delivery_duration").val(last_time_duration);
 
                 } else {
-                    $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
+                    $(".normal_date").val("(" + last_time_duration + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
-                    $(".normal_delivery_time").val('10:00:00');
-                    $(".delivery_duration").val(normal_time_slot[0]);
+                    $(".normal_delivery_time").val(NormalDeliveryTime[0].start_time);
+                    $(".delivery_duration").val(last_time_duration);
                 }
+
+                // if (PreOrderMedicine !== '') {
+                //     $(".normal_delivery_date").val(after_four_date);
+                //     $(".normal_delivery_time").val('10:00:00');
+                //     $(".delivery_duration").val(normal_time_slot[0]);
+                //
+                // }
+                // else if (time_new < normal_start_time) {
+                //     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + date);
+                //     $(".normal_delivery_date").val(date);
+                //     $(".normal_delivery_time").val('10:00:00');
+                //     $(".delivery_duration").val(normal_time_slot[0]);
+                //
+                // }
+                // else if (time_new > normal_start_time && time_new < normal_end_time) {
+                //     $(".normal_date").val("(" + normal_time_slot[1] + ")" + ", " + date);
+                //     $(".normal_delivery_date").val(date);
+                //     $(".normal_delivery_time").val('19:00:00');
+                //     $(".delivery_duration").val(normal_time_slot[1]);
+                //
+                // } else {
+                //     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
+                //     $(".normal_delivery_date").val(next_date);
+                //     $(".normal_delivery_time").val('10:00:00');
+                //     $(".delivery_duration").val(normal_time_slot[0]);
+                // }
                 <!-- End of Normal delivery date calculation -->
 
                 $('.express-content').addClass('d-none');
