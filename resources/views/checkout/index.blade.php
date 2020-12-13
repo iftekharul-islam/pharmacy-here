@@ -677,12 +677,15 @@
 
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-                var time_now = moment.utc(time, 'hh:mm:ss').add(+2, 'hours').format('hh:mm A');
-                var tommorow_check = '10:00 PM';
+                var time_now = moment.utc(time, 'hh:mm:ss').add(+2, 'hours').format('HH:mm:ss');
 
                 var isAvailable = false;
                 $.each(ExpressDeliveryTime, function (key, value) {
-                    var check = moment.utc(value.start_time, 'hh:mm A').format('hh:mm A');
+                    var check = moment.utc(value.start_time, 'hh:mm A').format('HH:mm:ss');
+                    console.log('check')
+                    console.log(check)
+                    console.log('time_now')
+                    console.log(time_now)
 
                     if ( check >= time_now ) {
                         console.log('i m in 1');
