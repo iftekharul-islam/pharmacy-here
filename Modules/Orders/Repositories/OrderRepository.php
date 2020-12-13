@@ -823,7 +823,7 @@ class OrderRepository
         $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
         DB::enableQueryLog();
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-            ->orWhere(function ($q) use ($time) {
+            ->where(function ($q) use ($time) {
                 $q->where('is_full_open', 1)
                     ->orWhere(function ($q2) use ($time) {
                         $q2->where('start_time', '<', $time)
