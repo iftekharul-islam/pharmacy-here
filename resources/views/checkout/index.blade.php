@@ -290,7 +290,8 @@
                                             <ul>
                                                 <li>
                                                     <small><a href="{{ route('terms') }}"
-                                                              class="text-primary">{{ __('text.Terms_of_use') }}</a></small>
+                                                              class="text-primary">{{ __('text.Terms_of_use') }}</a>
+                                                    </small>
                                                 </li>
                                                 <li>
                                                     <small><a href="{{ route('privacy.page') }}"
@@ -490,8 +491,8 @@
         let cashInNormalDelivery = parseFloat(cashInNormalDeliveryAmount);
 
             {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
-            let eamountInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>");
-            let eamountInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>");
+        let eamountInNormalDelivery = parseFloat("<?php echo $delivery_charge['normal_delivery']['ecash']?>");
+        let eamountInExpressDelivery = parseFloat("<?php echo $delivery_charge['express_delivery']['ecash']?>");
             {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
             {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
 
@@ -676,28 +677,33 @@
 
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-                var time_now = moment.utc(time, 'hh:mm a');
-                var tommorow_check = '10:00 pm';
+                var time_now = moment.utc(time, 'hh:mm:ss').add(+2, 'hours').format('hh:mm A');
+                var tommorow_check = '10:00 PM';
 
+                var isAvailable = false;
                 $.each(ExpressDeliveryTime, function (key, value) {
-                    var check = moment.utc(value.start_time, 'hh:mm a').add(+2, 'hour');
+                    var check = moment.utc(value.start_time, 'hh:mm A').format('hh:mm A');
 
-                    if (check > time_now ) {
+                    if ( check >= time_now ) {
                         console.log('i m in 1');
+                        isAvailable = true;
                         $('.express_slot')
                             .append($("<option></option>")
                                 .attr("value", value.start_time)
                                 .text(value.start_time + ' - ' + value.end_time));
                     }
+                });
 
-                    if (time_now > tommorow_check) {
+                if (!isAvailable) {
+                    $.each(ExpressDeliveryTime, function (key, value) {
                         console.log('i m in 2');
                         $('.express_slot')
                             .append($("<option></option>")
                                 .attr("value", value.start_time)
-                                .text(value.start_time+ '-' + value.end_time));
-                    }
-                });
+                                .text(value.start_time + ' - ' + value.end_time));
+
+                    });
+                }
 
                 // var available_time = null;
                 //
@@ -837,7 +843,7 @@
                 console.log(egrandTotalExpressDB, 'express e grandTotalDB');
                 $('input[name="amount"]').val(egrandTotalExpressDB);
 
-            }else if (deliveryType === 2 && payTypeValue === 1) {
+            } else if (deliveryType === 2 && payTypeValue === 1) {
                 var pickUpFromPharmacy = grandTotal + cashInCollectFromPharmacy;
                 $('input[name="amount"]').val(pickUpFromPharmacy);
 
@@ -876,11 +882,11 @@
         }
 
         function showNormalDeliveryChargeInEpay() {
-            return 'Normal Delivery Charge:( TK ' + ecashInNormalDelivery + ') + E-pay charge ( TK ' + eamountInNormalDelivery +')'  ;
+            return 'Normal Delivery Charge:( TK ' + ecashInNormalDelivery + ') + E-pay charge ( TK ' + eamountInNormalDelivery + ')';
         }
 
         function showExpressDeliveryChargeInEpay() {
-            return 'Express Delivery Charge:( TK ' + ecashInExpressDelivery + ') + E-pay charge  ( TK ' + eamountInExpressDelivery +')'
+            return 'Express Delivery Charge:( TK ' + ecashInExpressDelivery + ') + E-pay charge  ( TK ' + eamountInExpressDelivery + ')'
         }
 
         var addresses = {!! json_encode($allLocations) !!};
