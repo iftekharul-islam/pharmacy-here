@@ -67,11 +67,12 @@ class PendingOrderForward implements ShouldQueue
                 $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
                 DB::enableQueryLog();
                 $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                    ->Where('is_full_open', 1)
-                    ->orWhere(function ($q) use ($time) {
-                                    $q->where('start_time', '<', $time)
-                                        ->Where('end_time', '>', $time);
-//                                });
+                    ->where(function ($q) use ($time, $data) {
+                        $q->where('is_full_open', 1)
+                            ->orWhere(function ($q2) use ($time) {
+                                $q2->where('start_time', '<', $time)
+                                    ->Where('end_time', '>', $time);
+                            });
 //                            ->Where(function ($q) use ($time) {
 //                                $q->Where('break_start_time', '>', $time)
 //                                    ->orWhere('break_end_time', '<', $time);
@@ -87,6 +88,7 @@ class PendingOrderForward implements ShouldQueue
 
                     logger("nearest Pharmacy found");
                     logger($nearestPharmacy->pharmacy_name);
+                    logger($nearestPharmacy);
 
                     $orderHistory = new OrderHistory();
                     $orderHistory->order_id = $order->id;
