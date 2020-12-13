@@ -84,12 +84,12 @@ class OrderRepository
         $time = Carbon::now()->format('H:i:s');
         $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
         $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
-            ->Where('is_full_open', 1)
-            ->orWhere(function ($q) use ($time) {
-//                        $q->where(function ($q) use ($time) {
-                $q->where('start_time', '<', $time)
-                    ->Where('end_time', '>', $time);
-//                        });
+            ->where(function ($q) use ($time) {
+                $q->where('is_full_open', 1)
+                    ->orWhere(function ($q2) use ($time) {
+                        $q2->where('start_time', '<', $time)
+                            ->Where('end_time', '>', $time);
+                    });
 //            ->where(function ($query) use ($time) {
 //                $query->Where('is_full_open', 1)
 //                    ->orWhere(function ($q) use ($time) {
@@ -840,12 +840,12 @@ class OrderRepository
         $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
 //            ->whereIn('user_id', '!=', $isAvailable)
 //            ->whereNotIn('user_id', $previousPharmacies)
-            ->Where('is_full_open', 1)
             ->orWhere(function ($q) use ($time) {
-//                $q->where(function ($q) use ($time) {
-                $q->where('start_time', '<', $time)
-                    ->Where('end_time', '>', $time);
-//                });
+                $q->where('is_full_open', 1)
+                    ->orWhere(function ($q2) use ($time) {
+                        $q2->where('start_time', '<', $time)
+                            ->Where('end_time', '>', $time);
+                    });
 //                            ->Where(function ($q) use ($time) {
 //                                $q->Where('break_start_time', '>', $time)
 //                                    ->orWhere('break_end_time', '<', $time);
