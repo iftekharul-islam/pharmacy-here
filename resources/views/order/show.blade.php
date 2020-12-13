@@ -112,6 +112,12 @@
                                 {{ $data->delivery_charge }}
                             </td>
                         </tr>
+                        <tr>
+                            <th>{{ __('text.ssl_charge') }}:</th>
+                            <td>
+                                {{ $data->ssl_charge ?? 'N/A'}}
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <div class="col-lg-7">

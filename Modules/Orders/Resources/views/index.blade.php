@@ -61,7 +61,7 @@
                             <option value="10" {{ $status == 10 ? 'selected' : '' }}>Canceled</option>
                             <option value="9" {{ $status == 9 ? 'selected' : '' }}>On The Way</option>
                             <option value="1" {{ $status == 1 ? 'selected' : '' }}>Accepted</option>
-                            <option value="7" {{ $status == 7 ? 'selected' : '' }}>Orphan</option>
+                            <option value="8" {{ $status == 7 ? 'selected' : '' }}>Orphan</option>
                         </select>
                     </div>
                     <div class="col-12 form-group mg-t-2 float-right">
