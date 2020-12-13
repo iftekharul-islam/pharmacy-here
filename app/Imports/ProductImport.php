@@ -218,7 +218,8 @@ class ProductImport implements ToCollection, WithHeadingRow
         }
 
         if ($name == null && $form != null) {
-            $name = '1 ' . $form;
+            $name = '1';
+//            $name = '1 ' . $form;
             $item = Unit::create([
                 'name' => $name,
                 'slug' => Str::slug($name),
