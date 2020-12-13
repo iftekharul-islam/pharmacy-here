@@ -482,13 +482,16 @@
                 this.className += " active";
             });
         }
-
+        let ExpressDeliveryTime = {!! json_encode($delivery_time['express_delivery_time']) !!};
+        console.log(ExpressDeliveryTime);
             {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         let cashInNormalDeliveryValue = parseFloat("<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g, '')) + parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInNormalDeliveryAmount = cashInNormalDeliveryValue.toFixed(2);
         let cashInNormalDelivery = parseFloat(cashInNormalDeliveryAmount);
 
             {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
+            let eamountInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>");
+            let eamountInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>");
             {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
             {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
 
@@ -671,36 +674,59 @@
 
                 $('.express_slot').append(`<option value="" selected disabled>Please Select a slot</option>`);
 
-                var today_date = new Date();
-                var time_now = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds();
+                var tm = new Date();
+                var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
+                var time_now = moment.utc(time, 'hh:mm a');
+                var tommorow_check = '10:00 pm';
 
-                var available_time = null;
+                $.each(ExpressDeliveryTime, function (key, value) {
+                    var check = moment.utc(value.start_time, 'hh:mm a').add(+2, 'hour');
 
-                $.each(express_time_slot, function (key) {
-                    if (express_time_slot_insert[key] >= time_now) {
-                        available_time = key + 2;
-                        return false; // breaks
-                    }
-
-                });
-
-                if (available_time !== null) {
-                    $.each(express_time_slot, function (key, value) {
-                        if (key >= available_time) {
-                            $('.express_slot')
-                                .append($("<option></option>")
-                                    .attr("value", express_time_slot_insert[key])
-                                    .text(value));
-                        }
-                    });
-                } else {
-                    $.each(express_time_slot, function (key, value) {
+                    if (check > time_now ) {
+                        console.log('i m in 1');
                         $('.express_slot')
                             .append($("<option></option>")
-                                .attr("value", express_time_slot_insert[key])
-                                .text(value));
-                    });
-                }
+                                .attr("value", value.start_time)
+                                .text(value.start_time + ' - ' + value.end_time));
+                    }
+
+                    if (time_now > tommorow_check) {
+                        console.log('i m in 2');
+                        $('.express_slot')
+                            .append($("<option></option>")
+                                .attr("value", value.start_time)
+                                .text(value.start_time+ '-' + value.end_time));
+                    }
+                });
+
+                // var available_time = null;
+                //
+                //
+                // $.each(express_time_slot, function (key) {
+                //     if (express_time_slot_insert[key] >= time_now) {
+                //         available_time = key + 2;
+                //         return false; // breaks
+                //     }
+                //
+                // });
+                //
+                // if (available_time !== null) {
+                //     $.each(express_time_slot, function (key, value) {
+                //         if (key >= available_time) {
+                //             $('.express_slot')
+                //                 .append($("<option></option>")
+                //                     .attr("value", express_time_slot_insert[key])
+                //                     .text(value));
+                //         }
+                //     });
+                // } else {
+                //     $.each(express_time_slot, function (key, value) {
+                //         $('.express_slot')
+                //             .append($("<option></option>")
+                //                 .attr("value", express_time_slot_insert[key])
+                //                 .text(value));
+                //     });
+                // }
 
                 <!--End express delivery date calculation -->
 
@@ -712,8 +738,6 @@
         $('#expressTime').on('change', function () {
             var time_slot = $('#expressTime option:selected').val()
             var time_slot_duration = $('#expressTime option:selected').html();
-            console.log(time_slot_duration);
-
 
             var dt = new Date();
             var month = dt.getMonth() + 1;
@@ -721,20 +745,29 @@
             var date = dt.getDate() + "-" + month + "-" + dt.getFullYear()
             var next_date = dt.getDate() + 1 + "-" + month + "-" + dt.getFullYear()
 
+            // var date2 = new Date();
+            // var hours = date2.getHours();
+            // var minutes = date2.getMinutes();
+            // var ampm = hours >= 12 ? 'pm' : 'am';
+            // hours = hours % 12;
+            // hours = hours ? hours : 12; // the hour '0' should be '12'
+            // minutes = minutes < 10 ? '0'+minutes : minutes;
+            // var strTime = hours + ':' + minutes + ' ' + ampm;
+            // console.log('Express time now')
+            // console.log(strTime);
+
             var tm = new Date();
             var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-            var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
+            var time_now = moment.utc(time, 'hh:mm a');
+            var check = moment.utc(time_slot, 'hh:mm a').add(-2, 'hour');
 
-            var check_time = moment.utc(time_slot, 'hh:mm:ss').add(-2, 'hour').format('HH:mm:ss');
-            var show_time = moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A');
-
-            if (time_new > check_time) {
-                $('.express_date').val(show_time + ", " + next_date);
+            if (time_now > check) {
+                $('.express_date').val(time_slot_duration + ", " + next_date);
                 $(".express_delivery_date").val(next_date);
                 $(".express_delivery_time").val(time_slot);
                 $(".delivery_duration").val(time_slot_duration);
             } else {
-                $('.express_date').val(moment.utc(time_slot, 'hh:mm:ss').format('hh:mm A') + ", " + date);
+                $('.express_date').val(time_slot_duration + ", " + date);
                 $(".express_delivery_date").val(date);
                 $(".express_delivery_time").val(time_slot);
                 $(".delivery_duration").val(time_slot_duration);
@@ -762,13 +795,13 @@
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
                 console.log(ecashInNormalDelivery, 'e cash normal');
-                grandTotal = total + ecashInNormalDelivery;
+                grandTotal = total + ecashInNormalDelivery + eamountInNormalDelivery;
                 $('input[name="delivery_charge_amount"]').val(ecashNoramlCharge);
                 // $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
                 console.log(ecashInExpressDelivery, 'e cash express');
-                grandTotal = total + ecashInExpressDelivery;
+                grandTotal = total + ecashInExpressDelivery + eamountInExpressDelivery;
                 $('input[name="delivery_charge_amount"]').val(ecashExpressCharge);
             }
 
@@ -835,19 +868,19 @@
         }
 
         function showNormalDeliveryChargeInCash() {
-            return 'Normal Delivery (Charge: TK ' + cashInNormalDelivery + ')'
+            return 'Normal Delivery Charge:(TK ' + cashInNormalDelivery + ')'
         }
 
         function showExpressDeliveryChargeInCash() {
-            return 'Express Delivery (Charge: TK ' + cashInExpressDelivery + ')'
+            return 'Express Delivery Charge:(TK ' + cashInExpressDelivery + ')'
         }
 
         function showNormalDeliveryChargeInEpay() {
-            return 'Normal Delivery (Charge: TK ' + ecashInNormalDelivery + ') + E-payment charge';
+            return 'Normal Delivery Charge:( TK ' + ecashInNormalDelivery + ') + E-pay charge ( TK ' + eamountInNormalDelivery +')'  ;
         }
 
         function showExpressDeliveryChargeInEpay() {
-            return 'Express Delivery (Charge: TK ' + ecashInExpressDelivery + ') + E-payment charge'
+            return 'Express Delivery Charge:( TK ' + ecashInExpressDelivery + ') + E-pay charge  ( TK ' + eamountInExpressDelivery +')'
         }
 
         var addresses = {!! json_encode($allLocations) !!};
