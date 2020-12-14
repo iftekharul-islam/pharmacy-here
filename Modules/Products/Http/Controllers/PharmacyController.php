@@ -5,6 +5,7 @@ namespace Modules\Products\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Locations\Repositories\LocationRepository;
 use Modules\Products\Http\Requests\UpdatePharmacyRequest;
 use Modules\Products\Repositories\PharmacyRepository;
 use Modules\User\Entities\Models\User;
@@ -12,21 +13,28 @@ use Modules\User\Entities\Models\User;
 class PharmacyController extends Controller
 {
     private $repository;
+    private $locationRepository;
 
-    public function __construct(PharmacyRepository $repository)
+    public function __construct(PharmacyRepository $repository, LocationRepository $locationRepository)
     {
-        $this->repository =$repository;
+        $this->repository = $repository;
+        $this->locationRepository = $locationRepository;
     }
 
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pharmacies = $this->repository->all();
-        // dd($pharmacies);
-        return view('products::pharmacy.index', compact('pharmacies'));
+        $display_area = $request->area_id;
+        $display_thana = $request->thana_id;
+        $display_district = $request->district_id;
+        $allLocations = $this->locationRepository->getLocation();
+        $pharmacies = $this->repository->all($request);
+
+        return view('products::pharmacy.index', compact('pharmacies', 'allLocations',
+            'display_area', 'display_thana', 'display_district'));
     }
 
     /**
@@ -57,7 +65,6 @@ class PharmacyController extends Controller
     {
         return view('products::pharmacy.show');
     }
-
     /**
      * Show the form for editing the specified resource.
      * @param int $id
@@ -65,9 +72,9 @@ class PharmacyController extends Controller
      */
     public function edit($id)
     {
+        $allLocations = $this->locationRepository->getLocation();
         $pharmacy = $this->repository->findById($id);
-        // dd($pharmacy);
-        return view('products::pharmacy.edit', compact('pharmacy'));
+        return view('products::pharmacy.edit', compact('pharmacy', 'allLocations'));
     }
 
     /**
@@ -78,6 +85,7 @@ class PharmacyController extends Controller
      */
     public function update(UpdatePharmacyRequest $request, $id)
     {
+//        return $request->all();
         $pharmacy = $this->repository->update($request, $id);
         return redirect()->route('pharmacy.index')->with('success', 'Pharmacy updated Successfully');
     }
@@ -92,4 +100,5 @@ class PharmacyController extends Controller
         $pharmacy = $this->repository->delete($id);
         return redirect()->route('pharmacy.index');
     }
+
 }

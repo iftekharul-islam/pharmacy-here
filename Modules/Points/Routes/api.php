@@ -23,4 +23,6 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['middleware' => ['api.auth']], function ($api) use ($namespace) {
     $api->post('playstore-rating', $namespace . '\PointsController@playstoreRating');
+    $api->post('alarm-point', $namespace . '\PointsController@alarmPoint');
+
 });

@@ -24,7 +24,7 @@
     <div class="order-section">
         <div class="container">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-lg-5">
                     <h2 class="my-dashboard-title">{{ __('text.my_order_details') }}</h2>
 {{--                <div class="col-5">--}}
                     <table class="my-table table table-borderless">
@@ -71,7 +71,7 @@
                         <tr>
                             <th>{{ __('text.payment_type') }}:</th>
                             <td>
-                                @if ($data->payment_type == 1)
+                                @if ($data->payment_type === 1)
                                     Cash on Delivery
                                 @else
                                     Online Payment
@@ -112,27 +112,31 @@
                                 {{ $data->delivery_charge }}
                             </td>
                         </tr>
+                        <tr>
+                            <th>{{ __('text.ssl_charge') }}:</th>
+                            <td>
+                                {{ $data->ssl_charge ?? 'N/A'}}
+                            </td>
+                        </tr>
                     </table>
                 </div>
-                <div class="col-md-7">
-                <div class="my-order-list">
+                <div class="col-lg-7">
+                <div class="order-summary">
                     <div class="table-responsive">
                         <table class="table table-borderless">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">{{ __('text.product') }}</th>
-                                    <th scope="col">{{ __('text.price') }}</th>
-                                    <th scope="col" class="text-center">{{ __('text.quantity') }}</th>
-                                    <th scope="col">{{ __('text.sub_total') }}</th>
-                                </tr>
-                            </thead>
                             <tbody>
+                            <tr>
+                                <th scope="col">{{ __('text.product') }}</th>
+                                <th scope="col">{{ __('text.price') }}</th>
+                                <th scope="col" class="text-center">{{ __('text.quantity') }}</th>
+                                <th scope="col" class="text-center">{{ __('text.sub_total') }}</th>
+                            </tr>
                             @foreach ($data['orderItems'] as $product)
                                 <tr>
                                     <td>{{ $product->product->name }}</td>
                                     <td>{{ $product->product->purchase_price }}</td>
                                     <td class="text-center">{{ $product->quantity }}</td>
-                                    <td>{{ $product->quantity * $product->product->purchase_price }}</td>
+                                    <td class="text-center">{{ $product->quantity * $product->product->purchase_price }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -141,7 +145,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td><strong>{{ __('text.grand_total') }} : </strong>৳  {{ $data->amount + $data->delivery_charge }}</td>
+                                    <td><strong>{{ __('text.grand_total') }} : </strong>৳  {{ $data->customer_amount }}</td>
                                 </tr>
                             </tfooter>
                         </table>

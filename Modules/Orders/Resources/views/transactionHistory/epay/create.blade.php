@@ -12,33 +12,42 @@
             <!-- form start -->
             <form role="form" action="{{ route('transactionHistory.store') }}" method="POST">
                 @csrf
-                <input type="hidden" name="pharmacy_id" value="{{ $data->pharmacy_id }}">
+                <input type="hidden" name="pharmacy_id" value="{{ $data->user_id }}">
                 <div class="card-body">
                     <div class="form-group row">
-                        @if (isset($data->pharmacy->pharmacyOrder[0]->pharmacy_amount))
-                            @if ($data->pharmacy->pharmacyOrder[0]->pharmacy_amount > $data->amount)
+                        @php
+                            $subidha_amount = isset($data->pharmacyOrder[0]) ? $data->pharmacyOrder[0]->subidha_amount : 0;
+                            $pharmacy_amount = isset($data->pharmacyOrder[0]) ? $data->pharmacyOrder[0]->pharmacy_amount : 0;
+                            $amount = isset($data->pharmacyTransaction[0]) ? $data->pharmacyTransaction[0]->amount : 0;
+                            $payable = $subidha_amount + $amount ;
+                        @endphp
+                        @if (isset($pharmacy_amount))
+                            @if ($pharmacy_amount > $payable)
                                 <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
                                 <div class="col-sm-8">
-                                        <label class="col-form-label">{{ $data->pharmacy->pharmacyOrder[0]->pharmacy_amount - $data->amount }}</label>
+                                    <label
+                                        class="col-form-label">{{ number_format($pharmacy_amount - $payable, 2) }}</label>
                                 </div>
                             @else
                                 <label for="due-amount" class="col-sm-4 col-form-label">Paid more amount</label>
                                 <div class="col-sm-8">
-                                    <label class="col-form-label">{{ $data->amount - $data->pharmacy->pharmacyOrder[0]->pharmacy_amount }}</label>
+                                    <label
+                                        class="col-form-label">{{ number_format($payable - $pharmacy_amount, 2) }}</label>
                                 </div>
 
                             @endif
                         @else
                             <label for="due-amount" class="col-sm-4 col-form-label">Due amount</label>
                             <div class="col-sm-8">
-                                <label class="col-form-label">{{ $data->amount }}</label>
+                                <label class="col-form-label">{{ $payable }}</label>
                             </div>
                         @endif
                     </div>
                 <div class="form-group row">
                     <label for="amount" class="col-sm-4 col-form-label">Amount</label>
                     <div class="col-sm-8">
-                        <input type="number" name="amount" value="" class="form-control" min="0" id="amount" placeholder="Amount">
+                        <input type="number" step="0.01" name="amount" value="" class="form-control" min="0" id="amount"
+                               placeholder="Amount">
                         @if ($errors->has('amount'))
                             <span class="text-danger">
                                 <strong>{{ $errors->first('amount') }}</strong>
@@ -74,7 +83,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="{{ route('transactionHistory.index') }}" class="btn btn-danger">Back</a>
+                    <a href="{{ URL::previous() }}" class="btn btn-danger">Back</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>

@@ -10,7 +10,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" action="{{ route('customer.store', $data->id) }}" method="POST">
+            <form role="form" action="{{ route('new.customer.update', $data->id) }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
@@ -47,9 +47,47 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" name="password" value="" class="form-control"
+                                   placeholder="Enter password">
+                            @if ($errors->has('password'))
+                                <span class="text-danger">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Confirm Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" name="password_confirmation" value="" class="form-control"
+                                   placeholder="Confirm Password">
+                            @if ($errors->has('password_confirmation'))
+                                <span class="text-danger">
+                                <strong>{{ $errors->first('password_confirmation') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Status</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="status" id="status">
+                                <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                            @if ($errors->has('status'))
+                                <span class="text-danger">
+                                <strong>{{ $errors->first('status') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
 
                     <div class="card-footer">
-                        <a href="{{ url('user/dashboard') }}" class="btn btn-danger">Back</a>
+                        <a href="{{ route('user.dashboard') }}" class="btn btn-danger">Back</a>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>

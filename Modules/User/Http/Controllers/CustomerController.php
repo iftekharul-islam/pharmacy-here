@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\User\Entities\Models\User;
+use Modules\User\Http\Requests\CustomerCreateRequest;
+use Modules\User\Http\Requests\UserCreateRequest;
 use Modules\User\Repositories\CustomerRepository;
 use Modules\User\Repositories\UserRepository;
 
@@ -24,10 +26,9 @@ class CustomerController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-    	$data = $this->repository->all();
-//    	return $data;
+    	$data = $this->repository->all($request);
         return view('user::customer.index', compact('data'));
     }
 
@@ -37,7 +38,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('user::create');
+        return view('user::customer.create');
     }
 
     /**
@@ -45,9 +46,10 @@ class CustomerController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CustomerCreateRequest $request)
     {
-        //
+        $user = $this->repository->create($request);
+        return redirect()->route('customer.index')->with('success', 'Customer successfully Created');
     }
 
     /**
@@ -80,31 +82,10 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return false;
+        $data = $this->repository->updateWeb($request, $id);
+        if ($data === false) {
+            return redirect()->route('customer.index')->with('failed', 'Customer not found');
         }
-
-        $data = $request->only(['name', 'email', 'phone_number']);
-
-        if (isset($request->name)) {
-            $user->name = $request->name;
-        }
-
-        if (isset($data['email'])) {
-            $user->email = $data['email'];
-        }
-
-        if (isset($data['phone_number'])) {
-            $user->phone_number = $data['phone_number'];
-        }
-        $user->save();
-
-//           $data = $this->repository->updateWeb($id, $request);
-//           if ($data == false){
-//                return redirect()->route('customer.index')->with('failed', 'Customer not updated');
-//           }
         return redirect()->route('customer.index')->with('success', 'Customer successfully updated');
     }
 
@@ -116,6 +97,6 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $users = $this->repository->delete($id);
-        return redirect()->route('customer.index')->with('success', 'Customer deletion successfully');
+        return redirect()->route('customer.index')->with('success', 'Customer deleted successfully');
     }
 }

@@ -4,35 +4,58 @@ namespace Modules\User\Repositories;
 
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Entities\Models\OneTimePassword;
 use Modules\Auth\Jobs\SendOtp;
 use Modules\User\Entities\Models\User;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
-class UserRepository {
+class UserRepository
+{
 
 
-	public function all() {
-		return User::all();
-	}
+    public function all()
+    {
+        return User::all();
+    }
 
-	public function get($id) {
+    public function viewAdmin()
+    {
+        return User::find(Auth::user()->id);
+    }
 
-	}
+    public function adminUpdate($request, $id)
+    {
+        $user = user::find($id);
+        if (!$user) {
+            return false;
+        }
+        $data = $request->only('password');
+        if (isset($data['password'])) {
+            $user->password = $data['password'];
+        }
+        $user->save();
 
-	public function create($request) {
-		$user = $request->only('name', 'email', 'password');
+        return true;
+    }
 
-		return User::create($user);
-	}
+    public function get($id)
+    {
 
-//	public function delete() {
-//
-//	}
+    }
 
-	public function update() {
+    public function create($request)
+    {
+        $user = $request->only('name', 'email', 'password');
 
-	}
+        return User::create($user);
+    }
+
+    public function update()
+    {
+
+    }
 
     public function createOtp($phone)
     {

@@ -3,13 +3,13 @@
 namespace Modules\Orders\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Modules\Orders\Http\Requests\CreateTransactionHistoryRequest;
 use Modules\Orders\Repositories\TransactionHistoryRepository;
 use Modules\Orders\Transformers\OrderTransformer;
 use Modules\Orders\Transformers\TransactionHistoryTransformer;
+use Nwidart\Modules\Collection;
 
 class TransactionHistoryController extends BaseController
 {
@@ -19,6 +19,7 @@ class TransactionHistoryController extends BaseController
     {
         $this->repository = $repository;
     }
+
     /**
      * Display a listing of the resource.
      * @return Response
@@ -39,9 +40,7 @@ class TransactionHistoryController extends BaseController
 
         $data = $this->repository->getPharmacyTransactionAmount($user->id);
 
-//        return $data;
-
-        return responsePreparedData( $data );
+        return responsePreparedData($data);
     }
 
     public function pharmacySalesHistory()
@@ -56,30 +55,27 @@ class TransactionHistoryController extends BaseController
     public function pharmacyTotalSale()
     {
         $user = Auth::user();
-
-
         $pharmacySales = $this->repository->pharmacyTotalSale($user->id);
-//        return $pharmacySales;
+        $pharmacyOrders = $this->repository->pharmacyOrders($user->id);
+        $pendingOrders = $this->repository->TotalPendingOrders($user->id);
+        $ordersByMonth = $this->repository->completeOrdersByMonth($user->id);
+        $new = new Collection();
 
-        $totalSale = 0;
-
-        foreach($pharmacySales as $item) {
-            if($item['payment_type'] == 2) {
-                $totalSale = $totalSale + $item['pharmacy_amount'];
-            } else {
-                $totalSale = $totalSale + $item['customer_amount'];
-            }
+        foreach ($ordersByMonth as $item) {
+            $new->push((object)[
+                'amount' => $item['cod_amount'] + $item['epay_amount'],
+                'month_name' => $item['month_name'],
+            ]);
         }
 
         $data = [
-            'total_sale' => $totalSale,
-            'sale_count' => count($pharmacySales)
+            'total_sale' => $pharmacySales['cod_amount'] + $pharmacySales['epay_amount'],
+            'sale_count' => count($pharmacyOrders),
+            'pending_orders_count' => count($pendingOrders),
+            'orders_by_month' => $new,
         ];
 
         return responsePreparedData($data);
-
-//        return $this->response->paginator($data, new OrderTransformer());
-
     }
 
     public function storePharmacyTransaction(CreateTransactionHistoryRequest $request)
@@ -90,8 +86,6 @@ class TransactionHistoryController extends BaseController
 
         return $this->response->item($data, new TransactionHistoryTransformer());
     }
-
-
 
 
 }

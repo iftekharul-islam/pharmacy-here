@@ -4,6 +4,7 @@
 namespace Modules\Delivery\Repositories;
 
 
+use Carbon\Carbon;
 use Modules\Delivery\Entities\Models\DeliveryTime;
 
 class DeliveryTimeRepository
@@ -75,8 +76,8 @@ class DeliveryTimeRepository
         foreach ($data as $item) {
             if ($item->start_month > $item->end_month) {
                 $final_data['summer']['time'][] = [
-                    'start_time' => $item->start_time,
-                    'end_time' => $item->end_time,
+                    'start_time' => Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A'),
+                    'end_time' => Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A'),
                 ];
 
                 for ($i = $item->start_month; $i <= 12; $i++ ) {
@@ -91,8 +92,8 @@ class DeliveryTimeRepository
                 }
             } else {
                 $final_data['winter']['time'][] = [
-                    'start_time' => $item->start_time,
-                    'end_time' => $item->end_time,
+                    'start_time' => Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A'),
+                    'end_time' => Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A'),
                 ];
 
                 for ($i = $item->start_month; $i <= $item->end_month; $i++ ) {

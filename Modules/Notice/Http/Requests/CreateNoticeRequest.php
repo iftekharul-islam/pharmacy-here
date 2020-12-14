@@ -17,7 +17,7 @@ class CreateNoticeRequest extends FormRequest
             'notice' => 'required|min:3',
             'bn_notice' => 'required|min:3',
             'status' => 'required',
-            'type' => 'required'
+//            'type' => 'required'
         ];
     }
 

@@ -9,6 +9,7 @@ use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Modules\Products\Entities\Model\Product;
 use Modules\Products\Http\Requests\CreateProductRequest;
 use Modules\Products\Http\Requests\UpdateProductRequest;
@@ -33,11 +34,11 @@ class ProductsController extends BaseController
     {
         $productList = $this->repository->all($request);
 
-        if (! $productList) {
+        if (!$productList) {
             throw new NotFoundHttpException('Product List Not Found');
         }
 
-        return $this->response->paginator($productList, new ProductTransformer());
+        return $this->response->paginator($productList['value'], new ProductTransformer())->setMeta(['result' => $productList['alterResult']]);
     }
 
     public function getAllProduct()
@@ -147,14 +148,33 @@ class ProductsController extends BaseController
         return $this->response->collection($product, new ProductTransformer());
     }
 
+    /**
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     */
     public function search(Request $request)
     {
         $productList = $this->repository->search($request);
 
-        if (! $productList) {
+        if (!$productList) {
             throw new NotFoundHttpException('Search Product List Not Found');
         }
 
         return $this->response->collection($productList, new ProductTransformer());
+    }
+
+    /**
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     */
+    public function productByAmount(Request $request)
+    {
+        $productList = $this->repository->searchByProductAmount($request);
+
+        if (!$productList) {
+            throw new NotFoundHttpException('Product List Not Found');
+        }
+
+        return $this->response->paginator($productList, new ProductTransformer());
     }
 }

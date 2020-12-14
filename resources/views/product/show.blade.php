@@ -30,7 +30,7 @@
 </style>
 @section('content')
     @if(session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
@@ -59,21 +59,29 @@
                             <h3>{{ $data->name }}</h3>
                             <h3 class="text-success">৳ {{ $data->purchase_price }} / {{ __('text.piece') }}</h3>
                         </div>
-                        <table class="table table-borderless">
-                            <tr>
-                                <th>{{ __('text.generic') }}</th>
-                                <td> {{ $data->generic->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ trans_choice('text.company', 2) }}</th>
-                                <td>{{ $data->company->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ __('text.form') }}</th>
-                                <td>{{ $data->form->name }}</td>
-                            </tr>
-                        </table>
-                        <div class="product-details-btn">
+                        <div>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>{{ __('text.generic') }}</th>
+                                    <td> {{ $data->generic->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ trans_choice('text.company', 2) }}</th>
+                                    <td>{{ $data->company->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ __('text.form') }}</th>
+                                    <td>{{ $data->form->name }}</td>
+                                </tr>
+                                @if(!empty($data->strength))
+                                    <tr>
+                                        <th>{{ __('text.strength') }}</th>
+                                        <td>{{ $data->strength }}</td>
+                                    </tr>
+                                @endif
+                            </table>
+                        </div>
+                    <div class="product-details-btn ml-2">
                             <a href="{{ route('product-list') }}" class="btn--edit mr-2">{{ __('text.back') }}</a>
                             @guest
                                 <a href="{{ route('customer.login', $data->id) }}" class="btn--primary"><i class="fa fa-shopping-cart"></i> {{ __('text.add_to_cart') }}</a>
@@ -87,6 +95,7 @@
                 @if (count($relatedProducts) > 0)
                     <div class="col-12 my-5">
                         <h3>{{ __('text.similar_product') }}</h3>
+                        <strong>{{ __('text.similar_title') }}</strong>
                         <hr class="fancy4">
                     </div>
                     <div class="col-md-12">
@@ -119,7 +128,7 @@
                                             <span class=" mb-4"></span>
                                         @endif
                                         <h5 style="margin: 0px">{{ $product->name }}</h5>
-                                        <small>{{ $product->strength }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ __('text.piece') }}</small>
+                                        <small>{{ $product->strength }}</small><small class="float-right text-success">৳ {{ $product->purchase_price }} / {{ $product->primaryUnit->name }}</small>
                                         <br>
                                         <small>{{ $product->generic->name }}</small>
                                         <p><small>{{ $product->company->name }}</small></p>

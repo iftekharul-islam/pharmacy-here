@@ -4,6 +4,10 @@
 namespace Modules\Points\Repositories;
 
 
+
+use Carbon\Carbon;
+use Faker\Provider\DateTime;
+
 use Modules\Points\Entities\Models\Points;
 
 class PointRepository
@@ -25,4 +29,26 @@ class PointRepository
             'type' => 'manual',
         ]);
     }
+
+    public function alarmPoint($user_id)
+    {
+        $first_day = date('Y-m-01');
+
+        if ($first_day === Carbon::now()->toDateString()) {
+            $existAlarm = Points::where('user_id', $user_id)->where('type', 'alarm')->whereDate('created_at', $first_day)->first();
+
+            if (!$existAlarm) {
+                $data = Points::create([
+                    'user_id' => $user_id,
+                    'points' => config('subidha.point_on_first_use'),
+                    'type' => 'alarm',
+                ]);
+                return $data;
+            }
+            return true;
+        }
+        return false;
+    }
+
+
 }

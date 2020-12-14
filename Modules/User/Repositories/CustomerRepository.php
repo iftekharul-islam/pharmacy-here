@@ -7,18 +7,74 @@ namespace Modules\User\Repositories;
 use Dingo\Api\Exception\DeleteResourceFailedException;
 // use Modules\Products\Entities\Pharmacy;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Modules\Address\Entities\CustomerAddress;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Request;
 
 class CustomerRepository
 {
-    public function all()
+    public function all($request)
     {
-        return User::where('is_pharmacy', 0)->where('is_admin', 0)->orderby('id', 'desc')->paginate(20);
+        $data = User::query();
+        $data->where('is_pharmacy', 0)->where('is_admin', 0);
+        if ($request->search !== null) {
+            $data->where('name', 'LIKE', "%{$request->search}%");
+        }
+
+        return $data->orderby('id', 'desc')->paginate(20);
     }
+
+    public function create($request)
+    {
+        $data = $request->only(['name', 'email', 'phone_number', 'status']);
+        $user = User::create($data);
+
+        $role = Role::where('name', 'customer')->first();
+        if ($user && $role) {
+            $user->assignRole($role);
+        }
+
+        return $user;
+    }
+
+    public function UpdateWeb($request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return false;
+        }
+        $data = $request->only(['name', 'email', 'phone_number', 'password', 'status']);
+
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+
+        if (isset($data['email'])) {
+            $user->email = $data['email'];
+        }
+
+        if (isset($data['phone_number'])) {
+            $user->phone_number = $data['phone_number'];
+        }
+        if (isset($data['phone_number'])) {
+            $user->phone_number = $data['phone_number'];
+        }
+        if (isset($data['password'])) {
+            $user->password = Hash::make($data['password']);
+        }
+        if (isset($data['status'])) {
+            $user->status = $data['status'];
+        }
+        $user->save();
+
+        return true;
+    }
+
 
     public function update($request, $id)
     {
@@ -28,10 +84,9 @@ class CustomerRepository
             throw new NotFoundHttpException('Customer not found');
         }
 
-        $address = CustomerAddress::where('user_id',$id)->first();
+        $address = CustomerAddress::where('user_id', $id)->first();
 
         if (!$address) {
-//            throw new NotFoundHttpException('Address not found');
             $address = new CustomerAddress();
         }
 
@@ -42,11 +97,9 @@ class CustomerRepository
         if (isset($request->area_id)) {
             $address->area_id = $request->area_id;
         }
-        logger('Customer update address');
 
         $address->user_id = $id;
         $address->save();
-        logger('Customer update address end');
 
         if (isset($request->name)) {
             $user->name = $request->name;
@@ -75,50 +128,18 @@ class CustomerRepository
         if ($request->has('image')) {
             $user->image = $request->get('image');
         }
-        logger('Customer update ');
         $user->save();
-        logger('Customer update end');
         return $user;
     }
 
     /**
      * Find pharmacy by id
      * @param $id int
-    */
+     */
 
     public function findById($id)
     {
         return User::find($id);
-    }
-
-    public function updateWeb($request, $id)
-    {
-        $user = User::find($id);
-
-        if (!$user) {
-            return false;
-        }
-//        $data = $request->only('name', 'email', 'phone_number');
-
-        if (isset($request->name)) {
-            $user->name = $request->name;
-        }
-
-//        if (isset($data->name)) {
-//            $user->name = $data->name;
-//        }
-
-//        if (isset($data['email'])) {
-//            $user->email = $data['email'];
-//        }
-//
-//        if (isset($data['phone_number'])) {
-//            $user->phone_number = $data['phone_number'];
-//        }
-        $user->save();
-
-        return true;
-
     }
 
     public function delete($id)
@@ -132,24 +153,20 @@ class CustomerRepository
 
     public function get($id)
     {
-//        $data = User::find($id);
-//        return $data;
-
         return User::select(
             DB::raw('users.id, users.name, users.phone_number, users.email, users.image,
             users.alternative_phone_number, users.dob, users.gender, users.referral_code, SUM(points.points) as points'))
-            ->join('points', 'users.id','=','points.user_id')
+            ->join('points', 'users.id', '=', 'points.user_id')
             ->where('users.id', $id)->first();
     }
 
-    public function userDetails($id)
-    {
-        $data =  User::find($id);
-        return $data;
-    }
+    /**
+     * @param $request
+     * @param $id
+     */
     public function userDetailsUpdate($request, $id)
     {
-        $user =  User::findOrFail($id);
+        $user = User::findOrFail($id);
         $data = $request->only(['name', 'phone_number', 'alternative_phone_number', 'dob', 'gender']);
 
         if (isset($data['name'])) {

@@ -2,7 +2,8 @@
 
 namespace Modules\Points\Http\Controllers\API;
 
-use Illuminate\Http\JsonResponse;
+
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -69,11 +70,31 @@ class PointsController extends Controller
     }
 
     /**
-     * @return JsonResponse
+
+     * @return \Illuminate\Http\JsonResponse
+
      */
     public function playstoreRating()
     {
         $rating = $this->repository->playstoreRating(Auth::guard('api')->user()->id);
         return responsePreparedData($rating);
     }
+
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function alarmPoint()
+    {
+        $data = $this->repository->alarmPoint(Auth::guard('api')->user()->id);
+
+        if ($data !== true && $data !== false) {
+            return responsePreparedData($data);
+        } elseif ($data !== false) {
+            return responsePreparedData('Point is already given');
+        }
+
+        return responsePreparedData('Today is not first date of month');
+    }
+
 }

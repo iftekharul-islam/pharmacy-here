@@ -40,7 +40,7 @@ class CartController extends Controller
             $cartCount = $this->repository->getCartItemCount(Auth::user()->id);
             session()->put('cartCount', $cartCount);
 
-            return redirect()->back()->with('success', 'Product added to cart successfully!');
+            return redirect()->back()->with('success', __('text.add_to_cart_message'));
         }
         else {
             $product = Product::find($id);
@@ -67,7 +67,7 @@ class CartController extends Controller
                 session()->put('cart', $cart);
                 session()->put('cartCount', count($cart));
 
-                return redirect()->back()->with('success', 'Product added to cart successfully!');
+                return redirect()->back()->with('success', __('text.add_to_cart_message'));
             }
 
             // if cart not empty then check if this product exist then increment quantity
@@ -77,7 +77,7 @@ class CartController extends Controller
 
                 session()->put('cart', $cart);
 
-                return redirect()->back()->with('success', 'Product added to cart successfully!');
+                return redirect()->back()->with('success', __('text.add_to_cart_message'));
 
             }
 
@@ -93,7 +93,7 @@ class CartController extends Controller
             session()->put('cartCount', count($cart));
         }
 
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
+        return redirect()->back()->with('success', __('text.add_to_cart_message'));
     }
 
     public function update(Request $request)

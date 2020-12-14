@@ -12,7 +12,8 @@
                     <h1>Product Company</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a href="{{ route('company.create') }}" class="btn btn-lg btn-success float-right">Create Product Company</a>
+                    <a href="{{ route('company.create') }}" class="btn btn-lg btn-success float-right">Create Product
+                        Company</a>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -20,6 +21,11 @@
 @stop
 
 @section('content')
+    <style>
+        .action-portion {
+            display: flex;
+        }
+    </style>
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Product Company List</h3>
@@ -40,24 +46,28 @@
                         <td>{{ $item['name'] }}</td>
                         <td>@include('products::status', ['status' => $item->status])</td>
                         <td>
-                            <button type="button" onclick="showItem({{ $item }})" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                            <a href="{{ route('company.edit', $item['id']) }}" class="btn btn-sm btn-primary">
-                                <i class="fa fa-edit"></i> </a>
-                            <form id="delete-form-{{ $loop->index }}" action="{{ route('company.destroy', $item['id']) }}"
-                                  method="post"
-                                  class="form-horizontal">
-                                {{--                            @method('DELETE')--}}
-                                {{ csrf_field() }}
-                                <input type="hidden" name="_method" value="DELETE">
-                                <div class="btn-group">
-                                    <button onclick="removeItem({{ $loop->index }})" type="button"
-                                            class="btn btn-danger waves-effect waves-light btn-sm d-flex align-items-center">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </form>
+                            <div class="action-portion">
+                                <button type="button" onclick="showItem({{ $item }})"
+                                        class="btn btn-sm btn-success mr-2" data-toggle="modal"
+                                        data-target="#modal-default">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <a href="{{ route('company.edit', $item['id']) }}" class="btn btn-sm btn-primary mr-2">
+                                    <i class="fa fa-edit"></i> </a>
+                                <form id="delete-form-{{ $loop->index }}"
+                                      action="{{ route('company.destroy', $item['id']) }}"
+                                      method="post"
+                                      class="form-horizontal">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <div class="btn-group">
+                                        <button onclick="removeItem({{ $loop->index }})" type="button"
+                                                class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -105,7 +115,8 @@
                 }
             })
         }
-        function checkStatus(status  = 0) {
+
+        function checkStatus(status = 0) {
             return status == 1 ?
                 '<button type="button" class="btn btn-success btn-sm-status waves-effect waves-light d-flex align-items-center"><i class="fa fa-check"></i></button>'
                 : '<button type="button" class="btn btn-danger btn-sm-status waves-effect waves-light d-flex align-items-center"><i class="fa fa-times"></i></button>';

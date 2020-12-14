@@ -37,6 +37,7 @@ class Order extends Model
         'customer_amount',
         'point_amount',
         'points',
+        'delivery_duration'
     ];
 
     public function customer()
@@ -83,6 +84,11 @@ class Order extends Model
     public function cancelReason()
     {
         return $this->belongsTo(OrderCancelReason::class, 'id', 'order_id');
+    }
+
+    public function orderHistory()
+    {
+        return $this->belongsTo(OrderHistory::class, 'id', 'order_id')->orderBy('created_at', 'asc');
     }
 
 }

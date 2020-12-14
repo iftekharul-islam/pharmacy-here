@@ -100,6 +100,23 @@ class AuthRepository
         return $otp;
     }
 
+    /**
+     * @param $request
+     * @return bool
+     */
+    public function deviceStore($request)
+    {
+        $user = User::where('phone_number', $request->phone_number)->first();
+        if ($user) {
+            UserDeviceId::create([
+                'user_id' => $user->id,
+                'device_id' => $request->device_token,
+            ]);
+            return true;
+        }
+        return false;
+    }
+
     public function createOtpWeb($request)
     {
         $otp = rand(1000, 9999);
@@ -176,6 +193,10 @@ class AuthRepository
             $user->is_pharmacy = true;
         }
 
+        $user->referral_code = Str::random(7);
+
+        $user->status = true;
+
         $user->save();
 
         UserDeviceId::create([
@@ -194,6 +215,11 @@ class AuthRepository
             'token' => $token,
             'user' => $user
         ];
+    }
+
+    public function isActivePhoneNumber($phone)
+    {
+        return User::where('phone_number', $phone)->where('status', 0)->count();
     }
 
     public function checkPhoneNumber($phone)

@@ -2,6 +2,7 @@
 
 namespace Modules\User\Http\Controllers\API;
 
+use Carbon\Carbon;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Http\Request;
@@ -222,6 +223,7 @@ class UserPharmacyController extends BaseController
 
     public function availablePharmacyList($thana_id)
     {
+//        return responsePreparedData(Carbon::now()->format('H:i:s'));
         $availablePharmacyList = $this->repository->getAvailablePharmacyList($thana_id);
 
 //        return $availablePharmacyList;

@@ -87,16 +87,36 @@
     }
     .btn-continue {
         width: 180px;
-        position: absolute;
         color: #00AE4D !important;
         border-radius: 10px;
         border: 1px solid #00AE4D!important;
+    }
+
+    @media (max-width: 510px){
+        .btn-continue {
+            font-size: 8px!important;
+            width: 160px;
+            color: #00AE4D !important;
+            border-radius: 10px;
+            border: 1px solid #00AE4D!important;
+            margin-right: 20px;
+        }
     }
     .btn-checkout {
         width: 180px;
         background: #00AE4D !important;
         font-weight: 500;
         font-size: 16px;
+    }
+    @media (max-width: 992px) {
+        .btn-checkout {
+            font-size: 8px!important;
+            width: 160px;
+            background: #00AE4D !important;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
     }
     .btn-continue:hover{
         background: #00AE4D;
@@ -105,15 +125,63 @@
         color: #ffffff!important;
     }
     .grand-total-final {
-        margin-left: 408px;
+        /*margin-left: 408px;*/
+        width: 209px;
+        display: flex;
+        position: absolute;
+        bottom: 6px;
+        right: 200px;
+    }
+
+    @media ( max-width: 992px) {
+        .grand-total-final {
+            display: flex;
+            width: 100%;
+            margin-left: 0px;
+            top: -14px;
+            position: absolute;
+            margin-right: -216px;
+            font-size: 13px;
+            margin-bottom: 35px;
+        }
+        .grand-total-final input {
+            position: absolute;
+            width: 130px !important;
+            left: 90px;
+            top: -2px;
+        }
     }
     .grand-total-count-style {
         border: none;
         height: 25px;
-        width: 20% !important;
+        width: 40% !important;
+    }
+    @media (max-width: 992px) {
+        .grand-total-count-style {
+            border: none;
+            height: 25px;
+            width: 80% !important;
+            font-size: 13px;
+        }
     }
     .grand-total-count-style:focus {
         outline: none!important;
+    }
+    .new-cart-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    @media (max-width: 992px) {
+        .new-cart-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    }
+    .cart-product {
+        display: flex;
     }
 </style>
 @section('content')
@@ -136,7 +204,7 @@
                             <h2>{{ __('text.cart_list') }}</h2>
                         </div>
                     </div>
-                    <strong class="note-text text-danger d-none">Please add amount more than ৳100</strong>
+                    <strong class="note-text text-danger d-none">{{__('text.amount_notice')}}</strong>
                     <div class="order-summary">
                         <div class="table-responsive">
                             <table class="table">
@@ -146,7 +214,7 @@
                                     <td scope="col">{{ __('text.product') }}</td>
                                     <td scope="col">{{ __('text.price') }}</td>
                                     <td scope="col">{{ __('text.quantity') }}</td>
-                                    <td class="text-center">{{ __('text.sub_total') }}</td>
+                                    <td scope="col" class="text-center">{{ __('text.sub_total') }}</td>
                                     <td scope="col"></td>
                                 </tr>
 {{--                                </thead>--}}
@@ -178,8 +246,8 @@
                                             <?php $total += $details['product']['purchase_price'] * $details['quantity'] ?>
                                             <tr>
                                                 <td scope="row">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
+                                                    <div class="cart-product">
+                                                        <div class="cart-product-image mr-2">
                                                             @if ($details->product->form->slug == 'tablet' || $details->product->form->name == 'capsul')
                                                                 <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
                                                             @elseif ($details->product->form->slug == 'syrup')
@@ -192,7 +260,7 @@
                                                                 <img src="{{ asset('images/pill.png') }}" class="pill" alt="pill">
                                                             @endif
                                                         </div>
-                                                        <div class="col-md-9">
+                                                        <div class="cart-product-text">
                                                             <strong>{{ $details['product']['name'] }}</strong><br>
                                                             <small>{{ $details['product']['form']['name'] }}</small>
                                                         </div>
@@ -206,8 +274,8 @@
                                                         <button id="increase-{{$details->id }}" onclick="newItemIncrease(this, {{ $details['product']['purchase_price'] }}, {{ $details->id }}, {{ $details['product']['min_order_qty'] }})" class="plus"></button>
                                                     </div>
                                                 </td>
-                                                <td class="text-center">৳
-                                                    <input class="countAmount-{{$details->id}} count-style text-left" value="{{ $details->amount }}" readonly>
+                                                <td class="text-center">
+                                                    <input class="countAmount-{{$details->id}} count-style text-left ml-4" value="৳ {{ $details->amount }}" readonly>
                                                 </td>
                                                 <td>
                                                     <div class="actions" data-th="">
@@ -218,29 +286,15 @@
                                         @endforeach
                                     @endif
                                 @endguest
-{{--                                    <tr>--}}
-{{--                                        <td><a href="{{ route('product-list')  }}" class="btn--primary d-block cart-btn">{{ __('text.continue_shopping') }}</a></td>--}}
-{{--                                        <td></td>--}}
-{{--                                        <td class="text-right total-amount-alignment"><b>{{ __('text.grand_total') }}</b></td>--}}
-{{--                                        <td class="text-center total-amount-alignment">৳--}}
-{{--                                            <input type="number" class="grand-total count-style" value="{{ $total }}" readonly>--}}
-{{--                                        </td>--}}
-{{--                                        @guest--}}
-{{--                                                <td><p class="badge btn-primary">{{ __('text.login_to_checkout') }}</p></td>--}}
-{{--                                            @else--}}
-{{--                                                <td>--}}
-{{--                                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn--primary d-block cart-btn text-white">{{ __('text.checkout') }}</a>--}}
-{{--                                                    <strong class="note-text alert-note text-danger d-none">Please add amount more than ৳100</strong>--}}
-{{--                                                </td>--}}
-{{--                                        @endguest--}}
-{{--                                    </tr>--}}
                                 </tbody>
                             </table>
                         </div>
                         <div class="row mt-4">
-                            <div class="col-md">
-                                <a href="{{ route('product-list')  }}" class="btn btn-continue d-block text-center"><i class="fas fa-arrow-left"></i> {{ __('text.continue_shopping') }}</a>
-                                <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn btn-checkout d-block text-center float-right text-white">{{ __('text.checkout') }}</a>
+                            <div class="col-12">
+                                <div class="new-cart-button">
+                                    <a href="{{ route('product-list')  }}" class="btn btn-continue d-block text-center"><i class="fas fa-arrow-left"></i> {{ __('text.continue_shopping') }}</a>
+                                    <a id="submit" href="#" onclick="checkMedicine({{ $data }})" class="btn btn-checkout d-block text-center text-white">{{ __('text.checkout') }}</a>
+                                </div>
                                 <div class="text-center grand-total-final">
                                     <b>Grand Total : ৳</b>
                                     <input type="number" class="grand-total grand-total-count-style" value="{{ $total }}" readonly>

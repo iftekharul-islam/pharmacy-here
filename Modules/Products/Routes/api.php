@@ -29,7 +29,7 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->get('forms/{id}', $namespace . '\FormController@show');
 
         $api->get('products', $namespace . '\ProductsController@index');
-        $api->get('get-all-products', $namespace . '\ProductsController@getAllProduct');
+        $api->get('search-by-product-amount', $namespace . '\ProductsController@productByAmount');
         $api->get('products/search', $namespace . '\ProductsController@search');
         $api->get('products/{id}', $namespace . '\ProductsController@show');
 

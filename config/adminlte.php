@@ -188,7 +188,7 @@ return [
 
     'use_route_url' => false,
 
-    'dashboard_url' => 'user/dashboard',
+    'dashboard_url' => 'admin/dashboard',
 
     'logout_url' => 'admin/logout',
 
@@ -200,7 +200,7 @@ return [
 
     'password_email_url' => 'password/email',
 
-    'profile_url' => false,
+    'profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -232,8 +232,8 @@ return [
 
     'menu' => [
         [
-            'text' => 'search',
-            'search' => true,
+            'text' => 'search pharmacy',
+            'search' => false,
             'topnav' => true,
         ],
 //        [
@@ -309,6 +309,11 @@ return [
                     'text'    => 'COD Transaction History',
                     'icon_color' => 'cyan',
                     'url'     => 'cod-transaction-history'
+                ],
+                [
+                    'text' => 'All transaction History',
+                    'icon_color' => 'cyan',
+                    'url' => 'all-transaction-history'
                 ],
             ],
         ],

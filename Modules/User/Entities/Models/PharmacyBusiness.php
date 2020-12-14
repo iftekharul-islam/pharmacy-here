@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Locations\Entities\Models\Address;
 use Modules\Locations\Entities\Models\Area;
 use Modules\Orders\Entities\Models\Order;
+use Modules\Orders\Entities\Models\TransactionHistory;
 
 class PharmacyBusiness extends Model
 {
@@ -21,10 +22,14 @@ class PharmacyBusiness extends Model
         "end_time",
         "break_start_time",
         "break_end_time",
+        'user_id',
         'area_id',
         'bank_routing_number',
         'is_full_open',
-        'has_break_time'
+        'has_break_time',
+        'nid_img_path',
+        'trade_img_path',
+        'drug_img_path'
     ];
 
     public function user()
@@ -52,9 +57,9 @@ class PharmacyBusiness extends Model
         return $this->hasMany(Order::class, 'pharmacy_id', 'user_id');
     }
 
-//    public function pharmacyAddress()
-//    {
-//        return $this->belongsTo(Address::class, 'area_id', 'user_id');
-//    }
+    public function pharmacyTransaction()
+    {
+        return $this->hasMany(TransactionHistory::class, 'pharmacy_id', 'user_id');
+    }
 
 }

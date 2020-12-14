@@ -5,6 +5,7 @@ namespace Modules\Alarm\Repositories;
 
 
 use Modules\Alarm\Entities\Models\Alarm;
+use Modules\Points\Entities\Models\Points;
 
 class AlarmRepository
 {

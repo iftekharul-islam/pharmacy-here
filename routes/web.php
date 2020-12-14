@@ -22,8 +22,8 @@ Route::get('/locale/{locale}', 'LocalizationController');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/terms-of-use', 'HomeController@terms')->name('terms');
 Route::get('/faq', 'HomeController@faq')->name('faq');
-Route::get('/return-&-refund-page', 'HomeController@refundPage')->name('return.page');
-Route::get('/privacy-policy-page', 'HomeController@privacyPage')->name('privacy.page');
+Route::get('/refund-&-return-policy', 'HomeController@refundPage')->name('return.page');
+Route::get('/privacy-policy', 'HomeController@privacyPage')->name('privacy.page');
 Route::get('/about-page', 'HomeController@about')->name('about.page');
 
 // User login
@@ -49,7 +49,7 @@ Route::group(['middleware' => ['customerAuth']], function () {
     });
 
     //Prescription
-    Route::get('prescription/create', 'PrescriptionController@create');
+    Route::get('prescription/create', 'PrescriptionController@create')->name('prescription.create');
     Route::post('store/prescription','PrescriptionController@store')->name('prescription.store');
     Route::post('prescription-id/store', 'PrescriptionController@selectedId')->name('prescriptions.id');
     Route::delete('prescription/{id}', 'PrescriptionController@destroy')->name('prescription.destroy');
@@ -58,8 +58,7 @@ Route::group(['middleware' => ['customerAuth']], function () {
     Route::get('customer-order/{id}','OrderController@show')->name('order.details');
 
     // Customer dashboard
-    Route::get('dashboard','CustomerController@index')->name('customer.details');
-    Route::get('dashboard','CustomerController@index')->name('customer.details');
+    Route::get('customer/dashboard','CustomerController@index')->name('customer.details');
     Route::post('update/customer/{id}','CustomerController@update')->name('customer.update');
     Route::post('address-store', 'CustomerController@addressStore')->name('customer.address.store');
 

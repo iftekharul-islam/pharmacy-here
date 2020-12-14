@@ -14,17 +14,19 @@
 
 Route::group(['middleware' => ['web','role:admin']], function () {
 
-//    Route::get('home','HomeController@index');
-
-    Route::prefix('user')->group(function() {
+    Route::prefix('admin')->group(function () {
         Route::get('/dashboard', 'UserController@index')->name('user.dashboard');
     });
+    Route::get('admin/profile', 'UserController@adminProfile')->name('admin.index');
+    Route::post('admin/profile-update/{id}', 'UserController@adminUpdate')->name('admin.update');
 
     Route::prefix('customers')->group(function() {
         Route::get('/', 'CustomerController@index')->name('customer.index');
         Route::get('show/{id}', 'CustomerController@show')->name('customer.show');
         Route::get('edit/{id}', 'CustomerController@edit')->name('customer.edit');
-        Route::post('store/{id}', 'CustomerController@update')->name('customer.store');
+        Route::get('create', 'CustomerController@create')->name('customer.create');
+        Route::post('store', 'CustomerController@store')->name('customer.store');
+        Route::post('update/{id}', 'CustomerController@update')->name('new.customer.update');
         Route::delete('{id}', 'CustomerController@destroy')->name('customer.destroy');
     });
 

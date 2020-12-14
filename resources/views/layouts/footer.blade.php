@@ -6,17 +6,17 @@
                 <div class="footer-menu">
                     <div class="footer-menu-list">
                         <a href="#" class="subidha--logo">
-                            <img src="{{ asset('images/logo.png') }}" alt="subidha logo" class="img-fluid"><span class="">{{ __('text.subidha') }}</span>
+                            <img src="{{ asset('images/logo.png') }}" alt="subidha logo" class="img-fluid"><span
+                                class="">{{ __('text.subidha') }}</span>
                         </a>
-                        <p>Lorem ipsum dolor sit amet, consectetur
-                            adipiscing elit ut aliquam, purus
-                            sit amet luctus venenatis</p>
+                        <p>{{ __('text.footer_h1') }}</p>
+                        <p>{{ __('text.footer_h2') }}</p>
+                        <p>{{ __('text.footer_h3') }}</p>
                     </div>
 
                     <div class="footer-menu-list">
                         <a href="#">{{ trans_choice('text.company', 1) }}</a>
                         <ul>
-{{--                            <li><a href="{{ route('home') }}">Home</a></li>--}}
                             <li><a href="{{ route('terms') }}">{{ __('text.Terms_of_use') }}</a></li>
                             <li><a href="{{ route('about.page') }}">{{ __('text.about_us') }}</a></li>
                             <li><a href="{{ route('faq') }}">{{ __('text.faq') }}</a></li>
@@ -28,18 +28,26 @@
                     <div class="footer-menu-list">
                         <a href="#">{{ __('text.contact_us') }}</a>
                         <address>
-                            House 5/4/B (2nd Floor), Block A,<br> Lalmatia, Dhaka-1207<br>
-                            <br><p>info@subidha.com</p>
-                            <p>+880 1234 567890</p>
+                            Village : Chak kanchan, <br>P.O. : Farakkabad, P.S. : Biral,<br>District : Dinajpur-5210
+                            <br>
+                            <br>
+                            <p>Email: subidhabd@gmail.com</p>
                         </address>
                     </div>
                     <div class="footer-menu-list">
                         <a href="#">{{ __('text.social') }}</a>
                         <ul>
-                            <li><a href="https://www.facebook.com" target="tab"><i class="fab fa-facebook-square mr-2"></i>{{ __('text.facebook') }}</a></li>
-                            <li><a href="https://twitter.com" target="tab"><i class="fab fa-twitter mr-2"></i>{{ __('text.twitter') }}</a></li>
-                            <li><a href="https://www.instagram.com/?hl=en" target="tab"><i class="fab fa-instagram mr-2"></i>{{ __('text.instagram') }}</a></li>
-                            <li><a href="https://www.youtube.com" target="tab"><i class="fab fa-youtube mr-2"></i>{{ __('text.youtube') }}</a></li>
+                            <li><a href="https://play.google.com/store/apps/details?id=com.subidha.customer"
+                                   target="tab"><i
+                                        class="fab fa-google-play mr-2"></i>{{ __('text.play_store_link') }}</a></li>
+                            <li><a href="https://www.facebook.com/subidhabd" target="tab"><i
+                                        class="fab fa-facebook-square mr-2"></i>{{ __('text.facebook') }}</a></li>
+                            <li><a href="https://twitter.com" target="tab"><i
+                                        class="fab fa-twitter mr-2"></i>{{ __('text.twitter') }}</a></li>
+                            <li><a href="https://www.instagram.com/?hl=en" target="tab"><i
+                                        class="fab fa-instagram mr-2"></i>{{ __('text.instagram') }}</a></li>
+                            <li><a href="https://www.youtube.com" target="tab"><i
+                                        class="fab fa-youtube mr-2"></i>{{ __('text.youtube') }}</a></li>
                         </ul>
                     </div>
                 </div>

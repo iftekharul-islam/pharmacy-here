@@ -22,7 +22,7 @@ return [
     'subidha_comission_collect_from_pharmacy_cash_percentage' => 3,
     'customer_point_redeem' => 50,
     'point_redeem_discount_percentage' => 2,
-    'prescription_upload_point' => 10,
+    'point_on_first_use' => 10,
     'customer_referral_point' => 10,
     'new_customer_point' => 10,
     'google_playstore_rating_point' => 10,
@@ -54,6 +54,7 @@ return [
     'ecash_payment_type' => 2,
 
     'item_per_page' => 20,
+    'bundle_item_per_page' => 1000,
 
     'free_delivery_limit' => 500,
 ];
