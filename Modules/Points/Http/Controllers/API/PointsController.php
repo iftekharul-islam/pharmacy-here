@@ -2,6 +2,8 @@
 
 namespace Modules\Points\Http\Controllers\API;
 
+
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -68,13 +70,16 @@ class PointsController extends Controller
     }
 
     /**
+
      * @return \Illuminate\Http\JsonResponse
+
      */
     public function playstoreRating()
     {
         $rating = $this->repository->playstoreRating(Auth::guard('api')->user()->id);
         return responsePreparedData($rating);
     }
+
 
     /**
      * @return \Illuminate\Http\JsonResponse
@@ -91,4 +96,5 @@ class PointsController extends Controller
 
         return responsePreparedData('Today is not first date of month');
     }
+
 }

@@ -12,5 +12,7 @@
 */
 
 Route::prefix('points')->group(function() {
-    Route::get('/', 'PointsController@index');
+//    Route::get('/', 'PointsController@index');
+    Route::get('/create', 'PointsController@create')->name('point.create');
+    Route::post('/store', 'PointsController@store')->name('point.store');
 });

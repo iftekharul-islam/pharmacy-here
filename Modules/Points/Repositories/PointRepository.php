@@ -4,8 +4,10 @@
 namespace Modules\Points\Repositories;
 
 
+
 use Carbon\Carbon;
 use Faker\Provider\DateTime;
+
 use Modules\Points\Entities\Models\Points;
 
 class PointRepository
@@ -47,5 +49,6 @@ class PointRepository
         }
         return false;
     }
+
 
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Resources\Http\Requests;
+namespace Modules\Points\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateResourceRequest extends FormRequest
+class CreatePointRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,11 +14,8 @@ class UpdateResourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|min:3|string',
-            'bn_title' => 'required|min:3|string',
-//            'description' => 'required|min:3|string',
-//            'bn_description' => 'required|min:3|string',
-//            'url' => 'required',
+            'customer_id' => 'required',
+            'point' => 'required|min:0',
         ];
     }
 

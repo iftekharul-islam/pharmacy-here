@@ -81,4 +81,10 @@ class UserRepository
 
         return true;
     }
+
+    public function getAllCustomer()
+    {
+//        return User::role('customer')->get();
+        return User::where('is_admin', 0)->where('is_pharmacy', 0)->get();
+    }
 }

@@ -300,14 +300,14 @@ class AuthRepository
 
             Points::create([
                 'user_id' => $referred_user->id,
-                'points' => 10,
+                'points' => config('subidha.customer_referral_point'),
                 'type' => 'referred',
                 'type_id' => $refers->id,
             ]);
 
             Points::create([
                 'user_id' => $user->id,
-                'points' => 10,
+                'points' => config('subidha.new_customer_point'),
                 'type' => 'referred',
                 'type_id' => $refers->id,
             ]);

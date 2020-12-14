@@ -14,3 +14,7 @@
 //Route::prefix('feedback')->group(function() {
 //    Route::get('/', 'FeedbackController@index');
 //});
+
+Route::group(["middleware" => ["web", "role:admin"], "prefix" => "feedback"], function() {
+    Route::get('/', 'FeedbackController@index');
+});

@@ -346,8 +346,13 @@ return [
         [
             'text'    => 'Resources',
             'icon'    => 'fas fa-store-alt',
-//            'url'     => 'resources'
+//            'url'     => 'resources',
             'submenu' => [
+                [
+                    'text' => 'Resource List',
+                    'icon_color' => 'cyan',
+                    'url'  => 'resources',
+                ],
                 [
                     'text' => 'Resource with Link',
                     'icon_color' => 'cyan',
@@ -393,6 +398,18 @@ return [
                     'text' => 'Express Delivery',
                     'icon_color' => 'cyan',
                     'url'  => 'delivery/express-delivery',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Points',
+            'icon'    => 'fas fa-store-alt',
+//            'url'     => 'feedback'
+            'submenu' => [
+                [
+                    'text' => 'Create Manual Point',
+                    'icon_color' => 'cyan',
+                    'url'  => 'points/create',
                 ],
             ],
         ],

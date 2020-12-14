@@ -54,6 +54,7 @@ class PrescriptionRepository
 
         logger('$isFirstUpload ');
         logger($isFirstUpload);
+
         logger(config('subidha.point_on_first_use'));
         logger('$isFirstUpload end');
 
@@ -61,12 +62,14 @@ class PrescriptionRepository
             Points::create([
                 'user_id' => $user_id,
                 'points' => config('subidha.point_on_first_use'),
+
                 'type' => 'prescription',
                 'type_id' => $prescription->id,
             ]);
         }
 
         return $prescription;
+
     }
 
     public function createWeb($request)
