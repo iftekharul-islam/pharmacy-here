@@ -184,8 +184,8 @@ class OrderRepository
 
                         $order->subidha_comission = round(($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge') - $order->subidha_comission), 2);
-//                        $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
-                        $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge')), 2);
+                        $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
+//                        $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge')), 2);
 
 
                     }
@@ -223,8 +223,8 @@ class OrderRepository
                         $order->subidha_comission = number_format(($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
                         $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
+                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
                 }
@@ -255,8 +255,8 @@ class OrderRepository
 
                         $order->subidha_comission = round($amount_value, 2);
                         $order->pharmacy_amount = round((($request->get('amount')) - $order->subidha_comission), 2);
-                        $order->customer_amount = round((($request->get('amount'))), 2);
-//                        $order->customer_amount = round((($request->get('amount')) + $ssl_value), 2);
+//                        $order->customer_amount = round((($request->get('amount'))), 2);
+                        $order->customer_amount = round((($request->get('amount')) + $ssl_value), 2);
 
                     }
 
@@ -290,8 +290,8 @@ class OrderRepository
 
                         $order->subidha_comission = number_format(($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
-                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
+                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
                 }
@@ -322,8 +322,8 @@ class OrderRepository
 
                 $order->subidha_comission = round($amount_value, 2);
                 $order->pharmacy_amount = round(($request->get('amount') - ($order->subidha_comission)), 2);
-//                $order->pharmacy_amount = round(($request->get('amount') - ($ssl_value + $order->subidha_comission)), 2);
-                $order->customer_amount = round(($request->get('amount')), 2);
+                $order->pharmacy_amount = round(($request->get('amount') - ($ssl_value + $order->subidha_comission)), 2);
+//                $order->customer_amount = round(($request->get('amount')), 2);
 
 
             }
