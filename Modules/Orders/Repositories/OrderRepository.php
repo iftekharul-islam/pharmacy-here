@@ -334,7 +334,7 @@ class OrderRepository
             $order->subidha_comission = $order->subidha_comission - $order->point_amount;
             $order->customer_amount = $order->customer_amount - $order->point_amount;
         }
-        $order->ssl_charge = $ssl_value;
+        $order->ssl_charge = $ssl_value ?? '';
 
 
         logger($order);
