@@ -140,8 +140,9 @@ class OrderRepository
         $order->point_amount = round($request->get('point_amount'), 2);
         $order->points = $request->get('points');
         $order->delivery_duration = $request->get('delivery_duration');
+        $order->ssl_charge = $request->get('ssl_charge');
 
-        $ssl_value = '';
+//        $ssl_value = '';
 
         if ($order->delivery_type == config('subidha.home_delivery')) {
 
@@ -333,13 +334,13 @@ class OrderRepository
             $order->subidha_comission = $order->subidha_comission - $order->point_amount;
             $order->customer_amount = $order->customer_amount - $order->point_amount;
         }
-        $ssl_charge = $ssl_value;
+        $order->ssl_charge = $ssl_value;
 
-        if ($ssl_charge != null) {
-            $order->subidha_comission = $order->subidha_comission - $ssl_charge;
-            $order->customer_amount = $order->customer_amount - $ssl_charge;
-            $order->ssl_charge = $ssl_charge;
-        }
+//        if ($order->ssl_charge != null) {
+//            $order->subidha_comission = $order->subidha_comission - $ssl_charge;
+//            $order->customer_amount = $order->customer_amount - $ssl_charge;
+//            $order->ssl_charge = $ssl_charge;
+//        }
 
         logger($order);
         $order->save();
@@ -367,12 +368,12 @@ class OrderRepository
             $this->storeAssociatePrescriptions($request->prescriptions, $order->id);
         }
 
-        $deviceIds = UserDeviceId::where('user_id', $pharmacy_id)->get();
+        $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
         $title = 'New Order Available';
         $message = 'You have a new order from Subidha. Please check.';
 
-        foreach ($deviceIds as $deviceId) {
-            sendPushNotification($deviceId->device_id, $title, $message, $id = "");
+        foreach ($deviceIds as $deviceId){
+            sendPushNotification($deviceId->device_id, $title, $message, $id="");
         }
 
         return $order;

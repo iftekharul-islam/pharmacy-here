@@ -738,9 +738,9 @@ class CheckoutController extends Controller
 //            $data['subidha_comission'] = $data['subidha_comission'] - $data['ssl_charge'];
 ////            $data['customer_amount'] = $data['customer_amount'] - $data['ssl_charge'];
 //        }
-        if ($data['ssl_charge'] != null){
+//        if ($data['ssl_charge'] != null){
             
-        }
+//        }
 
         $data['amount'] = round($request->amount, 2);
         $data['pharmacy_amount'] = round($data['pharmacy_amount'], 2);
