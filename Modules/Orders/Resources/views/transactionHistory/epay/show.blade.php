@@ -58,6 +58,7 @@
                     <th>Pharmacy Amount</th>
                     <th>Subidha Amount</th>
                     <th>Point Amount</th>
+                    <th>SSL Amount</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -70,6 +71,7 @@
                             <td>{{ $item->pharmacy_amount }}</td>
                             <td>{{ $item->subidha_comission }}</td>
                             <td>{{ $item->point_amount ?? '-' }}</td>
+                            <td>{{ $item->ssl_charge ?? '-' }}</td>
                         </tr>
                     @endforeach
                 @endif

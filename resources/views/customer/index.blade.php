@@ -630,27 +630,27 @@
 @endsection
 @section('js')
     <script type="text/javascript">
-        // Javascript to enable link to tab
-        var url = document.location.toString();
-        if (url.match('#')) {
-            $('.nav-pills a[href="#' + url.split('#')[1] + '"]').tab('show');
-        }
-        // Change hash for page-reload
-        $('.nav-pills a').on('shown.bs.tab', function (e) {
-            window.location.hash = e.target.hash;
-        })
+        // // Javascript to enable link to tab
+        // var url = document.location.toString();
+        // if (url.match('#')) {
+        //     $('.nav-pills a[href="#' + url.split('#')[1] + '"]').tab('show');
+        // }
+        // // Change hash for page-reload
+        // $('.nav-pills a').on('shown.bs.tab', function (e) {
+        //     window.location.hash = e.target.hash;
+        // })
 
-        // For autoload the last selected value
-        // $(document).ready(function() {
-        //     $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
-        //         localStorage.setItem('activeTab', $(e.target).attr('href'));
-        //     });
-        //
-        //     var activeTab = localStorage.getItem('activeTab');
-        //     if (activeTab) {
-        //         $('.nav-pills a[href="' + activeTab + '"]').tab('show');
-        //     }
-        // });
+        For autoload the last selected value
+        $(document).ready(function() {
+            $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('.nav-pills a[href="' + activeTab + '"]').tab('show');
+            }
+        });
 
         function input() {
             $(".save-value").addClass('d-none');
