@@ -35,16 +35,17 @@ class PharmacyExport implements FromCollection, WithHeadings, WithColumnWidths
         $pharmacyCollection = new Collection();
 
         foreach ($pharmacyList as $pharmacy) {
+            logger($pharmacy);
             $pharmacyCollection->push((object)[
                 'owner_name' => $pharmacy->name,
                 'pharmacy_name' => $pharmacy->pharmacyBusiness->pharmacy_name ?? 'N/A',
-                'address' => $pharmacy->pharmacyBusiness ? $pharmacy->pharmacyBusiness->pharmacy_address
+                'address' => isset($pharmacy->pharmacyBusiness) ? $pharmacy->pharmacyBusiness->pharmacy_address
                     . ',' . $pharmacy->pharmacyBusiness->area->name . ',' . $pharmacy->pharmacyBusiness->area->thana->name
                     . ',' . $pharmacy->pharmacyBusiness->area->thana->district->name : 'N/A',
                 'phone_number' => $pharmacy->phone_number,
                 'email' => $pharmacy->email,
                 'status' => $pharmacy->status == 1 ? 'Active' : 'Inactive',
-                'created_at' => $pharmacy->pharmacyBusiness->created_at ? Carbon::parse($pharmacy->pharmacyBusiness->created_at)->format('d-m-Y') : 'N/A'
+                'created_at' => isset($pharmacy->pharmacyBusiness) ? Carbon::parse($pharmacy->pharmacyBusiness->created_at)->format('d-m-Y') : 'N/A'
             ]);
         }
         logger($pharmacyCollection);
