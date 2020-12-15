@@ -2,6 +2,8 @@
 
 namespace Modules\Products\Http\Controllers;
 
+use App\Exports\PharmacyExport;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -30,11 +32,12 @@ class PharmacyController extends Controller
         $display_area = $request->area_id;
         $display_thana = $request->thana_id;
         $display_district = $request->district_id;
+        $search = $request->search;
         $allLocations = $this->locationRepository->getLocation();
         $pharmacies = $this->repository->all($request);
 
         return view('products::pharmacy.index', compact('pharmacies', 'allLocations',
-            'display_area', 'display_thana', 'display_district'));
+            'display_area', 'display_thana', 'display_district', 'search'));
     }
 
     /**
@@ -101,4 +104,14 @@ class PharmacyController extends Controller
         return redirect()->route('pharmacy.index');
     }
 
+    public function pharmacyExport(Request $request)
+    {
+        $district = $request->district;
+        $thana = $request->thana;
+        $area = $request->area;
+        $search = $request->search;
+        $date = Carbon::now()->format('d-m-Y');
+
+        return (new PharmacyExport($district, $thana, $area, $search))->download('pharmacy-list-' . time() . '-' . $date . '.xls');
+    }
 }

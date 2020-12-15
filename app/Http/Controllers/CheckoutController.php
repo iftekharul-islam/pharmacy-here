@@ -733,7 +733,7 @@ class CheckoutController extends Controller
         $data['subidha_comission'] = round($data['subidha_comission'], 2);
         $data['customer_amount'] = round($data['customer_amount'], 2);
 
-        $data['ssl_charge'] = $ssl_value;
+        $data['ssl_charge'] = $ssl_value ?? 0;
 
         $data['amount'] = round($request->amount, 2);
         $data['pharmacy_amount'] = round($data['pharmacy_amount'], 2);
@@ -743,7 +743,7 @@ class CheckoutController extends Controller
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
 
         $post_data = array();
-        $post_data['total_amount'] = $data['amount'] + $request->delivery_charge_amount; # You cant not pay less than 10
+        $post_data['total_amount'] = $data['amount'] + $request->delivery_charge_amount + $data['ssl_charge']; # You cant not pay less than 10
         $post_data['currency'] = "BDT";
         $post_data['tran_id'] = $this->generateOrderNo();
 
