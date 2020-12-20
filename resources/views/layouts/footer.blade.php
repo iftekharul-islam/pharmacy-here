@@ -37,7 +37,7 @@
                     <div class="footer-menu-list">
                         <a href="#">{{ __('text.social') }}</a>
                         <ul>
-                            <li><a href="https://play.google.com/store/apps/details?id=com.subidha.customer"
+                            <li><a href="https://play.google.com/store/apps/details?id=com.subidhabd.customerapp"
                                    target="tab"><i
                                         class="fab fa-google-play mr-2"></i>{{ __('text.play_store_link') }}</a></li>
                             <li><a href="https://www.facebook.com/subidhabd" target="tab"><i

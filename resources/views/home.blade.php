@@ -115,7 +115,8 @@
                             <p>{{ __('text.download_app_description') }}</p>
                         </div>
                         <div class="right">
-                            <a href="https://play.google.com/store/apps/details?id=com.subidha.customer" target="tab"><img src="{{ asset('images/google-play.svg') }}" alt="play store"></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.subidhabd.customerapp"
+                               target="tab"><img src="{{ asset('images/google-play.svg') }}" alt="play store"></a>
                             <a href="#"><img src="{{ asset('images/apple.svg') }}" alt="apple store"></a>
                         </div>
                     </div>
