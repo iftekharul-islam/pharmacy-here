@@ -40,6 +40,10 @@ class PendingOrderForward implements ShouldQueue
         $orders = Order::with('address')->whereIn('status', [0, 5, 6])->where('pharmacy_id', '!=', null)->get();
 //        logger('order list');
 //        logger($orders);
+        $date = Carbon::today()->format('l');
+        $Holiday = strtolower($date);
+        $time = Carbon::now()->format('H:i:s');
+        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         foreach ($orders as $order) {
 //            logger('Order time');
 //            logger($order->updated_at->format('H:i'));
@@ -59,11 +63,6 @@ class PendingOrderForward implements ShouldQueue
 
                 logger('$previousPharmacies');
                 logger($previousPharmacies);
-
-                $date = Carbon::today()->format('l');
-                $Holiday = strtolower($date);
-                $time = Carbon::now()->format('H:i:s');
-                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
                 $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
 //                DB::enableQueryLog();
                 $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
