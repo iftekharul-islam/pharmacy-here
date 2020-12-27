@@ -114,8 +114,6 @@ class OrderRepository
 
     public function create($request, $customer_id)
     {
-        logger('Request from mobile app');
-        logger($request->all());
         $order = new Order();
         $pharmacy_id = $request->get('pharmacy_id') ? $request->get('pharmacy_id') : $this->getNearestPharmacyId($request->get('shipping_address_id'));
         if (empty($pharmacy_id)) {
@@ -284,16 +282,16 @@ class OrderRepository
                         $delivery_value = config('subidha.express_delivery_charge') *
                             config('subidha.subidha_delivery_percentage') / 100;
 
-                        $amount_value = number_format(($request->get('amount')) *
+                        $amount_value = round(($request->get('amount')) *
                             config('subidha.subidha_comission_ecash_percentage') / 100, 2);
 
-                        $ssl_value = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')) *
+                        $ssl_value = round((($request->get('amount')) + config('subidha.express_delivery_charge')) *
                             config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
-                        $order->subidha_comission = number_format(($amount_value + $delivery_value), 2);
-                        $order->pharmacy_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
+                        $order->subidha_comission = round(($amount_value + $delivery_value), 2);
+                        $order->pharmacy_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
 //                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $order->customer_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
                 }
@@ -341,12 +339,6 @@ class OrderRepository
         logger("Before Saving LOG");
         logger($order);
         $order->save();
-
-
-        $orderItem = Order::find($order->id);
-
-        logger("After Save");
-        logger($orderItem);
 
         if ($request->has('points') && $request->get('points')) {
             Points::create([
