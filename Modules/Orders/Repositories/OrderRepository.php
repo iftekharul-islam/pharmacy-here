@@ -340,7 +340,10 @@ class OrderRepository
 
         logger("Before Saving LOG");
         logger($order);
-        $order->save();
+        $orderItem = $order->save();
+
+        logger("After Save");
+        logger($orderItem);
 
         if ($request->has('points') && $request->get('points')) {
             Points::create([
