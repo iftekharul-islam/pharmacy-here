@@ -114,6 +114,8 @@ class OrderRepository
 
     public function create($request, $customer_id)
     {
+        logger('Request from mobile app');
+        logger($request->all());
         $order = new Order();
         $pharmacy_id = $request->get('pharmacy_id') ? $request->get('pharmacy_id') : $this->getNearestPharmacyId($request->get('shipping_address_id'));
         if (empty($pharmacy_id)) {
@@ -336,6 +338,7 @@ class OrderRepository
         $order->ssl_charge = $ssl_value ?? '';
 
 
+        logger("Before Saving LOG");
         logger($order);
         $order->save();
 
