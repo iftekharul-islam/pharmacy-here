@@ -340,7 +340,10 @@ class OrderRepository
 
         logger("Before Saving LOG");
         logger($order);
-        $orderItem = $order->save();
+        $order->save();
+
+
+        $orderItem = Order::find($order->id);
 
         logger("After Save");
         logger($orderItem);
