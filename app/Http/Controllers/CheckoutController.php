@@ -617,10 +617,10 @@ class CheckoutController extends Controller
                         $ssl_value = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')) *
                             config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
-                        $data['subidha_comission'] = number_format(($amount_value + $delivery_value), 2);
-                        $data['pharmacy_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
+                        $data['subidha_comission'] = round(($amount_value + $delivery_value), 2);
+                        $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
 //                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
                     }
                 }
 
