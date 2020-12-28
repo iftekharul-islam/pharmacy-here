@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Modules\Address\Entities\CustomerAddress;
+use Modules\Locations\Entities\Models\District;
 use Modules\Orders\Emails\SendOrderStatusEmail;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderCancelReason;
@@ -78,18 +79,38 @@ class OrderRepository
 
     public function getNearestPharmacyId($address_id)
     {
-        $address = CustomerAddress::find($address_id);
-        $date = Carbon::today()->format('l');
-        $holiday = strtolower($date);
-        $time = Carbon::now()->format('H:i:s');
-        $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
-        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
-            ->where(function ($q) use ($time) {
-                $q->where('is_full_open', 1)
-                    ->orWhere(function ($q2) use ($time) {
-                        $q2->where('start_time', '<', $time)
-                            ->Where('end_time', '>', $time);
-                    });
+        $address = CustomerAddress::with('area.thana.district')->find($address_id);
+        $dhaka_district = District::where('slug', 'dhaka')->first();
+
+        if ($dhaka_district == $address->area->thana->district->id) {
+            $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
+                ->whereHas('user', function ($q) {
+                    $q->where('status', 1);
+                })->inRandomOrder()->first();
+
+            return $pharmacy ? $pharmacy->user_id : '';
+        }
+
+        $pharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($address) {
+            $q->where('thana_id', $address->area->thana_id);
+        })->whereHas('user', function ($q) {
+            $q->where('status', 1);
+        })->inRandomOrder()->first();
+
+        return $pharmacy ? $pharmacy->user_id : '';
+
+//        $date = Carbon::today()->format('l');
+//        $holiday = strtolower($date);
+//        $time = Carbon::now()->format('H:i:s');
+//        $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
+
+//        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
+//            ->where(function ($q) use ($time) {
+//                $q->where('is_full_open', 1)
+//                    ->orWhere(function ($q2) use ($time) {
+//                        $q2->where('start_time', '<', $time)
+//                            ->Where('end_time', '>', $time);
+//                    });
 //            ->where(function ($query) use ($time) {
 //                $query->Where('is_full_open', 1)
 //                    ->orWhere(function ($q) use ($time) {
@@ -103,13 +124,13 @@ class OrderRepository
 //                            });
 //                    });
 
-            })
-            ->whereHas('user', function ($q) {
-                $q->where('status', 1);
-            })->whereNotIn('user_id', $availablePharmacy)->inRandomOrder()->first();
+//            })
+//            ->whereHas('user', function ($q) {
+//                $q->where('status', 1);
+//            })->whereNotIn('user_id', $availablePharmacy)->inRandomOrder()->first();
 
 
-        return $pharmacy ? $pharmacy->user_id : '';
+//        return $pharmacy ? $pharmacy->user_id : '';
     }
 
     public function create($request, $customer_id)
@@ -163,11 +184,11 @@ class OrderRepository
                         $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission);
                         $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value);
 
-                        $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission );
-                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
-                        logger('In 1, Subidha comission with discount '. $order->subidha_comission);
+                        $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission);
+                        $order->subidha_comission = $order->subidha_comission - $order->point_amount;
+                        logger('In 1, Subidha comission with discount ' . $order->subidha_comission);
                         $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->point_amount);
-                        logger('In 1, Subidha customer amount '. $order->customer_amount);
+                        logger('In 1, Subidha customer amount ' . $order->customer_amount);
                         logger('Out 1');
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
@@ -363,12 +384,12 @@ class OrderRepository
             $this->storeAssociatePrescriptions($request->prescriptions, $order->id);
         }
 
-        $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
+        $deviceIds = UserDeviceId::where('user_id', $pharmacy_id)->get();
         $title = 'New Order Available';
         $message = 'You have a new order from Subidha. Please check.';
 
-        foreach ($deviceIds as $deviceId){
-            sendPushNotification($deviceId->device_id, $title, $message, $id="");
+        foreach ($deviceIds as $deviceId) {
+            sendPushNotification($deviceId->device_id, $title, $message, $id = "");
         }
 
         return $order;
@@ -828,11 +849,11 @@ class OrderRepository
         $pharmacy = PharmacyBusiness::query();
 //        $pharmacy->whereNotIn('user_id', $isAvailable);
         $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
-            ->Where('is_full_open', 1)
-            ->orWhere(function ($q) use ($time) {
+//            ->Where('is_full_open', 1)
+//            ->orWhere(function ($q) use ($time) {
 //                $q->where(function ($q) use ($time) {
-                $q->where('start_time', '<', $time)
-                    ->Where('end_time', '>', $time);
+//                $q->where('start_time', '<', $time)
+//                    ->Where('end_time', '>', $time);
 //                });
 //                            ->Where(function ($q) use ($time) {
 //                                $q->Where('break_start_time', '>', $time)
@@ -840,7 +861,8 @@ class OrderRepository
 //                            });
 //                    });
 
-            })->whereHas('user', function ($q) {
+//            })
+            ->whereHas('user', function ($q) {
                 $q->where('status', 1);
             })
             ->whereNotIn('user_id', $data)
