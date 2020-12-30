@@ -810,13 +810,7 @@ class OrderRepository
 
     public function forwardOrder($order_id, $status_id)
     {
-        $order = Order::with('address')->where('id', $order_id)->first();
-        logger('Order');
-        logger($order);
-        logger('Status');
-        logger($status_id);
-        logger('order->pharmacy_id');
-        logger($order->pharmacy_id);
+        $order = Order::with('address.area.thana.district')->where('id', $order_id)->first();
 
         $previousPharmacyOrderHistory = OrderHistory::where('user_id', $order->pharmacy_id)->where('order_id', $order_id)->first();
 
@@ -845,10 +839,10 @@ class OrderRepository
         logger('$isAvailable');
         logger($isAvailable);
         $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
-        DB::enableQueryLog();
-        $pharmacy = PharmacyBusiness::query();
-//        $pharmacy->whereNotIn('user_id', $isAvailable);
-        $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
+
+//        DB::enableQueryLog();
+//        $pharmacy = PharmacyBusiness::query();
+//        $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
 //            ->Where('is_full_open', 1)
 //            ->orWhere(function ($q) use ($time) {
 //                $q->where(function ($q) use ($time) {
@@ -862,11 +856,29 @@ class OrderRepository
 //                    });
 
 //            })
-            ->whereHas('user', function ($q) {
-                $q->where('status', 1);
-            })
-            ->whereNotIn('user_id', $data)
-            ->inRandomOrder()->first();
+//            ->whereHas('user', function ($q) {
+//                $q->where('status', 1);
+//            })
+//            ->whereNotIn('user_id', $data)
+//            ->inRandomOrder()->first();
+//        logger(DB::getQueryLog());
+//        logger('$nearestPharmacy');
+//        logger($nearestPharmacy);
+
+        $dhaka_district = District::where('slug', 'dhaka')->first();
+        DB::enableQueryLog();
+        $pharmacy = PharmacyBusiness::query();
+        if ($dhaka_district == $order->address->area->thana->district->id) {
+            $pharmacy->where('area_id', $order->address->area_id);
+        } else {
+            $pharmacy->whereHas('area', function ($q) use ($order) {
+                $q->where('thana_id', $order->address->area->thana_id);
+            });
+        }
+        $nearestPharmacy = $pharmacy->whereHas('user', function ($q) {
+            $q->where('status', 1);
+        })->whereNotIn('user_id', $data)->inRandomOrder()->first();
+
         logger(DB::getQueryLog());
         logger('$nearestPharmacy');
         logger($nearestPharmacy);
