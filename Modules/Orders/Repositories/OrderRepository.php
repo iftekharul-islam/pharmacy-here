@@ -82,7 +82,7 @@ class OrderRepository
         $address = CustomerAddress::with('area.thana.district')->find($address_id);
         $dhaka_district = District::where('slug', 'dhaka')->first();
 
-        if ($dhaka_district == $address->area->thana->district->id) {
+        if ($dhaka_district->id == $address->area->thana->district->id) {
             $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
                 ->whereHas('user', function ($q) {
                     $q->where('status', 1);
@@ -868,7 +868,7 @@ class OrderRepository
         $dhaka_district = District::where('slug', 'dhaka')->first();
         DB::enableQueryLog();
         $pharmacy = PharmacyBusiness::query();
-        if ($dhaka_district == $order->address->area->thana->district->id) {
+        if ($dhaka_district->id == $order->address->area->thana->district->id) {
             $pharmacy->where('area_id', $order->address->area_id);
         } else {
             $pharmacy->whereHas('area', function ($q) use ($order) {
