@@ -81,14 +81,14 @@ class PendingOrderForward implements ShouldQueue
                 logger('Created at time');
                 logger(Carbon::parse($order->created_at)->format('Y-m-d H:i'));
 
-                if ($preOrderEndTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i')) {
+                if ($preOrderEndTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i')) {
                     logger('in the pre order 24 hour section');
                     $this->orderMakeOrphan($order);
                     return;
                 }
 
 //                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
-                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i') && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
                     logger('in the pre order 15 hour section');
                     $this->orderForward($order, $dhaka_district);
                     return;
