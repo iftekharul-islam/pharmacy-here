@@ -111,8 +111,8 @@ class PendingOrderForward implements ShouldQueue
             }
 
 //            if ($order->order_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
-            if ($order->order_date == $today && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
-
+            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+                logger('In the forward on regular based');
                 logger('Order found');
                 logger('order id');
                 logger($order->id);
