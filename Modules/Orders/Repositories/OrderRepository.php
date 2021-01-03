@@ -797,14 +797,14 @@ class OrderRepository
         $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
             ->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })->inRandomOrder()->first();
+            })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
 
         if (!$nearestPharmacy && $dhaka_district->id != $order->address->area->thana->district_id) {
             $nearestPharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($order) {
                 $q->where('thana_id', $order->address->area->thana_id);
             })->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })->inRandomOrder()->first();
+            })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
         }
 
         if ($nearestPharmacy ?? false) {
