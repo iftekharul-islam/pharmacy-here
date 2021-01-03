@@ -266,14 +266,14 @@ class PharmacyRepository
         $pharmacy = PharmacyBusiness::where('area_id', $area_id)
             ->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })->inRandomOrder()->first();
+            })->count();
 
         if (!$pharmacy && $dhaka_district->id != $area->thana->district_id) {
             $pharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($area) {
                 $q->where('thana_id', $area->thana_id);
             })->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })->inRandomOrder()->first();
+            })->count();
         }
         return $pharmacy > 0 ? true : false;
     }
