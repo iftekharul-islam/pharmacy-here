@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Modules\Locations\Entities\Models\District;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\User\Entities\Models\PharmacyBusiness;
@@ -37,13 +38,10 @@ class PendingOrderForward implements ShouldQueue
     public function handle()
     {
 //        logger('in the forward job');
-        $orders = Order::with('address')->whereIn('status', [0, 5, 6])->where('pharmacy_id', '!=', null)->get();
+        $orders = Order::with('address.area.thana')->whereIn('status', [0, 5, 6])->where('pharmacy_id', '!=', null)->get();
+        $dhaka_district = District::where('slug', 'dhaka')->first();
 //        logger('order list');
 //        logger($orders);
-        $date = Carbon::today()->format('l');
-        $Holiday = strtolower($date);
-        $time = Carbon::now()->format('H:i:s');
-        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         foreach ($orders as $order) {
 //            logger('Order time');
 //            logger($order->updated_at->format('H:i'));
@@ -54,40 +52,30 @@ class PendingOrderForward implements ShouldQueue
 //            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
             if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
 
-//                logger('Order found');
-//                logger('order id');
-//                logger($order->id);
+                logger('Order found');
+                logger('order id');
+                logger($order->id);
 
                 $previousPharmacies = OrderHistory::where('order_id', $order->id)->where('status', '!=', 8)->pluck('user_id');
                 $previousPharmacies[] = $order->pharmacy_id;
 
                 logger('$previousPharmacies');
                 logger($previousPharmacies);
-                $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
-//                DB::enableQueryLog();
-                $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                    ->where(function ($q) use ($time) {
-                        $q->where('is_full_open', 1)
-                            ->orWhere(function ($q2) use ($time) {
-                                $q2->where('start_time', '<', $time)
-                                    ->Where('end_time', '>', $time);
-                            });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
 
-                    })->whereHas('user', function ($q) {
-                        $q->where('status', 1);
-                    })->whereNotIn('user_id', $data)
-                    ->inRandomOrder()->first();
+                $pharmacy = PharmacyBusiness::query();
 
-//                logger(DB::getQueryLog());
+                if ($dhaka_district->id == $order->address->area->thana->district_id) {
+                    $pharmacy->where('area_id', $order->address->area_id);
+                } else {
+                    $pharmacy->whereHas('area', function ($q) use ($order) {
+                        $q->where('thana_id', $order->address->area->thana_id);
+                    });
+                }
+                $nearestPharmacy = $pharmacy->whereHas('user', function ($q) {
+                    $q->where('status', 1);
+                })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
+
                 if ($nearestPharmacy != null) {
-
-//                    logger("nearest Pharmacy found");
-//                    logger($nearestPharmacy->pharmacy_name);
-//                    logger($nearestPharmacy);
 
                     $orderHistory = new OrderHistory();
                     $orderHistory->order_id = $order->id;
@@ -108,7 +96,7 @@ class PendingOrderForward implements ShouldQueue
 
                     return responseData('Order status updated');
                 }
-//                logger("nearest Pharmacy not found");
+                logger("nearest Pharmacy not found");
 
                 $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
                 SendNotificationToAdmin::dispatch($order, $subject, $isCancel = false);
@@ -122,10 +110,10 @@ class PendingOrderForward implements ShouldQueue
                 $order->status = 8;
                 $order->save();
 
-//                logger('Order is Orphaned');
+                logger('Order is Orphaned');
                 return responseData('Order is Orphaned');
             }
         }
-//        logger('Order Not found to forward');
+        logger('Order Not found to forward');
     }
 }

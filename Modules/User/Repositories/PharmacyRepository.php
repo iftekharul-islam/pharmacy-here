@@ -240,11 +240,6 @@ class PharmacyRepository
             $pharmacyBusinessInfo->bank_account_number = $request->bank_account_number;
         }
 
-//        if ($request->has('bank_id')) {
-//            logger($request->bank_id);
-//            $pharmacyBusinessInfo->bank_id = $request->bank_id;
-//        }
-
         if ($request->has('bank_name')) {
             $pharmacyBusinessInfo->bank_name = $request->bank_name;
         }
@@ -267,72 +262,24 @@ class PharmacyRepository
     {
         $area = Area::with('thana')->find($area_id);
         $dhaka_district = District::where('slug', 'dhaka')->first();
-        $pharmacyList = PharmacyBusiness::query();
-        if ($dhaka_district->id == $area->thana->district_id) {
-            $pharmacyList->PharmacyBusiness::where('area_id', $area_id);
 
-        } else {
-            $pharmacyList->PharmacyBusiness::whereHas('area', function ($q) use ($area) {
+        $pharmacy = PharmacyBusiness::where('area_id', $area_id)
+            ->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
+
+        if (!$pharmacy && $dhaka_district->id != $area->thana->district_id) {
+            $pharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($area) {
                 $q->where('thana_id', $area->thana_id);
-            });
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
         }
-        $pharmacyList->whereHas('user', function ($q) {
-            $q->where('status', 1);
-        })->count();
-
-        return $pharmacyList > 0 ? true : false;
-
-//        return $pharmacy ? $pharmacy->user_id : '';
-//        $date = Carbon::today()->format('l');
-//        $Holiday = strtolower($date);
-//        $time = Carbon::now()->format('H:i:s');
-//        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-//        $pharmacyList = PharmacyBusiness::whereNotIn('user_id', $isAvailable)
-//            ->where(function ($query) use ($time) {
-//                $query->Where('is_full_open', 1)
-//                    ->orWhere(function ($q) use ($time) {
-//                        $q->where(function ($q) use ($time) {
-//                            $q->where('start_time', '<', $time)
-//                                ->Where('end_time', '>', $time);
-//                        });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-//                    });
-
-//            })
-//        $pharmacyList = PharmacyBusiness::whereHas('area', function ($q) use ($area_id) {
-//                $q->where('id', $area_id);
-//            })->whereHas('user', function ($q) {
-//                $q->where('status', 1);
-//            })->count();
-
-//        return $pharmacyList > 0 ? true : false;
+        return $pharmacy > 0 ? true : false;
     }
 
     public function getAvailablePharmacyList($thana_id)
     {
-//        $date = Carbon::today()->format('l');
-//        $Holiday = strtolower($date);
-//        $time = Carbon::now()->format('H:i:s');
-//        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-//        $pharmacyList = PharmacyBusiness::with('area.thana')
-//            ->whereNotIn('user_id', $isAvailable)
-//            ->where(function ($query) use ($time) {
-//                $query->Where('is_full_open', 1)
-//                    ->orWhere(function ($q) use ($time) {
-//                        $q->where(function ($q) use ($time) {
-//                            $q->where('start_time', '<', $time)
-//                                ->Where('end_time', '>', $time);
-//                        });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-//                    });
-
-//            })
         $pharmacyList = PharmacyBusiness::with('area.thana')
             ->whereHas('area.thana', function ($q) use ($thana_id) {
                 $q->where('id', $thana_id);

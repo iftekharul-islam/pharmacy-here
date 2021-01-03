@@ -82,55 +82,21 @@ class OrderRepository
         $address = CustomerAddress::with('area.thana.district')->find($address_id);
         $dhaka_district = District::where('slug', 'dhaka')->first();
 
-        if ($dhaka_district->id == $address->area->thana->district->id) {
-            $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
-                ->whereHas('user', function ($q) {
-                    $q->where('status', 1);
-                })->inRandomOrder()->first();
+        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
+            ->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
+
+        if (!$pharmacy && $dhaka_district->id != $address->area->thana->district_id) {
+            $pharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($address) {
+                $q->where('thana_id', $address->area->thana_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
 
             return $pharmacy ? $pharmacy->user_id : '';
         }
-
-        $pharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($address) {
-            $q->where('thana_id', $address->area->thana_id);
-        })->whereHas('user', function ($q) {
-            $q->where('status', 1);
-        })->inRandomOrder()->first();
-
         return $pharmacy ? $pharmacy->user_id : '';
-
-//        $date = Carbon::today()->format('l');
-//        $holiday = strtolower($date);
-//        $time = Carbon::now()->format('H:i:s');
-//        $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
-
-//        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
-//            ->where(function ($q) use ($time) {
-//                $q->where('is_full_open', 1)
-//                    ->orWhere(function ($q2) use ($time) {
-//                        $q2->where('start_time', '<', $time)
-//                            ->Where('end_time', '>', $time);
-//                    });
-//            ->where(function ($query) use ($time) {
-//                $query->Where('is_full_open', 1)
-//                    ->orWhere(function ($q) use ($time) {
-//                        $q->where(function ($q) use ($time) {
-//                            $q->where('start_time', '<', $time)
-//                                ->Where('end_time', '>', $time);
-//                        });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-//                    });
-
-//            })
-//            ->whereHas('user', function ($q) {
-//                $q->where('status', 1);
-//            })->whereNotIn('user_id', $availablePharmacy)->inRandomOrder()->first();
-
-
-//        return $pharmacy ? $pharmacy->user_id : '';
     }
 
     public function create($request, $customer_id)
@@ -207,7 +173,6 @@ class OrderRepository
                         $order->subidha_comission = round(($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge') - $order->subidha_comission), 2);
                         $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
-//                        $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge')), 2);
 
 
                     }
@@ -244,7 +209,6 @@ class OrderRepository
 
                         $order->subidha_comission = number_format(($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
-//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
                         $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
@@ -276,7 +240,6 @@ class OrderRepository
 
                         $order->subidha_comission = round($amount_value, 2);
                         $order->pharmacy_amount = round((($request->get('amount')) - $order->subidha_comission), 2);
-//                        $order->customer_amount = round((($request->get('amount'))), 2);
                         $order->customer_amount = round((($request->get('amount')) + $ssl_value), 2);
 
                     }
@@ -311,7 +274,6 @@ class OrderRepository
 
                         $order->subidha_comission = round(($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
-//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
                         $order->customer_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
@@ -342,7 +304,6 @@ class OrderRepository
                 $ssl_value = round(($request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
                 $order->subidha_comission = round($amount_value, 2);
-//                $order->pharmacy_amount = round(($request->get('amount') - ($order->subidha_comission)), 2);
                 $order->pharmacy_amount = round(($request->get('amount') - ($ssl_value + $order->subidha_comission)), 2);
                 $order->customer_amount = round(($request->get('amount')), 2);
 
@@ -810,7 +771,7 @@ class OrderRepository
 
     public function forwardOrder($order_id, $status_id)
     {
-        $order = Order::with('address.area.thana.district')->where('id', $order_id)->first();
+        $order = Order::with('address.area.thana')->where('id', $order_id)->first();
 
         $previousPharmacyOrderHistory = OrderHistory::where('user_id', $order->pharmacy_id)->where('order_id', $order_id)->first();
 
@@ -831,57 +792,20 @@ class OrderRepository
 
         $previousPharmacies[] = $order->pharmacy_id;
 
-        $date = Carbon::today()->format('l');
-        $Holiday = strtolower($date);
-        $time = Carbon::now()->format('H:i:s');
-        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-        logger(gettype($previousPharmacies));
-        logger('$isAvailable');
-        logger($isAvailable);
-        $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
-
-//        DB::enableQueryLog();
-//        $pharmacy = PharmacyBusiness::query();
-//        $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
-//            ->Where('is_full_open', 1)
-//            ->orWhere(function ($q) use ($time) {
-//                $q->where(function ($q) use ($time) {
-//                $q->where('start_time', '<', $time)
-//                    ->Where('end_time', '>', $time);
-//                });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-//                    });
-
-//            })
-//            ->whereHas('user', function ($q) {
-//                $q->where('status', 1);
-//            })
-//            ->whereNotIn('user_id', $data)
-//            ->inRandomOrder()->first();
-//        logger(DB::getQueryLog());
-//        logger('$nearestPharmacy');
-//        logger($nearestPharmacy);
-
         $dhaka_district = District::where('slug', 'dhaka')->first();
-        DB::enableQueryLog();
-        $pharmacy = PharmacyBusiness::query();
-        if ($dhaka_district->id == $order->address->area->thana->district->id) {
-            $pharmacy->where('area_id', $order->address->area_id);
-        } else {
-            $pharmacy->whereHas('area', function ($q) use ($order) {
-                $q->where('thana_id', $order->address->area->thana_id);
-            });
-        }
-        $nearestPharmacy = $pharmacy->whereHas('user', function ($q) {
-            $q->where('status', 1);
-        })->whereNotIn('user_id', $data)->inRandomOrder()->first();
 
-        logger(DB::getQueryLog());
-        logger('$nearestPharmacy');
-        logger($nearestPharmacy);
+        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+            ->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
+
+        if (!$nearestPharmacy && $dhaka_district->id != $order->address->area->thana->district_id) {
+            $nearestPharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($order) {
+                $q->where('thana_id', $order->address->area->thana_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
+        }
 
         if ($nearestPharmacy ?? false) {
             logger('Nearest Pharmacy found');
@@ -952,33 +876,6 @@ class OrderRepository
             ->orderBy('updated_at', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(20);
-
-//        return $order->with(['address.area.thana.district', 'orderItems.product' => function($q) {
-//            $q->orderBy('is_pre_order', 'desc');
-//        }])->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->orderBy('delivery_method','ASC')->orderBy('updated_at', 'desc')
-//            ->orderBy('id','desc')
-//            ->paginate(20);
-
-//        return $order->with(['address', 'pharmacy'])
-//            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
-//            ->where('pharmacy_id', $pharmacy_id)
-//            ->where('status', $status_id)
-//            ->orderBy('delivery_method','ASC')
-//            ->orderBy('id','desc')
-//            ->paginate(20);
-//        return $status_id;
-
-//        return $order->with(['address.area.thana.district'])
-//            ->where('orders.pharmacy_id', $pharmacy_id)
-//            ->where('orders.status', $status_id)
-//            ->join('order_items','orders.id', '=', 'order_items.order_id' )
-//            ->join('products','order_items.product_id', '=', 'products.id' )
-//            ->select('orders.*','products.*')
-//            ->orderBy('products.is_pre_order', 'desc')
-////            ->orderBy('orders.delivery_method','ASC')
-////            ->orderBy('orders.updated_at', 'desc')
-////            ->orderBy('orders.id','desc')
-//            ->paginate(20);
     }
 
     public function pharmacyOrderCancelReason($pharmacy_id, $request)
