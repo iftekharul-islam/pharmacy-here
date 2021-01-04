@@ -44,7 +44,7 @@
                             {{ $data->delivery_duration ?? 'N/A' }}
                             <br>
                             <strong>Delivery Date:</strong>
-                            {{ $data->order_date ?? 'N/A' }}
+                            {{ $data->delivery_date ?? 'N/A' }}
                             <br>
                             @if ($data->payment_type === 1 && $data->delivery_type === 2)
                                 <strong>Discount Amount:</strong>
