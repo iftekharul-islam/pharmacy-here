@@ -98,19 +98,19 @@ class PendingOrderForward implements ShouldQueue
                 return responseData('Pre Order status in the same state');
             }
 
-            if ($order->delivery_method == 'express' && $order->order_date == $today && $todayTime >= $expressTime) {
+            if ($order->delivery_method == 'express' && $order->delivery_date == $today && $todayTime >= $expressTime) {
                 logger('In the express delivery orphan on date based');
                 $this->orderMakeOrphan($order);
                 return;
             }
 
-            if ($order->order_date == $today && $todayTime >= $orderTime) {
+            if ($order->delivery_date == $today && $todayTime >= $orderTime) {
                 logger('In the orphan on date based');
                 $this->orderMakeOrphan($order);
                 return;
             }
 
-//            if ($order->order_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+//            if ($order->delivery_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
             if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
                 logger('In the forward on regular based');
                 logger('Order found');
