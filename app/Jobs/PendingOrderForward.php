@@ -38,7 +38,7 @@ class PendingOrderForward implements ShouldQueue
     public function handle()
     {
         logger('in the forward job');
-        $orders = Order::with('address.area.thana')->whereIn('status', [0, 5, 6])->where('pharmacy_id', '!=', null)->get();
+        $orders = Order::with('address.area.thana')->where('status', 0)->where('pharmacy_id', '!=', null)->get();
 //        $orders = Order::with('orderItems.product')->where('status', 0)->where('pharmacy_id', '!=', null)->get();
         $dhaka_district = District::where('slug', 'dhaka')->first();
 
@@ -58,6 +58,7 @@ class PendingOrderForward implements ShouldQueue
 
                 if ($item->product->is_pre_order == 1) {
                     $isPreOrder = true;
+                    logger('pre order true');
                     break;
                 }
             }
@@ -71,7 +72,7 @@ class PendingOrderForward implements ShouldQueue
 //            $preOrderEndTime = Carbon::now()->subHour(24)->format('Y-m-d H:i');
             $preOrderEndTime = Carbon::now()->subMinute(15)->format('Y-m-d H:i');
 
-            if ($isPreOrder == true) {
+            if ($isPreOrder === true) {
                 logger('in the pre order section');
 
                 logger('pre Order End Time');
@@ -98,13 +99,13 @@ class PendingOrderForward implements ShouldQueue
                 return responseData('Pre Order status in the same state');
             }
 
-            if ($order->delivery_method == 'express' && $order->delivery_date == $today && $todayTime >= $expressTime) {
+            if ($order->delivery_method === 'express' && $order->delivery_date == $today && $todayTime >= $expressTime) {
                 logger('In the express delivery orphan on date based');
                 $this->orderMakeOrphan($order);
                 return;
             }
 
-            if ($order->delivery_date == $today && $todayTime >= $orderTime) {
+            if ($order->delivery_date === $today && $todayTime >= $orderTime) {
                 logger('In the orphan on date based');
                 $this->orderMakeOrphan($order);
                 return;
