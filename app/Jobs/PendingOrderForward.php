@@ -85,30 +85,31 @@ class PendingOrderForward implements ShouldQueue
                 if ($preOrderEndTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i')) {
                     logger('in the pre order 24 hour section');
                     $this->orderMakeOrphan($order);
-                    return;
+                    continue;
                 }
 
 //                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
                 if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i') && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
                     logger('in the pre order 15 hour section');
                     $this->orderForward($order, $dhaka_district);
-                    return;
+                    continue;
                 }
 
                 logger('Pre Order status in the same state');
-                return responseData('Pre Order status in the same state');
+                continue;
             }
 
             if ($order->delivery_method === 'express' && $order->delivery_date == $today && $todayTime >= $expressTime) {
                 logger('In the express delivery orphan on date based');
                 $this->orderMakeOrphan($order);
-                return;
+                continue;
             }
 
             if ($order->delivery_date === $today && $todayTime >= $orderTime) {
                 logger('In the orphan on date based');
                 $this->orderMakeOrphan($order);
-                return;
+                logger('end of Order is Orphaned');
+                continue;
             }
 
 //            if ($order->delivery_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
@@ -119,7 +120,8 @@ class PendingOrderForward implements ShouldQueue
                 logger($order->id);
 
                 $this->orderForward($order, $dhaka_district);
-                return;
+                logger('Order is forwarded');
+                continue;
             }
         }
         logger('Order Not found to forward');
@@ -170,10 +172,11 @@ class PendingOrderForward implements ShouldQueue
                 sendPushNotification($deviceId->device_id, $title, $message, $id = "");
             }
 
-            return responseData('Order status updated');
+            logger('Order is forwarded');
+            return;
         }
         logger('Pre Order status in the same state');
-        return responseData('Pre Order status in the same state');
+        return;
 
     }
 
@@ -197,6 +200,6 @@ class PendingOrderForward implements ShouldQueue
         $order->save();
 
         logger('Order is Orphaned');
-        return responseData('Order is Orphaned');
+        return;
     }
 }
