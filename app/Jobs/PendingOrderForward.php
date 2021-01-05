@@ -39,16 +39,15 @@ class PendingOrderForward implements ShouldQueue
     {
         logger('in the forward job');
         $orders = Order::with('address.area.thana')->where('status', 0)->where('pharmacy_id', '!=', null)->get();
-//        $orders = Order::with('orderItems.product')->where('status', 0)->where('pharmacy_id', '!=', null)->get();
         $dhaka_district = District::where('slug', 'dhaka')->first();
 
         logger('order list');
         logger($orders);
 
         foreach ($orders as $order) {
-
-            logger('order');
-            logger($order);
+            logger('Order found');
+            logger('order id');
+            logger($order->order_no);
 
             $isPreOrder = false;
             foreach ($order->orderItems as $item) {
@@ -67,10 +66,10 @@ class PendingOrderForward implements ShouldQueue
             $todayTime = Carbon::now()->format('H:i');
             $orderTime = Carbon::parse($order->delivery_time)->subHour(1)->format('H:i');
             $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
-//            $preOrderTime = Carbon::now()->subHour(15)->format('Y-m-d H:i');
-            $preOrderTime = Carbon::now()->subMinute(10)->format('Y-m-d H:i');
-//            $preOrderEndTime = Carbon::now()->subHour(24)->format('Y-m-d H:i');
-            $preOrderEndTime = Carbon::now()->subMinute(15)->format('Y-m-d H:i');
+            $preOrderTime = Carbon::now()->subHour(15)->format('Y-m-d H:i');
+//            $preOrderTime = Carbon::now()->subMinute(10)->format('Y-m-d H:i');
+            $preOrderEndTime = Carbon::now()->subHour(24)->format('Y-m-d H:i');
+//            $preOrderEndTime = Carbon::now()->subMinute(15)->format('Y-m-d H:i');
 
             if ($isPreOrder === true) {
                 logger('in the pre order section');
@@ -88,8 +87,8 @@ class PendingOrderForward implements ShouldQueue
                     continue;
                 }
 
-//                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
-                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i') && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+//                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i') && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
                     logger('in the pre order 15 hour section');
                     $this->orderForward($order, $dhaka_district);
                     continue;
@@ -105,19 +104,16 @@ class PendingOrderForward implements ShouldQueue
                 continue;
             }
 
-            if ($order->delivery_date === $today && $todayTime >= $orderTime) {
+            if ($order->delivery_date === $today && $todayTime >= $orderTime && $order->delivery_method != 'express') {
                 logger('In the orphan on date based');
                 $this->orderMakeOrphan($order);
                 logger('end of Order is Orphaned');
                 continue;
             }
 
-//            if ($order->delivery_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
-            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+            if ($order->delivery_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+//            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
                 logger('In the forward on regular based');
-                logger('Order found');
-                logger('order id');
-                logger($order->id);
 
                 $this->orderForward($order, $dhaka_district);
                 logger('Order is forwarded');
@@ -146,6 +142,7 @@ class PendingOrderForward implements ShouldQueue
             })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
 
         if (!$nearestPharmacy && $dhaka_district->id != $order->address->area->thana->district_id) {
+            logger('Outside of dhaka');
             $nearestPharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($order) {
                 $q->where('thana_id', $order->address->area->thana_id);
             })->whereHas('user', function ($q) {

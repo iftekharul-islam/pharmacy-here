@@ -47,10 +47,8 @@ class PurchaseReminder extends Command
 
         foreach ($orders as $order) {
             logger('In purchase reminder loop');
-//            $orderDate = $order->created_at->addDays(28);
-//            $orderDate = $order->created_at->addMinutes(5);
+            $orderDate = $order->created_at->addDays(28);
             $value = Carbon::parse($order->updated_at)->format('H:i');
-//            $values = Carbon::parse($order->created_at)->format('H:i');
             $now = Carbon::now()->subMinute(5)->format('H:i');
             logger('Order details');
             logger($orders);
@@ -58,8 +56,7 @@ class PurchaseReminder extends Command
             logger($value);
             logger('time now sub by 5 min');
             logger($now);
-//            if (Carbon::today() == $orderDate ){
-            if ($now >= $value){
+            if (Carbon::today() == $orderDate ){
                 logger('Notification will sent');
 
                 $deviceIds = UserDeviceId::where('user_id',$order->customer_id)->groupBy('device_id')->get();
