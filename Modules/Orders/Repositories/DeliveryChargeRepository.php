@@ -31,7 +31,7 @@ class DeliveryChargeRepository
         $expressDelivery = [
             'delivery_charge' => config('subidha.express_delivery_charge'),
             'cash'  =>  number_format($amount * config('subidha.cash_payment_charge_percentage') / 100, 2),
-            'ecash' => number_format((config('subidha.express_delivery_charge') + $amount) * config('subidha.ecash_payment_charge_percentage') / 100, 2);
+            'ecash' => number_format((config('subidha.express_delivery_charge') + $amount) * config('subidha.ecash_payment_charge_percentage') / 100, 2),
         ];
 
         $collectFromPharmacyCash = config('subidha.collect_from_pharmacy_charge') - ($amount * config('subidha.collect_from_pharmacy_discount_percentage') / 100);
