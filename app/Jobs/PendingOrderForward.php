@@ -63,8 +63,8 @@ class PendingOrderForward implements ShouldQueue
             }
 
             $today = Carbon::today()->format('Y-m-d');
-            $todayTime = Carbon::now()->format('H:i');
-            $orderTime = Carbon::parse($order->delivery_time)->subHour(1)->format('H:i');
+            $todayTime = Carbon::now()->format('H:i:s');
+            $orderTime = Carbon::parse($order->delivery_time)->subHour(1)->format('H:i:s');
             $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
             $preOrderTime = Carbon::now()->subHour(15)->format('Y-m-d H:i');
 //            $preOrderTime = Carbon::now()->subMinute(10)->format('Y-m-d H:i');
@@ -103,6 +103,11 @@ class PendingOrderForward implements ShouldQueue
                 $this->orderMakeOrphan($order);
                 continue;
             }
+
+            logger('orderTime');
+            logger($orderTime);
+            logger('todayTime');
+            logger($todayTime);
 
             if ($order->delivery_date === $today && $todayTime >= $orderTime && $order->delivery_method != 'express') {
                 logger('In the orphan on date based');

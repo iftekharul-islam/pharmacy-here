@@ -625,8 +625,11 @@
                 var time_now = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
                 var check_start_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
                 var check_end_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
-                var first_time_duration = NormalDeliveryTime[0].start_time + '' + NormalDeliveryTime[0].end_time;
-                var last_time_duration = NormalDeliveryTime[1].start_time + '' + NormalDeliveryTime[1].end_time;
+                var first_time_duration = NormalDeliveryTime[0].start_time + ' - ' + NormalDeliveryTime[0].end_time;
+                var last_time_duration = NormalDeliveryTime[1].start_time + ' - ' + NormalDeliveryTime[1].end_time;
+                var normal_delivery_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').format('HH:mm:ss');
+                var normal_next_delivery_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').format('HH:mm:ss');
+
                 console.log('check_time');
                 console.log(check_start_time);
                 console.log('check_end_time');
@@ -651,27 +654,27 @@
                 console.log(PreOrderMedicine);
                 if (PreOrderMedicine !== '') {
                     $(".normal_delivery_date").val(after_four_date);
-                    $(".normal_delivery_time").val(NormalDeliveryTime[0].start_time);
+                    $(".normal_delivery_time").val(normal_delivery_time);
                     $(".delivery_duration").val(first_time_duration);
 
                 }
                 else if (time_now < check_start_time) {
                     $(".normal_date").val("(" + first_time_duration + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
-                    $(".normal_delivery_time").val(NormalDeliveryTime[0].start_time);
+                    $(".normal_delivery_time").val(normal_delivery_time);
                     $(".delivery_duration").val(first_time_duration);
 
                 }
                 else if (time_now > check_start_time && time_now < check_end_time) {
                     $(".normal_date").val("(" + last_time_duration + ")" + ", " + date);
                     $(".normal_delivery_date").val(date);
-                    $(".normal_delivery_time").val(NormalDeliveryTime[1].start_time);
+                    $(".normal_delivery_time").val(normal_next_delivery_time);
                     $(".delivery_duration").val(last_time_duration);
 
                 } else {
                     $(".normal_date").val("(" + last_time_duration + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
-                    $(".normal_delivery_time").val(NormalDeliveryTime[0].start_time);
+                    $(".normal_delivery_time").val(normal_delivery_time);
                     $(".delivery_duration").val(last_time_duration);
                 }
 

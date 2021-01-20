@@ -81,8 +81,6 @@ class CheckoutController extends Controller
             'normal_delivery_time'  => $this->deliveryTimeReposiitory->getTimeList($month, 1),
             'express_delivery_time' => $this->deliveryTimeReposiitory->getTimeList($month, 2)
         ];
-//        return $delivery_time;
-
         $data = $this->cartRepository->getCartByCustomer(Auth::user()->id);
         session()->put('cartCount', count($data) ?? '');
 
@@ -102,14 +100,20 @@ class CheckoutController extends Controller
     public function check(CheckoutCreateRequest $request)
     {
         if ($request->payment_type == 1) {
+
             $order = $this->orderRepository->createWeb($request);
+
             if ($order == true) {
+
                 return redirect()->route('home')->with('success', 'Order successfully placed');
             }
+
             return redirect()->route('home')->with('failed', 'Order not placed');
 
         } else {
+
             $value = $this->sslPayment($request);
+
             return $value;
         }
 
