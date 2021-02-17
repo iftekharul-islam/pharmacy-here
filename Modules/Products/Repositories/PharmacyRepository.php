@@ -27,7 +27,9 @@ class PharmacyRepository
 
         if ($request->search !== null) {
             $data->whereHas('pharmacyBusiness', function ($query) use ($request) {
-                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%");
+                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%")
+                    ->orWhere('phone_number', 'LIKE', "%{$request->search}%")
+                    ->orWhere('email', 'LIKE', "%{$request->search}%");
             });
         }
         if ($area_id !== null) {
