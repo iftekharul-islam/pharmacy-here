@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Modules\Locations\Entities\Models\District;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderHistory;
 use Modules\User\Entities\Models\PharmacyBusiness;
@@ -36,97 +37,171 @@ class PendingOrderForward implements ShouldQueue
      */
     public function handle()
     {
-//        logger('in the forward job');
-        $orders = Order::with('address')->whereIn('status', [0, 5, 6])->where('pharmacy_id', '!=', null)->get();
-//        logger('order list');
-//        logger($orders);
+        logger('in the forward job');
+        $orders = Order::with('address.area.thana')->where('status', 0)->where('pharmacy_id', '!=', null)->get();
+        $dhaka_district = District::where('slug', 'dhaka')->first();
+
+        logger('order list');
+        logger($orders);
+
         foreach ($orders as $order) {
-//            logger('Order time');
-//            logger($order->updated_at->format('H:i'));
-//            logger('Checking Time');
-//            logger(Carbon::now()->format('H:i'));
-//            logger(Carbon::now()->subMinute(5)->format('H:i'));
+            logger('Order found');
+            logger('order id');
+            logger($order->order_no);
 
-//            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
-            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+            $isPreOrder = false;
+            foreach ($order->orderItems as $item) {
 
-//                logger('Order found');
-//                logger('order id');
-//                logger($order->id);
+                logger('is_pre_order');
+                logger($item->product->is_pre_order);
 
-                $previousPharmacies = OrderHistory::where('order_id', $order->id)->where('status', '!=', 8)->pluck('user_id');
-                $previousPharmacies[] = $order->pharmacy_id;
-
-                logger('$previousPharmacies');
-                logger($previousPharmacies);
-
-                $date = Carbon::today()->format('l');
-                $Holiday = strtolower($date);
-                $time = Carbon::now()->format('H:i:s');
-                $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-                $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
-//                DB::enableQueryLog();
-                $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
-                    ->where(function ($q) use ($time) {
-                        $q->where('is_full_open', 1)
-                            ->orWhere(function ($q2) use ($time) {
-                                $q2->where('start_time', '<', $time)
-                                    ->Where('end_time', '>', $time);
-                            });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-
-                    })->whereHas('user', function ($q) {
-                        $q->where('status', 1);
-                    })->whereNotIn('user_id', $data)
-                    ->inRandomOrder()->first();
-
-//                logger(DB::getQueryLog());
-                if ($nearestPharmacy != null) {
-
-//                    logger("nearest Pharmacy found");
-//                    logger($nearestPharmacy->pharmacy_name);
-//                    logger($nearestPharmacy);
-
-                    $orderHistory = new OrderHistory();
-                    $orderHistory->order_id = $order->id;
-                    $orderHistory->user_id = $nearestPharmacy->user_id;
-                    $orderHistory->status = 6;
-                    $orderHistory->save();
-
-                    $order->pharmacy_id = $nearestPharmacy->user_id;
-                    $order->save();
-
-                    $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->groupBy('device_id')->get();
-                    $title = 'New Order Available';
-                    $message = 'You have a new order from Subidha. Please check.';
-
-                    foreach ($deviceIds as $deviceId) {
-                        sendPushNotification($deviceId->device_id, $title, $message, $id = "");
-                    }
-
-                    return responseData('Order status updated');
+                if ($item->product->is_pre_order == 1) {
+                    $isPreOrder = true;
+                    logger('pre order true');
+                    break;
                 }
-//                logger("nearest Pharmacy not found");
+            }
 
-                $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
-                SendNotificationToAdmin::dispatch($order, $subject, $isCancel = false);
-                $orderHistory = new OrderHistory();
-                $orderHistory->order_id = $order->id;
-                $orderHistory->user_id = $order->pharmacy_id;
-                $orderHistory->status = 8;
-                $orderHistory->save();
+            $today = Carbon::today()->format('Y-m-d');
+            $todayTime = Carbon::now()->format('H:i:s');
+            $orderTime = Carbon::parse($order->delivery_time)->subHour(1)->format('H:i:s');
+            $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
+            $preOrderTime = Carbon::now()->subHour(15)->format('Y-m-d H:i');
+//            $preOrderTime = Carbon::now()->subMinute(10)->format('Y-m-d H:i');
+            $preOrderEndTime = Carbon::now()->subHour(24)->format('Y-m-d H:i');
+//            $preOrderEndTime = Carbon::now()->subMinute(15)->format('Y-m-d H:i');
 
-                $order->pharmacy_id = null;
-                $order->status = 8;
-                $order->save();
+            if ($isPreOrder === true) {
+                logger('in the pre order section');
 
-//                logger('Order is Orphaned');
-                return responseData('Order is Orphaned');
+                logger('pre Order End Time');
+                logger($preOrderEndTime);
+                logger('pre Order Time');
+                logger($preOrderTime);
+                logger('Created at time');
+                logger(Carbon::parse($order->created_at)->format('Y-m-d H:i'));
+
+                if ($preOrderEndTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i')) {
+                    logger('in the pre order 24 hour section');
+                    $this->orderMakeOrphan($order);
+                    continue;
+                }
+
+                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+//                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i') && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+                    logger('in the pre order 15 hour section');
+                    $this->orderForward($order, $dhaka_district);
+                    continue;
+                }
+
+                logger('Pre Order status in the same state');
+                continue;
+            }
+
+            if ($order->delivery_method === 'express' && $order->delivery_date == $today && $todayTime >= $expressTime) {
+                logger('In the express delivery orphan on date based');
+                $this->orderMakeOrphan($order);
+                continue;
+            }
+
+            logger('orderTime');
+            logger($orderTime);
+            logger('todayTime');
+            logger($todayTime);
+
+            if ($order->delivery_date === $today && $todayTime >= $orderTime && $order->delivery_method != 'express') {
+                logger('In the orphan on date based');
+                $this->orderMakeOrphan($order);
+                logger('end of Order is Orphaned');
+                continue;
+            }
+
+            if ($order->delivery_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+//            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
+                logger('In the forward on regular based');
+
+                $this->orderForward($order, $dhaka_district);
+                logger('Order is forwarded');
+                continue;
             }
         }
-//        logger('Order Not found to forward');
+        logger('Order Not found to forward');
+    }
+
+    /**
+     * @param $order
+     * @param $dhaka_district
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function orderForward($order, $dhaka_district)
+    {
+        $previousPharmacies = OrderHistory::where('order_id', $order->id)->where('status', '!=', 8)->pluck('user_id');
+        $previousPharmacies[] = $order->pharmacy_id;
+
+        logger('$previousPharmacies');
+        logger($previousPharmacies);
+
+        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+            ->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
+
+        if (!$nearestPharmacy && $dhaka_district->id != $order->address->area->thana->district_id) {
+            logger('Outside of dhaka');
+            $nearestPharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($order) {
+                $q->where('thana_id', $order->address->area->thana_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
+        }
+
+        if ($nearestPharmacy != null) {
+
+            $orderHistory = new OrderHistory();
+            $orderHistory->order_id = $order->id;
+            $orderHistory->user_id = $nearestPharmacy->user_id;
+            $orderHistory->status = 6;
+            $orderHistory->save();
+
+            $order->pharmacy_id = $nearestPharmacy->user_id;
+            $order->save();
+
+            $deviceIds = UserDeviceId::where('user_id', $order->pharmacy_id)->groupBy('device_id')->get();
+            $title = 'New Order Available';
+            $message = 'You have a new order from Subidha. Please check.';
+
+            foreach ($deviceIds as $deviceId) {
+                sendPushNotification($deviceId->device_id, $title, $message, $id = "");
+            }
+
+            logger('Order is forwarded');
+            return;
+        }
+        logger('Pre Order status in the same state');
+        return;
+
+    }
+
+    /**
+     * @param $order
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function orderMakeOrphan($order)
+    {
+        $subject = 'An order ID: ' . $order->order_no . ' has been Orphaned';
+        SendNotificationToAdmin::dispatch($order, $subject, $isCancel = false);
+
+        $orderHistory = new OrderHistory();
+        $orderHistory->order_id = $order->id;
+        $orderHistory->user_id = $order->pharmacy_id;
+        $orderHistory->status = 8;
+        $orderHistory->save();
+
+        $order->pharmacy_id = null;
+        $order->status = 8;
+        $order->save();
+
+        logger('Order is Orphaned');
+        return;
     }
 }

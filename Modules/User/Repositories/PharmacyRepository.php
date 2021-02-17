@@ -5,6 +5,9 @@ namespace Modules\User\Repositories;
 
 
 use Carbon\Carbon;
+use Modules\Address\Entities\CustomerAddress;
+use Modules\Locations\Entities\Models\Area;
+use Modules\Locations\Entities\Models\District;
 use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 use Modules\User\Entities\Models\Weekends;
@@ -237,11 +240,6 @@ class PharmacyRepository
             $pharmacyBusinessInfo->bank_account_number = $request->bank_account_number;
         }
 
-//        if ($request->has('bank_id')) {
-//            logger($request->bank_id);
-//            $pharmacyBusinessInfo->bank_id = $request->bank_id;
-//        }
-
         if ($request->has('bank_name')) {
             $pharmacyBusinessInfo->bank_name = $request->bank_name;
         }
@@ -262,56 +260,27 @@ class PharmacyRepository
 
     public function checkPharmacyByArea($area_id)
     {
-        $date = Carbon::today()->format('l');
-        $Holiday = strtolower($date);
-        $time = Carbon::now()->format('H:i:s');
-        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-        $pharmacyList = PharmacyBusiness::whereNotIn('user_id', $isAvailable)
-            ->where(function ($query) use ($time) {
-                $query->Where('is_full_open', 1)
-                    ->orWhere(function ($q) use ($time) {
-                        $q->where(function ($q) use ($time) {
-                            $q->where('start_time', '<', $time)
-                                ->Where('end_time', '>', $time);
-                        });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-                    });
+        $area = Area::with('thana')->find($area_id);
+        $dhaka_district = District::where('slug', 'dhaka')->first();
 
-            })
-            ->whereHas('area', function ($q) use ($area_id) {
-                $q->where('id', $area_id);
-            })->whereHas('user', function ($q) {
+        $pharmacy = PharmacyBusiness::where('area_id', $area_id)
+            ->whereHas('user', function ($q) {
                 $q->where('status', 1);
             })->count();
 
-        return $pharmacyList > 0 ? true : false;
+        if (!$pharmacy && $dhaka_district->id != $area->thana->district_id) {
+            $pharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($area) {
+                $q->where('thana_id', $area->thana_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->count();
+        }
+        return $pharmacy > 0 ? true : false;
     }
 
     public function getAvailablePharmacyList($thana_id)
     {
-        $date = Carbon::today()->format('l');
-        $Holiday = strtolower($date);
-        $time = Carbon::now()->format('H:i:s');
-        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
         $pharmacyList = PharmacyBusiness::with('area.thana')
-            ->whereNotIn('user_id', $isAvailable)
-            ->where(function ($query) use ($time) {
-                $query->Where('is_full_open', 1)
-                    ->orWhere(function ($q) use ($time) {
-                        $q->where(function ($q) use ($time) {
-                            $q->where('start_time', '<', $time)
-                                ->Where('end_time', '>', $time);
-                        });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-                    });
-
-            })
             ->whereHas('area.thana', function ($q) use ($thana_id) {
                 $q->where('id', $thana_id);
             })->whereHas('user', function ($q) {

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Modules\Address\Entities\CustomerAddress;
+use Modules\Locations\Entities\Models\District;
 use Modules\Orders\Emails\SendOrderStatusEmail;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Orders\Entities\Models\OrderCancelReason;
@@ -78,44 +79,28 @@ class OrderRepository
 
     public function getNearestPharmacyId($address_id)
     {
-        $address = CustomerAddress::find($address_id);
-        $date = Carbon::today()->format('l');
-        $holiday = strtolower($date);
-        $time = Carbon::now()->format('H:i:s');
-        $availablePharmacy = Weekends::where('days', $holiday)->groupBy('user_id')->pluck('user_id');
-        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
-            ->where(function ($q) use ($time) {
-                $q->where('is_full_open', 1)
-                    ->orWhere(function ($q2) use ($time) {
-                        $q2->where('start_time', '<', $time)
-                            ->Where('end_time', '>', $time);
-                    });
-//            ->where(function ($query) use ($time) {
-//                $query->Where('is_full_open', 1)
-//                    ->orWhere(function ($q) use ($time) {
-//                        $q->where(function ($q) use ($time) {
-//                            $q->where('start_time', '<', $time)
-//                                ->Where('end_time', '>', $time);
-//                        });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-//                    });
+        $address = CustomerAddress::with('area.thana.district')->find($address_id);
+        $dhaka_district = District::where('slug', 'dhaka')->first();
 
-            })
+        $pharmacy = PharmacyBusiness::where('area_id', $address->area_id)
             ->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })->whereNotIn('user_id', $availablePharmacy)->inRandomOrder()->first();
+            })->inRandomOrder()->first();
 
+        if (!$pharmacy && $dhaka_district->id != $address->area->thana->district_id) {
+            $pharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($address) {
+                $q->where('thana_id', $address->area->thana_id);
+            })->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->inRandomOrder()->first();
 
+            return $pharmacy ? $pharmacy->user_id : '';
+        }
         return $pharmacy ? $pharmacy->user_id : '';
     }
 
     public function create($request, $customer_id)
     {
-        logger('Request from mobile app');
-        logger($request->all());
         $order = new Order();
         $pharmacy_id = $request->get('pharmacy_id') ? $request->get('pharmacy_id') : $this->getNearestPharmacyId($request->get('shipping_address_id'));
         if (empty($pharmacy_id)) {
@@ -144,8 +129,6 @@ class OrderRepository
         $order->delivery_duration = $request->get('delivery_duration');
         $order->ssl_charge = $request->get('ssl_charge') ?? '';
 
-//        $ssl_value = '';
-
         if ($order->delivery_type == config('subidha.home_delivery')) {
 
             if ($request->amount <= config('subidha.free_delivery_limit')) {
@@ -162,15 +145,12 @@ class OrderRepository
 
                         $order->subidha_comission = ($amount_value + $delivery_value + $total_value - $order->point_amount);
 
-                        $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission);
-                        $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value);
+//                        $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission);
+//                        $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value);
 
-                        $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission );
-                        $order->subidha_comission =  $order->subidha_comission - $order->point_amount;
-                        logger('In 1, Subidha comission with discount '. $order->subidha_comission);
+                        $order->pharmacy_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->subidha_comission);
+//                        $order->subidha_comission = $order->subidha_comission - $order->point_amount;
                         $order->customer_amount = (($request->get('amount')) + config('subidha.normal_delivery_charge') + $amount_value - $order->point_amount);
-                        logger('In 1, Subidha customer amount '. $order->customer_amount);
-                        logger('Out 1');
                     }
                     if ($order->payment_type == config('subidha.ecash_payment_type')) {
 
@@ -183,12 +163,9 @@ class OrderRepository
                         $ssl_value = round((($request->get('amount')) + config('subidha.normal_delivery_charge')) *
                             config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
-//                        print_r($amount_value);die();
-
                         $order->subidha_comission = round(($amount_value + $delivery_value), 2);
                         $order->pharmacy_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge') - $order->subidha_comission), 2);
                         $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
-//                        $order->customer_amount = round((($request->get('amount')) + config('subidha.normal_delivery_charge')), 2);
 
 
                     }
@@ -223,10 +200,9 @@ class OrderRepository
                         $ssl_value = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')) *
                             config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
-                        $order->subidha_comission = number_format(($amount_value + $delivery_value), 2);
-                        $order->pharmacy_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
-//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $order->subidha_comission = round(($amount_value + $delivery_value), 2);
+                        $order->pharmacy_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
+                        $order->customer_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
                 }
@@ -257,7 +233,6 @@ class OrderRepository
 
                         $order->subidha_comission = round($amount_value, 2);
                         $order->pharmacy_amount = round((($request->get('amount')) - $order->subidha_comission), 2);
-//                        $order->customer_amount = round((($request->get('amount'))), 2);
                         $order->customer_amount = round((($request->get('amount')) + $ssl_value), 2);
 
                     }
@@ -284,16 +259,15 @@ class OrderRepository
                         $delivery_value = config('subidha.express_delivery_charge') *
                             config('subidha.subidha_delivery_percentage') / 100;
 
-                        $amount_value = number_format(($request->get('amount')) *
+                        $amount_value = round(($request->get('amount')) *
                             config('subidha.subidha_comission_ecash_percentage') / 100, 2);
 
-                        $ssl_value = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')) *
+                        $ssl_value = round((($request->get('amount')) + config('subidha.express_delivery_charge')) *
                             config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
-                        $order->subidha_comission = number_format(($amount_value + $delivery_value), 2);
-                        $order->pharmacy_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
-//                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-                        $order->customer_amount = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $order->subidha_comission = round(($amount_value + $delivery_value), 2);
+                        $order->pharmacy_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $order->subidha_comission), 2);
+                        $order->customer_amount = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
                 }
@@ -323,7 +297,6 @@ class OrderRepository
                 $ssl_value = round(($request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
                 $order->subidha_comission = round($amount_value, 2);
-//                $order->pharmacy_amount = round(($request->get('amount') - ($order->subidha_comission)), 2);
                 $order->pharmacy_amount = round(($request->get('amount') - ($ssl_value + $order->subidha_comission)), 2);
                 $order->customer_amount = round(($request->get('amount')), 2);
 
@@ -365,12 +338,12 @@ class OrderRepository
             $this->storeAssociatePrescriptions($request->prescriptions, $order->id);
         }
 
-        $deviceIds = UserDeviceId::where('user_id',$pharmacy_id)->get();
+        $deviceIds = UserDeviceId::where('user_id', $pharmacy_id)->get();
         $title = 'New Order Available';
         $message = 'You have a new order from Subidha. Please check.';
 
-        foreach ($deviceIds as $deviceId){
-            sendPushNotification($deviceId->device_id, $title, $message, $id="");
+        foreach ($deviceIds as $deviceId) {
+            sendPushNotification($deviceId->device_id, $title, $message, $id = "");
         }
 
         return $order;
@@ -405,12 +378,13 @@ class OrderRepository
         ]);
 
         $data['order_no'] = $this->generateOrderNo();
-        $data['order_date'] = Carbon::today();
+        $data['order_date'] = Carbon::today()->format('Y-m-d');
         $data['customer_id'] = Auth::user()->id;
         $data['pharmacy_id'] = $request->pharmacy_id ? $request->pharmacy_id : $this->getNearestPharmacyId($data['shipping_address_id']);
-        $data['notes'] = "Its a sample for epay";
+        $data['notes'] = "Its a sample for cod";
         $data['is_rated'] = "no";
         $data['point_amount'] = 0;
+
         if ($request->delivery_charge_amount != null) {
             $data['delivery_charge'] = $request->delivery_charge_amount;
         } else {
@@ -472,8 +446,7 @@ class OrderRepository
 
                         $data['subidha_comission'] = round(($amount_value + $delivery_value), 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge') - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge')), 2);
-//                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.normal_delivery_charge') + $ssl_value), 2);
 
 
                     }
@@ -511,10 +484,9 @@ class OrderRepository
                         $ssl_value = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')) *
                             config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
-                        $data['subidha_comission'] = number_format(($amount_value + $delivery_value), 2);
-                        $data['pharmacy_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-//                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $data['subidha_comission'] = round(($amount_value + $delivery_value), 2);
+                        $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
                 }
@@ -548,8 +520,7 @@ class OrderRepository
 
                         $data['subidha_comission'] = round($amount_value, 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = round((($request->get('amount'))), 2);
-//                        $data['customer_amount'] = round((($request->get('amount')) + $ssl_value), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + $ssl_value), 2);
 
                     }
 
@@ -589,10 +560,9 @@ class OrderRepository
                         $ssl_value = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')) *
                             config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
-                        $data['subidha_comission'] = number_format(($amount_value + $delivery_value), 2);
-                        $data['pharmacy_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
-                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge')), 2);
-//                        $data['customer_amount'] = number_format((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
+                        $data['subidha_comission'] = round(($amount_value + $delivery_value), 2);
+                        $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
+                        $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
 
                     }
                 }
@@ -622,8 +592,7 @@ class OrderRepository
                 $ssl_value = round(($request->get('amount')) * config('subidha.ecash_payment_charge_percentage') / 100, 2);
 
                 $data['subidha_comission'] = round($amount_value, 2);
-                $data['pharmacy_amount'] = round(($request->get('amount') - ($data['subidha_comission'])), 2);
-//                $data['pharmacy_amount'] = round(($request->get('amount') - ($ssl_value + $data['subidha_comission'])), 2);
+                $data['pharmacy_amount'] = round(($request->get('amount') - ($ssl_value + $data['subidha_comission'])), 2);
                 $data['customer_amount'] = round(($request->get('amount')), 2);
 
             }
@@ -791,13 +760,7 @@ class OrderRepository
 
     public function forwardOrder($order_id, $status_id)
     {
-        $order = Order::with('address')->where('id', $order_id)->first();
-        logger('Order');
-        logger($order);
-        logger('Status');
-        logger($status_id);
-        logger('order->pharmacy_id');
-        logger($order->pharmacy_id);
+        $order = Order::with('address.area.thana')->where('id', $order_id)->first();
 
         $previousPharmacyOrderHistory = OrderHistory::where('user_id', $order->pharmacy_id)->where('order_id', $order_id)->first();
 
@@ -818,38 +781,20 @@ class OrderRepository
 
         $previousPharmacies[] = $order->pharmacy_id;
 
-        $date = Carbon::today()->format('l');
-        $Holiday = strtolower($date);
-        $time = Carbon::now()->format('H:i:s');
-        $isAvailable = Weekends::where('days', $Holiday)->groupBy('user_id')->pluck('user_id');
-        logger(gettype($previousPharmacies));
-        logger('$isAvailable');
-        logger($isAvailable);
-        $data = array_merge(json_decode($previousPharmacies), json_decode($isAvailable));
-        DB::enableQueryLog();
-        $pharmacy = PharmacyBusiness::query();
-//        $pharmacy->whereNotIn('user_id', $isAvailable);
-        $nearestPharmacy = $pharmacy->where('area_id', $order->address->area_id)
-            ->Where('is_full_open', 1)
-            ->orWhere(function ($q) use ($time) {
-//                $q->where(function ($q) use ($time) {
-                $q->where('start_time', '<', $time)
-                    ->Where('end_time', '>', $time);
-//                });
-//                            ->Where(function ($q) use ($time) {
-//                                $q->Where('break_start_time', '>', $time)
-//                                    ->orWhere('break_end_time', '<', $time);
-//                            });
-//                    });
+        $dhaka_district = District::where('slug', 'dhaka')->first();
 
+        $nearestPharmacy = PharmacyBusiness::where('area_id', $order->address->area_id)
+            ->whereHas('user', function ($q) {
+                $q->where('status', 1);
+            })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
+
+        if (!$nearestPharmacy && $dhaka_district->id != $order->address->area->thana->district_id) {
+            $nearestPharmacy = PharmacyBusiness::whereHas('area', function ($q) use ($order) {
+                $q->where('thana_id', $order->address->area->thana_id);
             })->whereHas('user', function ($q) {
                 $q->where('status', 1);
-            })
-            ->whereNotIn('user_id', $data)
-            ->inRandomOrder()->first();
-        logger(DB::getQueryLog());
-        logger('$nearestPharmacy');
-        logger($nearestPharmacy);
+            })->whereNotIn('user_id', $previousPharmacies)->inRandomOrder()->first();
+        }
 
         if ($nearestPharmacy ?? false) {
             logger('Nearest Pharmacy found');
@@ -920,33 +865,6 @@ class OrderRepository
             ->orderBy('updated_at', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(20);
-
-//        return $order->with(['address.area.thana.district', 'orderItems.product' => function($q) {
-//            $q->orderBy('is_pre_order', 'desc');
-//        }])->where('pharmacy_id', $pharmacy_id)->where('status', $status_id)->orderBy('delivery_method','ASC')->orderBy('updated_at', 'desc')
-//            ->orderBy('id','desc')
-//            ->paginate(20);
-
-//        return $order->with(['address', 'pharmacy'])
-//            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
-//            ->where('pharmacy_id', $pharmacy_id)
-//            ->where('status', $status_id)
-//            ->orderBy('delivery_method','ASC')
-//            ->orderBy('id','desc')
-//            ->paginate(20);
-//        return $status_id;
-
-//        return $order->with(['address.area.thana.district'])
-//            ->where('orders.pharmacy_id', $pharmacy_id)
-//            ->where('orders.status', $status_id)
-//            ->join('order_items','orders.id', '=', 'order_items.order_id' )
-//            ->join('products','order_items.product_id', '=', 'products.id' )
-//            ->select('orders.*','products.*')
-//            ->orderBy('products.is_pre_order', 'desc')
-////            ->orderBy('orders.delivery_method','ASC')
-////            ->orderBy('orders.updated_at', 'desc')
-////            ->orderBy('orders.id','desc')
-//            ->paginate(20);
     }
 
     public function pharmacyOrderCancelReason($pharmacy_id, $request)

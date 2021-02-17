@@ -223,10 +223,7 @@ class UserPharmacyController extends BaseController
 
     public function availablePharmacyList($thana_id)
     {
-//        return responsePreparedData(Carbon::now()->format('H:i:s'));
         $availablePharmacyList = $this->repository->getAvailablePharmacyList($thana_id);
-
-//        return $availablePharmacyList;
 
         return $this->response->collection($availablePharmacyList, new PharmacyBusinessTransformer() );
     }

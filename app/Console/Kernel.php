@@ -33,11 +33,9 @@ class Kernel extends ConsoleKernel
     {
 
         // $schedule->command('inspire')->hourly();
-//        $schedule->command('sent:reminder')->dailyAt('11:00');
-//        $schedule->command('sent:reminder')->everyMinute();
+        $schedule->command('sent:reminder')->dailyAt('11:00');
         $schedule->command('backup:clean')->quarterly();
         $schedule->command('backup:run')->dailyAt('00:00');
-//        $schedule->command('run:pending-order-Forward')->hourly();
         $schedule->command('run:pending-order-Forward')->everyMinute();
     }
 
