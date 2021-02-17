@@ -35,11 +35,17 @@
 @stop
 @section('content')
         <form action="{{ route('customer.index') }}">
-            <div class="card col-8-xxxl col-lg-8 col-8 pb-3">
+            <div class="card col-8-xxxl col-lg-8 col-8">
                 <div class="card-body">
                     <div class="row">
-                        <label>Customer Name</label>
-                        <input type="search" class="form-control" name="search" placeholder="Search Customer here">
+                        <div class="col-12 form-group">
+                            <label>Customer Name</label>
+                            <input type="search" class="form-control" name="search"
+                                   value="{{ Request::get('search') }}">
+                        </div>
+                        <div class="col-12 form-group float-right">
+                            <button type="submit" class="btn btn-primary float-right">Search</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,9 +53,11 @@
         <div class="card">
         <div class="card-header">
             <h3 class="card-title">Customers</h3>
+            <p class="badge badge-primary ml-2">{{ count($data) }}</p>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive mb-3">
+            @if($data->isNotEmpty())
             <table id="example1" class="table">
                 <thead>
                     <tr>
@@ -62,7 +70,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                @if($data->isNotEmpty())
                     @foreach($data as $index => $item)
                         <tr>
                             <td>{{ $data->firstItem() + $index }}</td>
@@ -102,12 +109,14 @@
                             </td>
                         </tr>
                     @endforeach
-                @endif
                 </tbody>
             </table>
-        </div>
-        <div class="col-md-12">
-            {{ $data->links() }}
+                <div class="col-md-12">
+                    {{ $data->links() }}
+                </div>
+            @else
+                <p class="text-center">No related data found</p>
+            @endif
         </div>
 
     </div>

@@ -20,10 +20,15 @@ class CustomerRepository
     public function all($request)
     {
         $data = User::query();
-        $data->where('is_pharmacy', 0)->where('is_admin', 0);
+
         if ($request->search !== null) {
-            $data->where('name', 'LIKE', "%{$request->search}%");
+            $data->where(function ($q) use ($request) {
+                $q->where('name', 'LIKE', "%{$request->search}%")
+                    ->orWhere('phone_number', 'LIKE', "%{$request->search}%")
+                    ->orWhere('email', 'LIKE', "%{$request->search}%");
+            });
         }
+        $data->where('is_pharmacy', '!=', 1)->where('is_admin', 0);
 
         return $data->orderby('id', 'desc')->paginate(20);
     }
