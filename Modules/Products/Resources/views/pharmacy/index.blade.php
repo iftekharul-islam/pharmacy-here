@@ -53,11 +53,17 @@
         </div>
     @endif
     <form action="{{ route('pharmacy.index') }}">
-        <div class="card col-8-xxxl col-lg-8 col-8 pb-3">
+        <div class="card col-8-xxxl col-lg-8 col-8">
             <div class="card-body">
                 <div class="row">
-                    <label>Pharmacy Name</label>
-                    <input type="search" class="form-control" name="search" placeholder="Search pharmacy">
+                    <div class="col-12 form-group">
+                        <label>Pharmacy Name</label>
+                        <input type="search" class="form-control" name="search" value="{{ $search }}"
+                               placeholder="Search pharmacy">
+                    </div>
+                    <div class="col-12 form-group float-right">
+                        <button type="submit" class="btn btn-primary float-right">Search</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,9 +109,11 @@
                     pharmacy
                 </a>
             </div>
+        </div>
     </form>
     <!-- /.card-header -->
     <div class="card-body table-responsive mb-3">
+        @if($pharmacies->isNotEmpty())
         <table id="example1" class="table">
             <thead>
             <tr>
@@ -120,7 +128,6 @@
             </tr>
             </thead>
             <tbody>
-            @if($pharmacies->isNotEmpty())
                 @foreach($pharmacies as $index => $item)
                     <tr>
                         <td>@isset($item->name) {{ $item->name }} @endisset</td>
@@ -166,14 +173,15 @@
                         </td>
                     </tr>
                 @endforeach
-            @endif
             </tbody>
         </table>
     </div>
     <div class="col-md-12">
         {{ $pharmacies->appends(Request::all())->links() }}
     </div>
-    </div>
+    @else
+        <p class="text-center">No related data found</p>
+    @endif
 
     @include('products::pharmacy.show')
 
