@@ -39,7 +39,7 @@ class PharmacyExport implements FromCollection, WithHeadings, WithColumnWidths
             $pharmacyCollection->push((object)[
                 'owner_name' => $pharmacy->name,
                 'pharmacy_name' => $pharmacy->pharmacyBusiness->pharmacy_name ?? 'N/A',
-                'address' => isset($pharmacy->pharmacyBusiness) ? $pharmacy->pharmacyBusiness->pharmacy_address
+                'address' => isset($pharmacy->pharmacyBusiness->area->thana['name']) ? $pharmacy->pharmacyBusiness->pharmacy_address
                     . ',' . $pharmacy->pharmacyBusiness->area['name'] . ',' . $pharmacy->pharmacyBusiness->area->thana['name']
                     . ',' . $pharmacy->pharmacyBusiness->area->thana->district['name'] : 'N/A',
                 'phone_number' => $pharmacy->phone_number,

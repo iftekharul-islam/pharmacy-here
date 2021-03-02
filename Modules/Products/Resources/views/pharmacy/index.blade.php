@@ -132,7 +132,7 @@
                     <tr>
                         <td>@isset($item->name) {{ $item->name }} @endisset</td>
                         <td>@isset($item->pharmacyBusiness->pharmacy_name) {{ $item->pharmacyBusiness->pharmacy_name }} @endisset</td>
-                        <td>@isset($item->pharmacyBusiness) {{ $item->pharmacyBusiness->pharmacy_address }}
+                        <td>@isset($item->pharmacyBusiness->area->thana['name']) {{ $item->pharmacyBusiness->pharmacy_address }}
                             ,{{$item->pharmacyBusiness->area['name']}}, {{$item->pharmacyBusiness->area->thana['name']}}
                             , {{$item->pharmacyBusiness->area->thana->district['name']}} @endisset</td>
                         <td>@isset($item->phone_number) {{ $item->phone_number }} @endisset</td>
