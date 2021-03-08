@@ -8,7 +8,6 @@ use League\Fractal\TransformerAbstract;
 use Modules\Address\Transformers\AddressTransformer;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Prescription\Transformers\PrescriptionTransformer;
-use Modules\User\Entities\Models\User;
 use Modules\User\Transformers\PharmacyTransformer;
 use SebastianBergmann\Environment\Console;
 
