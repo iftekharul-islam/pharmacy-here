@@ -8,6 +8,7 @@ use League\Fractal\TransformerAbstract;
 use Modules\Address\Transformers\AddressTransformer;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Prescription\Transformers\PrescriptionTransformer;
+use Modules\User\Transformers\PharmacyTransformer;
 use SebastianBergmann\Environment\Console;
 
 class OrderTransformer extends TransformerAbstract
@@ -65,6 +66,11 @@ class OrderTransformer extends TransformerAbstract
     public function includeAddress(Order $item) {
 
         return $this->collection($item->address, new AddressTransformer());
+    }
+
+    public function includePharmacy(Order $item) {
+
+        return $this->item($item->pharmacy, new PharmacyTransformer());
     }
 
 }
