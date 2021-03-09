@@ -48,6 +48,8 @@ class OrderController extends BaseController
     {
         $user = Auth::guard('api')->user();
         $orders = $this->repository->byCustomerId($user->id);
+        logger('order');
+        logger($orders);
         return $this->response->paginator($orders, new OrderTransformer());
     }
 
