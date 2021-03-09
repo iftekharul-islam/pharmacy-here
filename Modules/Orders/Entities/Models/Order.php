@@ -9,6 +9,7 @@ use Modules\Address\Entities\CustomerAddress;
 use Modules\Feedback\Entities\Models\Feedback;
 use Modules\Locations\Entities\Models\Address;
 use Modules\Prescription\Entities\Models\Prescription;
+use Modules\User\Entities\Models\PharmacyBusiness;
 use Modules\User\Entities\Models\User;
 
 class Order extends Model
@@ -89,6 +90,11 @@ class Order extends Model
     public function orderHistory()
     {
         return $this->belongsTo(OrderHistory::class, 'id', 'order_id')->orderBy('created_at', 'asc');
+    }
+
+    public function pharmacyBusiness()
+    {
+        return $this->hasOne(PharmacyBusiness::class, 'user_id', 'pharmacy_id');
     }
 
 }
