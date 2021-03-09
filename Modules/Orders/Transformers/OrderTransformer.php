@@ -8,6 +8,7 @@ use League\Fractal\TransformerAbstract;
 use Modules\Address\Transformers\AddressTransformer;
 use Modules\Orders\Entities\Models\Order;
 use Modules\Prescription\Transformers\PrescriptionTransformer;
+use Modules\User\Transformers\PharmacyBusinessTransformer;
 use Modules\User\Transformers\PharmacyTransformer;
 use SebastianBergmann\Environment\Console;
 
@@ -15,7 +16,7 @@ class OrderTransformer extends TransformerAbstract
 {
 
     protected $availableIncludes = [
-        'pharmacy', 'address', 'customer', 'orderItems', 'orderPrescriptions', 'prescriptions'
+        'pharmacy', 'pharmacyBusiness', 'address', 'customer', 'orderItems', 'orderPrescriptions', 'prescriptions'
     ];
 
     public function transform(Order $item)
@@ -45,7 +46,6 @@ class OrderTransformer extends TransformerAbstract
             "order_no"                  => $item->order_no,
             "updated_at"                => Carbon::parse($item->updated_at)->format('d-m-Y'),
             "delivery_duration"         => $item->delivery_duration,
-            "pharmacy"                  => $item->pharmacy->pharmacyBusiness,
         ];
     }
 
@@ -72,6 +72,13 @@ class OrderTransformer extends TransformerAbstract
     public function includePharmacy(Order $item) {
 
         return $this->item($item->pharmacy, new PharmacyTransformer());
+    }
+
+    public function includePharmacyBusiness(Order $item) {
+        if ($item->pharmacyBusiness != null) {
+            return $this->item($item->pharmacyBusiness, new PharmacyBusinessTransformer());
+        }
+        return null;
     }
 
 }

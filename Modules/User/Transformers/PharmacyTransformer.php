@@ -39,6 +39,7 @@ class PharmacyTransformer extends TransformerAbstract
         if($item->weekends != null) {
             return $this->collection($item->weekends, new WeekendsTransformer());
         }
+        return null;
     }
 
 

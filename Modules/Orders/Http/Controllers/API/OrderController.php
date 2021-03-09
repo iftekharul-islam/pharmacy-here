@@ -31,16 +31,9 @@ class OrderController extends BaseController
     {
         $user = Auth::guard('api')->user();
 
-//        return $user->id;
-
         if ($user->hasRole('pharmacy')) {
-//            return 'Pharmacy';
             $orders = $this->repository->byPharmacyId($request, $user->id);
         }
-//        else {
-//            $orders = $this->repository->byCustomerId($user->id);
-//        }
-
         return $this->response->paginator($orders, new OrderTransformer());
     }
 
@@ -48,8 +41,7 @@ class OrderController extends BaseController
     {
         $user = Auth::guard('api')->user();
         $orders = $this->repository->byCustomerId($user->id);
-        logger('order');
-        logger($orders);
+
         return $this->response->paginator($orders, new OrderTransformer());
     }
 
@@ -60,14 +52,11 @@ class OrderController extends BaseController
      */
     public function create(CreateOrderRrequest $request)
     {
-//        return Auth::user();
-//        return $request->all();
-
         logger('Into the Order controller create method');
         $order = $this->repository->create($request, Auth::guard('api')->user()->id);
         logger('End of Order controller create method');
+
         return $this->response->item($order, new OrderTransformer());
-        // return responseData($order);
     }
 
     /**
@@ -77,9 +66,8 @@ class OrderController extends BaseController
      */
     public function show($id)
     {
-//        return 'hello from show';
         $orderDetails = $this->repository->get($id);
-//            return $orderDetails;
+
         return $this->response->item($orderDetails, new OrderTransformer());
     }
 
@@ -94,26 +82,8 @@ class OrderController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
+     * @return mixed
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function ordersByPharmacyId()
     {
         return $this->repository->byPharmacyId(Auth::guard('api')->user()->id);
@@ -127,7 +97,7 @@ class OrderController extends BaseController
     public function ordersStatusUpdate($order_id, $status_id)
     {
         $order = $this->repository->updateStatus($order_id, $status_id);
-        // return $this->response->item($order, new OrderTransformer);
+
         return $order;
     }
 
