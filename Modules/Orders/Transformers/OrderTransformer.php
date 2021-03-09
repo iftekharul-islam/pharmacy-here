@@ -45,6 +45,7 @@ class OrderTransformer extends TransformerAbstract
             "order_no"                  => $item->order_no,
             "updated_at"                => Carbon::parse($item->updated_at)->format('d-m-Y'),
             "delivery_duration"         => $item->delivery_duration,
+            "pharmacy"                  => $item->pharmacy->pharmacyBusiness,
         ];
     }
 
