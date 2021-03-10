@@ -70,8 +70,10 @@ class OrderTransformer extends TransformerAbstract
     }
 
     public function includePharmacy(Order $item) {
-
-        return $this->item($item->pharmacy, new PharmacyTransformer());
+        if ($item->pharmacy != null) {
+            return $this->item($item->pharmacy, new PharmacyTransformer());
+        }
+        return null;
     }
 
     public function includePharmacyBusiness(Order $item) {
