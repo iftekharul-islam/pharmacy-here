@@ -59,9 +59,9 @@
                             <tbody>
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->pharmacy->pharmacy_name ?? $user }}</td>
+                                    <td>{{ $data->type == 1 ? $item->pharmacy->pharmacy_name : $user }}</td>
                                     <td>{{ $data->type == 1 ? 'Pharmacy' : 'Customer' }}</td>
-                                    <td>{{ $item->pharmacy->area->name ?? 'N/A' }}</td>
+                                    <td>{{ $data->type == 1 ? $item->pharmacy->area->name : '' }}</td>
                                 </tr>
                             </tbody>
                         @endforeach

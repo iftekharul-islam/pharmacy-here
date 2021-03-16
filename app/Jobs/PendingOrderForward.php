@@ -64,12 +64,26 @@ class PendingOrderForward implements ShouldQueue
 
             $today = Carbon::today()->format('Y-m-d');
             $todayTime = Carbon::now()->format('H:i:s');
+            $todayFixTime = Carbon::now()->format('H:i');
             $orderTime = Carbon::parse($order->delivery_time)->subHour(1)->format('H:i:s');
             $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
             $preOrderTime = Carbon::now()->subHour(15)->format('Y-m-d H:i');
 //            $preOrderTime = Carbon::now()->subMinute(10)->format('Y-m-d H:i');
             $preOrderEndTime = Carbon::now()->subHour(24)->format('Y-m-d H:i');
 //            $preOrderEndTime = Carbon::now()->subMinute(15)->format('Y-m-d H:i');
+            $morningCheckForRegular = '08:00';
+            $eveningCheckForRegular = '17:00';
+
+            if ($order->delivery_method == 'normal' && $todayFixTime == $morningCheckForRegular) {
+                logger('In the regular delivery make orphan on time 8 am based');
+                $this->orderMakeOrphan($order);
+                continue;
+            }
+            if ($order->delivery_method == 'normal' && $todayFixTime == $eveningCheckForRegular) {
+                logger('In the regular delivery make orphan on time 7 pm based');
+                $this->orderMakeOrphan($order);
+                continue;
+            }
 
             if ($isPreOrder === true) {
                 logger('in the pre order section');
