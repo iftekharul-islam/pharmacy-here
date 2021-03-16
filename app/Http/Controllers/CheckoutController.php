@@ -551,10 +551,6 @@ class CheckoutController extends Controller
         $order_detials = Order::where('order_no', $tran_id)
             ->select('order_no', 'status', 'amount')->first();
 
-
-        logger('$order_details from success');
-        logger($order_detials);
-
         if ($order_detials->status == 0) {
             $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
 
@@ -674,7 +670,6 @@ class CheckoutController extends Controller
     public function ipn(Request $request)
     {
         echo "Transaction is Successful";
-        logger('in the ipn section');
         #Received all the payement information from the gateway
         if ($request->input('tran_id')) #Check transation id is posted or not.
         {
@@ -685,9 +680,6 @@ class CheckoutController extends Controller
             $order_details = DB::table('orders')
                 ->where('order_no', $tran_id)
                 ->select('order_no', 'status', 'amount')->first();
-
-            logger('$order_details');
-            logger($order_details);
 
             if ($order_details->status == 0) {
                 $sslc = new SslCommerzNotification();
@@ -732,7 +724,7 @@ class CheckoutController extends Controller
         } else {
 
             return redirect()->route('home')->with('failed', 'Invalid Data');
-            echo "Invalid Data";
+//            echo "Invalid Data";
         }
     }
 

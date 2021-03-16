@@ -12,7 +12,7 @@ class UserNotice extends Model
 
     public function Pharmacy()
     {
-        return $this->belongsTo(PharmacyBusiness::class, 'pharmacy_id', 'user_id');
+        return $this->belongsTo(PharmacyBusiness::class, 'pharmacy_id', 'id');
     }
 
     public function User()
