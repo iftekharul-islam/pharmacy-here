@@ -546,11 +546,9 @@ class CheckoutController extends Controller
         $currency = $request->input('currency');
 
         $sslc = new SslCommerzNotification();
-        logger('ssl commerce');
-        logger($sslc);
 
         #Check order status in order tabel against the transaction id or order id.
-        $order_detials =Order::where('order_no', $tran_id)
+        $order_detials = Order::where('order_no', $tran_id)
             ->select('order_no', 'status', 'amount')->first();
 
 
