@@ -583,7 +583,7 @@
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
 
-                var time_now = '20:50:00';
+                var time_now = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
                 var check_start_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
                 var check_end_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
                 var first_time_duration = NormalDeliveryTime[0].start_time + ' - ' + NormalDeliveryTime[0].end_time;
