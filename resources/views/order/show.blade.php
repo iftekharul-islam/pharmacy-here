@@ -103,7 +103,7 @@
                         <tr>
                             <th>{{ __('text.delivery_time') }}:</th>
                             <td>
-                                {{ $data->delivery_time }}
+                                {{ $data->delivery_duration }}
                             </td>
                         </tr>
                         <tr>

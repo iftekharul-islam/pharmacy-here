@@ -431,7 +431,6 @@
             $('#pharmacy_search-error').addClass('d-none');
             $('#insert_pharmacy_id').val(pharmacy);
             $('#pharmacy_search').val(pharmacy);
-            console.log(pharmacy, 'pharmacy');
             $('#pharmacyModal').modal('hide');
         });
 
@@ -485,58 +484,26 @@
         }
         let ExpressDeliveryTime = {!! json_encode($delivery_time['express_delivery_time']) !!};
         let NormalDeliveryTime = {!! json_encode($delivery_time['normal_delivery_time']) !!};
-        console.log(ExpressDeliveryTime);
-        console.log(NormalDeliveryTime);
-            {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g,'')) + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         let cashInNormalDeliveryValue = parseFloat("<?php echo $delivery_charge['normal_delivery']['cash']?>".replace(/,/g, '')) + parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInNormalDeliveryAmount = cashInNormalDeliveryValue.toFixed(2);
         let cashInNormalDelivery = parseFloat(cashInNormalDeliveryAmount);
-
-            {{--let cashInNormalDelivery = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
         let eamountInNormalDelivery = parseFloat("<?php echo $delivery_charge['normal_delivery']['ecash']?>");
         let eamountInExpressDelivery = parseFloat("<?php echo $delivery_charge['express_delivery']['ecash']?>");
-            {{--let cashInNormalDeliveryCharge = parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");--}}
-            {{--let ecashInNormalDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['normal_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>")).toFixed(2);--}}
 
         let ecashInNormalDelivery = parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let cashInExpressDeliveryValue = parseFloat("<?php echo $delivery_charge['express_delivery']['cash']?>".replace(/,/g, '')) + parseFloat("<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
         let cashInExpressDeliveryAmount = cashInExpressDeliveryValue.toFixed(2);
         let cashInExpressDelivery = parseFloat(cashInExpressDeliveryAmount);
-
-            {{--let cashInExpressDelivery = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
-            {{--let cashInExpressDeliveryCharge = parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");--}}
-            {{--let ecashInExpressDelivery = parseFloat(parseFloat( "<?php echo $delivery_charge['express_delivery']['ecash']?>") + parseFloat( "<?php echo $delivery_charge['express_delivery']['delivery_charge']?>")).toFixed(2);--}}
-
         let ecashInExpressDelivery = parseFloat("<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
-
-            {{--let cashInCollectFromPharmacyD = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['discount']?>");--}}
 
         let discount = "<?php echo $delivery_charge['collect_from_pharmacy']['discount'] ?>";
         let cashInCollectFromPharmacy = parseFloat(discount.replace(/,/g, ''));
-
-            {{--let ecashInCollectFromPharmacy = parseFloat( "<?php echo $delivery_charge['collect_from_pharmacy']['ecash']?>");--}}
 
         let ecashNoramlCharge = parseFloat("<?php echo $delivery_charge['normal_delivery']['delivery_charge']?>");
         let ecashExpressCharge = parseFloat("<?php echo $delivery_charge['express_delivery']['delivery_charge']?>");
 
         let customerAmount = parseFloat("<?php echo $amount ?>");
         let customerPayLimit = parseFloat("<?php echo $pay_limit ?>");
-        console.log(customerAmount, 'customerAmount');
-        console.log(customerPayLimit, 'customerPayLimit');
-
-
-        // console.log(ecashInExpressDelivery, 'ecashInExpressDelivery')
-        // console.log(cashInExpressDeliveryCharge, 'ecash In Express Delivery Charge')
-        // console.log(cashInNormalDeliveryValue, 'cash In Normal cash In Normal Delivery Value')
-        console.log(cashInNormalDelivery, 'cash In Normal Delivery')
-
-        // console.log(cashInCollectFromPharmacy, 'cash In cashInCollectFromPharmacy')
-        // console.log(ecashInNormalDelivery, 'ecash In NormalDelivery')
-        // console.log(typeof (ecashInNormalDelivery), 'ecash In NormalDelivery')
-        console.log(cashInExpressDelivery, 'cash In ExpressDelivery')
-        // console.log(ecashInExpressDelivery, 'ecash In ExpressDelivery')
-        // console.log(cashInCollectFromPharmacy, 'cash In CollectFromPharmacy')
-        // console.log(ecashInCollectFromPharmacy, 'ecash In CollectFromPharmacy')
 
 
         var total = parseFloat("<?php echo $total ?>");
@@ -613,16 +580,10 @@
             if (deliveryCharge === 1) {
                 <!-- Normal delivery date calculation -->
 
-                var normal_start_time = '09:00:00';
-                var normal_end_time = '18:00:00';
-
-                var normal_time_slot = ["10:00 am-12:00 am", "7:00 pm-9:00 pm"];
-
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-                var time_new = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
 
-                var time_now = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
+                var time_now = '20:50:00';
                 var check_start_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
                 var check_end_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
                 var first_time_duration = NormalDeliveryTime[0].start_time + ' - ' + NormalDeliveryTime[0].end_time;
@@ -630,28 +591,12 @@
                 var normal_delivery_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').format('HH:mm:ss');
                 var normal_next_delivery_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').format('HH:mm:ss');
 
-                console.log('check_time');
-                console.log(check_start_time);
-                console.log('check_end_time');
-                console.log(check_end_time);
-                console.log('time now');
-                console.log(time_now);
-
-                if (check_start_time > time_now) {
-                    console.log('hello in 1')
-                } else if ( time_now < check_end_time) {
-                    console.log('hello in 2')
-                } else {
-                    console.log('hello in 3')
-                }
-
                 var dt = new Date();
                 var month = dt.getMonth() + 1;
                 var date = dt.getDate() + "-" + month + "-" + dt.getFullYear()
                 var next_date = (dt.getDate() + 1) + "-" + month + "-" + dt.getFullYear()
                 var after_four_date = (dt.getDate() + 3) + "-" + month + "-" + dt.getFullYear()
 
-                console.log(PreOrderMedicine);
                 if (PreOrderMedicine !== '') {
                     $(".normal_delivery_date").val(after_four_date);
                     $(".normal_delivery_time").val(normal_delivery_time);
@@ -672,37 +617,11 @@
                     $(".delivery_duration").val(last_time_duration);
 
                 } else {
-                    $(".normal_date").val("(" + last_time_duration + ")" + ", " + next_date);
+                    $(".normal_date").val("(" + first_time_duration + ")" + ", " + next_date);
                     $(".normal_delivery_date").val(next_date);
                     $(".normal_delivery_time").val(normal_delivery_time);
-                    $(".delivery_duration").val(last_time_duration);
+                    $(".delivery_duration").val(first_time_duration);
                 }
-
-                // if (PreOrderMedicine !== '') {
-                //     $(".normal_delivery_date").val(after_four_date);
-                //     $(".normal_delivery_time").val('10:00:00');
-                //     $(".delivery_duration").val(normal_time_slot[0]);
-                //
-                // }
-                // else if (time_new < normal_start_time) {
-                //     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + date);
-                //     $(".normal_delivery_date").val(date);
-                //     $(".normal_delivery_time").val('10:00:00');
-                //     $(".delivery_duration").val(normal_time_slot[0]);
-                //
-                // }
-                // else if (time_new > normal_start_time && time_new < normal_end_time) {
-                //     $(".normal_date").val("(" + normal_time_slot[1] + ")" + ", " + date);
-                //     $(".normal_delivery_date").val(date);
-                //     $(".normal_delivery_time").val('19:00:00');
-                //     $(".delivery_duration").val(normal_time_slot[1]);
-                //
-                // } else {
-                //     $(".normal_date").val("(" + normal_time_slot[0] + ")" + ", " + next_date);
-                //     $(".normal_delivery_date").val(next_date);
-                //     $(".normal_delivery_time").val('10:00:00');
-                //     $(".delivery_duration").val(normal_time_slot[0]);
-                // }
                 <!-- End of Normal delivery date calculation -->
 
                 $('.express-content').addClass('d-none');
@@ -735,13 +654,8 @@
                 var isAvailable = false;
                 $.each(ExpressDeliveryTime, function (key, value) {
                     var check = moment.utc(value.start_time, 'hh:mm A').format('HH:mm:ss');
-                    console.log('check')
-                    console.log(check)
-                    console.log('time_now')
-                    console.log(time_now)
 
                     if ( check >= time_now ) {
-                        console.log('i m in 1');
                         isAvailable = true;
                         $('.express_slot')
                             .append($("<option></option>")
@@ -752,7 +666,6 @@
 
                 if (!isAvailable) {
                     $.each(ExpressDeliveryTime, function (key, value) {
-                        console.log('i m in 2');
                         $('.express_slot')
                             .append($("<option></option>")
                                 .attr("value", value.start_time)
@@ -760,35 +673,6 @@
 
                     });
                 }
-
-                // var available_time = null;
-                //
-                //
-                // $.each(express_time_slot, function (key) {
-                //     if (express_time_slot_insert[key] >= time_now) {
-                //         available_time = key + 2;
-                //         return false; // breaks
-                //     }
-                //
-                // });
-                //
-                // if (available_time !== null) {
-                //     $.each(express_time_slot, function (key, value) {
-                //         if (key >= available_time) {
-                //             $('.express_slot')
-                //                 .append($("<option></option>")
-                //                     .attr("value", express_time_slot_insert[key])
-                //                     .text(value));
-                //         }
-                //     });
-                // } else {
-                //     $.each(express_time_slot, function (key, value) {
-                //         $('.express_slot')
-                //             .append($("<option></option>")
-                //                 .attr("value", express_time_slot_insert[key])
-                //                 .text(value));
-                //     });
-                // }
 
                 <!--End express delivery date calculation -->
 
@@ -806,17 +690,6 @@
 
             var date = dt.getDate() + "-" + month + "-" + dt.getFullYear()
             var next_date = dt.getDate() + 1 + "-" + month + "-" + dt.getFullYear()
-
-            // var date2 = new Date();
-            // var hours = date2.getHours();
-            // var minutes = date2.getMinutes();
-            // var ampm = hours >= 12 ? 'pm' : 'am';
-            // hours = hours % 12;
-            // hours = hours ? hours : 12; // the hour '0' should be '12'
-            // minutes = minutes < 10 ? '0'+minutes : minutes;
-            // var strTime = hours + ':' + minutes + ' ' + ampm;
-            // console.log('Express time now')
-            // console.log(strTime);
 
             var tm = new Date();
             var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
@@ -856,13 +729,10 @@
                 $('input[name="delivery_charge_amount"]').val(cashInExpressDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
-                console.log(ecashInNormalDelivery, 'e cash normal');
                 grandTotal = total + ecashInNormalDelivery + eamountInNormalDelivery;
                 $('input[name="delivery_charge_amount"]').val(ecashNoramlCharge);
-                // $('input[name="delivery_charge_amount"]').val(ecashInNormalDelivery);
             }
             if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
-                console.log(ecashInExpressDelivery, 'e cash express');
                 grandTotal = total + ecashInExpressDelivery + eamountInExpressDelivery;
                 $('input[name="delivery_charge_amount"]').val(ecashExpressCharge);
             }
@@ -872,7 +742,6 @@
                 $('input[name="delivery_charge_amount"]').val(cashInCollectFromPharmacy);
             }
             if (deliveryType === 2 && payTypeValue === 2) {
-                console.log('deliveryType 2 and payTypeValue 2')
                 grandTotal = total;
                 $('input[name="delivery_charge_amount"]').prop('disabled', true);
             }
@@ -881,22 +750,16 @@
 
             if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 1) {
                 var grandTotalNormalDB = grandTotal - cashInNormalDelivery;
-                console.log(grandTotalNormalDB, 'normal grandTotalDB');
                 $('input[name="amount"]').val(grandTotalNormalDB);
             } else if (deliveryType === 1 && payTypeValue === 1 && deliveryCharge === 2) {
                 var grandTotalExpressDB = grandTotal - cashInExpressDelivery;
-                console.log(grandTotalExpressDB, 'normal grandTotalDB');
                 $('input[name="amount"]').val(grandTotalExpressDB);
             } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 1) {
                 var egrandTotalNormalDB = grandTotal - ecashInNormalDelivery - eamountInNormalDelivery;
-                console.log(grandTotal, 'normal e grandTotal');
-                console.log(ecashInNormalDelivery, 'normal e ecashInNormalDelivery');
-                console.log(egrandTotalNormalDB, 'normal e grandTotalDB');
                 $('input[name="amount"]').val(egrandTotalNormalDB);
 
             } else if (deliveryType === 1 && payTypeValue === 2 && deliveryCharge === 2) {
                 var egrandTotalExpressDB = grandTotal - ecashInExpressDelivery - eamountInExpressDelivery;
-                console.log(egrandTotalExpressDB, 'express e grandTotalDB');
                 $('input[name="amount"]').val(egrandTotalExpressDB);
 
             } else if (deliveryType === 2 && payTypeValue === 1) {
@@ -1013,14 +876,12 @@
 
         function getPharmacy() {
             var thanaId = $('#selectPharmacyThana option:selected').val();
-            console.log(thanaId, 'thanaId');
             $.ajax({
                 url: '{{ url('find-pharmacy-list') }}',
                 method: "get",
                 data: {_token: '{{ csrf_token() }}', id: thanaId},
                 success: function (response) {
                     var values = response;
-                    console.log(values)
                     $('#selectPharmacy').html('');
                     $.map(values, function (value) {
                         $('#selectPharmacy').removeAttr('disabled');
