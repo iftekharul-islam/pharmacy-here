@@ -554,7 +554,7 @@ class CheckoutController extends Controller
 
 
         logger('$order_details from success');
-        logger($order_details);
+        logger($order_detials);
 
         if ($order_detials->status == 0) {
             $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
