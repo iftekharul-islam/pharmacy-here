@@ -539,6 +539,7 @@ class CheckoutController extends Controller
     public function success(Request $request)
     {
         echo "Transaction is Successful";
+        logger('in the Successful section');
 
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
@@ -552,6 +553,9 @@ class CheckoutController extends Controller
             ->select('order_no', 'status', 'amount')->first();
 
 
+        logger('$order_details from success');
+        logger($order_details);
+
         if ($order_detials->status == 0) {
             $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
 
@@ -564,18 +568,6 @@ class CheckoutController extends Controller
                 $update_product = DB::table('orders')
                     ->where('order_no', $tran_id)
                     ->update(['status' => 0]);
-
-//                $order = DB::table('orders')
-//                    ->where('customer_id', Auth::user()->id)
-//                    ->latest('id')->first();
-
-//                $deviceIds = UserDeviceId::where('user_id',$order->pharmacy_id)->get();
-//                $title = 'New Order Available';
-//                $message = 'You have a new order from Subidha. Please check.';
-//
-//                foreach ($deviceIds as $deviceId){
-//                    sendPushNotification($deviceId->device_id, $title, $message, $id="");
-//                }
 
                 $userId = Auth::user()->id;
                 $items = Cart::where('customer_id', $userId)->get();
@@ -601,7 +593,6 @@ class CheckoutController extends Controller
                 }
 
                 return redirect()->route('home')->with('success', 'Payment successful');
-//                echo "<br >Transaction is successfully Completed";
             } else {
                 /*
                 That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
@@ -613,7 +604,6 @@ class CheckoutController extends Controller
 
                 return redirect()->route('home')->with('failed', 'validation Fail');
 
-//                echo "validation Fail";
             }
         } else if ($order_detials->status == 2 || $order_detials->status == 3) {
             /*
@@ -684,6 +674,8 @@ class CheckoutController extends Controller
 
     public function ipn(Request $request)
     {
+        echo "Transaction is Successful";
+        logger('in the ipn section');
         #Received all the payement information from the gateway
         if ($request->input('tran_id')) #Check transation id is posted or not.
         {
@@ -694,6 +686,9 @@ class CheckoutController extends Controller
             $order_details = DB::table('orders')
                 ->where('order_no', $tran_id)
                 ->select('order_no', 'status', 'amount')->first();
+
+            logger('$order_details');
+            logger($order_details);
 
             if ($order_details->status == 0) {
                 $sslc = new SslCommerzNotification();
