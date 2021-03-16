@@ -187,10 +187,15 @@
                                                              role="tabpanel" aria-labelledby="pills-normaldelivery-tab">
                                                             <div class="form-row">
                                                                 <div class="form-group col-md-6">
-                                                                    <label for="inputdate">Time Slot</label>
+                                                                    <label for="input_date">Time Slot</label>
                                                                     <select class="form-control express_slot"
-                                                                            id="expressTime">
+                                                                            id="expressTime" name="input_date">
                                                                     </select>
+                                                                    @if ($errors->has('input_date'))
+                                                                        <span class="text-danger">
+                                                                            <strong>{{ $errors->first('input_date') }}</strong>
+                                                                        </span>
+                                                                    @endif
                                                                 </div>
                                                                 <div class="form-group col-md-6">
                                                                     <label for="inputtime">Delivery Time</label>
@@ -451,6 +456,9 @@
                 agreement: {
                     required: true
                 },
+                // input_date: {
+                //     required: true
+                // }
             },
             messages: {
                 shipping_address_id: {
@@ -462,6 +470,9 @@
                 agreement: {
                     required: "* please Check",
                 },
+                // input_date: {
+                //     required: "Please Select express time slot",
+                // }
             }
         });
 
@@ -579,7 +590,8 @@
 
             if (deliveryCharge === 1) {
                 <!-- Normal delivery date calculation -->
-
+                $('.express_slot').prop('required', false);
+                $('.express_slot').prop('aria-required', false);
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
 
@@ -644,7 +656,7 @@
                 ];
                 var express_time_slot_insert = ['10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00',
                     '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
-
+                $('.express_slot').prop('required', true);
                 $('.express_slot').append(`<option value="" selected disabled>Please Select a slot</option>`);
 
                 var tm = new Date();
