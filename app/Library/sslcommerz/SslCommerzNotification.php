@@ -208,18 +208,14 @@ class SslCommerzNotification extends AbstractSslCommerz
 
         // Set the required/additional params
         $this->setParams($requestData);
-//        logger($this->setParams($requestData));
 
         // Set the authentication information
         $this->setAuthenticationInfo();
-//        logger($this->setAuthenticationInfo());
 
         // Now, call the Gateway API
         $response = $this->callToApi($this->data, $header, $this->config['connect_from_localhost']);
-        logger($response);
 
         $formattedResponse = $this->formatResponse($response, $type, $pattern); // Here we will define the response pattern
-//        return $formattedResponse;
 
         if ($type == 'hosted') {
             if (isset($formattedResponse['GatewayPageURL']) && $formattedResponse['GatewayPageURL'] != '') {
@@ -236,9 +232,7 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setSuccessUrl()
     {
-//        return redirect()->route('home')->with('success', 'Successful');
         $this->successUrl = url('/success');
-//        $this->successUrl = route('home');
     }
 
     protected function getSuccessUrl()
@@ -276,7 +270,7 @@ class SslCommerzNotification extends AbstractSslCommerz
 
         ##  Shipment Information
         $this->setShipmentInfo($requestData);
-//
+
         ##  Product Information
         $this->setProductInfo($requestData);
 
