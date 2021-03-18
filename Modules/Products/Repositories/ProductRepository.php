@@ -19,11 +19,6 @@ class ProductRepository
     public function all($request)
     {
         $products = Product::query();
-//        if ($request->search !== null) {
-//            $products->whereHas('pharmacyBusiness', function ($query) use ($request) {
-//                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%");
-//            });
-//        }
         if ($request->has('form_id')) {
             $products->where('form_id', $request->get('form_id'));
         }

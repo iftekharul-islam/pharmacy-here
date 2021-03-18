@@ -44,7 +44,10 @@ class ProductTransformer extends TransformerAbstract
 
     public function includeProductAdditionalInfo(Product $product)
     {
-        return $this->item($product->productAdditionalInfo, new ProductAdditionalInfoTransformer());
+        if ($product->productAdditionalInfo != null) {
+            return $this->item($product->productAdditionalInfo, new ProductAdditionalInfoTransformer());
+        }
+        return null;
     }
 
     public function includeForm(Product $product)
