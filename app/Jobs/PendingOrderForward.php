@@ -71,8 +71,8 @@ class PendingOrderForward implements ShouldQueue
 //            $preOrderTime = Carbon::now()->subMinute(10)->format('Y-m-d H:i');
             $preOrderEndTime = Carbon::now()->subHour(24)->format('Y-m-d H:i');
 //            $preOrderEndTime = Carbon::now()->subMinute(15)->format('Y-m-d H:i');
-            $morningCheckForRegular = '08:00';
-            $eveningCheckForRegular = '17:00';
+            $morningCheckForRegular = config('subidha.morningTime');
+            $eveningCheckForRegular = config('subidha.eveningTime');
 
             if ($order->delivery_method == 'normal' && $todayFixTime == $morningCheckForRegular) {
                 logger('In the regular delivery make orphan on time 8 am based');

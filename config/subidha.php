@@ -57,4 +57,6 @@ return [
     'bundle_item_per_page' => 1000,
 
     'free_delivery_limit' => 500,
+    'morningTime' => '08:00',
+    'eveningTime' => '19:00'
 ];
