@@ -237,9 +237,10 @@ class ProductRepository
 //        if (isset($request->unit)) {
 //            $product->unit = $request->unit;
 //        }
-//        if (isset($request->strength)) {
-//            $product->strength = $request->strength;
-//        }
+
+        if (isset($request->strength)) {
+            $product->strength = $request->strength;
+        }
 
         if (isset($request->form_id)) {
             $product->form_id = $request->form_id;
