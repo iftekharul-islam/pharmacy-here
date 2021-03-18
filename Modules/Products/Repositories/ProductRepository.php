@@ -19,7 +19,11 @@ class ProductRepository
     public function all($request)
     {
         $products = Product::query();
-
+//        if ($request->search !== null) {
+//            $products->whereHas('pharmacyBusiness', function ($query) use ($request) {
+//                $query->where('pharmacy_name', 'LIKE', "%{$request->search}%");
+//            });
+//        }
         if ($request->has('form_id')) {
             $products->where('form_id', $request->get('form_id'));
         }
@@ -157,47 +161,42 @@ class ProductRepository
     {
         $productData = $request->only(
             'name',
-            'status',
-            'trading_price',
             'purchase_price',
-            'unit',
-            'is_saleable',
-            'conversion_factor',
-            'type',
+            'strength',
             'form_id',
             'category_id',
             'generic_id',
             'manufacturing_company_id',
             'primary_unit_id',
+            'min_order_qty',
+            'is_saleable',
             'is_prescripted',
             'is_pre_order',
-            'min_order_qty',
-            'strength'
+            'status',
+            'trading_price'
         );
+        $productData['trading_price'] = 0;
 
-        $newProduct = Product::create($productData);
+        return $newProduct = Product::create($productData);
 
-        if (!$newProduct) {
-            throw new StoreResourceFailedException('Product create failed');
-        }
 
-        $productInfo = [
-            'product_id' => $newProduct->id,
-            'administration' => $request->administration,
-            'precaution' => $request->precaution,
-            'indication' => $request->indication,
-            'contra_indication' => $request->contra_indication,
-            'side_effect' => $request->side_effect,
-            'mode_of_action' => $request->mode_of_action,
-            'interaction' => $request->interaction,
-            'adult_dose' => $request->adult_dose,
-            'child_dose' => $request->child_dose,
-            'renal_dose' => $request->renal_dose,
-            'description' => $request->description
-
-        ];
-
-        return ProductAdditionalInfo::create($productInfo);
+//        $productInfo = [
+//            'product_id' => $newProduct->id,
+//            'administration' => $request->administration,
+//            'precaution' => $request->precaution,
+//            'indication' => $request->indication,
+//            'contra_indication' => $request->contra_indication,
+//            'side_effect' => $request->side_effect,
+//            'mode_of_action' => $request->mode_of_action,
+//            'interaction' => $request->interaction,
+//            'adult_dose' => $request->adult_dose,
+//            'child_dose' => $request->child_dose,
+//            'renal_dose' => $request->renal_dose,
+//            'description' => $request->description
+//
+//        ];
+//
+//        return ProductAdditionalInfo::create($productInfo);
 
     }
 
@@ -207,7 +206,7 @@ class ProductRepository
         $product = Product::find($id);
 
         if (!$product) {
-            throw new NotFoundHttpException('Product not found');
+            return $product;
         }
 
         if (isset($request->name)) {
@@ -218,29 +217,29 @@ class ProductRepository
             $product->status = $request->status;
         }
 
-        if (isset($request->trading_price)) {
-            $product->trading_price = $request->trading_price;
-        }
-
         if (isset($request->purchase_price)) {
             $product->purchase_price = $request->purchase_price;
         }
-
-        if (isset($request->unit)) {
-            $product->unit = $request->unit;
-        }
-
         if (isset($request->is_saleable)) {
             $product->is_saleable = $request->is_saleable;
         }
 
-        if (isset($request->conversion_factor)) {
-            $product->conversion_factor = $request->conversion_factor;
-        }
-
-        if (isset($request->type)) {
-            $product->type = $request->type;
-        }
+//        if (isset($request->conversion_factor)) {
+//            $product->conversion_factor = $request->conversion_factor;
+//        }
+//
+//        if (isset($request->type)) {
+//            $product->type = $request->type;
+//        }
+//        if (isset($request->trading_price)) {
+//            $product->trading_price = $request->trading_price;
+//        }
+//        if (isset($request->unit)) {
+//            $product->unit = $request->unit;
+//        }
+//        if (isset($request->strength)) {
+//            $product->strength = $request->strength;
+//        }
 
         if (isset($request->form_id)) {
             $product->form_id = $request->form_id;
@@ -274,60 +273,58 @@ class ProductRepository
             $product->min_order_qty = $request->min_order_qty;
         }
 
-        if (isset($request->strength)) {
-            $product->strength = $request->strength;
-        }
-
         $product->save();
 
-        $productInfo = ProductAdditionalInfo::where('product_id', $id)->first();
-
-        if (isset($request->administration)) {
-            $productInfo->administration = $request->administration;
-        }
-
-        if (isset($request->precaution)) {
-            $productInfo->precaution = $request->precaution;
-        }
-
-        if (isset($request->indication)) {
-            $productInfo->indication = $request->indication;
-        }
-
-        if (isset($request->contra_indication)) {
-            $productInfo->contra_indication = $request->contra_indication;
-        }
-
-        if (isset($request->side_effect)) {
-            $productInfo->side_effect = $request->side_effect;
-        }
-
-        if (isset($request->mode_of_action)) {
-            $productInfo->mode_of_action = $request->mode_of_action;
-        }
-
-        if (isset($request->interaction)) {
-            $productInfo->interaction = $request->interaction;
-        }
-
-        if (isset($request->adult_dose)) {
-            $productInfo->adult_dose = $request->adult_dose;
-        }
-
-        if (isset($request->child_dose)) {
-            $productInfo->child_dose = $request->child_dose;
-        }
-
-        if (isset($request->renal_dose)) {
-            $productInfo->renal_dose = $request->renal_dose;
-        }
-
-        if (isset($request->description)) {
-            $productInfo->description = $request->description;
-        }
-
-        $productInfo->save();
         return $product;
+
+//        $productInfo = ProductAdditionalInfo::where('product_id', $id)->first();
+//
+//        if (isset($request->administration)) {
+//            $productInfo->administration = $request->administration;
+//        }
+//
+//        if (isset($request->precaution)) {
+//            $productInfo->precaution = $request->precaution;
+//        }
+//
+//        if (isset($request->indication)) {
+//            $productInfo->indication = $request->indication;
+//        }
+//
+//        if (isset($request->contra_indication)) {
+//            $productInfo->contra_indication = $request->contra_indication;
+//        }
+//
+//        if (isset($request->side_effect)) {
+//            $productInfo->side_effect = $request->side_effect;
+//        }
+//
+//        if (isset($request->mode_of_action)) {
+//            $productInfo->mode_of_action = $request->mode_of_action;
+//        }
+//
+//        if (isset($request->interaction)) {
+//            $productInfo->interaction = $request->interaction;
+//        }
+//
+//        if (isset($request->adult_dose)) {
+//            $productInfo->adult_dose = $request->adult_dose;
+//        }
+//
+//        if (isset($request->child_dose)) {
+//            $productInfo->child_dose = $request->child_dose;
+//        }
+//
+//        if (isset($request->renal_dose)) {
+//            $productInfo->renal_dose = $request->renal_dose;
+//        }
+//
+//        if (isset($request->description)) {
+//            $productInfo->description = $request->description;
+//        }
+//
+//        $productInfo->save();
+//        return $product;
 
     }
 

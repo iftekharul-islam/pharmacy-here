@@ -16,12 +16,8 @@ class CreateProductRequest extends FormRequest
         return [
             'name' => 'required|string|min:3',
             'status' => 'required|boolean',
-            'trading_price' => 'required',
             'purchase_price' => 'required',
-//            'unit' => 'required',
             'is_saleable' => 'required',
-            'conversion_factor' => 'required',
-            'type' => 'required',
             'form_id' => 'required',
             'category_id' => 'required',
             'generic_id' => 'required',

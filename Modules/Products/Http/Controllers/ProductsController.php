@@ -70,6 +70,7 @@ class ProductsController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
+//        return $request->all();
         $product = $this->repository->create($request);
 
         if (!$product) {
