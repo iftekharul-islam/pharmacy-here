@@ -120,34 +120,33 @@
         // });
 
         function showProduct(item) {
-            $('#type').html((item.type));
             $('#name').html((item.name));
+            $('#strength').html(item.strength);
             $('#category').html((item.category.name));
             $('#generic').html((item.generic.name));
             $('#form').html((item.form.name));
             $('#company').html((item.company.name));
             $('#conversion_factor').html((item.conversion_factor));
-            // $('#unit').html((item.unit));
             $('#primary_unit').html((item.primary_unit.name));
             $('#trading_price').html((item.trading_price));
             $('#purchase_price').html((item.purchase_price));
-            $('#is_saleable').html(checkStatus(item.is_saleable));
-            $('#status').html(checkStatus(item.status));
-            $('#administration').html((item.product_additional_info.administration));
-            $('#precaution').html((item.product_additional_info.precaution));
-            $('#indication').html((item.product_additional_info.indication));
-            $('#contra_indication').html((item.product_additional_info.contra_indication));
-            $('#side_effect').html((item.product_additional_info.side_effect));
-            $('#mode_of_action').html((item.product_additional_info.mode_of_action));
-            $('#interaction').html((item.product_additional_info.interaction));
-            $('#adult_dose').html((item.product_additional_info.adult_dose));
-            $('#child_dose').html((item.product_additional_info.child_dose));
-            $('#renal_dose').html((item.product_additional_info.renal_dose));
             $('#is_prescripted').html(checkStatus(item.is_prescripted));
             $('#is_pre_order').html(checkStatus(item.is_pre_order));
             $('#min_order_qty').html(item.min_order_qty);
-            $('#strength').html(item.strength);
-            $('#description').html((item.product_additional_info.description));
+            $('#status').html(checkStatus(item.status));
+            $('#unit').html((item.unit));
+            // $('#is_saleable').html(checkStatus(item.is_saleable));
+            // $('#administration').html((item.product_additional_info.administration));
+            // $('#precaution').html((item.product_additional_info.precaution));
+            // $('#indication').html((item.product_additional_info.indication));
+            // $('#contra_indication').html((item.product_additional_info.contra_indication));
+            // $('#side_effect').html((item.product_additional_info.side_effect));
+            // $('#mode_of_action').html((item.product_additional_info.mode_of_action));
+            // $('#interaction').html((item.product_additional_info.interaction));
+            // $('#adult_dose').html((item.product_additional_info.adult_dose));
+            // $('#child_dose').html((item.product_additional_info.child_dose));
+            // $('#renal_dose').html((item.product_additional_info.renal_dose));
+            // $('#description').html((item.product_additional_info.description));
         }
 
         function removeItem(id) {
