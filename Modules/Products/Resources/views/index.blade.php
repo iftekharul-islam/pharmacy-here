@@ -16,7 +16,7 @@
 {{--    <h1>Dashboard</h1>--}}
 <section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row">
             <div class="col-sm-6">
                 <h1>Products</h1>
             </div>
@@ -25,6 +25,22 @@
             </div>
         </div>
     </div><!-- /.container-fluid -->
+    <form action="{{ route('index') }}">
+    <div class="card col-8-xxxl col-lg-8 col-8">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 form-group">
+                    <label>Product Name</label>
+                    <input type="search" class="form-control" name="medicine" value="{{ request()->get('medicine') }}"
+                           placeholder="Search medicine">
+                </div>
+                <div class="col-12 form-group float-right">
+                    <button type="submit" class="btn btn-primary float-right">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
 </section>
 @stop
 
