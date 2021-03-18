@@ -83,6 +83,7 @@ Route::post('pay', 'CheckoutController@sslPayment')->name('ssl.payment');
 Route::post('success', 'CheckoutController@success')->name('ssl.success');
 Route::post('fail', 'CheckoutController@fail')->name('ssl.fail');
 Route::post('cancel', 'CheckoutController@cancel')->name('ssl.cancel');
+Route::post('ipn', 'CheckoutController@ipn');
 
 
 //Find pharmacy for checkout

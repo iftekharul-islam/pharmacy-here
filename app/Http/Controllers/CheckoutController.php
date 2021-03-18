@@ -695,7 +695,6 @@ class CheckoutController extends Controller
                         ->update(['status' => 2]);
 
                     return redirect()->route('home')->with('failed', 'Transaction is successfully Completed');
-//                    echo "Transaction is successfully Completed";
                 } else {
                     /*
                     That means IPN worked, but Transation validation failed.
@@ -706,7 +705,6 @@ class CheckoutController extends Controller
                         ->update(['status' => 4]);
 
                     return redirect()->route('home')->with('failed', 'validation Fail');
-//                    echo "validation Fail";
                 }
 
             } else if ($order_details->status == 2 || $order_details->status == 3) {
@@ -714,17 +712,14 @@ class CheckoutController extends Controller
                 #That means Order status already updated. No need to udate database.
 
                 return redirect()->route('home')->with('success', 'Transaction is already successfully Completed');
-//                echo "Transaction is already successfully Completed";
             } else {
                 #That means something wrong happened. You can redirect customer to your product page.
 
                 return redirect()->route('home')->with('failed', 'Invalid Transaction');
-//                echo "Invalid Transaction";
             }
         } else {
 
             return redirect()->route('home')->with('failed', 'Invalid Data');
-//            echo "Invalid Data";
         }
     }
 
