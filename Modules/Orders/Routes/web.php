@@ -15,11 +15,14 @@ use Illuminate\Support\Facades\Route;
 //Route::prefix('orders')->group(function() {
 //    Route::get('orders', 'OrdersController@index');
 //});
-Route::get('active-orphan-order', 'OrdersController@activeOrder')->name('active.order');
 Route::group(["middleware" => ["web", "role:admin"]], function() {
     Route::get('orders', 'OrdersController@index')->name('orders.index');
     Route::get('export-orders', 'OrdersController@exportOrder')->name('export.orders');
     Route::get('orders/{order_id}', 'OrdersController@show')->name('orders.show');
+    // active orphan order by id
+    Route::post('active-orphan-order', 'OrdersController@activeOrder')->name('active.order');
+    // cancel order by id
+    Route::post('cancel-order', 'OrdersController@cancelOrder')->name('cancel.order');
 
     Route::get('transaction-history', 'TransactionHistoryController@index')->name('transactionHistory.index');
     Route::get('epay-transaction-history/{trans_id}', 'TransactionHistoryController@epayShow')->name('epay.transactionHistory.show');
