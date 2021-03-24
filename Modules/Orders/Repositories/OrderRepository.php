@@ -921,6 +921,12 @@ class OrderRepository
 
     }
 
+    /**
+     * @param $order_id
+     * @param $history_id
+     * @param $pharmacy_id
+     * @return bool
+     */
     public function activeOrphanOrder($order_id, $history_id, $pharmacy_id)
     {
         $order = Order::find($order_id);
@@ -937,6 +943,33 @@ class OrderRepository
             return false;
         }
         $orderHistory->status = 0;
+        $orderHistory->save();
+
+        return true;
+    }
+
+    /**
+     * @param $order_id
+     * @param $history_id
+     * @param $pharmacy_id
+     * @return bool
+     */
+    public function cancelOrder($order_id, $history_id, $pharmacy_id)
+    {
+        $order = Order::find($order_id);
+        if (!$order) {
+            return false;
+        }
+        $order->status = 10;
+        $order->pharmacy_id = $pharmacy_id;
+        $order->save();
+
+        $orderHistory = OrderHistory::find($history_id);
+
+        if (!$orderHistory) {
+            return false;
+        }
+        $orderHistory->status = 10;
         $orderHistory->save();
 
         return true;

@@ -109,15 +109,39 @@
                             <td>@include('orders::status', ['status' => $item->status])</td>
                             <td>
                                 @if($item->status == 8 && isset($item->orderHistory->pharmacy->pharmacy_name))
-                                    <a href="{{ route('active.order',[ 'order_id' => $item->id , 'history_id' => $item->orderHistory->id, 'pharmacy_id' => $item->orderHistory->pharmacy->user_id ]) }}" type="button"
-                                       class="btn btn-sm btn-success">
-                                       Active
-                                    </a>
+                                    <form id="active-form-{{ $loop->index }}"
+                                          action="{{ route('active.order',[ 'order_id' => $item->id , 'history_id' => $item->orderHistory->id, 'pharmacy_id' => $item->orderHistory->pharmacy->user_id ]) }}"
+                                          method="post"
+                                          class="form-horizontal d-inline">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="_method" value="POST">
+                                        <div class="btn-group">
+                                            <button onclick="activeItem({{ $loop->index }})" type="button"
+                                                    class="btn btn-success waves-effect waves-light btn-sm align-items-center">
+                                                Active
+                                            </button>
+                                        </div>
+                                    </form>
                                 @endif
                                 <a href="{{ route('orders.show', $item->id) }}" type="button"
                                    class="btn btn-sm btn-success">
                                     <i class="fa fa-eye"></i>
                                 </a>
+                                @if($item->status != 10 && isset($item->orderHistory->pharmacy->pharmacy_name))
+                                    <form id="cancel-form-{{ $loop->index }}"
+                                          action="{{ route('cancel.order', [ 'order_id' => $item->id , 'history_id' => $item->orderHistory->id, 'pharmacy_id' => $item->orderHistory->pharmacy->user_id ]) }}"
+                                          method="post"
+                                          class="form-horizontal d-inline">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="_method" value="POST">
+                                        <div class="btn-group">
+                                            <button onclick="cancelItem({{ $loop->index }})" type="button"
+                                                    class="btn btn-danger waves-effect waves-light btn-sm align-items-center">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -212,6 +236,52 @@
                         .prop('selected', selected)
                         .text(value.name));
             });
+        }
+
+        function activeItem(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to active this order!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Active it!'
+            }).then((result) => {
+                console.log(result);
+                if (result.value) {
+                    document.getElementById('active-form-' + id).submit();
+                    setTimeout(5000);
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        }
+
+        function cancelItem(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Cancel it!'
+            }).then((result) => {
+                console.log(result);
+                if (result.value) {
+                    document.getElementById('cancel-form-' + id).submit();
+                    setTimeout(5000);
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
         }
     </script>
 @endsection
