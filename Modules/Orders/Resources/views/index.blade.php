@@ -103,6 +103,9 @@
                                 @if($item->status == 8 && isset($item->orderHistory->pharmacy->pharmacy_name))
                                     {{ $item->orderHistory->pharmacy->pharmacy_name ?? '' }}
                                 @endif
+                                @if($item->status == 10 && isset($item->orderHistory->pharmacy->pharmacy_name))
+                                    {{ $item->orderHistory->pharmacy->pharmacy_name ?? '' }}
+                                @endif
                             </td>
                             <td>{{ $item->customer_amount }}</td>
                             <td>{{ $item->order_date }}</td>
@@ -248,13 +251,12 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, Active it!'
             }).then((result) => {
-                console.log(result);
                 if (result.value) {
                     document.getElementById('active-form-' + id).submit();
                     setTimeout(5000);
                     Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
+                        'Activated!',
+                        'Order activation successfull',
                         'success'
                     )
                 }
@@ -264,20 +266,19 @@
         function cancelItem(id) {
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: "Do you want to cancel this order!",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, Cancel it!'
             }).then((result) => {
-                console.log(result);
                 if (result.value) {
                     document.getElementById('cancel-form-' + id).submit();
                     setTimeout(5000);
                     Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
+                        'Cancelled!',
+                        'Order cancel successful',
                         'success'
                     )
                 }

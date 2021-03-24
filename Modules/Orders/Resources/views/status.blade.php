@@ -10,7 +10,7 @@
     @elseif($status == 9)
         <span class="badge badge-info">On The Way</span>
     @elseif($status == 10)
-        <span class="badge badge-danger">Canceled</span>
+        <span class="badge badge-danger">Cancelled</span>
     @elseif($status == 8)
         <span class="badge badge-danger">Orphan</span>
     @endif

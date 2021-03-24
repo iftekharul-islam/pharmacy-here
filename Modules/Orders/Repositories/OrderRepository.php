@@ -665,7 +665,6 @@ class OrderRepository
         if ($latestOrder) {
             $lastNumber = explode('-', $latestOrder->order_no);
             $lastNumber = preg_replace("/[^0-9]/", "", end($lastNumber));
-//            $orderNo =  date('Y').'-'.date('m').'-'.str_pad( (int) $lastNumber + 1 , 4, '0', STR_PAD_LEFT);
             $orderNo = 'SBD-' . str_pad((int)$lastNumber + 1, 6, '0', STR_PAD_LEFT);
             if (Order::where('order_no', $orderNo)->count() > 0) {
                 $this->generateOrderNo();
@@ -834,9 +833,6 @@ class OrderRepository
         $order->status = 8;
         $order->save();
 
-//        $emailMessage = $order->order_no . ' Order status is orphan, please take action immediately.';
-//        sendOrderStatusEmail($emailMessage);
-
         return responseData('Order status updated');
     }
 
@@ -961,7 +957,7 @@ class OrderRepository
             return false;
         }
         $order->status = 10;
-        $order->pharmacy_id = $pharmacy_id;
+        $order->pharmacy_id = null;
         $order->save();
 
         $orderHistory = OrderHistory::find($history_id);
