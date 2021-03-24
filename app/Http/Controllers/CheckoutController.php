@@ -548,10 +548,10 @@ class CheckoutController extends Controller
         $sslc = new SslCommerzNotification();
 
         #Check order status in order tabel against the transaction id or order id.
-        $order_detials = Order::where('order_no', $tran_id)
+        $order_details = Order::where('order_no', $tran_id)
             ->select('order_no', 'status', 'amount')->first();
 
-        if ($order_detials->status == 0) {
+        if ($order_details->status == 0) {
             $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
 
             if ($validation == TRUE) {
@@ -600,7 +600,7 @@ class CheckoutController extends Controller
                 return redirect()->route('home')->with('failed', 'validation Fail');
 
             }
-        } else if ($order_detials->status == 2 || $order_detials->status == 3) {
+        } else if ($order_details->status == 2 || $order_details->status == 3) {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
@@ -619,18 +619,18 @@ class CheckoutController extends Controller
     {
         $tran_id = $request->input('tran_id');
 
-        $order_detials = DB::table('orders')
+        $order_details = DB::table('orders')
             ->where('order_no', $tran_id)
             ->select('order_no', 'status', 'amount')->first();
 
-        if ($order_detials->status == 0) {
+        if ($order_details->status == 0) {
             $update_product = DB::table('orders')
                 ->where('order_no', $tran_id)
                 ->update(['status' => 4]);
 
             return redirect()->route('home')->with('failed', 'Transaction is Failed');
 //            echo "Transaction is Failed";
-        } else if ($order_detials->status == 2 || $order_detials->status == 3) {
+        } else if ($order_details->status == 2 || $order_details->status == 3) {
 
             return redirect()->route('home')->with('success', 'Transaction is already Successful');
 //            echo "Transaction is already Successful";
@@ -645,16 +645,16 @@ class CheckoutController extends Controller
     {
         $tran_id = $request->input('tran_id');
 
-        $order_detials = DB::table('orders')
+        $order_details = DB::table('orders')
             ->where('order_no', $tran_id)
             ->select('order_no', 'status', 'amount')->first();
 
-        if ($order_detials->status == 0) {
+        if ($order_details->status == 0) {
             $update_product = DB::table('orders')
                 ->where('order_no', $tran_id)
                 ->update(['status' => 10]);
             echo "Transaction is Cancel";
-        } else if ($order_detials->status == 2 || $order_detials->status == 3) {
+        } else if ($order_details->status == 2 || $order_details->status == 3) {
 
             return redirect()->route('home')->with('success', 'Transaction is already Successful');
 //            echo "Transaction is already Successful";
@@ -670,13 +670,15 @@ class CheckoutController extends Controller
     public function ipn(Request $request)
     {
         echo "Transaction is Successful";
+        logger('in the ipn setting');
+        logger($request->all());
         #Received all the payement information from the gateway
         if ($request->input('tran_id')) #Check transation id is posted or not.
         {
 
             $tran_id = $request->input('tran_id');
 
-            #Check order status in order tabel against the transaction id or order id.
+            #Check order status in order table against the transaction id or order id.
             $order_details = DB::table('orders')
                 ->where('order_no', $tran_id)
                 ->select('order_no', 'status', 'amount')->first();
@@ -692,9 +694,9 @@ class CheckoutController extends Controller
                     */
                     $update_product = DB::table('orders')
                         ->where('order_no', $tran_id)
-                        ->update(['status' => 2]);
+                        ->update(['status' => 0]);
 
-                    return redirect()->route('home')->with('failed', 'Transaction is successfully Completed');
+                    return redirect()->route('home')->with('success', 'Transaction is successfully Completed');
                 } else {
                     /*
                     That means IPN worked, but Transation validation failed.
