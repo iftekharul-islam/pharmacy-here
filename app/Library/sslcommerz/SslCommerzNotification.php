@@ -34,6 +34,8 @@ class SslCommerzNotification extends AbstractSslCommerz
         if ($validation) {
             return true;
         } else {
+            logger('validation error');
+            logger($this->error);
             return false;
         }
     }
@@ -55,6 +57,9 @@ class SslCommerzNotification extends AbstractSslCommerz
                 $store_id = urlencode($this->getStoreId());
                 $store_passwd = urlencode($this->getStorePassword());
                 $requested_url = ($this->config['apiDomain'] . $this->config['apiUrl']['order_validate'] . "?val_id=" . $val_id . "&store_id=" . $store_id . "&store_passwd=" . $store_passwd . "&v=1&format=json");
+
+                logger('validate url');
+                logger($requested_url);
 
                 $handle = curl_init();
                 curl_setopt($handle, CURLOPT_URL, $requested_url);
