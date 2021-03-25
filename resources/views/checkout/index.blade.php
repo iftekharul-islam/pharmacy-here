@@ -594,7 +594,8 @@
                 $('.express_slot').prop('aria-required', false);
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-
+                console.log('NormalDeliveryTime');
+                console.log(NormalDeliveryTime)
                 var time_now = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
                 var check_start_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
                 var check_end_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
@@ -888,6 +889,8 @@
 
         function getPharmacy() {
             var thanaId = $('#selectPharmacyThana option:selected').val();
+            console.log('thana id');
+            console.log(thanaId);
             $.ajax({
                 url: '{{ url('find-pharmacy-list') }}',
                 method: "get",
