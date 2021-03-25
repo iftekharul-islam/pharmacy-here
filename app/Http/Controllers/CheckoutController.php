@@ -564,8 +564,7 @@ class CheckoutController extends Controller
                     ->where('order_no', $tran_id)
                     ->update(['status' => 0]);
 
-                $userId = Auth::user()->id;
-                $items = Cart::where('customer_id', $userId)->get();
+                $items = Cart::where('customer_id', $order_details->customer_id)->get();
 
                 $orderItem = Order::where('order_no', $tran_id)->first();
                 $pharmacy_id = $orderItem->pharmacy_id;
