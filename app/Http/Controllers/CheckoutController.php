@@ -549,7 +549,7 @@ class CheckoutController extends Controller
 
         #Check order status in order tabel against the transaction id or order id.
         $order_details = Order::where('order_no', $tran_id)
-            ->select('order_no', 'status', 'amount')->first();
+            ->select('order_no', 'status', 'amount', 'customer_id')->first();
 
         if ($order_details->status == 0) {
             $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
@@ -563,7 +563,8 @@ class CheckoutController extends Controller
                 $update_product = DB::table('orders')
                     ->where('order_no', $tran_id)
                     ->update(['status' => 0]);
-
+                logger('$order_details');
+                logger($order_details);
                 $items = Cart::where('customer_id', $order_details->customer_id)->get();
 
                 $orderItem = Order::where('order_no', $tran_id)->first();
@@ -682,7 +683,7 @@ class CheckoutController extends Controller
             #Check order status in order table against the transaction id or order id.
             $order_details = DB::table('orders')
                 ->where('order_no', $tran_id)
-                ->select('order_no', 'status', 'amount')->first();
+                ->select('order_no', 'status', 'amount', 'delivery_charge')->first();
             logger('order details');
             logger(json_encode($order_details));
             if ($order_details->status == 0) {
