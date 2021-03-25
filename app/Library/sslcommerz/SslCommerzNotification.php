@@ -34,8 +34,6 @@ class SslCommerzNotification extends AbstractSslCommerz
         if ($validation) {
             return true;
         } else {
-            logger('validation error');
-            logger($this->error);
             return false;
         }
     }
@@ -57,9 +55,6 @@ class SslCommerzNotification extends AbstractSslCommerz
                 $store_id = urlencode($this->getStoreId());
                 $store_passwd = urlencode($this->getStorePassword());
                 $requested_url = ($this->config['apiDomain'] . $this->config['apiUrl']['order_validate'] . "?val_id=" . $val_id . "&store_id=" . $store_id . "&store_passwd=" . $store_passwd . "&v=1&format=json");
-
-                logger('validate url');
-                logger($requested_url);
 
                 $handle = curl_init();
                 curl_setopt($handle, CURLOPT_URL, $requested_url);
@@ -118,16 +113,6 @@ class SslCommerzNotification extends AbstractSslCommerz
                             if (trim($merchant_trans_id) == trim($tran_id) && (abs($merchant_trans_amount - $amount) < 1) && trim($merchant_trans_currency) == trim('BDT')) {
                                 return true;
                             } else {
-                                logger('merchant_trans_id');
-                                logger($merchant_trans_id);
-                                logger('tran_id');
-                                logger($tran_id);
-                                logger('merchant_trans_amount');
-                                logger($merchant_trans_amount);
-                                logger('amount');
-                                logger($amount);
-                                logger('merchant_trans_currency');
-                                logger($merchant_trans_currency);
                                 # DATA TEMPERED
                                 $this->error = "Data has been tempered";
                                 return false;

@@ -232,13 +232,9 @@ class CheckoutController extends Controller
         }
 
         if ($request->delivery_type == config('subidha.home_delivery')) {
-            logger('1 st in');
             if ($request->amount <= config('subidha.free_delivery_limit')) {
-                logger('1 st in 1 st');
                 if ($data['delivery_method'] == config('subidha.normal_delivery')) {
-                    logger('1 st in 1 st in 1st');
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
-                        logger('1 in');
 
                         $delivery_value = config('subidha.normal_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -254,7 +250,6 @@ class CheckoutController extends Controller
 
                     }
                     if ($request->payment_type == config('subidha.ecash_payment_type')) {
-                        logger('2 in');
 
                         $delivery_value = round(config('subidha.normal_delivery_charge') *
                             config('subidha.subidha_delivery_percentage') / 100, 2);
@@ -273,8 +268,6 @@ class CheckoutController extends Controller
 
                 if ($data['delivery_method'] == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
-                        logger('3 in');
-                        logger('Into subidha epay payment');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -283,7 +276,6 @@ class CheckoutController extends Controller
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                        logger('Assigning subidha comission in epay payment');
 
                         $data['subidha_comission'] = round(($amount_value + $delivery_value + $total_value), 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission']), 2);
@@ -291,8 +283,6 @@ class CheckoutController extends Controller
 
                     }
                     if ($request->payment_type == config('subidha.ecash_payment_type')) {
-                        logger('Into subidha ecash payment method');
-                        logger('4 in');
 
                         $delivery_value = config('subidha.express_delivery_charge') *
                             config('subidha.subidha_delivery_percentage') / 100;
@@ -313,7 +303,6 @@ class CheckoutController extends Controller
                 if ($data['delivery_method'] == config('subidha.normal_delivery')) {
 
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
-                        logger('5 in');
 
                         $amount_value = round(($request->get('amount')) *
                             config('subidha.subidha_comission_cash_percentage') / 100, 2);
@@ -326,7 +315,6 @@ class CheckoutController extends Controller
 
                     }
                     if ($request->payment_type == config('subidha.ecash_payment_type')) {
-                        logger('6 in');
 
                         $amount_value = ($request->get('amount')) *
                             config('subidha.subidha_comission_ecash_percentage') / 100;
@@ -343,8 +331,6 @@ class CheckoutController extends Controller
 
                 if ($data['delivery_method'] == config('subidha.express_delivery')) {
                     if ($request->payment_type == config('subidha.cod_payment_type')) {
-                        logger('Into subidha epay payment');
-                        logger('7 in');
 
                         $delivery_value = config('subidha.express_delivery_charge') * config('subidha.subidha_delivery_percentage') / 100;
 
@@ -353,18 +339,13 @@ class CheckoutController extends Controller
 
                         $total_value = round(($request->get('amount')) * config('subidha.subidha_comission_cash_percentage') / 100, 2);
 
-                        logger('Assigning subidha comission in epay payment');
-
                         $data['subidha_comission'] = round(($amount_value + $delivery_value + $total_value), 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value - $data['subidha_comission']), 2);
                         $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $amount_value), 2);
 
-                        logger('Subidha comission in epay payment: ' . $data['subidha_comission']);
 
                     }
                     if ($request->payment_type == config('subidha.ecash_payment_type')) {
-                        logger('Into subidha ecash payment method');
-                        logger('8 in');
 
                         $delivery_value = config('subidha.express_delivery_charge') *
                             config('subidha.subidha_delivery_percentage') / 100;
@@ -378,7 +359,6 @@ class CheckoutController extends Controller
                         $data['subidha_comission'] = round(($amount_value + $delivery_value), 2);
                         $data['pharmacy_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') - $data['subidha_comission']), 2);
                         $data['customer_amount'] = round((($request->get('amount')) + config('subidha.express_delivery_charge') + $ssl_value), 2);
-                        logger('8 done');
                     }
                 }
             }
@@ -386,7 +366,6 @@ class CheckoutController extends Controller
 
         }
         if ($request->delivery_type == config('subidha.pickup_from_pharmacy')) {
-            logger('pickup_from_pharmacy');
             if ($request->payment_type == config('subidha.cod_payment_type')) {
 
                 $amount_value = round(($request->get('amount')) *
@@ -400,7 +379,6 @@ class CheckoutController extends Controller
 
             }
             if ($request->payment_type == config('subidha.ecash_payment_type')) {
-                logger('Culprit found');
 
                 $amount_value = round(($request->get('amount')) *
                     config('subidha.subidha_comission_collect_from_pharmacy_ecash_percentage') / 100, 2);
@@ -563,8 +541,6 @@ class CheckoutController extends Controller
                 $update_product = DB::table('orders')
                     ->where('order_no', $tran_id)
                     ->update(['status' => 0]);
-                logger('$order_details');
-                logger($order_details);
                 $items = Cart::where('customer_id', $order_details->customer_id)->get();
 
                 $orderItem = Order::where('order_no', $tran_id)->first();
@@ -578,7 +554,6 @@ class CheckoutController extends Controller
                 session()->forget('cartCount');
 
                 $deviceIds = UserDeviceId::where('user_id', $pharmacy_id)->get();
-                logger($deviceIds);
                 $title = 'New Order Available';
                 $message = 'You have a new order from Subidha. Please check.';
 
@@ -670,10 +645,6 @@ class CheckoutController extends Controller
     public function ipn(Request $request)
     {
         echo "Transaction is Successful";
-        logger('in the ipn setting');
-        logger($request->all());
-        logger('Trans id');
-        logger($request->input('tran_id'));
         #Received all the payement information from the gateway
         if ($request->input('tran_id')) #Check transation id is posted or not.
         {
@@ -684,15 +655,10 @@ class CheckoutController extends Controller
             $order_details = DB::table('orders')
                 ->where('order_no', $tran_id)
                 ->select('order_no', 'status', 'amount', 'delivery_charge')->first();
-            logger('order details');
-            logger(json_encode($order_details));
             if ($order_details->status == 0) {
                 $validate_amount = $order_details->amount + $order_details->delivery_charge;
-                logger('$validate_amount'. $validate_amount);
                 $sslc = new SslCommerzNotification();
                 $validation = $sslc->orderValidate($tran_id, $validate_amount, $request->currency, $request->all());
-                logger('validation');
-                logger(json_encode($validation));
                 if ($validation == TRUE) {
                     /*
                     That means IPN worked. Here you need to update order status
