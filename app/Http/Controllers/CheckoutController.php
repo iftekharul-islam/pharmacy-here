@@ -685,13 +685,13 @@ class CheckoutController extends Controller
                 ->where('order_no', $tran_id)
                 ->select('order_no', 'status', 'amount')->first();
             logger('order details');
-            logger($order_details);
+            logger(json_encode($order_details));
             if ($order_details->status == 0) {
 
                 $sslc = new SslCommerzNotification();
                 $validation = $sslc->orderValidate($tran_id, $order_details->amount, $request->currency, $request->all());
                 logger('validation');
-                logger($validation);
+                logger(json_encode($validation));
                 if ($validation == TRUE) {
                     /*
                     That means IPN worked. Here you need to update order status
