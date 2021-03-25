@@ -687,9 +687,10 @@ class CheckoutController extends Controller
             logger('order details');
             logger(json_encode($order_details));
             if ($order_details->status == 0) {
-
+                $validate_amount = $order_details->amount + $order_details->delivery_charge;
+                logger('$validate_amount'. $validate_amount);
                 $sslc = new SslCommerzNotification();
-                $validation = $sslc->orderValidate($tran_id, $order_details->amount, $request->currency, $request->all());
+                $validation = $sslc->orderValidate($tran_id, $validate_amount, $request->currency, $request->all());
                 logger('validation');
                 logger(json_encode($validation));
                 if ($validation == TRUE) {
