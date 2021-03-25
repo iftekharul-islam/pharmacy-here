@@ -672,6 +672,8 @@ class CheckoutController extends Controller
         echo "Transaction is Successful";
         logger('in the ipn setting');
         logger($request->all());
+        logger('Trans id');
+        logger($request->input('tran_id'));
         #Received all the payement information from the gateway
         if ($request->input('tran_id')) #Check transation id is posted or not.
         {
