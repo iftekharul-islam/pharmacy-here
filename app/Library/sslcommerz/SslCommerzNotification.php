@@ -118,6 +118,16 @@ class SslCommerzNotification extends AbstractSslCommerz
                             if (trim($merchant_trans_id) == trim($tran_id) && (abs($merchant_trans_amount - $amount) < 1) && trim($merchant_trans_currency) == trim('BDT')) {
                                 return true;
                             } else {
+                                logger('merchant_trans_id');
+                                logger($merchant_trans_id);
+                                logger('tran_id');
+                                logger($tran_id);
+                                logger('merchant_trans_amount');
+                                logger($merchant_trans_amount);
+                                logger('amount');
+                                logger($amount);
+                                logger('merchant_trans_currency');
+                                logger($merchant_trans_currency);
                                 # DATA TEMPERED
                                 $this->error = "Data has been tempered";
                                 return false;
