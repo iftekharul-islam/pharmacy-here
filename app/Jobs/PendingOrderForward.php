@@ -75,7 +75,7 @@ class PendingOrderForward implements ShouldQueue
             $eveningCheckForRegular = config('subidha.eveningTime');
 
             if ($order->delivery_method == 'normal' && $todayFixTime == $morningCheckForRegular) {
-                logger('In the regular delivery make orphan on time 8 am based');
+                logger('In the regular delivery make orphan on time 9 am based');
                 $this->orderMakeOrphan($order);
                 continue;
             }
@@ -102,7 +102,6 @@ class PendingOrderForward implements ShouldQueue
                 }
 
                 if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
-//                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i') && Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
                     logger('in the pre order 15 hour section');
                     $this->orderForward($order, $dhaka_district);
                     continue;
@@ -131,7 +130,6 @@ class PendingOrderForward implements ShouldQueue
             }
 
             if ($order->delivery_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
-//            if (Carbon::now()->subMinute(5)->format('H:i') >= $order->updated_at->format('H:i')) {
                 logger('In the forward on regular based');
 
                 $this->orderForward($order, $dhaka_district);
