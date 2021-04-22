@@ -35,7 +35,7 @@ class ProductRepository
                 ->where('purchase_price', '>', 0)
                 ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
                 ->orderBy('name', 'ASC')
-                ->orderBy('purchase_price', 'DESC')
+//                ->orderBy('purchase_price', 'DESC')
                 ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
 
 
@@ -45,7 +45,7 @@ class ProductRepository
                     ->where('purchase_price', '>', 0)
                     ->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
                     ->orderBy('name', 'ASC')
-                    ->orderBy('purchase_price', 'DESC')
+//                    ->orderBy('purchase_price', 'DESC')
                     ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
 
                 return [
@@ -74,7 +74,7 @@ class ProductRepository
 
         $value =  $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
             ->orderBy('name', 'ASC')
-            ->orderBy('purchase_price', 'DESC')
+//            ->orderBy('purchase_price', 'DESC')
             ->where('purchase_price', '>', 0)
             ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.item_per_page'));
 
@@ -121,7 +121,7 @@ class ProductRepository
 
         return $products->with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
             ->orderBy('name', 'ASC')
-            ->orderBy('purchase_price', 'DESC')
+//            ->orderBy('purchase_price', 'DESC')
             ->paginate($request->get('per_page') ? $request->get('per_page') : config('subidha.bundle_item_per_page'));
     }
 
@@ -129,7 +129,7 @@ class ProductRepository
     {
         return Product::with('productAdditionalInfo', 'form', 'category', 'generic', 'company', 'primaryUnit')
             ->orderBy('name', 'ASC')
-            ->orderBy('purchase_price', 'DESC')
+//            ->orderBy('purchase_price', 'DESC')
             ->where('purchase_price', '>', 0)
             ->paginate(200);
     }
@@ -197,7 +197,6 @@ class ProductRepository
 
     public function update($request, $id)
     {
-
         $product = Product::find($id);
 
         if (!$product) {
