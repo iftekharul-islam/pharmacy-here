@@ -70,7 +70,6 @@ class ProductsController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-//        return $request->all();
         $product = $this->repository->create($request);
 
         if (!$product) {
@@ -131,7 +130,6 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-//        print_r($id);die();
         $product = $this->repository->delete($id);
 
         if (!$product) {

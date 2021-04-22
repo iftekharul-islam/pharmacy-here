@@ -18,7 +18,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h1>Products</h1>
+                <h1>Products <span class="badge badge-success">{{ $productList->total() }}</span></h1>
             </div>
             <div class="col-sm-6">
                 <a href="{{ route('create') }}" class="btn btn-sm btn-success float-right">Create Product</a>

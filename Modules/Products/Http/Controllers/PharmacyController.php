@@ -10,7 +10,6 @@ use Illuminate\Routing\Controller;
 use Modules\Locations\Repositories\LocationRepository;
 use Modules\Products\Http\Requests\UpdatePharmacyRequest;
 use Modules\Products\Repositories\PharmacyRepository;
-use Modules\User\Entities\Models\User;
 
 class PharmacyController extends Controller
 {
@@ -88,7 +87,6 @@ class PharmacyController extends Controller
      */
     public function update(UpdatePharmacyRequest $request, $id)
     {
-//        return $request->all();
         $pharmacy = $this->repository->update($request, $id);
         return redirect()->route('pharmacy.index')->with('success', 'Pharmacy updated Successfully');
     }
