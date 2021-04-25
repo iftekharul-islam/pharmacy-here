@@ -94,6 +94,9 @@
                 <tr>
                     <th>SL</th>
                     <th>Medicine Name</th>
+                    <th>Company name</th>
+                    <th>Generic</th>
+                    <th>Strength</th>
                     <th>Quantity</th>
                     <th>Amount</th>
                 </tr>
@@ -104,6 +107,9 @@
                         <tr>
                             <td>{{  $index++ }}</td>
                             <td>{{ $item->product['name'] }}</td>
+                            <td>{{ $item->product['company']->name }}</td>
+                            <td>{{ $item->product['Generic']->name }}</td>
+                            <td>{{ $item->product['strength'] }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ $item->quantity * $item->product->purchase_price }}</td>
                         </tr>

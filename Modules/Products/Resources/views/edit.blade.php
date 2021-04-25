@@ -113,7 +113,8 @@
                         <div class="col-sm-8" id="">
                             <select class="form-control" name="manufacturing_company_id" id="manufacturing_company_id">
                                 @foreach($companies as $company)
-                                    <option value="{{ $company->id }}" @if($product->company_id == $company->id) selected @endif>{{ $company->name }}</option>
+                                    <option value="{{ $company->id }}"
+                                            @if($product->manufacturing_company_id == $company->id) selected @endif>{{ $company->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('manufacturing_company_id'))
@@ -128,7 +129,8 @@
                         <div class="col-sm-8" id="">
                             <select class="form-control" name="primary_unit_id" id="primary_unit_id">
                                 @foreach($units as $unit)
-                                    <option value="{{ $unit->id }}" @if($product->Unit_id == $unit->id) selected @endif>{{ $unit->name }}</option>
+                                    <option value="{{ $unit->id }}"
+                                            @if($product->primary_unit_id == $unit->id) selected @endif>{{ $unit->name }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('primary_unit_id'))

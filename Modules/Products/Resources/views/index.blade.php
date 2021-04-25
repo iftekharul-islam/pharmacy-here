@@ -57,7 +57,7 @@
                 <tr>
 {{--                    <th>Type</th>--}}
                     <th>Name</th>
-                    <th>Company</th>
+                    <th>Category</th>
                     <th>Purchase Price</th>
                     <th>Saleable</th>
                     <th>Status</th>
