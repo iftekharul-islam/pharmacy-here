@@ -97,6 +97,7 @@
                     <th>Company name</th>
                     <th>Generic</th>
                     <th>Strength</th>
+                    <th>Form</th>
                     <th>Quantity</th>
                     <th>Amount</th>
                 </tr>
@@ -110,6 +111,7 @@
                             <td>{{ $item->product['company']->name }}</td>
                             <td>{{ $item->product['Generic']->name }}</td>
                             <td>{{ $item->product['strength'] }}</td>
+                            <td>{{ $item->product['form']->name }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ $item->quantity * $item->product->purchase_price }}</td>
                         </tr>
