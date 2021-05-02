@@ -105,7 +105,7 @@
                 <h3 class="card-title">Pharmacies</h3> &nbsp;
                 <p class="badge badge-primary">{{ $pharmacies->total()}}</p>
                 <a class="btn btn-success float-right"
-                   href="{{ route('pharmacy.export', ['district' => $display_area, 'thana' => $display_thana, 'area' => $display_district, 'search' => $search]) }}">Export
+                   href="{{ route('pharmacy.export', ['district' => $display_district, 'thana' => $display_thana, 'area' => $display_area, 'search' => $search]) }}">Export
                     pharmacy
                 </a>
             </div>

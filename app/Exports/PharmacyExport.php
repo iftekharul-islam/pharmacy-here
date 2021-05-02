@@ -48,7 +48,6 @@ class PharmacyExport implements FromCollection, WithHeadings, WithColumnWidths
                 'created_at' => isset($pharmacy->pharmacyBusiness) ? Carbon::parse($pharmacy->pharmacyBusiness->created_at)->format('d-m-Y') : 'N/A'
             ]);
         }
-        logger($pharmacyCollection);
         return $pharmacyCollection;
     }
 
@@ -78,7 +77,6 @@ class PharmacyExport implements FromCollection, WithHeadings, WithColumnWidths
                 $query->where('district_id', $this->district);
             });
         }
-
         return $pharmacy->get();
 
     }
