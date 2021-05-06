@@ -95,8 +95,19 @@ class AuthRepository
 
     public function createOtp($request)
     {
-        $otp = rand(1000, 9999);
-        SendOtp::dispatch($request->phone_number, $otp);
+        if ($request->phone_number == config('subidha.fix_otp_phn_number')) {
+            $otp = 1234;
+            OneTimePassword::create([
+                'phone_number' => $request->phone_number,
+                'otp' => $otp
+            ]);
+
+        } else {
+
+            $otp = rand(1000, 9999);
+            SendOtp::dispatch($request->phone_number, $otp);
+
+        }
         return $otp;
     }
 
