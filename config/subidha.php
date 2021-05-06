@@ -2,6 +2,7 @@
 
 return [
     'fix_otp_phn_number' => '01123456789',
+    'fix_otp' => '1581',
     'minimum_order_amount' => 100,
     'minimum_delivery_charge_amount' => 400,
     'normal_delivery_charge' => 20,
