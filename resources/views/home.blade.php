@@ -94,7 +94,8 @@
                         <div class="left">
                             <p class="text-resize">{{ __('text.medicine_alarm') }}</p>
                             <p>{{ __('text.alarm_title') }}</p>
-                            <a href="https://play.google.com/store/apps/details?id=com.subidha.customer" target="_blank" class="btn--shop-now">Try now</a>
+                            <a href="https://play.google.com/store/apps/details?id=com.subidhabd.customerapp"
+                               target="_blank" class="btn--shop-now">Try now</a>
                         </div>
                         <div class="right">
                             <img src="{{ asset('images/clock.svg') }}" alt="card 1">
