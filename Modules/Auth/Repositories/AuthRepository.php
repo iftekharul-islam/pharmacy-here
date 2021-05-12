@@ -300,10 +300,6 @@ class AuthRepository
             }
 
             $refers = new Refers();
-//                Refers::create([
-//                'refered_by' => $referred_user->id,
-//                'refered_to' => $user->id,
-//            ]);
             $refers->referred_by = $referred_user->id;
             $refers->referred_to = $user->id;
             $refers->save();
