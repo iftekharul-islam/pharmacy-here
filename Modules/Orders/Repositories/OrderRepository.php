@@ -911,7 +911,7 @@ class OrderRepository
 
     public function getOrderDetails($id)
     {
-        return Order::with(['orderItems.product.primaryUnit', 'cancelReason', 'orderItems.product', 'orderItems.product.company', 'orderItems.product.generic', 'address.area.thana.district', 'pharmacy.pharmacyBusiness', 'customer'])
+        return Order::with(['prescriptions', 'orderItems.product.primaryUnit', 'cancelReason', 'orderItems.product', 'orderItems.product.company', 'orderItems.product.generic', 'address.area.thana.district', 'pharmacy.pharmacyBusiness', 'customer'])
             ->where('id', $id)
             ->first();
 

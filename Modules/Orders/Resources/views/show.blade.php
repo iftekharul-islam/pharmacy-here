@@ -76,13 +76,30 @@
 @stop
 
 @section('content')
-    <!-- @auth("web")
-        <h1>Hello world</h1>
-{{ Auth::guard('web')->user()->can('create.user') }}
-
-    @endauth -->
-
-
+    @auth("web")
+    {{ Auth::guard('web')->user()->can('create.user') }}
+    @endauth
+    @if(count($data->prescriptions) > 0)
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Prescription list</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach($data->prescriptions as $item)
+                            <div class="col-md-4">
+                                <a href="{{ $item->url }}" target="_blank">
+                                    <img src="{{ $item->url }}" alt="prescription" width="150px" height="200px">
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Medicine List</h3>
