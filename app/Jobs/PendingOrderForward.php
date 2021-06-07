@@ -38,18 +38,28 @@ class PendingOrderForward implements ShouldQueue
     public function handle()
     {
         logger('in the forward job');
-        $orders = Order::with('address.area.thana')->where('status', 0)->where('pharmacy_id', '!=', null)->get();
+        $orders = Order::with('address.area.thana')->where('status', 0)->get();
         $dhaka_district = District::where('slug', 'dhaka')->first();
 
         logger('order list');
         logger($orders);
 
+        $today = Carbon::today()->format('Y-m-d');
+        $todayTime = Carbon::now()->format('H:i:s');
+        $todayFixTime = Carbon::now()->format('H:i');
+        $morningCheckForRegular = config('subidha.morningTime');
+        $eveningCheckForRegular = config('subidha.eveningTime');
+
         foreach ($orders as $order) {
             logger('Order found');
+
             logger('order id');
             logger($order->order_no);
 
+            $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
+
             $isPreOrder = false;
+
             foreach ($order->orderItems as $item) {
 
                 logger('is_pre_order');
@@ -61,53 +71,50 @@ class PendingOrderForward implements ShouldQueue
                     break;
                 }
             }
-
-            $today = Carbon::today()->format('Y-m-d');
-            $todayTime = Carbon::now()->format('H:i:s');
-            $todayFixTime = Carbon::now()->format('H:i');
-            $orderTime = Carbon::parse($order->delivery_time)->subHour(1)->format('H:i:s');
-            $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
-            $preOrderTime = Carbon::now()->subHour(15)->format('Y-m-d H:i');
-//            $preOrderTime = Carbon::now()->subMinute(10)->format('Y-m-d H:i');
-            $preOrderEndTime = Carbon::now()->subHour(24)->format('Y-m-d H:i');
-//            $preOrderEndTime = Carbon::now()->subMinute(15)->format('Y-m-d H:i');
-            $morningCheckForRegular = config('subidha.morningTime');
-            $eveningCheckForRegular = config('subidha.eveningTime');
-
-            if ($order->delivery_method == 'normal' && $todayFixTime == $morningCheckForRegular) {
-                logger('In the regular delivery make orphan on time 9 am based');
-                $this->orderMakeOrphan($order);
-                continue;
-            }
-            if ($order->delivery_method == 'normal' && $todayFixTime == $eveningCheckForRegular) {
-                logger('In the regular delivery make orphan on time 7 pm based');
-                $this->orderMakeOrphan($order);
-                continue;
-            }
-
             if ($isPreOrder === true) {
                 logger('in the pre order section');
-
                 logger('pre Order End Time');
+                $preOrderEndTime = Carbon::parse($order->created_at)->addHour(24);
                 logger($preOrderEndTime);
-                logger('pre Order Time');
-                logger($preOrderTime);
-                logger('Created at time');
-                logger(Carbon::parse($order->created_at)->format('Y-m-d H:i'));
 
-                if ($preOrderEndTime >= Carbon::parse($order->created_at)->format('Y-m-d H:i')) {
+                logger('pre Order Time');
+                $preFirstForwardTime = Carbon::now();
+                logger($preFirstForwardTime);
+
+                logger('Created at time');
+                $preOrderCreated = Carbon::parse($order->created_at);
+                logger($preOrderCreated);
+
+                $orphanHour = $preOrderCreated->diff($preOrderEndTime)->format('%H');
+                $forwardHour = $preOrderCreated->diff($preFirstForwardTime)->format('%H');
+                logger('orphan Hour');
+                logger($orphanHour);
+
+                logger('forward Hour');
+                logger($forwardHour);
+
+                if ($orphanHour >= 24) {
                     logger('in the pre order 24 hour section');
                     $this->orderMakeOrphan($order);
                     continue;
                 }
-
-                if ($preOrderTime >= Carbon::parse($order->created_at)->format('Y-m-d h:i') && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+                if ($forwardHour >= 15) {
                     logger('in the pre order 15 hour section');
                     $this->orderForward($order, $dhaka_district);
                     continue;
                 }
-
                 logger('Pre Order status in the same state');
+                continue;
+            }
+
+            if ($order->delivery_method === 'normal' && $todayFixTime == $morningCheckForRegular) {
+                logger('In the regular delivery make orphan on time 9 am based');
+                $this->orderMakeOrphan($order);
+                continue;
+            }
+            if ($order->delivery_method === 'normal' && $todayFixTime == $eveningCheckForRegular) {
+                logger('In the regular delivery make orphan on time 7 pm based');
+                $this->orderMakeOrphan($order);
                 continue;
             }
 
@@ -117,21 +124,13 @@ class PendingOrderForward implements ShouldQueue
                 continue;
             }
 
-            logger('orderTime');
-            logger($orderTime);
-            logger('todayTime');
-            logger($todayTime);
+            $timeNow = Carbon::now();
+            $forwardRegularHour = $order->updated_at->diff($timeNow)->format('%H');
+            logger('forward Regular Hour');
+            logger($forwardRegularHour);
 
-            if ($order->delivery_date === $today && $todayTime >= $orderTime && $order->delivery_method != 'express') {
-                logger('In the orphan on date based');
-                $this->orderMakeOrphan($order);
-                logger('end of Order is Orphaned');
-                continue;
-            }
-
-            if ($order->delivery_date == $today && Carbon::now()->subHour(1)->format('H:i') >= $order->updated_at->format('H:i')) {
+            if ($order->delivery_date == $today && $forwardRegularHour >= 1) {
                 logger('In the forward on regular based');
-
                 $this->orderForward($order, $dhaka_district);
                 logger('Order is forwarded');
                 continue;
