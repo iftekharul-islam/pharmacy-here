@@ -45,7 +45,6 @@ class PendingOrderForward implements ShouldQueue
         logger($orders);
 
         $today = Carbon::today()->format('Y-m-d');
-        $todayTime = Carbon::now()->format('H:i:s');
         $todayFixTime = Carbon::now()->format('H:i');
         $morningCheckForRegular = config('subidha.morningTime');
         $eveningCheckForRegular = config('subidha.eveningTime');
@@ -60,8 +59,6 @@ class PendingOrderForward implements ShouldQueue
 
             logger('order id');
             logger($order->order_no);
-
-            $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
 
             $isPreOrder = false;
 
@@ -122,6 +119,14 @@ class PendingOrderForward implements ShouldQueue
                 $this->orderMakeOrphan($order);
                 continue;
             }
+
+            $expressTime = Carbon::parse($order->delivery_time)->format('H:i');
+            logger('$expressTime');
+            logger($expressTime);
+
+            $todayTime = Carbon::now()->format('H:i');
+            logger('$todayTime');
+            logger($todayTime);
 
             if ($order->delivery_method === 'express' && $order->delivery_date == $today && $todayTime >= $expressTime) {
                 logger('In the express delivery orphan on date based');
