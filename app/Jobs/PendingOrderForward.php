@@ -50,6 +50,11 @@ class PendingOrderForward implements ShouldQueue
         $morningCheckForRegular = config('subidha.morningTime');
         $eveningCheckForRegular = config('subidha.eveningTime');
 
+        logger('$todayFixTime');
+        logger($todayFixTime);
+        logger('$morningCheckForRegular');
+        logger($morningCheckForRegular);
+
         foreach ($orders as $order) {
             logger('Order found');
 
