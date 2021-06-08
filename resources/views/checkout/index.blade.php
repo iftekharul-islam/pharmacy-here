@@ -594,8 +594,6 @@
                 $('.express_slot').prop('aria-required', false);
                 var tm = new Date();
                 var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-                console.log('NormalDeliveryTime');
-                console.log(NormalDeliveryTime)
                 var time_now = moment.utc(time, 'hh:mm A').format('HH:mm:ss');
                 var check_start_time = moment.utc(NormalDeliveryTime[0].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
                 var check_end_time = moment.utc(NormalDeliveryTime[1].start_time, 'hh:mm A').add(-1, 'hours').format('HH:mm:ss');
@@ -695,7 +693,8 @@
         }
 
         $('#expressTime').on('change', function () {
-            var time_slot = $('#expressTime option:selected').val()
+            var time_slot = $('#expressTime option:selected').val();
+            console.log(time_slot)
             var time_slot_duration = $('#expressTime option:selected').html();
 
             var dt = new Date();
@@ -706,18 +705,24 @@
 
             var tm = new Date();
             var time = tm.getHours() + ":" + tm.getMinutes() + ":" + tm.getSeconds();
-            var time_now = moment.utc(time, 'hh:mm a');
-            var check = moment.utc(time_slot, 'hh:mm a').add(-2, 'hour');
-
+            var time_now = moment.utc(time, 'hh:mm a').format('HH:mm:ss');
+            var check = moment.utc(time_slot, 'hh:mm a').add(-2, 'hour').format('HH:mm:ss');
+            var delivery_time = moment.utc(time_slot, 'hh:mm a').format('HH:mm:ss')
+            console.log('time_now')
+            console.log(time_now)
+            console.log('check')
+            console.log(check)
+            console.log('delivery_time')
+            console.log(delivery_time)
             if (time_now > check) {
                 $('.express_date').val(time_slot_duration + ", " + next_date);
                 $(".express_delivery_date").val(next_date);
-                $(".express_delivery_time").val(time_slot);
+                $(".express_delivery_time").val(delivery_time);
                 $(".delivery_duration").val(time_slot_duration);
             } else {
                 $('.express_date').val(time_slot_duration + ", " + date);
                 $(".express_delivery_date").val(date);
-                $(".express_delivery_time").val(time_slot);
+                $(".express_delivery_time").val(delivery_time);
                 $(".delivery_duration").val(time_slot_duration);
             }
 
@@ -889,8 +894,6 @@
 
         function getPharmacy() {
             var thanaId = $('#selectPharmacyThana option:selected').val();
-            console.log('thana id');
-            console.log(thanaId);
             $.ajax({
                 url: '{{ url('find-pharmacy-list') }}',
                 method: "get",
