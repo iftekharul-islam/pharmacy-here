@@ -29,8 +29,7 @@
                         <a href="#">{{ __('text.contact_us') }}</a>
                         <address>
                             Village : Chak kanchan, <br>P.O. : Farakkabad, P.S. : Biral,<br>District : Dinajpur-5210
-                            <br>
-                            <br>
+                            <p>Trade License No : 077</p>
                             <p>Email: subidhabd@gmail.com</p>
                         </address>
                     </div>
