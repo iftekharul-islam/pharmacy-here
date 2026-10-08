@@ -5,7 +5,6 @@
 /public/storage/laravel-excel/
 /storage/*.key
 /vendor
-.env
 .env.backup
 .phpunit.result.cache
 Homestead.json
@@ -17,3 +16,4 @@ package-lock.json
 composer.lock
 gcs/
 
+config.bat
